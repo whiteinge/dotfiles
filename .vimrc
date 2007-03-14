@@ -272,11 +272,3 @@ set statusline=%!MyStatusLine()
 " }}}
 
 " eof
-
-map <F2> :WMToggle<CR>
-let g:winManagerWindowLayout = 'BufExplorer|FileExplorer'
-let g:bufExplorerShowRelativePath=1
-let g:bufExplorerUseCurrentWindow=0
-let g:bufExplorerDefaultHelp=0
-let g:bufExplorerSplitOutPathName=0
-let g:bufExplorerSplitVertSize = 30
