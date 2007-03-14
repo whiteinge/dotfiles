@@ -125,7 +125,10 @@ hi Folded cterm=bold ctermfg=8 ctermbg=0
 
 " I love the new CursorLine, but terminal underlining kicks legibility in the nuts.
 " So what to do? Bold is (extremely) subtle, but it's better than nothing.
-" hi CursorLine cterm=bold
+hi CursorLine cterm=bold
+
+" Vim is picking up a white bg from somewhere which is annoying...
+hi Visual ctermbg=none
 
 " Default StatusLine highlighting
 " hi StatusLine term=bold,reverse cterm=bold,reverse
