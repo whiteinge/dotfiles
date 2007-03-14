@@ -272,3 +272,5 @@ set statusline=%!MyStatusLine()
 " }}}
 
 " eof
+
+let g:miniBufExplVSplit = 20

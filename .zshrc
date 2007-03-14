@@ -298,7 +298,7 @@ djsetup()
 djedit() {
     screen -t $(basename $1) vim "+cd $1" \
         $1/{urls.py,models.py,views.py,forms.py} \
-        $1/**/*py~**/__init__.py(N)~**/urls.py(N)~**/models.py(N)~**/forms.py(N)~**/views.py(N) \
+        $1/**/*py(N)~**/__init__.py(N)~**/urls.py(N)~**/models.py(N)~**/forms.py(N)~**/views.py(N) \
         $1/templates/**/*.html(N)
 }
 
