@@ -1,0 +1,16 @@
+! --- aterm settings
+aterm*background: black
+aterm*foreground: white
+aterm*transparent: true
+aterm*scrollBar: false
+aterm*loginShell: true
+aterm*shading: 30
+
+! --- xterm settings
+xterm*background: black
+xterm*foreground: white
+xterm*scrollBar: false
+xterm*loginShell: true
+xterm*faceName: Monaco
+xterm*faceSize: 11
+xterm*cursorColor: red

@@ -125,7 +125,7 @@ hi Folded cterm=bold ctermfg=8 ctermbg=0
 
 " I love the new CursorLine, but terminal underlining kicks legibility in the nuts.
 " So what to do? Bold is (extremely) subtle, but it's better than nothing.
-hi CursorLine cterm=bold
+" hi CursorLine cterm=bold
 
 " Default StatusLine highlighting
 " hi StatusLine term=bold,reverse cterm=bold,reverse
