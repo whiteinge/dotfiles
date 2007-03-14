@@ -1,0 +1,40 @@
+# $Id$
+#
+#                               MESSAGES
+nethack on              # be careful! new screen tonight.
+sorendition "kg"        # makes screen messages stand out, black on green
+msgwait 2               # default display wait is way too long
+startup_message off     # boooring!
+version                 # echo version on startup, 'cause old versions break things
+
+#                                 MISC
+autodetach on           # *sniff* I love this so much!
+defflow off             # disables (in theory) flow control ('cause it's no longer 1980)
+vbell off               # visual bells suck
+
+#                           SCROLL-BACK MODE
+ignorecase on           # case insensitive search in scroll-back mode
+defscrollback 5120      # default scroll-back buffer is tiny
+
+#                           DEFAULT WINDOWS
+screen -t main
+screen -t work
+
+#                            NESTED SCREENS
+# I often run an ssh-ed screen in my main screen and like ctrl-s for the inside escape key.
+# You need to free it from legacy silliness first though. Put this in your .bashrc
+# tty > /dev/null && stty -ixon -ixoff
+# Or in your .zshrc (cleaner solution)
+# setopt no_flow_control
+#
+# Then uncomment the following line in the remote .screenrc or invoke with screen -e'^Ss'
+# escape ^Ss
+
+#                               HARDSTATUS
+# Adds a nice "tabbed" look, kinda long but gracefully pushes the status stuff off-screen if need be
+hardstatus alwayslastline "%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw %= %{mk}@ %H %{ck}%Y%{wk}-%{ck}%m%{wk}-%{ck}%d %{yk}%D %{gk}%c %{bk}%l"
+
+# TODO: Detail every part of the hardstatus line below
+# %{wk}     - Default white on black
+
+# EOF
