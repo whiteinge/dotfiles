@@ -1,7 +1,8 @@
 " Best Goddamn vimrc in the whole world.
 " Author: Seth House <seth@eseth.com>
-" Version: 1.1.0
-" Modified: 2007-03-13
+" Release: 1.1.0
+" Version: $LastChangedRevision$
+" Modified: $LastChangedDate$
 " Revamped for Vim 7 - will output a few non-critical errors for old versions.
 " For more information type :help followed by the command.
 

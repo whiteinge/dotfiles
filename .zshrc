@@ -2,8 +2,9 @@
 #
 # Best Goddamn zshrc in the whole world (if you're obsessed with Vim).
 # Author: Seth House <seth@eseth.com>
-# Version: 1.1.0
-# Modified: 2007-03-01
+# Release: 1.1.0
+# Version: $LastChangedRevision$
+# Modified: $LastChangedDate$
 # thanks to Adam Spiers, Steve Talley
 # and to Unix Power Tools by O'Reilly
 #
