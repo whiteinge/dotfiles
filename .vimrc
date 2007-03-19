@@ -218,7 +218,6 @@ endif
 " MyStatusLine {{{
 
 function MyStatusLine()
-    " let s .= '%a ' " (args of total)
     let s = '%%%n '
     let s .= '%1*' " User highlighting
     if bufname('') != '' " why is this such a pain in the ass?
@@ -233,11 +232,13 @@ function MyStatusLine()
     let s .= '%w' " preview window
     let s .= '%*' " restore normal highlighting
     if bufname('#') != '' " if there's an alternate buffer, display the name
+        let s .= '%<' " truncate the alternate buffer if the statusline is too long
         let s .= '%4*' " user highlighting
         let s .= ' (#' . bufnr('#') . ' '
         let s .= bufname('#')
         let s .= ')'
         let s .= '%*' " restore normal highlighting
+        let s .= '%<' " truncate the alternate buffer if the statusline is too long
     endif
     let s .= '%6*' " User highlighting
     let s .= ' %y' " file-type
@@ -250,8 +251,9 @@ function MyStatusLine()
     let s .= '%{&fileformat}' " line-ending type
     let s .= '%*' " restore normal highlighting
     let s .= '> '
-    let s .= '%<' " truncate the alternate buffer name if the statusline is too long
-    let s .= ' %<' " truncate the alternate buffer name if the statusline is too long
+    let s .= '%<' " truncate the args of total if the statusline is too long
+    let s .= '%a ' " (args of total)
+    let s .= ' %<' " truncate the args of total if the statusline is too long
     let s .= '%=' " seperate right- from left-aligned
     let s .= '%{VimBuddy()}  ' " Vimming will never be lonely again. TODO: check for plugin before loading
     let s .= '%1*' " User highlighting
