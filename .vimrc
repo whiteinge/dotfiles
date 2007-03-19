@@ -1,6 +1,6 @@
 " Best Goddamn vimrc in the whole world.
 " Author: Seth House <seth@eseth.com>
-" Release: 1.1.0
+" Release: 1.1.1
 " Version: $LastChangedRevision$
 " Modified: $LastChangedDate$
 " Revamped for Vim 7 - will output a few non-critical errors for old versions.
@@ -43,6 +43,7 @@ set expandtab                   "et:    uses spaces instead of tab characters
 set smarttab                    "sta:   helps with backspacing because of expandtab
 set tabstop=4                   "ts:    number of spaces that a tab counts for
 set shiftwidth=4                "sw:    number of spaces to use for autoindent
+set shiftround                  "sr:    rounds indent to a multiple of shiftwidth
 
 set listchars=tab:>-,eol:$      "lcs:   makes finding tabs easier during :set list
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
@@ -54,15 +55,10 @@ map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 " Folding (spacebar toggles) {{{
 " Spacebar toggles a fold, zi toggles all folding, zM closes all folds
 
-set foldmethod=marker           "fdm:   looks for patterns of triple-braces in a file
 noremap  <silent>  <space> :exe 'silent! normal! za'.(foldlevel('.')?'':'l')<cr>
 
-" }}}
-" Backups {{{
-
-set backup                      "bk:    makes a backup copy of every file you write to
-set backupdir=~/.vim/tmp        "bdir:  warning: this is not a secure place to store a copy of every file you edit!
-au FileType crontab set nobackup " crontab won't save otherwise due to the above option
+set foldmethod=marker           "fdm:   looks for patterns of triple-braces in a file
+set foldcolumn=4                "fdc:   creates a small left-hand gutter for displaying fold info
 
 " }}}
 " Menu completion {{{
@@ -74,7 +70,6 @@ set wildmode=longest:full,list:full  "wim:   helps wildmenu auto-completion
 " Window Layout {{{
 
 set number                      "nu:    numbers lines
-set numberwidth=8               "nuw:   the default is 4, however GNU screen uses 8 like old vi and there's no way to change it in screen :-(
 set showmode                    "smd:   shows current vi mode in lower left
 set cursorline                  "cul:   highlights the current line
 set showcmd                     "sc:    shows typed commands
@@ -88,24 +83,16 @@ set viminfo='500,f1,:100,/100   "vi:    For a nice, huuuuuge viminfo file
 " }}}
 " Multi-buffer editing {{{
 
-set switchbuf=usetab            "swb:   Jumps to first window or tab that contains specified buffer instead of duplicating an open window
+set switchbuf=useopen           "swb:   Jumps to first window or tab that contains specified buffer instead of duplicating an open window
 set showtabline=1               "stal:  Display the tabbar if there are multiple tabs. Use :tab ball or invoke Vim with -p
 set hidden                      "hid:   allows opening a new buffer in place of an existing one without first saving the existing one
-set tabpagemax=15               "tpm:   makes little more room on the tabline for widescreen displays. ;-D
-
-" Allows ctrl-h,l to move left and right between tabs
-nmap <C-H> gT
-nmap <C-L> gt
-
-" ctrl-j,k will move up or down between split buffers. use ctrl-w, ctrl-_ to maximize, or ctrl-o to show only the current buffer
-nmap <C-J> <C-W>j
-nmap <C-K> <C-W>k
 
 " I'm not sure why Vim displays one line by default when 'maximizing' a split window with ctrl-_
 set winminheight=0              "wmh:   the minimal height of any non-current window
 set winminwidth=0               "wmw:   the minimal width of any non-current window
 
 " Earlier Vims did not support tabs. Below is a vertical-tab-like cludge. Use :ball or invoke Vim with -o
+" http://www.vim.org/tips/tip.php?tip_id=173
 if version < 700
     " ctrl-j,k will move up or down between split buffers and maximize the current buffer
     nmap <C-J> <C-W>j<C-W>_
@@ -145,6 +132,9 @@ hi StatusLineNC term=bold,reverse cterm=bold,reverse ctermfg=8
 hi TabLine cterm=underline ctermfg=8 ctermbg=0
 hi TabLineSel cterm=none ctermfg=0 ctermbg=7
 hi TabLineFill cterm=none ctermbg=0
+
+" The default foldcolumn is briiiight.
+hi FoldColumn cterm=bold ctermfg=8 ctermbg=0
 
 " }}}
 " Printing {{{
@@ -227,7 +217,7 @@ endif
 " MyStatusLine {{{
 
 function MyStatusLine()
-    let s = '#%n' " buffer number
+    let s = '%%%n' " buffer number
     let s .= '%a ' " (args of total)
     let s .= '%1*' " User highlighting
     if bufname('') != '' " why is this such a pain in the ass?
@@ -272,5 +262,26 @@ set statusline=%!MyStatusLine()
 " }}}
 
 " eof
+" vim:ft=vim:fdm=marker:ff=unix:nowrap:tabstop=4:shiftwidth=4:softtabstop=4:smarttab:shiftround:expandtab
 
-let g:miniBufExplVSplit = 20
+" let g:miniBufExplVSplit = 20 " vertical display
+let g:miniBufExplSplitToEdge = 0
+map <F2> :TMiniBufExplorer<cr>
+map <F2> :ls<cr>
+let g:miniBufExplMapCTabSwitchBufs = 1 " I modified this to ctrl-h,l in the minibufexpl.vim script itself
+
+"               It is possible to customize the the highlighting for the tabs in 
+"               the MBE by configuring the following highlighting groups:
+"
+"                 MBENormal         - for buffers that have NOT CHANGED and
+"                                     are NOT VISIBLE.
+"                 MBEChanged        - for buffers that HAVE CHANGED and are
+"                                     NOT VISIBLE
+"                 MBEVisibleNormal  - buffers that have NOT CHANGED and are
+"                                     VISIBLE
+"                 MBEVisibleChanged - buffers that have CHANGED and are VISIBLE
+"
+"               You can either link to an existing highlighting group by
+"               adding a command like:
+"
+"                 hi link MBEVisibleChanged Error

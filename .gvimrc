@@ -12,7 +12,7 @@ set guioptions=acgit            "go:    A minimal (console-like) set of GUI opti
 set lines=999
 set columns=999
 
-if has ("macunix")
+if has ("macunix") " pretty anti-aliased font
     au GUIEnter * winpos 0 40
     set nomacatsui anti enc=utf-8 gfn=Monaco:h11
 endif
