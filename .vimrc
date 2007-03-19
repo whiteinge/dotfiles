@@ -124,6 +124,7 @@ hi User2 term=bold,reverse cterm=bold,reverse ctermbg=1
 hi User3 term=bold,reverse cterm=bold,reverse ctermbg=5
 hi User4 term=bold,reverse cterm=bold,reverse ctermbg=8
 hi User5 term=bold,reverse cterm=bold,reverse ctermbg=6
+hi User6 term=bold,reverse cterm=bold,reverse ctermbg=2
 
 " Greys-out the non-current StatusLine in a split
 hi StatusLineNC term=bold,reverse cterm=bold,reverse ctermfg=8
@@ -217,8 +218,8 @@ endif
 " MyStatusLine {{{
 
 function MyStatusLine()
-    let s = '%%%n' " buffer number
-    let s .= '%a ' " (args of total)
+    " let s .= '%a ' " (args of total)
+    let s = '%%%n '
     let s .= '%1*' " User highlighting
     if bufname('') != '' " why is this such a pain in the ass?
         let s .= pathshorten(fnamemodify(expand('%F'), ':~')) " short-hand path of of the current buffer (use :ls to see more info)
@@ -231,7 +232,14 @@ function MyStatusLine()
     let s .= '%r' " read-only
     let s .= '%w' " preview window
     let s .= '%*' " restore normal highlighting
-    let s .= '%4*' " User highlighting
+    if bufname('#') != '' " if there's an alternate buffer, display the name
+        let s .= '%4*' " user highlighting
+        let s .= ' (#' . bufnr('#') . ' '
+        let s .= bufname('#')
+        let s .= ')'
+        let s .= '%*' " restore normal highlighting
+    endif
+    let s .= '%6*' " User highlighting
     let s .= ' %y' " file-type
     let s .= '%*' " restore normal highlighting
     let s .= ' <'
@@ -242,8 +250,8 @@ function MyStatusLine()
     let s .= '%{&fileformat}' " line-ending type
     let s .= '%*' " restore normal highlighting
     let s .= '> '
-    let s .= '%<' " truncate the modified date first if the statusline is too long
-    let s .= ' %<' " truncate the modified date first if the statusline is too long
+    let s .= '%<' " truncate the alternate buffer name if the statusline is too long
+    let s .= ' %<' " truncate the alternate buffer name if the statusline is too long
     let s .= '%=' " seperate right- from left-aligned
     let s .= '%{VimBuddy()}  ' " Vimming will never be lonely again. TODO: check for plugin before loading
     let s .= '%1*' " User highlighting
@@ -267,7 +275,8 @@ set statusline=%!MyStatusLine()
 " let g:miniBufExplVSplit = 20 " vertical display
 let g:miniBufExplSplitToEdge = 0
 map <F2> :TMiniBufExplorer<cr>
-map <F2> :ls<cr>
+map <F1> :ls<cr>
+let g:miniBufExplorerMoreThanOne=6
 let g:miniBufExplMapCTabSwitchBufs = 1 " I modified this to ctrl-h,l in the minibufexpl.vim script itself
 
 "               It is possible to customize the the highlighting for the tabs in 
