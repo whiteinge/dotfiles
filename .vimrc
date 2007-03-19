@@ -119,15 +119,18 @@ hi Visual ctermbg=none
 
 " Default StatusLine highlighting
 " hi StatusLine term=bold,reverse cterm=bold,reverse
-hi User1 term=bold,reverse cterm=bold,reverse ctermbg=4
-hi User2 term=bold,reverse cterm=bold,reverse ctermbg=1
-hi User3 term=bold,reverse cterm=bold,reverse ctermbg=5
-hi User4 term=bold,reverse cterm=bold,reverse ctermbg=8
-hi User5 term=bold,reverse cterm=bold,reverse ctermbg=6
-hi User6 term=bold,reverse cterm=bold,reverse ctermbg=2
+hi User1 term=bold,reverse cterm=bold,underline ctermfg=4
+hi User2 term=bold,reverse cterm=bold,underline ctermfg=1
+hi User3 term=bold,reverse cterm=bold,underline ctermfg=5
+hi User4 term=bold,reverse cterm=bold,underline ctermfg=8
+hi User5 term=bold,reverse cterm=bold,underline ctermfg=6
+hi User6 term=bold,reverse cterm=bold,underline ctermfg=2
+hi User7 term=bold,reverse cterm=bold ctermfg=2
 
 " Greys-out the non-current StatusLine in a split
-hi StatusLineNC term=bold,reverse cterm=bold,reverse ctermfg=8
+hi StatusLineNC term=bold,underline cterm=bold,reverse ctermfg=8
+
+hi StatusLine cterm=bold,underline
 
 " A nice, minimalistic tabline
 hi TabLine cterm=underline ctermfg=8 ctermbg=0
@@ -218,8 +221,8 @@ endif
 " MyStatusLine {{{
 
 function MyStatusLine()
-    let s = '%%%n '
-    let s .= '%1*' " User highlighting
+    let s = '%1*' " User highlighting
+    let s .= '%%%n '
     if bufname('') != '' " why is this such a pain in the ass?
         let s .= pathshorten(fnamemodify(expand('%F'), ':~')) " short-hand path of of the current buffer (use :ls to see more info)
     else
@@ -240,8 +243,8 @@ function MyStatusLine()
         let s .= '%*' " restore normal highlighting
         let s .= '%<' " truncate the alternate buffer if the statusline is too long
     endif
-    let s .= '%6*' " User highlighting
-    let s .= ' %y' " file-type
+    let s .= ' %6*' " User highlighting
+    let s .= '%y' " file-type
     let s .= '%*' " restore normal highlighting
     let s .= ' <'
     let s .= '%3*' " User highlighting
@@ -255,15 +258,17 @@ function MyStatusLine()
     let s .= '%a ' " (args of total)
     let s .= ' %<' " truncate the args of total if the statusline is too long
     let s .= '%=' " seperate right- from left-aligned
-    let s .= '%{VimBuddy()}  ' " Vimming will never be lonely again. TODO: check for plugin before loading
+    let s .= '%7*' " user highlighting
+    let s .= ' %{VimBuddy()} ' " Vimming will never be lonely again. TODO: check for plugin before loading
+    let s .= '%*' " restore normal highlighting
     let s .= '%1*' " User highlighting
     let s .= '%l' " current line number
     let s .= '%*' " restore normal highlighting
     let s .= ',%c' " column number
     let s .= '%V' " virtual column number (doesn't count indentation)
-    let s .= '%1*' " User highlighting
-    let s .= ' of %L ' " total line numbers
-    let s .= '%*' " restore normal highlighting
+    let s .= ' %1*' " User highlighting
+    let s .= 'of %L' " total line numbers
+    let s .= '%* ' " restore normal highlighting
     let s .= '%P' " Percentage through file
     return s
 endfunction
