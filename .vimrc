@@ -236,8 +236,8 @@ function MyStatusLine()
     let s .= '%*' " restore normal highlighting
     if bufname('#') != '' " if there's an alternate buffer, display the name
         let s .= '%<' " truncate the alternate buffer if the statusline is too long
-        let s .= '%4*' " user highlighting
-        let s .= ' (#' . bufnr('#') . ' '
+        let s .= ' %4*' " user highlighting
+        let s .= '(#' . bufnr('#') . ' '
         let s .= bufname('#')
         let s .= ')'
         let s .= '%*' " restore normal highlighting
@@ -253,10 +253,10 @@ function MyStatusLine()
     let s .= '%5*' " User highlighting
     let s .= '%{&fileformat}' " line-ending type
     let s .= '%*' " restore normal highlighting
-    let s .= '> '
+    let s .= '>'
     let s .= '%<' " truncate the args of total if the statusline is too long
-    let s .= '%a ' " (args of total)
-    let s .= ' %<' " truncate the args of total if the statusline is too long
+    let s .= '%a' " (args of total)
+    let s .= '%<' " truncate the args of total if the statusline is too long
     let s .= '%=' " seperate right- from left-aligned
     let s .= '%7*' " user highlighting
     let s .= ' %{VimBuddy()} ' " Vimming will never be lonely again. TODO: check for plugin before loading
