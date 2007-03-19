@@ -119,6 +119,9 @@ hi Visual ctermbg=none
 
 " Default StatusLine highlighting
 " hi StatusLine term=bold,reverse cterm=bold,reverse
+hi StatusLine cterm=bold,underline
+hi StatusLineNC cterm=bold,underline ctermfg=8
+
 hi User1 term=bold,reverse cterm=bold,underline ctermfg=4
 hi User2 term=bold,reverse cterm=bold,underline ctermfg=1
 hi User3 term=bold,reverse cterm=bold,underline ctermfg=5
@@ -126,11 +129,7 @@ hi User4 term=bold,reverse cterm=bold,underline ctermfg=8
 hi User5 term=bold,reverse cterm=bold,underline ctermfg=6
 hi User6 term=bold,reverse cterm=bold,underline ctermfg=2
 hi User7 term=bold,reverse cterm=bold ctermfg=2
-
-" Greys-out the non-current StatusLine in a split
-hi StatusLineNC term=bold,underline cterm=bold,reverse ctermfg=8
-
-hi StatusLine cterm=bold,underline
+hi User8 term=bold,reverse cterm=bold,underline ctermfg=3
 
 " A nice, minimalistic tabline
 hi TabLine cterm=underline ctermfg=8 ctermbg=0
@@ -221,7 +220,7 @@ endif
 " MyStatusLine {{{
 
 function MyStatusLine()
-    let s = '%1*' " User highlighting
+    let s = '%3*' " User highlighting
     let s .= '%%%n '
     if bufname('') != '' " why is this such a pain in the ass?
         let s .= pathshorten(fnamemodify(expand('%F'), ':~')) " short-hand path of of the current buffer (use :ls to see more info)
@@ -243,14 +242,14 @@ function MyStatusLine()
         let s .= '%*' " restore normal highlighting
         let s .= '%<' " truncate the alternate buffer if the statusline is too long
     endif
-    let s .= ' %6*' " User highlighting
+    let s .= ' %5*' " User highlighting
     let s .= '%y' " file-type
     let s .= '%*' " restore normal highlighting
     let s .= ' <'
-    let s .= '%3*' " User highlighting
+    let s .= '%8*' " User highlighting
     let s .= '%{&fileencoding}' " fileencoding NOTE: this doesn't always display, needs more testing
     let s .= '%*,' " restore normal highlighting
-    let s .= '%5*' " User highlighting
+    let s .= '%6*' " User highlighting
     let s .= '%{&fileformat}' " line-ending type
     let s .= '%*' " restore normal highlighting
     let s .= '>'
@@ -269,7 +268,9 @@ function MyStatusLine()
     let s .= ' %1*' " User highlighting
     let s .= 'of %L' " total line numbers
     let s .= '%* ' " restore normal highlighting
+    let s .= '%3*' " user highlighting
     let s .= '%P' " Percentage through file
+    let s .= '%*' " restore normal highlighting
     return s
 endfunction
 set statusline=%!MyStatusLine()
