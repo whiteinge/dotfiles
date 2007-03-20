@@ -1,6 +1,6 @@
 " Best Goddamn vimrc in the whole world.
 " Author: Seth House <seth@eseth.com>
-" Release: 1.1.1
+" Release: 1.1.2
 " Version: $LastChangedRevision$
 " Modified: $LastChangedDate$
 " Revamped for Vim 7 - will output a few non-critical errors for old versions.
@@ -86,6 +86,9 @@ set viminfo='500,f1,:100,/100   "vi:    For a nice, huuuuuge viminfo file
 set switchbuf=useopen           "swb:   Jumps to first window or tab that contains specified buffer instead of duplicating an open window
 set showtabline=1               "stal:  Display the tabbar if there are multiple tabs. Use :tab ball or invoke Vim with -p
 set hidden                      "hid:   allows opening a new buffer in place of an existing one without first saving the existing one
+
+" Replace the annoying help key with a shortcut to view the list of buffers
+map <F1> :ls<cr>
 
 " I'm not sure why Vim displays one line by default when 'maximizing' a split window with ctrl-_
 set winminheight=0              "wmh:   the minimal height of any non-current window
@@ -279,26 +282,3 @@ set statusline=%!MyStatusLine()
 
 " eof
 " vim:ft=vim:fdm=marker:ff=unix:nowrap:tabstop=4:shiftwidth=4:softtabstop=4:smarttab:shiftround:expandtab
-
-" let g:miniBufExplVSplit = 20 " vertical display
-let g:miniBufExplSplitToEdge = 0
-map <F2> :TMiniBufExplorer<cr>
-map <F1> :ls<cr>
-let g:miniBufExplorerMoreThanOne=6
-let g:miniBufExplMapCTabSwitchBufs = 1 " I modified this to ctrl-h,l in the minibufexpl.vim script itself
-
-"               It is possible to customize the the highlighting for the tabs in 
-"               the MBE by configuring the following highlighting groups:
-"
-"                 MBENormal         - for buffers that have NOT CHANGED and
-"                                     are NOT VISIBLE.
-"                 MBEChanged        - for buffers that HAVE CHANGED and are
-"                                     NOT VISIBLE
-"                 MBEVisibleNormal  - buffers that have NOT CHANGED and are
-"                                     VISIBLE
-"                 MBEVisibleChanged - buffers that have CHANGED and are VISIBLE
-"
-"               You can either link to an existing highlighting group by
-"               adding a command like:
-"
-"                 hi link MBEVisibleChanged Error
