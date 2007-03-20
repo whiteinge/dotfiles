@@ -1,7 +1,6 @@
 " Best Goddamn vimrc in the whole world.
 " Author: Seth House <seth@eseth.com>
-" Release: 1.1.2
-" Version: $LastChangedRevision$
+" Version: $LastChangedRevision$  (Last non-version-controlled release: 1.1.2)
 " Modified: $LastChangedDate$
 " Revamped for Vim 7 - will output a few non-critical errors for old versions.
 " For more information type :help followed by the command.
@@ -32,7 +31,7 @@ nmap <silent> <C-P> :set nowrap!<CR>:set nowrap?<CR>
 syntax on                       "syn:   syntax highlighting
 set showmatch                   "sm:    flashes matching brackets or parentheses
 
-" Searches the current directory as well as subdirectories when using certain commands
+" Searches the current directory as well as subdirectories for commands like :find, :grep, etc.
 set path=.,**
 
 set cindent                     "cin:   enables the second-most configurable indentation (see :help C-indenting).
@@ -103,6 +102,69 @@ if version < 700
 endif
 
 " }}}
+"
+" MyStatusLine {{{
+
+function MyStatusLine()
+    let s = '%3*' " User highlighting
+    let s .= '%%%n '
+    if bufname('') != '' " why is this such a pain in the ass?
+        let s .= "%{ pathshorten(fnamemodify(expand('%F'), ':~:.')) }" " short-hand path of of the current buffer (use :ls to see more info)
+    else
+        let s .= '%f' " an empty filename doesn't make it through the above filters
+    endif
+    let s .= '%*' " restore normal highlighting
+    let s .= '%2*' " User highlighting
+    let s .= '%m' " modified
+    let s .= '%r' " read-only
+    let s .= '%w' " preview window
+    let s .= '%*' " restore normal highlighting
+    " FIXME: this doens't work well with multiple windows...
+    if bufname('#') != '' " if there's an alternate buffer, display the name
+        let s .= '%<' " truncate the alternate buffer if the statusline is too long
+        let s .= ' %4*' " user highlighting
+        let s .= '(#' . bufnr('#') . ' '
+        let s .= fnamemodify(bufname('#'), ':t')
+        let s .= ')'
+        let s .= '%*' " restore normal highlighting
+        let s .= '%<' " truncate the alternate buffer if the statusline is too long
+    endif
+    let s .= ' %5*' " User highlighting
+    let s .= '%y' " file-type
+    let s .= '%*' " restore normal highlighting
+    let s .= ' <'
+    let s .= '%8*' " User highlighting
+    let s .= '%{&fileencoding}' " fileencoding NOTE: this doesn't always display, needs more testing
+    let s .= '%*,' " restore normal highlighting
+    let s .= '%6*' " User highlighting
+    let s .= '%{&fileformat}' " line-ending type
+    let s .= '%*' " restore normal highlighting
+    let s .= '>'
+    let s .= '%<' " truncate the args of total if the statusline is too long
+    let s .= '%a' " (args of total)
+    let s .= '%<' " truncate the args of total if the statusline is too long
+    let s .= '  %9*' " user highlighting
+    let s .= '%=' " seperate right- from left-aligned
+    let s .= '%*' " restore normal highlighting
+    let s .= '%7*' " user highlighting
+    let s .= '  %{VimBuddy()} ' " Vimming will never be lonely again. TODO: check for plugin before loading
+    let s .= '%*' " restore normal highlighting
+    let s .= '%1*' " User highlighting
+    let s .= '%l' " current line number
+    let s .= '%*' " restore normal highlighting
+    let s .= ',%c' " column number
+    let s .= '%V' " virtual column number (doesn't count indentation)
+    let s .= ' %1*' " User highlighting
+    let s .= 'of %L' " total line numbers
+    let s .= '%* ' " restore normal highlighting
+    let s .= '%3*' " user highlighting
+    let s .= '%P' " Percentage through file
+    let s .= '%*' " restore normal highlighting
+    return s
+endfunction
+set statusline=%!MyStatusLine()
+
+" }}}
 " Color {{{
 "     All coloring options are for the non-GUI Vim (see :help cterm-colors).
 "     These are not very portable and could break on some systems.
@@ -117,22 +179,23 @@ hi Folded cterm=bold ctermfg=8 ctermbg=0
 " So what to do? Bold is (extremely) subtle, but it's better than nothing.
 hi CursorLine cterm=bold
 
-" Vim is picking up a white bg from somewhere which is annoying...
+" FIXME: Fix for picking up a white bg from somewhere which is annoying...
 hi Visual ctermbg=none
 
-" Default StatusLine highlighting
-" hi StatusLine term=bold,reverse cterm=bold,reverse
-hi StatusLine cterm=bold,underline
-hi StatusLineNC cterm=bold,underline ctermfg=8
-
-hi User1 term=bold,reverse cterm=bold,underline ctermfg=4
-hi User2 term=bold,reverse cterm=bold,underline ctermfg=1
-hi User3 term=bold,reverse cterm=bold,underline ctermfg=5
-hi User4 term=bold,reverse cterm=bold,underline ctermfg=8
-hi User5 term=bold,reverse cterm=bold,underline ctermfg=6
-hi User6 term=bold,reverse cterm=bold,underline ctermfg=2
-hi User7 term=bold,reverse cterm=bold ctermfg=2
-hi User8 term=bold,reverse cterm=bold,underline ctermfg=3
+" Statusline
+" I like this better than all the reverse video of the default statusline
+" highlighting but it's not as easy to tell which window is active. (VimBuddy helps!)
+hi StatusLine cterm=bold ctermfg=7
+hi StatusLineNC cterm=bold ctermfg=8
+hi User1 ctermfg=4
+hi User2 ctermfg=1
+hi User3 ctermfg=5
+hi User4 ctermfg=8
+hi User5 ctermfg=6
+hi User6 ctermfg=2
+hi User7 ctermfg=2
+hi User8 ctermfg=3
+hi User9 cterm=bold,reverse
 
 " A nice, minimalistic tabline
 hi TabLine cterm=underline ctermfg=8 ctermbg=0
@@ -183,8 +246,7 @@ autocmd FileChangedShell *
     \ echo "File has been changed outside of vim." |
     \ echohl None
 
-" For a full-screen help browser
-" hit enter to activate links, and ctrl-[ as a back button
+" Vim Help docs: hit enter to activate links, and ctrl-[ as a back button
 au FileType help nmap <buffer> <Return> <C-]>
 au FileType help nmap <buffer> <C-[> <C-O>
 
@@ -218,65 +280,6 @@ if has("multi_byte")
         endif
     endif
 endif
-
-" }}}
-" MyStatusLine {{{
-
-function MyStatusLine()
-    let s = '%3*' " User highlighting
-    let s .= '%%%n '
-    if bufname('') != '' " why is this such a pain in the ass?
-        let s .= pathshorten(fnamemodify(expand('%F'), ':~')) " short-hand path of of the current buffer (use :ls to see more info)
-    else
-        let s .= '%F' " an empty filename doesn't make it through the above filters
-    endif
-    let s .= '%*' " restore normal highlighting
-    let s .= '%2*' " User highlighting
-    let s .= '%m' " modified
-    let s .= '%r' " read-only
-    let s .= '%w' " preview window
-    let s .= '%*' " restore normal highlighting
-    if bufname('#') != '' " if there's an alternate buffer, display the name
-        let s .= '%<' " truncate the alternate buffer if the statusline is too long
-        let s .= ' %4*' " user highlighting
-        let s .= '(#' . bufnr('#') . ' '
-        let s .= bufname('#')
-        let s .= ')'
-        let s .= '%*' " restore normal highlighting
-        let s .= '%<' " truncate the alternate buffer if the statusline is too long
-    endif
-    let s .= ' %5*' " User highlighting
-    let s .= '%y' " file-type
-    let s .= '%*' " restore normal highlighting
-    let s .= ' <'
-    let s .= '%8*' " User highlighting
-    let s .= '%{&fileencoding}' " fileencoding NOTE: this doesn't always display, needs more testing
-    let s .= '%*,' " restore normal highlighting
-    let s .= '%6*' " User highlighting
-    let s .= '%{&fileformat}' " line-ending type
-    let s .= '%*' " restore normal highlighting
-    let s .= '>'
-    let s .= '%<' " truncate the args of total if the statusline is too long
-    let s .= '%a' " (args of total)
-    let s .= '%<' " truncate the args of total if the statusline is too long
-    let s .= '%=' " seperate right- from left-aligned
-    let s .= '%7*' " user highlighting
-    let s .= ' %{VimBuddy()} ' " Vimming will never be lonely again. TODO: check for plugin before loading
-    let s .= '%*' " restore normal highlighting
-    let s .= '%1*' " User highlighting
-    let s .= '%l' " current line number
-    let s .= '%*' " restore normal highlighting
-    let s .= ',%c' " column number
-    let s .= '%V' " virtual column number (doesn't count indentation)
-    let s .= ' %1*' " User highlighting
-    let s .= 'of %L' " total line numbers
-    let s .= '%* ' " restore normal highlighting
-    let s .= '%3*' " user highlighting
-    let s .= '%P' " Percentage through file
-    let s .= '%*' " restore normal highlighting
-    return s
-endfunction
-set statusline=%!MyStatusLine()
 
 " }}}
 
