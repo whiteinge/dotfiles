@@ -1,0 +1,44 @@
+=======================
+RSS 2 Sony Reader Notes
+=======================
+
+:Version: $Id$
+
+--------------------
+Implementation Ideas
+--------------------
+
+    * Should fetch all unread items. (Mark as unread after this? Have as an option.)
+    * Iterate through each item and fetch the linked story. (For circumventing 'excerpts' and getting Slashdot comments.)
+    * Use AJAX so requests from the user's browser will visit each site as being 'logged in'?
+
+-----------------------
+Google Reader API Notes
+-----------------------
+
+`Unofficial API Wiki`_
+
+.. __: http://code.google.com/p/pyrfeed/wiki/GoogleReaderAPI
+
+`Unread List`_. Will fetch read items if ``?n=XX`` exceeds your unread count.
+
+.. __: http://www.google.com/reader/atom/user/06659750831288456317/state/com.google/reading-list?n=57
+
+`Unread count`_ for each feed in your list?  Look for the total unread count here::
+
+    <object>
+        <string name="id">user/06659750831288456317/state/com.google/reading-list</string>
+        <number name="count">57</number>
+    </object>
+
+.. __: http://www.google.com/reader/api/0/unread-count?all=true
+
+-----------------
+Sony Reader Notes
+-----------------
+
+Sony Reader screen size? (Verify!)
+
+    9.06 x 12.24cm, with small margins (0.3cm, in my case)
+
+.. vim:filetype=rst
