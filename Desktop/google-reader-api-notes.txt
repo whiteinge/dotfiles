@@ -1,6 +1,8 @@
 =======================
 RSS 2 Sony Reader Notes
 =======================
+gr2sr - Google Reader 2 Sony Reader
+-----------------------------------
 
 :Version: $Id$
 
@@ -37,8 +39,37 @@ Google Reader API Notes
 Sony Reader Notes
 -----------------
 
-Sony Reader screen size? (Verify!)
+90mm X 120mm (3.54" X 4.72")
 
-    9.06 x 12.24cm, with small margins (0.3cm, in my case)
+Latex example from rss2pdf_ (and others)::
+
+    \documentclass[11pt,openany]{book}
+    \usepackage[colorlinks]{hyperref}
+    \usepackage{times}
+    \usepackage[
+            paperwidth=92mm,
+            paperheight=117mm,
+            vcentering,
+            top=6mm,
+            bottom=3pt,
+            left=2mm,
+            right=2mm,
+            headsep=2mm
+    ]{geometry}
+    \usepackage[Lenny]{fncychap}
+
+    \begin{document}
+    \title{...}
+    \author{...}
+
+    \pdfinfo {
+            /Title          (\title)
+            /Author         (\author)
+            /CreationDate   (\date)
+    }
+    ....
+    \end{document}
+
+.. __: http://www.osresearch.net/wiki/index.php/EBook
 
 .. vim:filetype=rst
