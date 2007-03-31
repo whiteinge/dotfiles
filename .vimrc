@@ -227,6 +227,7 @@ set t_Co=16                     "   tells Vim to use 16 colors (appears to work 
 
 " The default fold color is too bright and looks too much like the statusline
 hi Folded cterm=bold ctermfg=8 ctermbg=0
+hi FoldColumn cterm=bold ctermfg=8 ctermbg=0
 
 " I love the new CursorLine, but terminal underlining kicks legibility in the nuts.
 " So what to do? Bold is (extremely) subtle, but it's better than nothing.
@@ -236,8 +237,8 @@ hi CursorLine cterm=bold
 hi Visual ctermbg=none
 
 " Statusline
-" I like this better than all the reverse video of the default statusline
-" highlighting but it's not as easy to tell which window is active. (VimBuddy helps!)
+" I like this better than all the reverse video of the default statusline highlighting
+" but it's not as easy to tell which window is active. (VimBuddy helps!)
 hi StatusLine cterm=bold ctermfg=7
 hi StatusLineNC cterm=bold ctermfg=8
 hi User1 ctermfg=4
@@ -254,9 +255,6 @@ hi User9 cterm=bold,reverse
 hi TabLine cterm=underline ctermfg=8 ctermbg=0
 hi TabLineSel cterm=none ctermfg=0 ctermbg=7
 hi TabLineFill cterm=none ctermbg=0
-
-" The default foldcolumn is briiiight.
-hi FoldColumn cterm=bold ctermfg=8 ctermbg=0
 
 " }}}
 " Printing {{{
