@@ -88,17 +88,27 @@ set hidden                      "hid:   allows opening a new buffer in place of 
 
 " Replace the annoying help key with a shortcut to view the list of buffers
 map <F1> :ls<cr>
+" Based on tip 821. Takes the above shortcut further
+" Type <F2> follwed by a buffer number or name fragment to jump to it.
+map <F2> :ls<CR>:b<Space>
 
 " I'm not sure why Vim displays one line by default when 'maximizing' a split window with ctrl-_
 set winminheight=0              "wmh:   the minimal height of any non-current window
 set winminwidth=0               "wmw:   the minimal width of any non-current window
 
-" Earlier Vims did not support tabs. Below is a vertical-tab-like cludge. Use :ball or invoke Vim with -o
-" http://www.vim.org/tips/tip.php?tip_id=173
+" Earlier Vims did not support tabs. Below is a vertical-tab-like cludge. Use
+" :ball or invoke Vim with -o (Vim tip 173)
 if version < 700
     " ctrl-j,k will move up or down between split buffers and maximize the current buffer
     nmap <C-J> <C-W>j<C-W>_
     nmap <C-K> <C-W>k<C-W>_
+endif
+
+" When restoring a hidden buffer Vim doesn't always keep the same view (like
+" when your view shows beyond the end of the file). (Vim tip 1375)
+if v:version >= 700
+    au BufLeave * let b:winview = winsaveview()
+    au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
 endif
 
 " }}}

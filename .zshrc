@@ -125,7 +125,7 @@ alias ssh='ssh -X -C'
 alias locate='locate -i'
 alias lynx='lynx -cfg=$HOME/.lynx.cfg -lss=$HOME/.lynx.lss'
 alias ducks='du -cks * | sort -rn | head -15'
-alias ps='ps -opid,uid,cpu,time,command'
+alias ps='ps -opid,uid,cpu,time,stat,command'
 
 alias sc="exec screen -e'^Aa' -RD"
 alias rsc="exec screen -e'^Ss' -RD"
