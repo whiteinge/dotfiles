@@ -50,6 +50,10 @@ set pastetoggle=<F7>            "pt:    useful so auto-indenting doesn't mess up
 " Toggle spell-checking with F8
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
+" Opens a new tab and diffs the current buffer with the current svn revision
+" When you're done just :tabclose the tab.
+map <F5> :tabnew %<CR> :vnew +:read\ !svn\ cat\ #<CR>:set buftype=nofile<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
+
 " }}}
 " Folding (spacebar toggles) {{{
 " Spacebar toggles a fold, zi toggles all folding, zM closes all folds
@@ -161,7 +165,7 @@ endif
 function MyStatusLine()
     let s = '%3*' " User highlighting
     let s .= '%%%n '
-    if bufname('') != '' " why is this such a pain in the ass?
+    if bufname('') != '' " why is this such a pain in the ass? FIXME: there's a bug in here somewhere. Test with a split with buftype=nofile
         let s .= "%{ pathshorten(fnamemodify(expand('%F'), ':~:.')) }" " short-hand path of of the current buffer (use :ls to see more info)
     else
         let s .= '%f' " an empty filename doesn't make it through the above filters
@@ -223,7 +227,7 @@ set statusline=%!MyStatusLine()
 "     These are not very portable and could break on some systems.
 "     TODO: ctermfg=8 displays as black if only using 8-colors, but as a nice grey under 16. need more testing on Linux systems.
 
-set t_Co=16                     "   tells Vim to use 16 colors (appears to work on 8-color terms like xterm-color)
+set t_Co=256                    "   tells Vim to use 16 colors (appears to work on 8-color terms like xterm-color)
 
 " The default fold color is too bright and looks too much like the statusline
 hi Folded cterm=bold ctermfg=8 ctermbg=0
