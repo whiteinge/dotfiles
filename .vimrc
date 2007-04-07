@@ -44,6 +44,7 @@ set tabstop=4                   "ts:    number of spaces that a tab counts for
 set shiftwidth=4                "sw:    number of spaces to use for autoindent
 set shiftround                  "sr:    rounds indent to a multiple of shiftwidth
 
+set nojoinspaces                "nojs:  prevents inserting two spaces after punctuation on a join (it's not 1990 anymore)
 set listchars=tab:>-,eol:$      "lcs:   makes finding tabs easier during :set list
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
 set pastetoggle=<F7>            "pt:    useful so auto-indenting doesn't mess up code when pasting
@@ -52,7 +53,7 @@ map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
 " Opens a new tab and diffs the current buffer with the current svn revision
 " When you're done just :tabclose the tab.
-map <F5> :tabnew %<CR> :vnew +:read\ !svn\ cat\ #<CR>:set buftype=nofile<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
+map <F5> :tabnew %<CR> :vnew +:read\ !svn\ cat\ -r\ PREV\ #<CR>:set buftype=nofile<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
 
 " }}}
 " Folding (spacebar toggles) {{{
@@ -163,7 +164,8 @@ endif
 " MyStatusLine {{{
 
 function MyStatusLine()
-    let s = '%3*' " User highlighting
+    let s = '%9* %* ' " pad the edges for better vsplit seperation
+    let s .= '%3*' " User highlighting
     let s .= '%%%n '
     if bufname('') != '' " why is this such a pain in the ass? FIXME: there's a bug in here somewhere. Test with a split with buftype=nofile
         let s .= "%{ pathshorten(fnamemodify(expand('%F'), ':~:.')) }" " short-hand path of of the current buffer (use :ls to see more info)
@@ -217,17 +219,28 @@ function MyStatusLine()
     let s .= '%3*' " user highlighting
     let s .= '%P' " Percentage through file
     let s .= '%*' " restore normal highlighting
+    let s .= ' %9* %*' " pad the edges for better vsplit seperation
     return s
 endfunction
 set statusline=%!MyStatusLine()
 
 " }}}
-" Color {{{
-"     All coloring options are for the non-GUI Vim (see :help cterm-colors).
-"     These are not very portable and could break on some systems.
-"     TODO: ctermfg=8 displays as black if only using 8-colors, but as a nice grey under 16. need more testing on Linux systems.
+" Color (Breakage warning. Read this section.) {{{
+"   All coloring options are for the non-GUI Vim (see :help cterm-colors).
+"   These are not very portable and could break on some systems. I've attempted
+"   to use rational conditionals to minimize breakage, but you may just wish to
+"   delete this whole section if it messes your terminal up.
 
-set t_Co=256                    "   tells Vim to use 16 colors (appears to work on 8-color terms like xterm-color)
+if &term == 'xterm-256color' || &term == 'screen-256color'
+    set t_Co=256
+    color vibrantink
+    hi CursorLine ctermbg=233
+elseif &term == 'xterm-color' || &term == 'screen'
+    set t_Co=16                 "   tells Vim to use 16 colors
+    hi CursorLine cterm=bold
+else
+    set t_Co=8
+endif
 
 " The default fold color is too bright and looks too much like the statusline
 hi Folded cterm=bold ctermfg=8 ctermbg=0

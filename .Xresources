@@ -27,10 +27,11 @@ mrxvt*autohideTabbar: true
 mrxvt*syncTabTitle: true
 mrxvt*hideButtons: true
 mrxvt*cursorBlink: true
-mrxvt*faceName: Monaco
+mrxvt*font: Monaco
 mrxvt*faceSize: 11
 mrxvt*cursorColor: red
 mrxvt*xft:True
+mrxvt*xftFont: Monaco
 mrxvt*xftSize:12
 mrxvt*xftAntialias:True
 mrxvt*termName: xterm-256color
