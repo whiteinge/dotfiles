@@ -163,6 +163,8 @@ endif
 " }}}
 " MyStatusLine {{{
 
+" TODO: add a check for screen width and remove the alternate buffer display
+" and args of total display for small screen widths.
 function MyStatusLine()
     let s = '%9* %* ' " pad the edges for better vsplit seperation
     let s .= '%3*' " User highlighting
