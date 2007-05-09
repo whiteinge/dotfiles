@@ -9,7 +9,7 @@ version                 # echo version on startup, 'cause old versions break thi
 
 #                                 MISC
 autodetach on           # *sniff* I love this so much!
-defflow off             # disables (in theory) flow control ('cause it's no longer 1980)
+defflow off             # disables (in theory) flow control ('cause it's no longer 1985)
 vbell off               # visual bells suck
 
 #                           SCROLL-BACK MODE
@@ -39,19 +39,17 @@ hardstatus alwayslastline "%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw %= %{mk
 
 # EOF
 
-################
+###############
+# 256 colours #
+###############
 #
-# 256 colours
-#
-# ... http://frexx.de/xterm-256-notes/
+#.. __: http://frexx.de/xterm-256-notes/
 #
 
 # terminfo and termcap for nice 256 color terminal
 # allow bold colors - necessary for some reason
 attrcolor b ".I"
-# tell screen how to set colors. AB = background, AF=foreground
+# tell screen how to set colors. AB=background, AF=foreground
 termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 # erase background with current bg color
 defbce "on"
-
-#term "screen-256color"
