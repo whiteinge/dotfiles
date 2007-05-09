@@ -53,7 +53,10 @@ map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
 " Opens a new tab and diffs the current buffer with the current svn revision
 " When you're done just :tabclose the tab.
-map <F5> :tabnew %<CR> :vnew +:read\ !svn\ cat\ -r\ PREV\ #<CR>:set buftype=nofile<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
+map <F5> :tabnew %<CR> :vnew +:read\ !svn\ cat\ #<CR>:set buftype=nofile<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
+
+" A shortcut to show the list of register contents
+map <F2> :reg<CR>
 
 " }}}
 " Folding (spacebar toggles) {{{
@@ -91,11 +94,9 @@ set switchbuf=useopen           "swb:   Jumps to first window or tab that contai
 set showtabline=1               "stal:  Display the tabbar if there are multiple tabs. Use :tab ball or invoke Vim with -p
 set hidden                      "hid:   allows opening a new buffer in place of an existing one without first saving the existing one
 
-" Replace the annoying help key with a shortcut to view the list of buffers
-map <F1> :ls<cr>
-" Based on tip 821. Takes the above shortcut further
-" Type <F2> follwed by a buffer number or name fragment to jump to it.
-map <F2> :ls<CR>:b<Space>
+" Based on tip 821. Type <F1> follwed by a buffer number or name fragment to
+" jump to it. Also replaces the annoying help button.
+map <F1> :ls<CR>:b<Space>
 
 " I'm not sure why Vim displays one line by default when 'maximizing' a split window with ctrl-_
 set winminheight=0              "wmh:   the minimal height of any non-current window
