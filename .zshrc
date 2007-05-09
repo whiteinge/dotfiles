@@ -129,6 +129,10 @@ alias ps='ps -opid,uid,cpu,time,stat,command'
 
 alias sc="exec screen -e'^Aa' -RD"
 alias rsc="exec screen -e'^Ss' -RD"
+if [[ $TERM == 'xterm-256color' ]]; then
+    alias sc="exec screen -e'^Aa' -RD -T 'xterm-256color'"
+    alias rsc="exec screen -e'^Ss' -RD -T 'xterm-256color'"
+fi
 
 alias vi='vim'
 alias view='view'
@@ -283,6 +287,29 @@ dotsync ()
 }
 
 # }}}
+# svn_up_and_log() {{{
+# As seen on http://woss.name/2007/02/01/display-svn-changelog-on-svn-up/
+
+# Get the current revision of a repository
+svn_revision()
+{
+  svn info $@ | awk '/^Revision:/ {print $2}'
+}
+# Does an svn up and then displays the changelog between your previous
+# version and what you just updated to.
+svn_up_and_log()
+{
+  local old_revision=`svn_revision $@`
+  local first_update=$((${old_revision} + 1))
+  svn up -q $@
+  if [ $(svn_revision $@) -gt ${old_revision} ]; then
+    svn log -v -rHEAD:${first_update} $@
+  else
+    echo "No changes."
+  fi
+}
+
+# }}}
 # {{{ Django functions djedit & djsetup
 
 # run this in your base project dir
@@ -305,3 +332,7 @@ djedit() {
 # }}}
 #
 # EOF
+
+html2reader() {
+    echo htmldoc --webpage  --gray --fontsize $2 --textfont Times --header . --footer . --left 2mm --right 2mm --top 5mm --bottom 5mm --size 5.24x6.69in -f $(basename $1 '.html').pdf $1
+}
