@@ -320,17 +320,18 @@ djsetup()
     export DJANGO_SETTINGS_MODULE=$(basename $OLDPWD).settings
     cd -
 }
+
 # This may seem a little heavy-handed, but it's nice to have a convention for
 # certain files in certain tabs. Computers are pretty fast these days. :-P
 djedit() {
     screen -t $(basename $1) vim "+cd $1" \
         $1/{urls.py,models.py,views.py,forms.py} \
-        $1/**/*py(N)~**/__init__.py(N)~**/urls.py(N)~**/models.py(N)~**/forms.py(N)~**/views.py(N) \
-        $1/templates/**/*.html(N)
+        "+argadd **/*py" \
+        "+argadd **/*html"
 }
 
 # }}}
-#
+
 # EOF
 
 html2reader() {
