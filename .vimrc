@@ -298,6 +298,9 @@ au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'
 " Auto-set certain options as well as syntax highlighting and indentation
 filetype plugin indent on
 
+" Not sure why the cron filetype isn't catching this...
+au FileType crontab set backupcopy=yes
+
 " Enables :make to compile, or validate, certain filetypes
 " (use :cn & :cp to jump between errors)
 au FileType xml,xslt compiler xmllint
