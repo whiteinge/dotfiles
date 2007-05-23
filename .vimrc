@@ -123,7 +123,7 @@ if v:version >= 700
 endif
 
 " }}}
-"
+
 " MyTabLine {{{
 " This is an attempt to emulate the default Vim-7 tabs as closely as possible but with numbered tabs.
 
@@ -239,7 +239,6 @@ set statusline=%!MyStatusLine()
 if &term == 'xterm-256color' || &term == 'screen-256color'
     set t_Co=256
     color vibrantink
-    hi CursorLine ctermbg=233
 elseif &term == 'xterm-color' || &term == 'screen'
     set t_Co=16                 "   tells Vim to use 16 colors
     hi CursorLine cterm=bold
