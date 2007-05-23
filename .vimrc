@@ -45,9 +45,14 @@ set shiftwidth=4                "sw:    number of spaces to use for autoindent
 set shiftround                  "sr:    rounds indent to a multiple of shiftwidth
 
 set nojoinspaces                "nojs:  prevents inserting two spaces after punctuation on a join (it's not 1990 anymore)
-set listchars=tab:>-,eol:$      "lcs:   makes finding tabs easier during :set list
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
 set pastetoggle=<F7>            "pt:    useful so auto-indenting doesn't mess up code when pasting
+
+" Toggle list display for hidden changes with F6
+map <silent> <F6> :set nolist!<CR>:set nolist?<CR>
+"lcs:   makes finding tabs easier during :set list
+set listchars=tab:>-,eol:$,trail:-
+
 " Toggle spell-checking with F8
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
