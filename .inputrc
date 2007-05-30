@@ -1,6 +1,5 @@
-$if Python
 # this replaces the lost <c-l> in ipython if placed *above* the vi-mode directives below
 "\C-l": clear-screen
+
 set editing-mode vi
 set keymap vi
-$endif
