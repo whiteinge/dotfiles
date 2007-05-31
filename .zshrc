@@ -33,17 +33,21 @@ umask 027
 PATH=$PATH:$HOME/bin:/sbin:/usr/X11/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin
 MANPATH=$MANPATH:/usr/X11/man:/usr/local/man:/usr/local/share/man:/usr/man:/usr/share/man
 CDPATH=$CDPATH::$HOME:/usr/local
+
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=200
 SAVEHIST=200
+
 REPORTTIME=60       # Report time statistics for progs that take more than a minute to run
 WATCH=notme         # Report any login/logout of other users
 WATCHFMT='%n %a %l from %m at %T.'
-#export LANG=en_US.UTF-8  # great for displaying utf-8 in the terminal, it tends to break things
-export EDITOR=vi
-export VISUAL=vi
-export PAGER='less -iJMW'
-export BROWSER='firefox'
+
+#LANG=en_US.UTF-8  # great for displaying utf-8 in the terminal, but it tends to break old apps
+
+EDITOR=vi
+VISUAL=vi
+PAGER='less -iJMW'
+BROWSER='firefox'
 
 # SSH Keychain
 # http://www.gentoo.org/proj/en/keychain/
@@ -118,6 +122,8 @@ unfunction makemodal
 alias ls='ls -F --color'
 alias la='ls -A'
 alias ll='ls -lh'
+
+alias grep='grep --color --exclude=\*.svn\* --exclude=\*.pyc'
 
 alias less='less -iJMW'
 alias cls='clear' # note: ctrl-L under zsh does something similar
@@ -287,6 +293,13 @@ dotsync ()
 }
 
 # }}}
+# Useful for the Sony Reader {{{
+
+html2reader() {
+    echo htmldoc --webpage  --gray --fontsize $2 --textfont Times --header . --footer . --left 2mm --right 2mm --top 5mm --bottom 5mm --size 5.24x6.69in -f $(basename $1 '.html').pdf $1
+}
+
+# }}}
 # svn_up_and_log() {{{
 # As seen on http://woss.name/2007/02/01/display-svn-changelog-on-svn-up/
 
@@ -331,9 +344,5 @@ djedit() {
 }
 
 # }}}
-
 # EOF
 
-html2reader() {
-    echo htmldoc --webpage  --gray --fontsize $2 --textfont Times --header . --footer . --left 2mm --right 2mm --top 5mm --bottom 5mm --size 5.24x6.69in -f $(basename $1 '.html').pdf $1
-}
