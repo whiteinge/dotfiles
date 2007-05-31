@@ -123,6 +123,7 @@ alias ls='ls -F --color'
 alias la='ls -A'
 alias ll='ls -lh'
 
+# .svn exclusioqn doesn't work very well, but it's better than nothing.
 alias grep='grep --color --exclude=\*.svn\* --exclude=\*.pyc'
 
 alias less='less -iJMW'
