@@ -41,6 +41,8 @@ Sony Reader Notes
 
 90mm X 120mm (3.54" X 4.72")
 
+Max image size 583x753 px.
+
 Latex example from rss2pdf_ (and others)::
 
     \documentclass[11pt,openany]{book}
