@@ -43,6 +43,11 @@ Sony Reader Notes
 
 Max image size 583x753 px.
 
+Embedded Fonts
+    Swiss 721 BT Roman (sans serif)
+    Dutch 801 Rm BT Roman (serif)
+    Courier 10 BT Roman (fixed pitch/monospaced)
+
 Latex example from rss2pdf_ (and others)::
 
     \documentclass[11pt,openany]{book}
