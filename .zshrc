@@ -297,7 +297,7 @@ dotsync ()
 # Useful for the Sony Reader {{{
 
 html2reader() {
-    echo htmldoc --webpage  --gray --fontsize $2 --textfont Times --header . --footer . --left 2mm --right 2mm --top 5mm --bottom 5mm --size 5.24x6.69in -f $(basename $1 '.html').pdf $1
+    echo htmldoc --gray --no-title --no-embedfonts --textfont serif --textcolor black --fontsize 12 --header ... --footer ... --left 1mm --right 1mm --top 1mm --bottom 1mm --size 90x120mm -f $(basename $1 '.html').pdf $1
 }
 
 # }}}
