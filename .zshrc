@@ -70,10 +70,12 @@ zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|ftp|rsync):*' hosts 'reply=(
 
 # }}}
 # {{{ prompt and theme
+# Keywords: black, red, green, yellow, blue, magenta, cyan, and white
 
 autoload -U promptinit
 promptinit
-prompt_adam2_setup
+# prompt adam2 hyphens cur-dir user@host user-input
+prompt adam2 magenta cyan cyan white
 
 # }}}
 # {{{ vi mode, mode display and extra vim-style keybindings
