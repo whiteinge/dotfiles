@@ -35,14 +35,16 @@ MANPATH=$MANPATH:/usr/X11/man:/usr/local/man:/usr/local/share/man:/usr/man:/usr/
 CDPATH=$CDPATH::$HOME:/usr/local:/opt/local
 
 HISTFILE=$HOME/.zsh_history
-HISTSIZE=200
-SAVEHIST=200
+HISTSIZE=500
+SAVEHIST=500
 
 REPORTTIME=60       # Report time statistics for progs that take more than a minute to run
 WATCH=notme         # Report any login/logout of other users
 WATCHFMT='%n %a %l from %m at %T.'
 
-#LANG=en_US.UTF-8  # great for displaying utf-8 in the terminal, but it tends to break old apps
+# great for displaying utf-8 in the terminal, but it tends to break old apps
+LANG=en_US.UTF-8 
+LC_CTYPE=en_US.UTF-8
 
 EDITOR=vi
 VISUAL=vi
