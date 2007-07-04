@@ -46,22 +46,25 @@ set shiftround                  "sr:    rounds indent to a multiple of shiftwidt
 
 set nojoinspaces                "nojs:  prevents inserting two spaces after punctuation on a join (it's not 1990 anymore)
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
-set pastetoggle=<F7>            "pt:    useful so auto-indenting doesn't mess up code when pasting
+set pastetoggle=<F4>            "pt:    useful so auto-indenting doesn't mess up code when pasting
 
-" Toggle hidden characters display with F6
-map <silent> <F6> :set nolist!<CR>:set nolist?<CR>
+" A shortcut to show the list of register contents
+map <F2> :reg<CR>
+
+" Toggle hidden characters display with F3
+map <silent> <F3> :set nolist!<CR>:set nolist?<CR>
 "lcs:   makes finding tabs easier during :set list
 set listchars=tab:>-,eol:$,trail:-
 
 " Toggle spell-checking with F8
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
-" Opens a new tab and diffs the current buffer with the current svn revision
-" When you're done just :tabclose the tab. (And :syntax on your old buffer.)
-map <F5> :tabnew %<CR> :vnew +:read\ !svn\ cat\ #<CR>:set buftype=nofile<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
-
-" A shortcut to show the list of register contents
-map <F2> :reg<CR>
+" SVN Diffs
+" Small, fast, windowed svn diff
+" map <F5> :exe Scratch()<CR>:read\ !svn\ diff\ #<CR>
+map <F5> :new +:read\ !svn\ diff\ #<CR>:exe Scratch()<CR>:set filetype=diff<CR>:set nofoldenable<CR>
+" Big, slow, fancy, tabbed vimdiff. When you're done just :tabclose the tab.
+map <F6> :tabnew %<CR> :vnew +:read\ !svn\ cat\ #<CR>:exe Scratch()<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
 
 " }}}
 " Folding (spacebar toggles) {{{
@@ -339,6 +342,13 @@ noremap <silent> ,c :ce <CR> << <CR>
 noremap <silent> ,l :le <CR>
 noremap <silent> ,r :ri <CR>
 
+" Makes the current buffer a scratch buffer
+function Scratch()
+    set buftype=nofile
+    set bufhidden=delete
+    set noswapfile
+endfunction
+
 " Sets the default encoding to utf-8 if Vim was compiled with multibyte
 if has("multi_byte")
     set encoding=utf-8
@@ -354,14 +364,6 @@ if has("multi_byte")
 endif
 
 " }}}
-
-" Makes a new scratch buffer
-function Scratch()
-    new
-    set buftype=nofile
-    set bufhidden=delete
-    set noswapfile
-endfunction
 
 " eof
 " vim:ft=vim:fdm=marker:ff=unix:nowrap:tabstop=4:shiftwidth=4:softtabstop=4:smarttab:shiftround:expandtab
