@@ -48,7 +48,7 @@ set nojoinspaces                "nojs:  prevents inserting two spaces after punc
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
 set pastetoggle=<F7>            "pt:    useful so auto-indenting doesn't mess up code when pasting
 
-" Toggle list display for hidden changes with F6
+" Toggle hidden characters display with F6
 map <silent> <F6> :set nolist!<CR>:set nolist?<CR>
 "lcs:   makes finding tabs easier during :set list
 set listchars=tab:>-,eol:$,trail:-
@@ -57,7 +57,7 @@ set listchars=tab:>-,eol:$,trail:-
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
 " Opens a new tab and diffs the current buffer with the current svn revision
-" When you're done just :tabclose the tab.
+" When you're done just :tabclose the tab. (And :syntax on your old buffer.)
 map <F5> :tabnew %<CR> :vnew +:read\ !svn\ cat\ #<CR>:set buftype=nofile<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
 
 " A shortcut to show the list of register contents
@@ -254,9 +254,6 @@ hi FoldColumn cterm=bold ctermfg=8 ctermbg=0
 " So what to do? Bold is (extremely) subtle, but it's better than nothing.
 hi CursorLine cterm=bold
 
-" FIXME: Fix for picking up a white bg from somewhere which is annoying...
-hi Visual ctermbg=none
-
 " Statusline
 " I like this better than all the reverse video of the default statusline highlighting
 " but it's not as easy to tell which window is active. (VimBuddy helps!)
@@ -325,7 +322,7 @@ autocmd FileChangedShell *
 au FileType help nmap <buffer> <Return> <C-]>
 au FileType help nmap <buffer> <C-[> <C-O>
 
-" Matchit now ships with Vim!
+" FIXME: Matchit now ships with Vim!
 " runtime! macros/matchit.vim
 
 " Mappings for the ToggleComment Plugin
@@ -357,6 +354,14 @@ if has("multi_byte")
 endif
 
 " }}}
+
+" Makes a new scratch buffer
+function Scratch()
+    new
+    set buftype=nofile
+    set bufhidden=delete
+    set noswapfile
+endfunction
 
 " eof
 " vim:ft=vim:fdm=marker:ff=unix:nowrap:tabstop=4:shiftwidth=4:softtabstop=4:smarttab:shiftround:expandtab
