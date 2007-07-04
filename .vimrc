@@ -61,10 +61,9 @@ map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
 " SVN Diffs
 " Small, fast, windowed svn diff
-" map <F5> :exe Scratch()<CR>:read\ !svn\ diff\ #<CR>
-map <F5> :new +:read\ !svn\ diff\ #<CR>:exe Scratch()<CR>:set filetype=diff<CR>:set nofoldenable<CR>
+noremap <silent> ,sq :new +:read\ !svn\ diff\ #<CR>:exe Scratch()<CR>:set filetype=diff<CR>:set nofoldenable<CR>
 " Big, slow, fancy, tabbed vimdiff. When you're done just :tabclose the tab.
-map <F6> :tabnew %<CR> :vnew +:read\ !svn\ cat\ #<CR>:exe Scratch()<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
+noremap <silent> ,sd :tabnew %<CR> :vnew +:read\ !svn\ cat\ #<CR>:exe Scratch()<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
 
 " }}}
 " Folding (spacebar toggles) {{{
