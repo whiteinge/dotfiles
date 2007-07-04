@@ -76,8 +76,11 @@ promptinit
 
 # Keywords: black, red, green, yellow, blue, magenta, cyan, and white
 # prompt adam2 hyphens cur-dir user@host user-input
-# default cyan green cyan white
-prompt adam2 magenta cyan cyan white
+if [[ $TERM == 'xterm-256color' || $TERM == 'screen-256color' ]]; then
+    prompt adam2 bg_grey green magenta white
+else
+    prompt adam2 blue green magenta white
+fi
 
 # }}}
 # {{{ vi mode, mode display and extra vim-style keybindings
@@ -143,8 +146,8 @@ alias ps='ps -opid,uid,cpu,time,stat,command'
 alias sc="exec screen -e'^Aa' -RD"
 alias rsc="exec screen -e'^Ss' -RD"
 if [[ $TERM == 'xterm-256color' ]]; then
-    alias sc="exec screen -e'^Aa' -RD -T 'xterm-256color'"
-    alias rsc="exec screen -e'^Ss' -RD -T 'xterm-256color'"
+    alias sc="exec screen -e'^Aa' -RD"
+    alias rsc="exec screen -e'^Ss' -RD"
 fi
 
 alias vi='vim'
