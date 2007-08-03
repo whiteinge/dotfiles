@@ -1,5 +1,14 @@
 # this replaces the lost <c-l> in ipython if placed *above* the vi-mode directives below
 "\C-l": clear-screen
+"\C-p": history-search-backward
+"\C-n": history-search-forward
+set completion-ignore-case On
 
 set editing-mode vi
 set keymap vi
+
+# Useful stuff for UTF-8
+set meta-flag on
+set input-meta on
+set output-meta on
+set convert-meta off
