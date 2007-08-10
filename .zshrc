@@ -79,7 +79,7 @@ promptinit
 if [[ $TERM == 'xterm-256color' || $TERM == 'screen-256color' ]]; then
     prompt adam2 bg_grey green magenta white
 else
-    prompt adam2 blue green magenta white
+    prompt adam2 yellow green magenta white
 fi
 
 # }}}
@@ -141,13 +141,14 @@ alias ssh='ssh -X -C'
 alias locate='locate -i'
 alias lynx='lynx -cfg=$HOME/.lynx.cfg -lss=$HOME/.lynx.lss'
 alias ducks='du -cks * | sort -rn | head -15'
+alias tree="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias ps='ps -opid,uid,cpu,time,stat,command'
 
 alias sc="exec screen -e'^Aa' -RD"
 alias rsc="exec screen -e'^Ss' -RD"
 if [[ $TERM == 'xterm-256color' ]]; then
-    alias sc="exec screen -e'^Aa' -RD"
-    alias rsc="exec screen -e'^Ss' -RD"
+    alias sc="exec screen -e'^Aa' -RD -T xterm-256color"
+    alias rsc="exec screen -e'^Ss' -RD -T xterm-256color"
 fi
 
 alias vi='vim'
@@ -306,7 +307,7 @@ dotsync ()
 # Useful for the Sony Reader {{{
 
 html2reader() {
-    echo htmldoc --gray --no-title --no-embedfonts --textfont serif --textcolor black --fontsize 12 --header ... --footer ... --left 1mm --right 1mm --top 1mm --bottom 1mm --size 90x120mm -f $(basename $1 '.html').pdf $1
+    echo htmldoc --gray --no-title --no-embedfonts --textcolor black --fontsize 12 --header ... --footer ... --left 1mm --right 1mm --top 1mm --bottom 1mm --size 90x120mm -f $(basename $1 '.html').pdf $1
 }
 
 # }}}
@@ -344,11 +345,10 @@ djsetup()
     cd -
 }
 
-# This may seem a little heavy-handed, but it's nice to have a convention for
-# certain files in certain tabs. Computers are pretty fast these days. :-P
+# This loads all the app files.
 djedit() {
     screen -t $(basename $1) vim "+cd $1" \
-        $1/{urls.py,models.py,views.py,forms.py} \
+        $1/__init__.py \
         "+argadd **/*py" \
         "+argadd **/*html"
 }
