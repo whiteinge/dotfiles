@@ -77,6 +77,6 @@ Latex example from rss2pdf_ (and others)::
     ....
     \end{document}
 
-.. __: http://www.osresearch.net/wiki/index.php/EBook
+.. __: http://www.osresearch.net/wiki/index.php/EBook#LaTeX_Style
 
 .. vim:filetype=rst
