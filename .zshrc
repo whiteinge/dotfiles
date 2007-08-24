@@ -48,7 +48,8 @@ LC_CTYPE=en_US.UTF-8
 
 EDITOR=vi
 VISUAL=vi
-PAGER='less -iJMW'
+PAGER='less -imJMWN'
+MANPAGER='less -imJMWN'
 BROWSER='firefox'
 
 # SSH Keychain
@@ -96,6 +97,10 @@ bindkey "^?" backward-delete-char
 bindkey -M vicmd "^R" redo
 bindkey -M vicmd "u" undo
 bindkey -M vicmd "ga" what-cursor-position
+bindkey -M viins '^p' history-search-backward
+bindkey -M vicmd '^p' history-search-backward
+bindkey -M viins '^n' history-search-forward
+bindkey -M vicmd '^n' history-search-forward
 
 autoload edit-command-line
 zle -N edit-command-line
@@ -135,7 +140,7 @@ alias ll='ls -lh'
 # .svn exclusioqn doesn't work very well, but it's better than nothing.
 alias grep='grep --color --exclude=\*.svn\* --exclude=\*.pyc'
 
-alias less='less -iJMW'
+alias less='less -imJMWN'
 alias cls='clear' # note: ctrl-L under zsh does something similar
 alias ssh='ssh -X -C'
 alias locate='locate -i'
