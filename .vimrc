@@ -46,13 +46,13 @@ set shiftround                  "sr:    rounds indent to a multiple of shiftwidt
 
 set nojoinspaces                "nojs:  prevents inserting two spaces after punctuation on a join (it's not 1990 anymore)
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
-set pastetoggle=<F4>            "pt:    useful so auto-indenting doesn't mess up code when pasting
+set pastetoggle=<F5>            "pt:    useful so auto-indenting doesn't mess up code when pasting
 
 " A shortcut to show the list of register contents
 map <F2> :reg<CR>
 
 " Toggle hidden characters display with F3
-map <silent> <F3> :set nolist!<CR>:set nolist?<CR>
+map <silent> <F6> :set nolist!<CR>:set nolist?<CR>
 "lcs:   makes finding tabs easier during :set list
 set listchars=tab:>-,eol:$,trail:-
 
@@ -290,7 +290,15 @@ set printencoding=utf-8
 let g:netrw_hide=1          " Use the hiding list
 " Hide the following file patterns (change to suit your needs):
 " (I don't know what the fuck \~$ is, but file hiding seems to break without it appearing first in the list...)
-let g:netrw_list_hide='\~$,\.pyc$,__init__\.py$'
+let g:netrw_list_hide='^\..*,\.pyc$'
+
+" Commands for :Explore (verify these!)
+let g:explVertical=1    " open vertical split winow
+let g:explSplitRight=1  " Put new window to the right of the explorer
+let g:explStartRight=0  " new windows go to right of explorer window
+
+" Tree view. Adaptable?
+" ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 
 " }}}
 " Autocommands, plugin, and file-type-specific settings {{{
