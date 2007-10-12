@@ -359,4 +359,12 @@ djedit() {
 }
 
 # }}}
+# {{{ Displays the titles and their length in a VIDEO_TS folder
+
+dvd_info()
+{
+    mplayer dvd:// -dvd-device $1 -identify -ao null -vo -null -frames 0 | grep '^ID_DVD'
+}
+
+# }}}
 # EOF
