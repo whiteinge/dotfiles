@@ -51,12 +51,12 @@ set pastetoggle=<F5>            "pt:    useful so auto-indenting doesn't mess up
 " A shortcut to show the list of register contents
 map <F2> :reg<CR>
 
-" Toggle hidden characters display with F3
+" Toggle hidden characters display
 map <silent> <F6> :set nolist!<CR>:set nolist?<CR>
 "lcs:   makes finding tabs easier during :set list
 set listchars=tab:>-,eol:$,trail:-
 
-" Toggle spell-checking with F8
+" Toggle spell-checking
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
 " SVN Diffs
@@ -374,3 +374,6 @@ endif
 
 " eof
 " vim:ft=vim:fdm=marker:ff=unix:nowrap:tabstop=4:shiftwidth=4:softtabstop=4:smarttab:shiftround:expandtab
+
+" Currently testing NERDTree
+map <F4> :NERDTreeToggle<cr>
