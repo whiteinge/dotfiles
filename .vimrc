@@ -31,7 +31,10 @@ nmap <silent> <C-P> :set nowrap!<CR>:set nowrap?<CR>
 syntax on                       "syn:   syntax highlighting
 set showmatch                   "sm:    flashes matching brackets or parentheses
 
-" Searches the current directory as well as subdirectories for commands like :find, :grep, etc.
+set nobackup                    "bk:    does not write a persistent backup file of an edited file
+set writebackup                 "wb:    does keep a backup file while editing a file
+
+" Searches the current directory as well as subdirectories with commands like :find, :grep, etc.
 set path=.,**
 
 set cindent                     "cin:   enables the second-most configurable indentation (see :help C-indenting).
