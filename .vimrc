@@ -104,6 +104,9 @@ set switchbuf=useopen           "swb:   Jumps to first window or tab that contai
 set showtabline=1               "stal:  Display the tabbar if there are multiple tabs. Use :tab ball or invoke Vim with -p
 set hidden                      "hid:   allows opening a new buffer in place of an existing one without first saving the existing one
 
+set splitright                  "spr:   puts new vsplit windows to the right of the current
+set splitbelow                  "sb:    puts new split windows to the bottom of the current
+
 " Based on tip 821. Type <F1> follwed by a buffer number or name fragment to
 " jump to it. Also replaces the annoying help button.
 map <F1> :ls<CR>:b<Space>
