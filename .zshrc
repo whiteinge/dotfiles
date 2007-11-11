@@ -32,7 +32,9 @@ setopt                          \
 umask 027
 PATH=$PATH:$HOME/bin:/sbin:/usr/X11/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin
 MANPATH=$MANPATH:/usr/X11/man:/usr/local/man:/usr/local/share/man:/usr/man:/usr/share/man
-CDPATH=$CDPATH::$HOME:/usr/local:/opt/local
+CDPATH=$CDPATH::$HOME:/usr/local
+
+PYTHONSTARTUP=$HOME/.pythonrc.py
 
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=500
