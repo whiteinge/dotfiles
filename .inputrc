@@ -1,14 +1,38 @@
-# this replaces the lost <c-l> in ipython if placed *above* the vi-mode directives below
-"\C-l": clear-screen
-"\C-p": history-search-backward
-"\C-n": history-search-forward
-set completion-ignore-case On
+# Best goddamn inputrc in the whole world.
+# Author: Seth House <seth@eseth.com>
+# Last Modified: $Date$
 
 set editing-mode vi
-set keymap vi
+
+# Completion Options
+set page-completions on
+set completion-ignore-case on
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+set visible-stats on
+set completion-query-items 200
 
 # Useful stuff for UTF-8
 set meta-flag on
 set input-meta on
 set output-meta on
 set convert-meta off
+
+$if mode=vi
+    "\C-l": clear-screen
+
+    set keymap vi-command
+    "gg": beginning-of-history
+    "G": end-of-history
+
+    set keymap vi-insert
+    # auto-complete from the history
+    "\C-p": history-search-backward
+    "\C-n": history-search-forward
+$endif
+
+$if Bash
+$endif
+
+$if Python
+$endif
