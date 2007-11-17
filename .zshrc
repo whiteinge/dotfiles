@@ -99,10 +99,10 @@ bindkey "^?" backward-delete-char
 bindkey -M vicmd "^R" redo
 bindkey -M vicmd "u" undo
 bindkey -M vicmd "ga" what-cursor-position
-bindkey -M viins '^p' history-search-backward
-bindkey -M vicmd '^p' history-search-backward
-bindkey -M viins '^n' history-search-forward
-bindkey -M vicmd '^n' history-search-forward
+bindkey -M viins '^p' history-beginning-search-backward
+bindkey -M vicmd '^p' history-beginning-search-backward
+bindkey -M viins '^n' history-beginning-search-forward
+bindkey -M vicmd '^n' history-beginning-search-forward
 
 autoload edit-command-line
 zle -N edit-command-line
