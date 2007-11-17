@@ -2,6 +2,7 @@
 # Author: Seth House <seth@eseth.com>
 # Last Modified: $Date$
 
+# Woo!
 set editing-mode vi
 
 # Completion Options
@@ -19,13 +20,12 @@ set output-meta on
 set convert-meta off
 
 $if mode=vi
-    "\C-l": clear-screen
-
     set keymap vi-command
     "gg": beginning-of-history
     "G": end-of-history
 
     set keymap vi-insert
+    "\C-l": clear-screen
     # auto-complete from the history
     "\C-p": history-search-backward
     "\C-n": history-search-forward
@@ -36,3 +36,7 @@ $endif
 
 $if Python
 $endif
+
+# IPython needs this to appear at the bottom of the
+# file for clear-screen to work
+set keymap vi
