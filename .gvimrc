@@ -1,4 +1,4 @@
-" Ok-ish gvimrc 'cause sometimes you get sick of a terminal's shitty color support
+" Ok-ish gvimrc 'cause sometimes assholes make you use GUIs
 " Author: Seth House <seth@eseth.com>
 " $Id$
 
@@ -8,17 +8,21 @@ hi TabLine gui=none
 
 set guioptions=acgit            "go:    A minimal (console-like) set of GUI options
 
-" The following two lines maximize the gVim window under X11 and on OS X
-set lines=999
-set columns=999
+" NOTE: I have no idea how to maximize gVim in X
 
 if has ("macunix") " pretty anti-aliased font
     au GUIEnter * winpos 0 40
     set nomacatsui anti enc=utf-8 gfn=Monaco:h11
+
+    " Maximize the window
+    set lines=999
+    set columns=999
 endif
 
 if has ("win32")
+    " Maximize the window
     au GUIEnter * simalt ~x
+
     set guifont=fixed,vt100:h10,Lucida_Console:h8
     set shell=C:/cygwin/bin/zsh
     set shellcmdflag=--login\ -c
