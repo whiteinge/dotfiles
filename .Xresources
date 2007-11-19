@@ -38,3 +38,8 @@ mrxvt*termName: xterm-256color
 ! blue is usually too dark to see. this fixes that
 mrxvt*color4: RoyalBlue
 mrxvt*color12: RoyalBlue
+
+! --- yeahconsole settings :-)
+yeahconsole*term: mrxvt
+yeahconsole*toggleKey: Alt+Grave
+yeahconsole*screenWidth: 1024
