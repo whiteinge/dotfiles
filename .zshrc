@@ -57,7 +57,7 @@ BROWSER='firefox'
 # SSH Keychain
 # http://www.gentoo.org/proj/en/keychain/
 if which keychain >& /dev/null && [[ $UID != 0 ]]; then
-    eval $(keychain -q --eval id_rsa)
+    eval $(keychain -q --eval id_rsa --nogui)
 fi
 
 # }}}
@@ -153,13 +153,6 @@ alias ps='ps -opid,uid,cpu,time,stat,command'
 
 alias sc="exec screen -e'^Aa' -RD"
 alias rsc="exec screen -e'^Ss' -RD"
-if [[ $TERM == 'xterm-256color' ]]; then
-    alias sc="exec screen -e'^Aa' -RD -T xterm-256color"
-    alias rsc="exec screen -e'^Ss' -RD -T xterm-256color"
-fi
-
-alias vi='vim'
-alias view='view'
 
 # OS X versions
 if [[ $(uname) == "Darwin" ]]; then
@@ -354,7 +347,7 @@ djsetup()
 
 # This loads all the app files.
 djedit() {
-    screen -t $(basename $1) vim "+cd $1" \
+    screen -t $(basename $1) vi "+cd $1" \
         $1/__init__.py \
         "+argadd **/*py" \
         "+argadd **/*html"
