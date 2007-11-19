@@ -51,8 +51,11 @@ set nojoinspaces                "nojs:  prevents inserting two spaces after punc
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
 set pastetoggle=<F5>            "pt:    useful so auto-indenting doesn't mess up code when pasting
 
-" A shortcut to show the list of register contents
-map <F2> :reg<CR>
+" Fix for legacy vi inconsistency
+map Y y$
+
+" A shortcut to show the numbered register contents
+map <F2> :reg "0123456789-*+:/<CR>
 
 " Toggle hidden characters display
 map <silent> <F6> :set nolist!<CR>:set nolist?<CR>
@@ -95,7 +98,7 @@ set scrolloff=2                 "so:    places a couple lines between the curren
 set sidescrolloff=2             "siso:  places a couple lines between the current column and the screen edge
 set laststatus=2                "ls:    makes the status bar always visible
 set ttyfast                     "tf:    improves redrawing for newer computers
-set viminfo='500,f1,:100,/100   "vi:    For a nice, huuuuuge viminfo file
+set viminfo=h,'500,f1,:100,/100 "vi:    For a nice, huuuuuge viminfo file
 
 " }}}
 " Multi-buffer editing {{{
@@ -132,6 +135,31 @@ endif
 
 " }}}
 
+" YankList {{{1
+" NOTE: work in progress
+
+noremap <silent> gy :set opfunc=YankList<CR>g@
+vmap <silent> gy :<C-U>call YankList(visualmode(), 1)<CR>
+
+function YankList(type, ...)
+    let sel_save = &selection
+    let &selection = "inclusive"
+    let reg_save = @@
+
+    echo "Something was copied!\n"
+
+    if a:0  " Invoked from Visual mode, use '< and '> marks.
+        silent exe "normal! `<" . a:type . "`>y"
+    elseif a:type == 'line' " Line
+        silent exe "normal! '[V']y"
+    elseif a:type == 'block' " Block
+        silent exe "normal! `[\<C-V>`]y"
+    else " ???
+        silent exe "normal! `[v`]y"
+    endif
+endfunction
+
+" }}}
 " MyTabLine {{{
 " This is an attempt to emulate the default Vim-7 tabs as closely as possible but with numbered tabs.
 
@@ -247,6 +275,7 @@ set statusline=%!MyStatusLine()
 if &term == 'xterm-256color' || &term == 'screen-256color'
     set t_Co=256
     color vibrantink
+    hi CursorLine ctermbg=240
 elseif &term == 'xterm-color' || &term == 'screen'
     set t_Co=16                 "   tells Vim to use 16 colors
     hi CursorLine cterm=bold
@@ -292,6 +321,9 @@ set printencoding=utf-8
 
 " }}}
 " :Explore mode {{{
+
+" NERDTree is a pretty slick replacement for :Explore
+map <F4> :NERDTreeToggle<cr>
 
 let g:netrw_hide=1          " Use the hiding list
 " Hide the following file patterns (change to suit your needs):
@@ -380,6 +412,3 @@ endif
 
 " eof
 " vim:ft=vim:fdm=marker:ff=unix:nowrap:tabstop=4:shiftwidth=4:softtabstop=4:smarttab:shiftround:expandtab
-
-" Currently testing NERDTree
-map <F4> :NERDTreeToggle<cr>
