@@ -40,7 +40,8 @@ if os.environ.get( 'TERM' ) in [ 'xterm', 'xterm-color', 'xterm-256color', 'scre
 #################
 
 print """%s
-Welcome to the Python shell, bitches.
-You've got vi-mode keybindings, color, history, and completion.
-%sGlee!
+The Python shell is coming at 'ya, punk!
+You've got color, history, and completion
+(and vi-mode keybindings if your ~/.inputrc doesn't suck).
+%sOh yeah, it is that cool.
 %s""" % (RED, GREEN, NORMAL)
