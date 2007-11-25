@@ -8,7 +8,9 @@ complement this file."""
 AUTHOR = 'Seth House'
 CONTACT = 'seth@eseth.com'
 VERSION = '$Rev$'
-DATE = '$Date'
+DATE = '$Date$'
+
+##########################################################################
 
 import sys, os, readline, rlcompleter, atexit, pprint, __builtin__
 
