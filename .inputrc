@@ -5,6 +5,9 @@
 # Woo!
 set editing-mode vi
 
+# Adds punctuation as word delimiters
+set bind-tty-special-chars off
+
 # Completion Options
 set page-completions on
 set completion-ignore-case on
@@ -26,6 +29,7 @@ $if mode=vi
 
     set keymap vi-insert
     "\C-l": clear-screen
+    "\C-w": backward-kill-word
     # auto-complete from the history
     "\C-p": history-search-backward
     "\C-n": history-search-forward
