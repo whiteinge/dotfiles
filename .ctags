@@ -1,0 +1,19 @@
+--langmap=html:.htm.html
+--regex-html=/<a[ \t]+href[ \t]*=[ \t]*\"([^\"]+)/\1/a,hrefs/i
+--regex-html=/<img[ \t]+src[ \t]*=[ \t]*\"([^\"]+)/\1/i,images/i
+--regex-html=/<h([1-6])[^>]*>([^<]*)/\2 (\1)/h,headers/i
+
+--langdef=xml
+--langmap=xml:.xml
+--regex-xml=/<([^ \t]+)[ \t]*(id|name)[ \t]*=[ \t]*\"([^\"]+)/\1 \3/Named Tags/i
+--regex-xml=/<(<!--)(\S*)/\1/Commentaire/i
+
+--langdef=txt
+--langmap=txt:.txt.TXT
+--regex-txt=/(===*.*)/\1/==TITRE===/
+--regex-txt=/(---*.*)/\1/--SOUS TITRE----/
+--regex-txt=/(___*.*)/\1/__Comment__/
+--regex-txt=/(^[0-9]+)/\1/1 ou n TITRE/
+--regex-txt=/(\!{2,}|\?{2,})/\1/Questions/
+
+--regex-python=/\/\/TODO(.*)/todo\1/
