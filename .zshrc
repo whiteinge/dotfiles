@@ -334,7 +334,7 @@ svn_up_and_log()
 }
 
 # }}}
-# {{{ Django functions djedit & djsetup
+# Django functions djedit & djsetup {{{
 
 # run this in your base project dir
 djsetup()
@@ -354,11 +354,19 @@ djedit() {
 }
 
 # }}}
-# {{{ Displays the titles and their length in a VIDEO_TS folder
+# Displays the titles and their length in a VIDEO_TS folder {{{
 
 dvdinfo()
 {
     mplayer dvd:// -dvd-device $1 -identify -ao null -vo -null -frames 0 | grep '^ID_DVD'
+}
+
+# }}}
+# 256-colors test {{{
+
+256test()
+{
+    echo -e "\e[38;5;196mred\e[38;5;46mgreen\e[38;5;21mblue\e[0m"
 }
 
 # }}}
