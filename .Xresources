@@ -40,6 +40,6 @@ mrxvt*color4: RoyalBlue
 mrxvt*color12: RoyalBlue
 
 ! --- yeahconsole settings :-)
-yeahconsole*term: mrxvt
+yeahconsole*term: xterm
 yeahconsole*toggleKey: Alt+Grave
 yeahconsole*screenWidth: 1024
