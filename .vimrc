@@ -140,6 +140,7 @@ endif
 
 noremap <silent> gy :set opfunc=YankList<CR>g@
 vmap <silent> gy :<C-U>call YankList(visualmode(), 1)<CR>
+map <silent> gyy Y
 
 function YankList(type, ...)
     let sel_save = &selection
@@ -266,22 +267,12 @@ endfunction
 set statusline=%!MyStatusLine()
 
 " }}}
-" Color (Breakage warning. Read this section.) {{{
+" Color {{{
 "   All coloring options are for the non-GUI Vim (see :help cterm-colors).
-"   These are not very portable and could break on some systems. I've attempted
-"   to use rational conditionals to minimize breakage, but you may just wish to
-"   delete this whole section if it messes your terminal up.
+"   Vim appears to just Do the Right Thing when it detects your supported
+"   color-depth. So take care in setting your TERM value before starting Vim.
 
-if &term == 'xterm-256color' || &term == 'screen-256color'
-    set t_Co=256
-    color vibrantink
-    hi CursorLine ctermbg=240
-elseif &term == 'xterm-color' || &term == 'screen'
-    set t_Co=16                 "   tells Vim to use 16 colors
-    hi CursorLine cterm=bold
-else
-    set t_Co=8
-endif
+color pablo
 
 " The default fold color is too bright and looks too much like the statusline
 hi Folded cterm=bold ctermfg=8 ctermbg=0
@@ -292,10 +283,9 @@ hi FoldColumn cterm=bold ctermfg=8 ctermbg=0
 hi CursorLine cterm=bold
 
 " Statusline
-" I like this better than all the reverse video of the default statusline highlighting
-" but it's not as easy to tell which window is active. (VimBuddy helps!)
-hi StatusLine cterm=bold ctermfg=7
-hi StatusLineNC cterm=bold ctermfg=8
+" I like this better than all the reverse video of the default statusline.
+hi StatusLine term=bold,reverse cterm=bold ctermfg=7 ctermbg=0
+hi StatusLineNC term=reverse cterm=bold ctermfg=8
 hi User1 ctermfg=4
 hi User2 ctermfg=1
 hi User3 ctermfg=5
@@ -304,7 +294,10 @@ hi User5 ctermfg=6
 hi User6 ctermfg=2
 hi User7 ctermfg=2
 hi User8 ctermfg=3
-hi User9 cterm=bold,reverse
+hi User9 cterm=reverse ctermfg=8 ctermbg=7
+
+" Darkens the status line for non-active windows. Needs testing!
+au BufEnter * hi User9 ctermfg=7
 
 " A nice, minimalistic tabline
 hi TabLine cterm=underline ctermfg=8 ctermbg=0
@@ -370,9 +363,6 @@ autocmd FileChangedShell *
 au FileType help nmap <buffer> <Return> <C-]>
 au FileType help nmap <buffer> <C-[> <C-O>
 
-" FIXME: Matchit now ships with Vim!
-" runtime! macros/matchit.vim
-
 " Mappings for the ToggleComment Plugin
 noremap <silent> ,# :call CommentLineToEnd('# ')<CR>+
 noremap <silent> ,/ :call CommentLineToEnd('// ')<CR>+
@@ -381,6 +371,10 @@ noremap <silent> ,; :call CommentLineToEnd('; ')<CR>+
 noremap <silent> ,- :call CommentLineToEnd('-- ')<CR>+
 noremap <silent> ,* :call CommentLinePincer('/* ', ' */')<CR>+
 noremap <silent> ,< :call CommentLinePincer('<!-- ', ' -->')<CR>+
+
+" Custom settings for the taglist plugin (see ~/.ctags file)
+let tlist_html_settings = 'html;h:headers;i:images;a:hrefs'
+let tlist_htmldjango_settings = tlist_html_settings
 
 " Centers, left, or right-justifies text
 noremap <silent> ,c :ce <CR> << <CR>
