@@ -95,5 +95,5 @@ Oh yeah, it is that cool.
 %(Normal)s""" % _c
 
 atexit.register(lambda: sys.stdout.write("""%(DarkGray)s
-I thought he'd never leave. Who invited that guy?
+Sheesh, I thought he'd never leave. Who invited that guy?
 %(Normal)s""" % _c))
