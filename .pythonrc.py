@@ -7,8 +7,7 @@ complement this file."""
 
 AUTHOR = 'Seth House'
 CONTACT = 'seth@eseth.com'
-VERSION = '$Rev$'
-DATE = '$Date$'
+LAST_MODIFIED = '$Date$'
 
 ##########################################################################
 
