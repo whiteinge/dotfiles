@@ -10,15 +10,22 @@ version                 # echo version on startup, 'cause old versions break thi
 #                                 MISC
 autodetach on           # *sniff* I love this so much!
 defflow off             # disables (in theory) flow control ('cause it's no longer 1985)
+bind s
 vbell off               # visual bells suck
 
 #                           SCROLL-BACK MODE
 ignorecase on           # case insensitive search in scroll-back mode
 defscrollback 5120      # default scroll-back buffer is tiny
+# Write the current buffer to a file in the current directory with `C-a >`
+bufferfile screen-dump
 
 #                           DEFAULT WINDOWS
 screen -t main
 screen -t work
+
+#                           ESCAPE EXPERIMENTATION
+# This sets the backtick as the escape key. Use e to insert a literal backtick.
+escape `e
 
 #                            NESTED SCREENS
 # I often run an ssh-ed screen in my main screen and like ctrl-s for the inside escape key.
