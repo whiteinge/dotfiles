@@ -269,10 +269,9 @@ set statusline=%!MyStatusLine()
 " }}}
 " Color {{{
 "   All coloring options are for the non-GUI Vim (see :help cterm-colors).
-"   Vim appears to just Do the Right Thing when it detects your supported
-"   color-depth. So take care in setting your TERM value before starting Vim.
 
-color pablo
+set t_Co=16
+color elflord
 
 " The default fold color is too bright and looks too much like the statusline
 hi Folded cterm=bold ctermfg=8 ctermbg=0
@@ -289,7 +288,7 @@ hi StatusLineNC term=reverse cterm=bold ctermfg=8
 hi User1 ctermfg=4
 hi User2 ctermfg=1
 hi User3 ctermfg=5
-hi User4 ctermfg=8
+hi User4 cterm=bold ctermfg=8
 hi User5 ctermfg=6
 hi User6 ctermfg=2
 hi User7 ctermfg=2
@@ -300,9 +299,9 @@ hi User9 cterm=reverse ctermfg=8 ctermbg=7
 au BufEnter * hi User9 ctermfg=7
 
 " A nice, minimalistic tabline
-hi TabLine cterm=underline ctermfg=8 ctermbg=0
-hi TabLineSel cterm=none ctermfg=0 ctermbg=7
-hi TabLineFill cterm=none ctermbg=0
+hi TabLine cterm=bold,underline ctermfg=8 ctermbg=0
+hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
+hi TabLineFill cterm=bold ctermbg=0
 
 " }}}
 " Printing {{{
