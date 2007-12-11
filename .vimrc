@@ -100,6 +100,12 @@ set laststatus=2                "ls:    makes the status bar always visible
 set ttyfast                     "tf:    improves redrawing for newer computers
 set viminfo=h,'500,f1,:100,/100 "vi:    For a nice, huuuuuge viminfo file
 
+if &columns == 80
+    " If we're on an 80-char wide term, don't display these screen hogs
+    set nonumber
+    set foldcolumn=0
+endif
+
 " }}}
 " Multi-buffer editing {{{
 
