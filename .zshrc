@@ -47,6 +47,7 @@ WATCHFMT='%n %a %l from %m at %T.'
 # great for displaying utf-8 in the terminal, but it tends to break old apps
 LANG=en_US.UTF-8 
 LC_CTYPE=en_US.UTF-8
+LC_COLLATE=C
 
 EDITOR=vi
 VISUAL=vi
