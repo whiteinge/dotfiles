@@ -57,10 +57,10 @@ map Y y$
 " A shortcut to show the numbered register contents
 map <F2> :reg "0123456789-*+:/<CR>
 
+"lcs:   displays tabs with :set list & displays when a line runs off-screen
+set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
 " Toggle hidden characters display
 map <silent> <F6> :set nolist!<CR>:set nolist?<CR>
-"lcs:   makes finding tabs easier during :set list
-set listchars=tab:>-,eol:$,trail:-
 
 " Toggle spell-checking
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
@@ -94,6 +94,7 @@ set showmode                    "smd:   shows current vi mode in lower left
 set cursorline                  "cul:   highlights the current line
 set showcmd                     "sc:    shows typed commands
 set cmdheight=2                 "ch:    make a little more room for error messages
+set sidescroll=2                "ss:    only scroll horizontally little by little
 set scrolloff=2                 "so:    places a couple lines between the current line and the screen edge
 set sidescrolloff=2             "siso:  places a couple lines between the current column and the screen edge
 set laststatus=2                "ls:    makes the status bar always visible
