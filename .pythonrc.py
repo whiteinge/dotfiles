@@ -54,11 +54,14 @@ _c = TermColors()
 # Enable a History
 ##################
 
-HISTFILE="%s/.python-history" % os.environ["HOME"]
+HISTFILE="%s/.pyhistory" % os.environ["HOME"]
 
-# Create the file if it doesn't yet exist
+# Read the existing history if there is one
 if os.path.exists(HISTFILE):
     readline.read_history_file(HISTFILE)
+
+# Set maximum number of items that will be written to the history file
+readline.set_history_length(300)
 
 def savehist():
     readline.write_history_file(HISTFILE)

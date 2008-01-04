@@ -18,6 +18,18 @@ xterm*cursorColor: red
 xterm*color4: RoyalBlue
 xterm*color12: RoyalBlue
 
+! --- rxvt settings
+rxvt*background: black
+rxvt*foreground: white
+rxvt*scrollBar: false
+rxvt*loginShell: true
+rxvt*faceName: Monaco
+rxvt*faceSize: 11
+rxvt*cursorColor: red
+! blue is usually too dark to see. this fixes that
+rxvt*color4: RoyalBlue
+rxvt*color12: RoyalBlue
+
 ! --- mrxvt settings
 mrxvt*background: black
 mrxvt*foreground: white

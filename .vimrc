@@ -95,8 +95,8 @@ set cursorline                  "cul:   highlights the current line
 set showcmd                     "sc:    shows typed commands
 set cmdheight=2                 "ch:    make a little more room for error messages
 set sidescroll=2                "ss:    only scroll horizontally little by little
-set scrolloff=2                 "so:    places a couple lines between the current line and the screen edge
-set sidescrolloff=2             "siso:  places a couple lines between the current column and the screen edge
+set scrolloff=1                 "so:    places a line between the current line and the screen edge
+set sidescrolloff=2             "siso:  places a couple columns between the current column and the screen edge
 set laststatus=2                "ls:    makes the status bar always visible
 set ttyfast                     "tf:    improves redrawing for newer computers
 set viminfo=h,'500,f1,:100,/100 "vi:    For a nice, huuuuuge viminfo file

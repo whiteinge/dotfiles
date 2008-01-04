@@ -45,8 +45,8 @@ WATCH=notme         # Report any login/logout of other users
 WATCHFMT='%n %a %l from %m at %T.'
 
 # great for displaying utf-8 in the terminal, but it tends to break old apps
-LANG=en_US.UTF-8 
-LC_CTYPE=en_US.UTF-8
+# LANG=en_US.UTF-8 
+# LC_CTYPE=en_US.UTF-8
 LC_COLLATE=C
 
 EDITOR=vi
@@ -143,7 +143,7 @@ alias ll='ls -lh'
 # .svn exclusioqn doesn't work very well, but it's better than nothing.
 alias grep='grep --color --exclude=\*.svn\* --exclude=\*.pyc'
 
-alias less='less -imJMWN'
+alias less='less -imJMW'
 alias cls='clear' # note: ctrl-L under zsh does something similar
 alias ssh='ssh -X -C'
 alias locate='locate -i'
@@ -152,8 +152,8 @@ alias ducks='du -cks * | sort -rn | head -15'
 alias tree="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias ps='ps -opid,uid,cpu,time,stat,command'
 
-alias sc="exec screen -e'^Aa' -RD"
-alias rsc="exec screen -e'^Ss' -RD"
+alias sc="exec screen -RD"
+alias rsc="exec screen -RD"
 
 # OS X versions
 if [[ $(uname) == "Darwin" ]]; then

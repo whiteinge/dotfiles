@@ -39,7 +39,7 @@ escape `e
 
 #                               HARDSTATUS
 # Adds a nice "tabbed" look, kinda long but gracefully pushes the status stuff off-screen if need be
-hardstatus alwayslastline "%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw %= %{mk}@ %H %{ck}%Y%{wk}-%{ck}%m%{wk}-%{ck}%d %{yk}%D %{gk}%c %{bk}%l"
+hardstatus alwayslastline "%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw %= %{mk}@ %H %{ck}%Y%{wk}-%{ck}%m%{wk}-%{ck}%d %{yk}%D %{gk}%0c %{bk}%l"
 
 # TODO: Detail every part of the hardstatus line below
 # %{wk}     - Default white on black
