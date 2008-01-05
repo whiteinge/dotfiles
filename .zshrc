@@ -51,8 +51,8 @@ LC_COLLATE=C
 
 EDITOR=vi
 VISUAL=vi
-PAGER='less -imJMWN'
-MANPAGER='less -imJMWN'
+PAGER='less -imJMW'
+MANPAGER='less -imJMW'
 BROWSER='firefox'
 
 # SSH Keychain
