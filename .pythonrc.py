@@ -13,7 +13,7 @@ LAST_MODIFIED = '$Date$'
 
 import sys, os, readline, rlcompleter, atexit, pprint, __builtin__
 
-# Color Support
+# Color Support {{{1
 ###############
 
 class TermColors(dict):
@@ -51,7 +51,7 @@ class TermColors(dict):
             self.update(dict([(k, self.NoColor) for k,v in self.COLOR_TEMPLATES]))
 _c = TermColors()
 
-# Enable a History
+# Enable a History {{{1
 ##################
 
 HISTFILE="%s/.pyhistory" % os.environ["HOME"]
@@ -68,13 +68,13 @@ def savehist():
 
 atexit.register(savehist)
 
-# Enable Color Prompts
+# Enable Color Prompts {{{1
 ######################
 
 sys.ps1 = '%s>>> %s' % (_c['Green'], _c['Normal'])
 sys.ps2 = '%s... %s' % (_c['Red'], _c['Normal'])
 
-# Enable Pretty Printing for stdout
+# Enable Pretty Printing for stdout {{{1
 ###################################
 
 def my_displayhook(value):
@@ -83,7 +83,7 @@ def my_displayhook(value):
         pprint.pprint(value)
 sys.displayhook = my_displayhook
 
-# Welcome message
+# Welcome message {{{1
 #################
 
 print """%(Green)s
@@ -99,3 +99,21 @@ Oh yeah, it is that cool.
 atexit.register(lambda: sys.stdout.write("""%(DarkGray)s
 Sheesh, I thought he'd never leave. Who invited that guy?
 %(Normal)s""" % _c))
+
+# Django Helpers {{{1
+################
+
+def load_django_apps():
+    "Imports all your installed Django apps."
+
+    from django.db.models.loading import get_models
+    for m in get_models():
+        exec "from %s import %s" % (m.__module__, m.__name__)
+
+def gen_secret_key():
+    "Generates a new SECRET_KEY that can be used in a project settings file." 
+
+    from random import choice
+    return ''.join(
+            [choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)')
+                for i in range(50)])
