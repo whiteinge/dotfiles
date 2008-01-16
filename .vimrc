@@ -99,7 +99,7 @@ set scrolloff=1                 "so:    places a line between the current line a
 set sidescrolloff=2             "siso:  places a couple columns between the current column and the screen edge
 set laststatus=2                "ls:    makes the status bar always visible
 set ttyfast                     "tf:    improves redrawing for newer computers
-set viminfo=h,'500,f1,:100,/100 "vi:    For a nice, huuuuuge viminfo file
+set viminfo='100,f1,:100,/100   "vi:    For a nice, huuuuuge viminfo file
 
 if &columns == 80
     " If we're on an 80-char wide term, don't display these screen hogs
@@ -108,7 +108,7 @@ if &columns == 80
 endif
 
 " }}}
-" Multi-buffer editing {{{
+" Multi-buffer/window/tab editing {{{
 
 set switchbuf=useopen           "swb:   Jumps to first window or tab that contains specified buffer instead of duplicating an open window
 set showtabline=1               "stal:  Display the tabbar if there are multiple tabs. Use :tab ball or invoke Vim with -p
@@ -117,20 +117,31 @@ set hidden                      "hid:   allows opening a new buffer in place of 
 set splitright                  "spr:   puts new vsplit windows to the right of the current
 set splitbelow                  "sb:    puts new split windows to the bottom of the current
 
-" Based on tip 821. Type <F1> follwed by a buffer number or name fragment to
-" jump to it. Also replaces the annoying help button.
+set winminheight=0              "wmh:   the minimal line height of any non-current window
+set winminwidth=0               "wmw:   the minimal column width of any non-current window
+
+" Type <F1> follwed by a buffer number or name fragment to jump to it.
+" Also replaces the annoying help button. Based on tip 821.
 map <F1> :ls<CR>:b<Space>
 
-" I'm not sure why Vim displays one line by default when 'maximizing' a split window with ctrl-_
-set winminheight=0              "wmh:   the minimal height of any non-current window
-set winminwidth=0               "wmw:   the minimal width of any non-current window
+" Convenient shortcuts for opening the current buffer in a new tab and closing
+" a tab page. Based on a comment for tip 199.
+nmap gt% :tabedit %<CR>
+nmap gtc :tabclose<CR>
 
 " Earlier Vims did not support tabs. Below is a vertical-tab-like cludge. Use
 " :ball or invoke Vim with -o (Vim tip 173)
 if version < 700
-    " ctrl-j,k will move up or down between split buffers and maximize the current buffer
+    " ctrl-j,k will move up or down between split windows and maximize the
+    " current window
     nmap <C-J> <C-W>j<C-W>_
     nmap <C-K> <C-W>k<C-W>_
+else
+    " same thing without the maximization to easily move between split windows
+    nmap <C-J> <C-W>j
+    nmap <C-K> <C-W>k
+    nmap <C-H> <C-W>h
+    nmap <C-L> <C-W>l
 endif
 
 " When restoring a hidden buffer Vim doesn't always keep the same view (like
@@ -149,7 +160,7 @@ noremap <silent> gy :set opfunc=YankList<CR>g@
 vmap <silent> gy :<C-U>call YankList(visualmode(), 1)<CR>
 map <silent> gyy Y
 
-function YankList(type, ...)
+function! YankList(type, ...)
     let sel_save = &selection
     let &selection = "inclusive"
     let reg_save = @@
@@ -173,7 +184,7 @@ endfunction
 
 " TODO: set truncation when tabs don't fit on line, see :h columns
 if exists("+showtabline")
-    function MyTabLine()
+    function! MyTabLine()
         let s = ''
         for i in range(tabpagenr('$'))
             " set up some oft-used variables
@@ -215,7 +226,7 @@ endif
 
 " TODO: add a check for screen width and remove the alternate buffer display
 " and args of total display for small screen widths.
-function MyStatusLine()
+function! MyStatusLine()
     let s = '%9* %* ' " pad the edges for better vsplit seperation
     let s .= '%3*' " User highlighting
     let s .= '%%%n '
@@ -341,7 +352,10 @@ let g:explStartRight=0  " new windows go to right of explorer window
 " Autocommands, plugin, and file-type-specific settings {{{
 
 " Remember last position in file
-au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
 
 " Auto-set certain options as well as syntax highlighting and indentation
 filetype plugin indent on
@@ -388,7 +402,7 @@ noremap <silent> ,l :le <CR>
 noremap <silent> ,r :ri <CR>
 
 " Makes the current buffer a scratch buffer
-function Scratch()
+function! Scratch()
     set buftype=nofile
     set bufhidden=delete
     set noswapfile
