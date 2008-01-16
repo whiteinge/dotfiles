@@ -408,20 +408,6 @@ function! Scratch()
     set noswapfile
 endfunction
 
-" Sets the default encoding to utf-8 if Vim was compiled with multibyte
-if has("multi_byte")
-    set encoding=utf-8
-    if $TERM == "linux" || $TERM_PROGRAM == "GLterm"
-        set termencoding=latin1
-    endif
-    if $TERM == "xterm" || $TERM == "xterm-color"
-        let propv = system("xprop -id $WINDOWID -f WM_LOCALE_NAME 8s ' $0' -notype WM_LOCALE_NAME")
-        if propv !~ "WM_LOCALE_NAME .*UTF.*8"
-            set termencoding=latin1
-        endif
-    endif
-endif
-
 " }}}
 
 " eof
