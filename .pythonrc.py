@@ -106,9 +106,12 @@ Sheesh, I thought he'd never leave. Who invited that guy?
 def load_django_apps():
     "Imports all your installed Django apps."
 
-    from django.db.models.loading import get_models
-    for m in get_models():
-        exec "from %s import %s" % (m.__module__, m.__name__)
+    try:
+        from django.db.models.loading import get_models
+        for m in get_models():
+            exec "from %s import %s" % (m.__module__, m.__name__)
+    except ImportError:
+        "Could not find a Django env."
 
 def gen_secret_key():
     "Generates a new SECRET_KEY that can be used in a project settings file." 
