@@ -124,11 +124,6 @@ set winminwidth=0               "wmw:   the minimal column width of any non-curr
 " Also replaces the annoying help button. Based on tip 821.
 map <F1> :ls<CR>:b<Space>
 
-" Convenient shortcuts for opening the current buffer in a new tab and closing
-" a tab page. Based on a comment for tip 199.
-nmap gt% :tabedit %<CR>
-nmap gtc :tabclose<CR>
-
 " Earlier Vims did not support tabs. Below is a vertical-tab-like cludge. Use
 " :ball or invoke Vim with -o (Vim tip 173)
 if version < 700
