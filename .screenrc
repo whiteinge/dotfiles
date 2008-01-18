@@ -23,10 +23,6 @@ bufferfile screen-dump
 screen -t main
 screen -t work
 
-#                           ESCAPE EXPERIMENTATION
-# This sets the backtick as the escape key. Use e to insert a literal backtick.
-escape `e
-
 #                            NESTED SCREENS
 # I often run an ssh-ed screen in my main screen and like ctrl-s for the inside escape key.
 # You need to free it from legacy silliness first though. Put this in your .bashrc
