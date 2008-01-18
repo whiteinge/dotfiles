@@ -45,8 +45,8 @@ WATCH=notme         # Report any login/logout of other users
 WATCHFMT='%n %a %l from %m at %T.'
 
 # great for displaying utf-8 in the terminal, but it tends to break old apps
-LANG=en_US.UTF-8 
-LC_CTYPE=en_US.UTF-8
+# LANG=en_US.UTF-8 
+# LC_CTYPE=en_US.UTF-8
 LC_COLLATE=C
 
 EDITOR=vi
@@ -70,7 +70,7 @@ zstyle ':completion:*' list-colors "$LS_COLORS"
 zstyle ':completion:*:*:*:users' ignored-patterns adm apache bin daemon ftp games gdm halt ident junkbust lp mail mailnull mysql named news nfsnobody nobody nscd ntp operator pcap pop postgres radvd rpc rpcuser rpm shutdown smmsp squid sshd sshfs sync uucp vcsa xfs
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:*:kill:*' menu yes select
-zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|ftp|rsync):*' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,$HOME/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|ftp|rsync):*' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,$HOME/.ssh/static_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
 # }}}
 # {{{ prompt and theme
@@ -78,13 +78,7 @@ zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|ftp|rsync):*' hosts 'reply=(
 autoload -U promptinit
 promptinit
 
-# Keywords: black, red, green, yellow, blue, magenta, cyan, and white
-# prompt adam2 hyphens cur-dir user@host user-input
-if [[ $TERM == 'xterm-256color' || $TERM == 'screen-256color' ]]; then
-    prompt adam2 bg_grey green magenta white
-else
-    prompt adam2 yellow green magenta white
-fi
+prompt adam2 bg_grey green magenta white
 
 # }}}
 # {{{ vi mode, mode display and extra vim-style keybindings
@@ -153,7 +147,7 @@ alias tree="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's
 alias ps='ps -opid,uid,cpu,time,stat,command'
 
 alias sc="exec screen -RD"
-alias rsc="exec screen -RD"
+alias rsc="exec screen -e'^Ss' -RD"
 
 # OS X versions
 if [[ $(uname) == "Darwin" ]]; then
