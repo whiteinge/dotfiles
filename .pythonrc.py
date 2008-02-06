@@ -103,20 +103,33 @@ Sheesh, I thought he'd never leave. Who invited that guy?
 # Django Helpers {{{1
 ################
 
-def load_django_apps():
-    "Imports all your installed Django apps."
-
-    try:
-        from django.db.models.loading import get_models
-        for m in get_models():
-            exec "from %s import %s" % (m.__module__, m.__name__)
-    except ImportError:
-        "Could not find a Django env."
-
-def gen_secret_key():
+def SECRET_KEY():
     "Generates a new SECRET_KEY that can be used in a project settings file." 
 
     from random import choice
     return ''.join(
             [choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)')
                 for i in range(50)])
+
+# If we're working with a Django project, set up the test environment
+if os.environ.get('DJANGO_SETTINGS_MODULE', ''):
+    from django.db.models.loading import get_models
+    from django.test.client import Client
+    from django.test.utils import setup_test_environment, teardown_test_environment
+
+    class DjangoModels(object):
+        def __init__(self):
+            for m in get_models():
+                setattr(self, m.__name__, m)
+
+    A = DjangoModels()
+    C = Client()
+    setup_test_environment()
+
+    print """%(LightBlue)s
+Django environment detected.
+* Your INSTALLED_APPS models have been imported into the namespace `A`.
+* The Django test client is available as `C`.
+* The Django test environment has been set up. To restore the normal
+  environment call `teardown_test_environment()`.
+%(Normal)s""" % _c
