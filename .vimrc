@@ -51,6 +51,13 @@ set nojoinspaces                "nojs:  prevents inserting two spaces after punc
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
 set pastetoggle=<F5>            "pt:    useful so auto-indenting doesn't mess up code when pasting
 
+" Restore tab as the one true escape key, use ctrl-i to insert a tab
+nnoremap <tab> <esc>
+vnoremap <tab> <esc>gV
+onoremap <tab> <esc>
+inoremap <tab> <esc>`^
+inoremap <C-I> <tab>
+
 " Fix for legacy vi inconsistency
 map Y y$
 
@@ -59,6 +66,7 @@ map <F2> :reg "0123456789-*+:/<CR>
 
 "lcs:   displays tabs with :set list & displays when a line runs off-screen
 set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
+
 " Toggle hidden characters display
 map <silent> <F6> :set nolist!<CR>:set nolist?<CR>
 
@@ -316,6 +324,10 @@ hi TabLine cterm=bold,underline ctermfg=8 ctermbg=0
 hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
 hi TabLineFill cterm=bold ctermbg=0
 
+" Color lines that exceed 80 columns in blue
+hi rightMargin ctermfg=lightblue
+match rightMargin /.\%>80v/
+
 " }}}
 " Printing {{{
 
@@ -402,6 +414,10 @@ function! Scratch()
     set bufhidden=delete
     set noswapfile
 endfunction
+
+" Open a man-page in a new window
+runtime ftplugin/man.vim
+nmap K :Man <C-R>=expand("<cword>")<CR><CR>
 
 " }}}
 
