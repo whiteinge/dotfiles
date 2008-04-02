@@ -33,6 +33,7 @@ screen -t irssi
 screen -t main
 screen -t work
 select 0
+monitor on # monitor the irssi window by default
 
 #                            NESTED SCREENS
 # I often run an ssh-ed screen in my main screen and like ctrl-s for the inside escape key.
