@@ -9,19 +9,30 @@ version                 # echo version on startup, 'cause old versions break thi
 
 #                                 MISC
 autodetach on           # *sniff* I love this so much!
-defflow off             # disables (in theory) flow control ('cause it's no longer 1985)
+defflow off             # disables (in theory) flow control ('cause it's no longer 1983)
 bind s
 vbell off               # visual bells suck
+defutf8 on              # Default to utf
 
 #                           SCROLL-BACK MODE
 ignorecase on           # case insensitive search in scroll-back mode
-defscrollback 5120      # default scroll-back buffer is tiny
-# Write the current buffer to a file in the current directory with `C-a >`
-bufferfile screen-dump
+defscrollback 5120      # default scroll-back buffer is tiny. (No. of lines.)
+bufferfile $HOME/.screen_buf
+
+# set the second mark, write to the screen-exchange file, and use xsel to
+# synchronize the paste buffer with the X selection.
+# bindkey > eval "stuff ' '" writebuf "exec sh -c 'xclip -i < /tmp/screen-exchange'"
+# Other example:
+# bind b eval "writebuf" "exec sh -c 'pbcopy < /tmp/screen-exchange'"
+# bindkey -m > eval "stuff ' '" writebuf "exec sh -c 'xsel -n < /tmp/screen-exchange'"
+# Reads the current X selection into the paste buffer
+# bindkey < eval "stuff ' '" "exec sh -c 'xclip -o > /tmp/screen-exchange'" readbuf
 
 #                           DEFAULT WINDOWS
+screen -t irssi
 screen -t main
 screen -t work
+select 0
 
 #                            NESTED SCREENS
 # I often run an ssh-ed screen in my main screen and like ctrl-s for the inside escape key.

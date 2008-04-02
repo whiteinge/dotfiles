@@ -17,6 +17,7 @@ xterm*cursorColor: red
 ! blue is usually too dark to see. this fixes that
 xterm*color4: RoyalBlue
 xterm*color12: RoyalBlue
+xterm*utf8: 1
 
 ! --- rxvt settings
 rxvt*background: black

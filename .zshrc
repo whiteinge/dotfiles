@@ -45,8 +45,8 @@ WATCH=notme         # Report any login/logout of other users
 WATCHFMT='%n %a %l from %m at %T.'
 
 # great for displaying utf-8 in the terminal, but it tends to break old apps
-# LANG=en_US.UTF-8 
-# LC_CTYPE=en_US.UTF-8
+LANG=en_US.UTF-8 
+LC_CTYPE=en_US.UTF-8
 LC_COLLATE=C
 
 EDITOR=vi
@@ -54,12 +54,6 @@ VISUAL=vi
 PAGER='less -imJMW'
 MANPAGER='less -imJMW'
 BROWSER='firefox'
-
-# SSH Keychain
-# http://www.gentoo.org/proj/en/keychain/
-if which keychain >& /dev/null && [[ $UID != 0 ]]; then
-    eval $(keychain -q --eval id_rsa --nogui)
-fi
 
 # }}}
 # {{{ completions
@@ -134,7 +128,7 @@ alias ls='ls -F --color'
 alias la='ls -A'
 alias ll='ls -lh'
 
-# .svn exclusioqn doesn't work very well, but it's better than nothing.
+# .svn exclusion doesn't work very well, but it's better than nothing.
 alias grep='grep --color --exclude=\*.svn\* --exclude=\*.pyc'
 
 alias less='less -imJMW'
@@ -146,8 +140,8 @@ alias ducks='du -cks * | sort -rn | head -15'
 alias tree="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias ps='ps -opid,uid,cpu,time,stat,command'
 
-alias sc="exec screen -RD"
-alias rsc="exec screen -e'^Ss' -RD"
+alias sc="exec ssh-agent screen -RD"
+alias rsc="exec ssh-agent screen -e'^Ss' -RD"
 
 # OS X versions
 if [[ $(uname) == "Darwin" ]]; then
