@@ -359,4 +359,20 @@ dvdinfo()
 }
 
 # }}}
+# TRAPUSR2 for the allsh script {{{1
+# http://sial.org/howto/shell/allsh/
+
+TRAPUSR2() {
+      [ -f ~/.sh-sourceall ] && . ~/.sh-sourceall
+}
+
+# }}}
+# Dictionary lookup {{{1
+# Many more options, see:
+# http://linuxcommando.blogspot.com/2007/10/dictionary-lookup-via-command-line.html
+
+dict (){
+    curl dict://dict.org/d:$1
+}
+
 # EOF
