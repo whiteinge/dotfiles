@@ -44,9 +44,9 @@ REPORTTIME=60       # Report time statistics for progs that take more than a min
 WATCH=notme         # Report any login/logout of other users
 WATCHFMT='%n %a %l from %m at %T.'
 
-# great for displaying utf-8 in the terminal, but it tends to break old apps
+# utf-8 in the terminal, will break stuff if your term isn't utf aware
 LANG=en_US.UTF-8 
-LC_CTYPE=en_US.UTF-8
+LC_ALL=$LANG
 LC_COLLATE=C
 
 EDITOR=vi
