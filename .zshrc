@@ -143,6 +143,9 @@ alias ps='ps -opid,uid,cpu,time,stat,command'
 alias sc="exec ssh-agent screen -RD"
 alias rsc="exec ssh-agent screen -e'^Ss' -RD"
 
+alias ssh-flakwolf="screen -t flakwolf ssh -C flakwolf@flakwolf.com"
+alias ssh-ellen="screen -t ellen ssh -C -Y -X eseth.org"
+
 # OS X versions
 if [[ $(uname) == "Darwin" ]]; then
     alias ls='ls -FG'
@@ -324,6 +327,8 @@ svn_up_and_log()
 
 # }}}
 # Django functions djedit & djsetup {{{
+
+alias djrunserver="django-admin.py runserver >&! /tmp/django.log & python"
 
 # run this in your base project dir
 djsetup()
