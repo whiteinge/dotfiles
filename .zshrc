@@ -37,8 +37,8 @@ CDPATH=$CDPATH::$HOME:/usr/local
 export PYTHONSTARTUP=$(echo $HOME)/.pythonrc.py
 
 HISTFILE=$HOME/.zsh_history
-HISTSIZE=500
-SAVEHIST=500
+HISTSIZE=4096
+SAVEHIST=4096
 
 REPORTTIME=60       # Report time statistics for progs that take more than a minute to run
 WATCH=notme         # Report any login/logout of other users
