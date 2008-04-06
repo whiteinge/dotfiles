@@ -340,6 +340,7 @@ set printencoding=utf-8
 " :Explore mode {{{
 
 " NERDTree is a pretty slick replacement for :Explore
+let NERDTreeIgnore=['\.pyc$']
 map <F4> :NERDTreeToggle<cr>
 
 let g:netrw_hide=1          " Use the hiding list
@@ -400,8 +401,14 @@ noremap <silent> ,* :call CommentLinePincer('/* ', ' */')<CR>+
 noremap <silent> ,< :call CommentLinePincer('<!-- ', ' -->')<CR>+
 
 " Custom settings for the taglist plugin (see ~/.ctags file)
-let tlist_html_settings = 'html;h:headers;i:images;a:hrefs'
-let tlist_htmldjango_settings = tlist_html_settings
+" /regexp/replacement/[kind−spec/][flags]
+map <F3> :TlistToggle<cr>
+let Tlist_Use_Right_Window = 1
+let tlist_xml_settings = 'xml;i:id'
+let tlist_xhtml_settings = tlist_xml_settings
+let tlist_html_settings = tlist_xml_settings
+let tlist_htmldjango_settings = tlist_xml_settings
+let tlist_css_settings = 'css;s:Selectors'
 
 " Centers, left, or right-justifies text
 noremap <silent> ,c :ce <CR> << <CR>
