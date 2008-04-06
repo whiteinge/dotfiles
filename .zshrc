@@ -37,6 +37,7 @@ CDPATH=$CDPATH::$HOME:/usr/local
 export PYTHONSTARTUP=$(echo $HOME)/.pythonrc.py
 
 HISTFILE=$HOME/.zsh_history
+HISTFILESIZE=65536  # search this with `grep | sort -u`
 HISTSIZE=4096
 SAVEHIST=4096
 
