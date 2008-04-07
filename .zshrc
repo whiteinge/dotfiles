@@ -329,7 +329,7 @@ svn_up_and_log()
 # }}}
 # Django functions djedit & djsetup {{{
 
-alias djrunserver="django-admin.py runserver >&! /tmp/django.log & python"
+alias djrunserver="django-admin.py runserver >&! /tmp/django.log &"
 
 # run this in your base project dir
 djsetup()
