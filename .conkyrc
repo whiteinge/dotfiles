@@ -86,7 +86,7 @@ alignment top_right
 
 # Gap between borders of screen and text
 # same thing as passing -x at command line
-gap_x 0
+gap_x -18
 gap_y 0
 
 # Subtract file system buffers from used memory?
@@ -118,12 +118,15 @@ use_spacer no
 
 TEXT
 
-${color grey}
-${color grey}cpu:  ${color #ffffff}$cpu%   ${color grey}
-${color grey}ram:  ${color #ffffff}$memperc%   ${color grey}
-${color grey}swap:  ${color #ffffff}$swapperc%   ${color grey}
-${color grey}processes:  ${color #ffffff}$processes   ${color grey}
-${color grey}running:  ${color #ffffff}$running_processes   ${color grey}
-${color grey}eth2 down:  ${color #ffffff}${downspeed eth2} ${color grey}k/s   ${color grey}
-${color grey}eth2 up:  ${color #ffffff}${upspeed eth2} ${color grey}k/s   ${color grey}
-${offset 102}
+${color grey}${time %H:%M }${color grey}
+${time %F }
+
+${color grey}cpu: ${color #ffffff}$cpu%   ${color grey}
+${color grey}ram: ${color #ffffff}$memperc%   ${color grey}
+${color grey}swap: ${color #ffffff}$swapperc%   ${color grey}
+${color grey}procs: ${color #ffffff}$processes   ${color grey}
+${color grey}run: ${color #ffffff}$running_processes   ${color grey}
+${color grey}eth2 d: ${color #ffffff}${downspeed eth2} ${color grey}k/s   ${color grey}
+${color grey}eth2 u: ${color #ffffff}${upspeed eth2} ${color grey}k/s  ${color grey}
+
+${color grey}Up: ${color #ffffff}$uptime_short ${color grey}
