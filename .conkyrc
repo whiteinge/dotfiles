@@ -10,6 +10,8 @@ background no
 # Use Xft?
 use_xft yes
 
+max_user_text = 32000
+
 # Set conky on the bottom of all other applications
 own_window_hints below
 
@@ -86,11 +88,11 @@ alignment top_right
 
 # Gap between borders of screen and text
 # same thing as passing -x at command line
-gap_x 0
+gap_x 20
 gap_y -12
 
 # Subtract file system buffers from used memory?
-no_buffers yes
+# no_buffers yes
 
 # set to yes if you want all text to be in uppercase
 uppercase no
@@ -106,9 +108,8 @@ net_avg_samples 2
 # Force UTF8? note that UTF8 support required XFT
 override_utf8_locale no
 
-
 # Add spaces to keep things from moving about?  This only affects certain objects.
-use_spacer no
+use_spacer left
 
 # variable is given either in format $variable or in ${variable}. Latter
 # allows characters right after the variable and must be used in network
@@ -118,4 +119,17 @@ use_spacer no
 
 TEXT
 
-${color grey}${time %H:%M }  |  ${time %F}  |  Up: ${color #ffffff}$uptime_short${color grey}  |  cpu: ${color #ffffff}$cpu% ${color grey}  |  ram: ${color #ffffff}$memperc% ${color grey}  |  swap: ${color #ffffff}$swapperc% ${color grey}  |  eth2 d: ${color #ffffff}${downspeed eth2} ${color grey}k/s  u: ${color #ffffff}${upspeed eth2} ${color grey}k/s    
+$alignr${color grey}${time %H:%M }  |  ${time %a, %d %b %y}  |  cpu: ${color #ffffff}$cpu% ${color grey}  |  ram: ${color #ffffff}$memperc% ${color grey}  |  swap: ${color #ffffff}$swapperc% ${color grey}  |  eth2 d: ${color #ffffff}${downspeed eth2} ${color grey}k/s,  u: ${color #ffffff}${upspeed eth2} ${color grey}k/s
+
+$alignr$loadavg  |  $uptime  |  $user_number users
+
+$alignr ${addrs eth2}
+$alignr $nameserver
+
+$alignr sda2: ${fs_bar 5,100 /dev/sda2}
+
+$alignr mpd $mpd_status  ${color #ffffff}$mpd_smart
+$alignr ${color grey}${mpd_bar 5,200} 
+$alignr Vol: ${color #ffffff}$mpd_vol   ${color grey}Rand: ${color #ffffff}$mpd_random   ${color grey}Rep: ${color #ffffff}$mpd_repeat
+
+$alignr ${execi 300 gcalcli --nc agenda}
