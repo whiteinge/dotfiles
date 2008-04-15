@@ -163,6 +163,7 @@ hilights = (
   { text = "whiteinge_"; nick = "yes"; word = "yes"; },
   { text = "seth"; nick = "yes"; word = "yes"; }
   { text = "oalug"; nick = "yes"; word = "yes"; }
+  { text = "conman"; nick = "yes"; word = "yes"; }
 );
 
 ignores = (
