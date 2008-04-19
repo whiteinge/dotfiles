@@ -144,9 +144,6 @@ alias ps='ps -opid,uid,cpu,time,stat,command'
 alias sc="exec ssh-agent screen -RD"
 alias rsc="exec ssh-agent screen -e'^Ss' -RD"
 
-alias ssh-flakwolf="screen -t flakwolf ssh -C flakwolf@flakwolf.com"
-alias ssh-ellen="screen -t ellen ssh -C -Y -X eseth.org"
-
 # OS X versions
 if [[ $(uname) == "Darwin" ]]; then
     alias ls='ls -FG'
@@ -172,32 +169,6 @@ function _calc() {
 # Usage: `body firstline lastline filename`
 function body() {   
     head -$2 $3 | tail -$(($2-($1-1)))
-}
-
-# }}}
-# {{{ pkill()
-# Because OS X doesn't have pgrep :-(
-
-function pkill() {
-    HOSTTYPE=$(uname -s)
-
-    SIGNAL=$1
-    STRING=$2
-
-    if [ -z "$1" -o -z "$2" ]
-    then
-        echo Usage: $0 signal string
-        exit 1
-    fi
-
-    case $HOSTTYPE in
-        Darwin|BSD)
-        ps -a -opid,command | grep $STRING | awk '{ print $1; }' | xargs kill $SIGNAL
-        ;;
-        Linux|Solaris|AIX|HP-UX)
-        ps -e -opid,command | grep $STRING | awk '{ print $1; }' | xargs kill $SIGNAL
-        ;;
-    esac
 }
 
 # }}}
