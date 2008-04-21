@@ -11,7 +11,13 @@ LAST_MODIFIED = '$Date$'
 
 ##########################################################################
 
-import sys, os, readline, rlcompleter, atexit, pprint, __builtin__
+# Imports we need
+import sys, os, readline, rlcompleter, atexit, pprint, __builtin__, __main__
+from tempfile import mkstemp
+from code import InteractiveConsole
+
+# Imports we want
+import datetime
 
 # Color Support {{{1
 ###############
@@ -86,12 +92,14 @@ sys.displayhook = my_displayhook
 # Welcome message {{{1
 #################
 
-print """%(Green)s
+WELCOME = """%(Green)s
 The Python shell is coming at 'ya, punk!
 %(Cyan)s
 You've got color, history, and pretty printing.
 (If your ~/.inputrc doesn't suck, you've also
 got completion and vi-mode keybindings.)
+%(LightPurple)s
+Type \e to get an external editor.
 %(Brown)s
 Oh yeah, it is that cool.
 %(Normal)s""" % _c
@@ -133,3 +141,41 @@ Django environment detected.
 * The Django test environment has been set up. To restore the normal
   environment call `teardown_test_environment()`.
 %(Normal)s""" % _c
+# Start an external editor with \e {{{1
+##################################     
+# http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/438813/
+
+EDITOR = os.environ.get('EDITOR', 'vim')
+EDIT_CMD = '\e'
+
+class EditableBufferInteractiveConsole(InteractiveConsole):
+    def __init__(self, *args):
+        self.last_buffer = [] # This holds the last executed statement
+        InteractiveConsole.__init__(self, *args)
+
+    def runsource(self, source, *args):
+        self.last_buffer = [ source ]
+        return InteractiveConsole.runsource(self, source, *args)
+
+    def raw_input(self, *args):
+        line = InteractiveConsole.raw_input(self, *args)
+        if line == EDIT_CMD:
+            fd, tmpfl = mkstemp('.py')
+            os.write(fd, '\n'.join(self.last_buffer))
+            os.close(fd)
+            os.system('%s %s' % (EDITOR, tmpfl))
+            line = open(tmpfl).read()
+            os.unlink(tmpfl)
+            tmpfl = ''
+            lines = line.split( '\n' )
+            for i in range(len(lines) - 1): self.push( lines[i] )
+            line = lines[-1]
+        return line
+
+c = EditableBufferInteractiveConsole()
+# Update the InteractiveConsole's namespace with the current namespace
+c.locals.update(__main__.__dict__)
+c.interact(banner=WELCOME)
+
+# Exit the Python shell on exiting the InteractiveConsole
+sys.exit()
