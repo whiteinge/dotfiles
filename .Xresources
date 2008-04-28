@@ -1,11 +1,3 @@
-! --- aterm settings
-aterm*background: black
-aterm*foreground: white
-aterm*transparent: true
-aterm*scrollBar: false
-aterm*loginShell: true
-aterm*shading: 30
-
 ! --- xterm settings
 xterm*background: black
 xterm*foreground: white
@@ -19,40 +11,67 @@ xterm*color4: RoyalBlue
 xterm*color12: RoyalBlue
 xterm*utf8: 1
 
-! --- rxvt settings
-rxvt*background: black
-rxvt*foreground: white
-rxvt*scrollBar: false
-rxvt*loginShell: true
-rxvt*faceName: Monaco
-rxvt*faceSize: 11
-rxvt*cursorColor: red
-! blue is usually too dark to see. this fixes that
-rxvt*color4: RoyalBlue
-rxvt*color12: RoyalBlue
+! --- xmessage settings
+xmessage*form.okay.shapeStyle: rectangle
+xmessage*form.okay.background: IndianRed
+xmessage*form.okay.foreground: rgb:e/b/b
+xmessage*message*background: ivory3
+xmessage*background: gray85
+xmessage*foreground: gray15
+xmessage*Scrollbar.width: 10
+xmessage*Scrollbar.borderWidth: 1
+xmessage*Text.?.cursorColor: rgb:d/5/5
+xmessage*Text.borderColor: gray65
+xmessage*Text*background: gray95
+xmessage*Command.highlightThickness: 1
+xmessage*Command.internalWidth: 5
+xmessage*Command.internalHeight: 3
+xmessage*Command.borderColor: gray40
+xmessage*Command.shapeStyle: Rectangle
+xmessage*Command.background: gray80
+xmessage*faceName: Monaco
+xmessage*faceSize: 12
 
-! --- mrxvt settings
-mrxvt*background: black
-mrxvt*foreground: white
-mrxvt*scrollBar: false
-mrxvt*loginShell: true
-mrxvt*autohideTabbar: true
-mrxvt*syncTabTitle: true
-mrxvt*hideButtons: true
-mrxvt*cursorBlink: true
-mrxvt*font: Monaco
-mrxvt*faceSize: 11
-mrxvt*cursorColor: red
-mrxvt*xft:True
-mrxvt*xftFont: Monaco
-mrxvt*xftSize:12
-mrxvt*xftAntialias:True
-mrxvt*termName: xterm-256color
-! blue is usually too dark to see. this fixes that
-mrxvt*color4: RoyalBlue
-mrxvt*color12: RoyalBlue
-
-! --- yeahconsole settings :-)
-yeahconsole*term: xterm
-yeahconsole*toggleKey: Alt+Grave
-yeahconsole*screenWidth: 1024
+! -- xcalc settings
+xcalc*ti.button1.vertDistance: 4
+xcalc*ti.button2.vertDistance: 4
+xcalc*ti.button3.vertDistance: 4
+xcalc*ti.button4.vertDistance: 4
+xcalc*ti.button5.vertDistance: 4
+xcalc*ti.background: gray90
+xcalc*ti.bevel.borderColor: gray65
+xcalc*ti.bevel.borderWidth: 1
+xcalc*ti.bevel.vertDistance: 4
+xcalc*ti.bevel.defaultDistance: 0
+xcalc*ti.bevel.background: rgb:b/c/b
+xcalc*ti.bevel.screen*background: rgb:b/c/b
+xcalc*ti.bevel.screen.borderColor: rgb:b/c/b
+xcalc*ti.bevel.screen.vertDistance: 10
+xcalc*ti.bevel.screen.horizDistance: 10
+xcalc*ti.bevel.screen*left: chainLeft
+xcalc*ti.bevel.screen*right: chainRight
+xcalc*ti.bevel.screen*top: chainTop
+xcalc*ti.bevel.screen*bottom: chainBottom
+xcalc*ti.bevel.screen*LCD.foreground: gray10
+xcalc*ti.bevel.screen*INV.vertDistance: 0
+xcalc*ti.Command.borderColor: gray65
+xcalc*ti.Command.background: gray85
+xcalc*ti.Command.foreground: gray30
+xcalc*ti.button5.background: rgb:e/b/b
+xcalc*ti.button20.background: rgb:e/d/c
+xcalc*ti.button25.background: rgb:e/d/c
+xcalc*ti.button30.background: rgb:e/d/c
+xcalc*ti.button35.background: rgb:e/d/c
+xcalc*ti.button40.background: rgb:b/b/e
+xcalc*ti.button22.background: gray95
+xcalc*ti.button23.background: gray95
+xcalc*ti.button24.background: gray95
+xcalc*ti.button27.background: gray95
+xcalc*ti.button28.background: gray95
+xcalc*ti.button29.background: gray95
+xcalc*ti.button32.background: gray95
+xcalc*ti.button33.background: gray95
+xcalc*ti.button34.background: gray95
+xcalc*ti.button37.background: gray95
+xcalc*ti.button38.background: gray95
+xcalc*ti.button39.background: gray95
