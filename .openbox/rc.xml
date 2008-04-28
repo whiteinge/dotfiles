@@ -161,7 +161,61 @@
   </dock>
   <keyboard>
     <chainQuitKey>C-g</chainQuitKey>
-    <!-- Keybindings for desktop switching -->
+
+    <!-- Switch to Desktops -->
+    <keybind key="W-a">
+        <action name="DesktopLast">
+            <dialog>no</dialog>
+        </action>
+    </keybind>
+
+    <keybind key="W-F1">
+      <action name="Desktop">
+        <desktop>1</desktop>
+      </action>
+    </keybind>
+    <keybind key="W-F2">
+      <action name="Desktop">
+        <desktop>2</desktop>
+      </action>
+    </keybind>
+    <keybind key="W-F3">
+      <action name="Desktop">
+        <desktop>3</desktop>
+      </action>
+    </keybind>
+    <keybind key="W-F4">
+      <action name="Desktop">
+        <desktop>4</desktop>
+      </action>
+    </keybind>
+
+    <!-- Send windows to other Desktops -->
+    <keybind key="W-A-F1">
+        <action name="SendToDesktop">
+            <desktop>1</desktop>
+            <follow>no</follow>
+        </action>
+    </keybind>
+    <keybind key="W-A-F2">
+        <action name="SendToDesktop">
+            <desktop>2</desktop>
+            <follow>no</follow>
+        </action>
+    </keybind>
+    <keybind key="W-A-F3">
+        <action name="SendToDesktop">
+            <desktop>3</desktop>
+            <follow>no</follow>
+        </action>
+    </keybind>
+    <keybind key="W-A-F4">
+        <action name="SendToDesktop">
+            <desktop>4</desktop>
+            <follow>no</follow>
+        </action>
+    </keybind>
+
     <keybind key="W-Left">
       <action name="DesktopLeft">
         <dialog>no</dialog>
@@ -186,29 +240,11 @@
         <wrap>no</wrap>
       </action>
     </keybind>
-    <keybind key="W-F1">
-      <action name="Desktop">
-        <desktop>1</desktop>
-      </action>
-    </keybind>
-    <keybind key="W-F2">
-      <action name="Desktop">
-        <desktop>2</desktop>
-      </action>
-    </keybind>
-    <keybind key="W-F3">
-      <action name="Desktop">
-        <desktop>3</desktop>
-      </action>
-    </keybind>
-    <keybind key="W-F4">
-      <action name="Desktop">
-        <desktop>4</desktop>
-      </action>
-    </keybind>
+
     <keybind key="W-d">
       <action name="ToggleShowDesktop"/>
     </keybind>
+
     <!-- Keybindings for windows -->
     <keybind key="W-grave">
       <action name="Lower"/>
@@ -220,6 +256,10 @@
         <menu>client-menu</menu>
       </action>
     </keybind>
+    <keybind key="W-x">
+        <action name="ToggleMaximizeFull"/>
+    </keybind>
+
     <!-- Keybindings for window switching -->
     <keybind key="W-Tab">
       <action name="NextWindow"/>
@@ -237,6 +277,7 @@
         <action name="Close"/>
     </keybind>
   </keyboard>
+
   <mouse>
     <dragThreshold>8</dragThreshold>
     <!-- number of pixels the mouse must move before a drag begins -->
