@@ -51,13 +51,6 @@ set nojoinspaces                "nojs:  prevents inserting two spaces after punc
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
 set pastetoggle=<F5>            "pt:    useful so auto-indenting doesn't mess up code when pasting
 
-" Restore tab as the one true escape key, use ctrl-i to insert a tab
-nnoremap <tab> <esc>
-vnoremap <tab> <esc>gV
-onoremap <tab> <esc>
-inoremap <tab> <esc>`^
-inoremap <C-I> <tab>
-
 " Fix for legacy vi inconsistency
 map Y y$
 
@@ -324,9 +317,9 @@ hi TabLine cterm=bold,underline ctermfg=8 ctermbg=0
 hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
 hi TabLineFill cterm=bold ctermbg=0
 
-" Color lines that exceed 80 columns in blue
-hi rightMargin ctermfg=lightblue
-match rightMargin /.\%>80v/
+" Color lines that exceed 80 columns in blue (doesn't scale)
+" hi rightMargin ctermfg=lightblue
+" match rightMargin /.\%>80v/
 
 " }}}
 " Printing {{{
@@ -404,6 +397,8 @@ noremap <silent> ,< :call CommentLinePincer('<!-- ', ' -->')<CR>+
 " /regexp/replacement/[kind−spec/][flags]
 map <F3> :TlistToggle<cr>
 let Tlist_Use_Right_Window = 1
+let Tlist_Show_One_File = 1
+let Tlist_Sort_Type = "name"
 let tlist_xml_settings = 'xml;i:id'
 let tlist_xhtml_settings = tlist_xml_settings
 let tlist_html_settings = tlist_xml_settings
