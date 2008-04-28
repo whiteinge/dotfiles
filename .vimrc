@@ -288,8 +288,8 @@ set t_Co=16
 color elflord
 
 " The default fold color is too bright and looks too much like the statusline
-hi Folded cterm=bold ctermfg=8 ctermbg=0
-hi FoldColumn cterm=bold ctermfg=8 ctermbg=0
+hi Folded cterm=bold ctermfg=8 ctermbg=none
+hi FoldColumn cterm=bold ctermfg=8 ctermbg=none
 
 " I love the new CursorLine, but terminal underlining kicks legibility in the nuts.
 " So what to do? Bold is (extremely) subtle, but it's better than nothing.
@@ -297,7 +297,7 @@ hi CursorLine cterm=bold
 
 " Statusline
 " I like this better than all the reverse video of the default statusline.
-hi StatusLine term=bold,reverse cterm=bold ctermfg=7 ctermbg=0
+hi StatusLine term=bold,reverse cterm=bold ctermfg=7 ctermbg=none
 hi StatusLineNC term=reverse cterm=bold ctermfg=8
 hi User1 ctermfg=4
 hi User2 ctermfg=1
@@ -313,13 +313,9 @@ hi User9 cterm=reverse ctermfg=8 ctermbg=7
 au BufEnter * hi User9 ctermfg=7
 
 " A nice, minimalistic tabline
-hi TabLine cterm=bold,underline ctermfg=8 ctermbg=0
+hi TabLine cterm=bold,underline ctermfg=8 ctermbg=none
 hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
-hi TabLineFill cterm=bold ctermbg=0
-
-" Color lines that exceed 80 columns in blue (doesn't scale)
-" hi rightMargin ctermfg=lightblue
-" match rightMargin /.\%>80v/
+hi TabLineFill cterm=bold ctermbg=none
 
 " }}}
 " Printing {{{
