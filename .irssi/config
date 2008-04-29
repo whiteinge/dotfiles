@@ -6,6 +6,14 @@ servers = (
     use_ssl = "no";
     ssl_verify = "no";
     autoconnect = "yes";
+  },
+  {
+    address = "localhost";
+    chatnet = "bitlbee";
+    port = "6667";
+    use_ssl = "no";
+    ssl_verify = "no";
+    autoconnect = "yes";
   }
 );
 
@@ -14,14 +22,19 @@ chatnets = {
     type = "IRC";
     autosendcmd = "/^msg nickserv ident heruli;wait -freenode 2000";
   };
+  bitlbee = {
+    type = "IRC";
+    autosendcmd = "wait 2000; /msg &bitlbee identify heruli";
+  };
 };
 
 channels = (
+  { name = "&bitlbee"; chatnet = "bitlbee"; autojoin = "yes"; },
+  { name = "#utos-dev"; chatnet = "freenode"; autojoin = "yes"; }
   { name = "#oalug"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utahpython"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utah"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utos"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#utos-dev"; chatnet = "freenode"; autojoin = "yes"; },
 );
 
 statusbar = {
@@ -161,8 +174,8 @@ settings = {
 hilights = (
   { text = "whiteinge"; nick = "yes"; word = "yes"; },
   { text = "whiteinge_"; nick = "yes"; word = "yes"; },
-  { text = "seth"; nick = "yes"; word = "yes"; }
-  { text = "oalug"; nick = "yes"; word = "yes"; }
+  { text = "seth"; nick = "yes"; word = "yes"; },
+  { text = "oalug"; nick = "yes"; word = "yes"; },
   { text = "conman"; nick = "yes"; word = "yes"; }
 );
 
@@ -174,47 +187,8 @@ ignores = (
 
 windows = {
   1 = { immortal = "yes"; name = "(status)"; level = "ALL"; };
-  2 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#oalug";
-        tag = "freenode";
-      }
-    );
-  };
+  2 = { immortal = "yes"; name = "&bitlbee"; };
   3 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#utahpython";
-        tag = "freenode";
-      }
-    );
-  };
-  4 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#utah";
-        tag = "freenode";
-      }
-    );
-  };
-  5 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#utos";
-        tag = "freenode";
-      }
-    );
-  };
-  6 = {
     items = (
       {
         type = "CHANNEL";
@@ -224,5 +198,44 @@ windows = {
       }
     );
   };
+  4 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#oalug";
+        tag = "freenode";
+      }
+    );
+  };
+  5 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#utahpython";
+        tag = "freenode";
+      }
+    );
+  };
+  6 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#utah";
+        tag = "freenode";
+      }
+    );
+  };
+  7 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#utos";
+        tag = "freenode";
+      }
+    );
+  };
 };
-logs = { };
