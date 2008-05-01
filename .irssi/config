@@ -30,11 +30,11 @@ chatnets = {
 
 channels = (
   { name = "&bitlbee"; chatnet = "bitlbee"; autojoin = "yes"; },
-  { name = "#utos-dev"; chatnet = "freenode"; autojoin = "yes"; }
+  { name = "#utos-dev"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#oalug"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utahpython"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utah"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#utos"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#utos"; chatnet = "freenode"; autojoin = "yes"; }
 );
 
 statusbar = {
@@ -187,8 +187,28 @@ ignores = (
 
 windows = {
   1 = { immortal = "yes"; name = "(status)"; level = "ALL"; };
-  2 = { immortal = "yes"; name = "&bitlbee"; };
+  2 = {
+      items = (
+          {
+              name = "&bitlbee";
+              tag = "bitlbee";
+              type = "CHANNEL";
+              chat_type = "IRC";
+          }
+      );
+  };
   3 = {
+      items = (
+          {
+              immortal = "yes";
+              name = "twitter-main";
+              tag = "twitter-main";
+              type = "CHANNEL";
+              chat_type = "IRC";
+          }
+      );
+  };
+  4 = {
     items = (
       {
         type = "CHANNEL";
@@ -198,7 +218,7 @@ windows = {
       }
     );
   };
-  4 = {
+  5 = {
     items = (
       {
         type = "CHANNEL";
@@ -208,7 +228,7 @@ windows = {
       }
     );
   };
-  5 = {
+  6 = {
     items = (
       {
         type = "CHANNEL";
@@ -218,7 +238,7 @@ windows = {
       }
     );
   };
-  6 = {
+  7 = {
     items = (
       {
         type = "CHANNEL";
@@ -228,7 +248,7 @@ windows = {
       }
     );
   };
-  7 = {
+  8 = {
     items = (
       {
         type = "CHANNEL";
@@ -239,3 +259,4 @@ windows = {
     );
   };
 };
+logs = { };
