@@ -188,27 +188,16 @@ ignores = (
 windows = {
   1 = { immortal = "yes"; name = "(status)"; level = "ALL"; };
   2 = {
-      items = (
-          {
-              name = "&bitlbee";
-              tag = "bitlbee";
-              type = "CHANNEL";
-              chat_type = "IRC";
-          }
-      );
+    items = (
+      {
+        name = "&bitlbee";
+        tag = "bitlbee";
+        type = "CHANNEL";
+        chat_type = "IRC";
+      }
+    );
   };
   3 = {
-      items = (
-          {
-              immortal = "yes";
-              name = "twitter-main";
-              tag = "twitter-main";
-              type = "CHANNEL";
-              chat_type = "IRC";
-          }
-      );
-  };
-  4 = {
     items = (
       {
         type = "CHANNEL";
@@ -218,7 +207,7 @@ windows = {
       }
     );
   };
-  5 = {
+  4 = {
     items = (
       {
         type = "CHANNEL";
@@ -228,7 +217,7 @@ windows = {
       }
     );
   };
-  6 = {
+  5 = {
     items = (
       {
         type = "CHANNEL";
@@ -238,7 +227,7 @@ windows = {
       }
     );
   };
-  7 = {
+  6 = {
     items = (
       {
         type = "CHANNEL";
@@ -248,7 +237,7 @@ windows = {
       }
     );
   };
-  8 = {
+  7 = {
     items = (
       {
         type = "CHANNEL";
@@ -260,3 +249,4 @@ windows = {
   };
 };
 logs = { };
+keyboard = ( { key = "meta-x"; id = "command"; data = "window last"; } );
