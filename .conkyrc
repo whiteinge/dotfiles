@@ -5,17 +5,16 @@
 # Check http://conky.sf.net for an up-to-date-list.
 
 # set to yes if you want Conky to be forked in the background
-background no
+background yes
 
-maximum_width 1420
-minimum_size 1420 880
-text_buffer_size 512
+maximum_width 1440
+minimum_size 1440 900
+text_buffer_size 1024
+
+border_margin 10
 
 # Use Xft?
 use_xft yes
-
-# Set conky on the bottom of all other applications
-own_window_hints below
 
 # Xft font when Xft is enabled
 xftfont Monaco:size=9
@@ -43,35 +42,23 @@ update_interval 2
 # Set to zero to run forever.
 total_run_times 0
 
-# Create own window instead of using desktop (required in nautilus)
+# For xcompmgr
 own_window no
-
-# Use pseudo transparency with own_window?
-own_window_transparent yes
-
-# If own_window_transparent is set to no, you can set the background colour here
-own_window_colour hotpink
+# own_window_transparent yes
+# own_window_type override
+# own_window_type desktop
 
 # Use double buffering (reduces flicker, may not work for everyone)
 double_buffer yes
 
 # Draw shades?
-draw_shades yes
+# draw_shades yes
 
 # Draw outlines?
 draw_outline no
 
 # Draw borders around text
 draw_borders no
-
-# Stippled borders?
-stippled_borders 6
-
-# border margins
-border_margin 1
-
-# border width
-border_width 1
 
 # Default colors and also border colors
 default_color white
@@ -87,8 +74,8 @@ alignment tm
 
 # Gap between borders of screen and text
 # same thing as passing -x at command line
-gap_x 0
-gap_y -12
+gap_x -10
+gap_y -11
 
 # Subtract file system buffers from used memory?
 # no_buffers yes
@@ -118,20 +105,20 @@ use_spacer left
 
 TEXT
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color #ffffff}$cpu% ${color grey}cpu  ${color #ffffff}$memperc% ${color grey}ram  ${color #ffffff}$swapperc% ${color grey}swap    eth2: ${color #ffffff}${downspeed eth2} ${color grey}k/s tx  ${color #ffffff}${upspeed eth2} ${color grey}k/s rx
+${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color #ffffff}$cpu% ${color grey}cpu  ${color #ffffff}$memperc% ${color grey}ram  ${color #ffffff}$swapperc% ${color grey}swap    eth2: ${color #ffffff}${downspeed eth2} ${color grey}k/s tx  ${color #ffffff}${upspeed eth2} ${color grey}k/s rx    
 
-$alignr$loadavg  |  $uptime  |  $user_number users
-
-
-$alignr ip: ${color #ffffff}${addrs eth2}${color grey}
-$alignr ns: ${color #ffffff}$nameserver${color grey}
+$alignr$loadavg  |  $uptime  |  $user_number users    
 
 
-$alignr / ${fs_bar 5,120 /}
+$alignr ip: ${color #ffffff}${addrs eth2}${color grey}    
+$alignr ns: ${color #ffffff}$nameserver${color grey}    
 
 
-$alignr mpd $mpd_status  ${color #ffffff}$mpd_smart
-$alignr ${color grey}${mpd_bar 5,200} 
-$alignr Vol: ${color #ffffff}$mpd_vol   ${color grey}Rand: ${color #ffffff}$mpd_random   ${color grey}Rep: ${color #ffffff}$mpd_repeat
+$alignr / ${fs_bar 5,120 /}    
 
-${voffset -180}${execi 300 gcalcli --nc agenda}
+
+$alignr mpd $mpd_status  ${color #ffffff}$mpd_smart    
+$alignr ${color grey}${mpd_bar 5,200}     
+$alignr Vol: ${color #ffffff}$mpd_vol   ${color grey}Rand: ${color #ffffff}$mpd_random   ${color grey}Rep: ${color #ffffff}$mpd_repeat    
+
+${voffset -180}${execi 300 gcalcli --nc agenda}    
