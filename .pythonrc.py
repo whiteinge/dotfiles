@@ -149,9 +149,9 @@ EDITOR = os.environ.get('EDITOR', 'vim')
 EDIT_CMD = '\e'
 
 class EditableBufferInteractiveConsole(InteractiveConsole):
-    def __init__(self, *args):
+    def __init__(self, *args, **kwargs):
         self.last_buffer = [] # This holds the last executed statement
-        InteractiveConsole.__init__(self, *args)
+        InteractiveConsole.__init__(self, *args, **kwargs)
 
     def runsource(self, source, *args):
         self.last_buffer = [ source ]
@@ -172,9 +172,8 @@ class EditableBufferInteractiveConsole(InteractiveConsole):
             line = lines[-1]
         return line
 
-c = EditableBufferInteractiveConsole()
+c = EditableBufferInteractiveConsole(locals=locals())
 # Update the InteractiveConsole's namespace with the current namespace
-c.locals.update(__main__.__dict__)
 c.interact(banner=WELCOME)
 
 # Exit the Python shell on exiting the InteractiveConsole
