@@ -120,7 +120,7 @@ def SECRET_KEY():
                 for i in range(50)])
 
 # If we're working with a Django project, set up the test environment
-if os.environ.get('DJANGO_SETTINGS_MODULE', ''):
+if os.environ.has_key('DJANGO_SETTINGS_MODULE'):
     from django.db.models.loading import get_models
     from django.test.client import Client
     from django.test.utils import setup_test_environment, teardown_test_environment
@@ -141,6 +141,7 @@ Django environment detected.
 * The Django test environment has been set up. To restore the normal
   environment call `teardown_test_environment()`.
 %(Normal)s""" % _c
+
 # Start an external editor with \e {{{1
 ##################################     
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/438813/
@@ -173,7 +174,6 @@ class EditableBufferInteractiveConsole(InteractiveConsole):
         return line
 
 c = EditableBufferInteractiveConsole(locals=locals())
-# Update the InteractiveConsole's namespace with the current namespace
 c.interact(banner=WELCOME)
 
 # Exit the Python shell on exiting the InteractiveConsole
