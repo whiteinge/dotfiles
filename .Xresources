@@ -75,3 +75,9 @@ xcalc*ti.button34.background: gray95
 xcalc*ti.button37.background: gray95
 xcalc*ti.button38.background: gray95
 xcalc*ti.button39.background: gray95
+
+! The original xdm screen was beautiful
+! These lines belong in /etc/X11/xdm/Xresources
+xlogin*greeting: Welcome to Fhloston Paradise
+xlogin*allowRootLogin: false
+xlogin*allowNullPasswd: false
