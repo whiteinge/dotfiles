@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openbox_config xmlns="http://openbox.org/3.4/rc">
   <resistance>
-    <strength>10</strength>
-    <screen_edge_strength>20</screen_edge_strength>
+    <strength>20</strength>
+    <screen_edge_strength>40</screen_edge_strength>
   </resistance>
   <focus>
     <focusNew>yes</focusNew>
@@ -161,14 +161,12 @@
   </dock>
   <keyboard>
     <chainQuitKey>C-g</chainQuitKey>
-
     <!-- Switch to Desktops -->
     <keybind key="W-a">
-        <action name="DesktopLast">
-            <dialog>no</dialog>
-        </action>
+      <action name="DesktopLast">
+        <dialog>no</dialog>
+      </action>
     </keybind>
-
     <keybind key="W-F1">
       <action name="Desktop">
         <desktop>1</desktop>
@@ -189,33 +187,31 @@
         <desktop>4</desktop>
       </action>
     </keybind>
-
     <!-- Send windows to other Desktops -->
     <keybind key="W-A-F1">
-        <action name="SendToDesktop">
-            <desktop>1</desktop>
-            <follow>no</follow>
-        </action>
+      <action name="SendToDesktop">
+        <desktop>1</desktop>
+        <follow>no</follow>
+      </action>
     </keybind>
     <keybind key="W-A-F2">
-        <action name="SendToDesktop">
-            <desktop>2</desktop>
-            <follow>no</follow>
-        </action>
+      <action name="SendToDesktop">
+        <desktop>2</desktop>
+        <follow>no</follow>
+      </action>
     </keybind>
     <keybind key="W-A-F3">
-        <action name="SendToDesktop">
-            <desktop>3</desktop>
-            <follow>no</follow>
-        </action>
+      <action name="SendToDesktop">
+        <desktop>3</desktop>
+        <follow>no</follow>
+      </action>
     </keybind>
     <keybind key="W-A-F4">
-        <action name="SendToDesktop">
-            <desktop>4</desktop>
-            <follow>no</follow>
-        </action>
+      <action name="SendToDesktop">
+        <desktop>4</desktop>
+        <follow>no</follow>
+      </action>
     </keybind>
-
     <keybind key="W-Left">
       <action name="DesktopLeft">
         <dialog>no</dialog>
@@ -240,11 +236,9 @@
         <wrap>no</wrap>
       </action>
     </keybind>
-
     <keybind key="W-d">
       <action name="ToggleShowDesktop"/>
     </keybind>
-
     <!-- Keybindings for windows -->
     <keybind key="W-grave">
       <action name="Lower"/>
@@ -257,9 +251,8 @@
       </action>
     </keybind>
     <keybind key="W-x">
-        <action name="ToggleMaximizeFull"/>
+      <action name="ToggleMaximizeFull"/>
     </keybind>
-
     <!-- Keybindings for window switching -->
     <keybind key="W-Tab">
       <action name="NextWindow"/>
@@ -274,10 +267,9 @@
       </action>
     </keybind>
     <keybind key="W-q">
-        <action name="Close"/>
+      <action name="Close"/>
     </keybind>
   </keyboard>
-
   <mouse>
     <dragThreshold>8</dragThreshold>
     <!-- number of pixels the mouse must move before a drag begins -->
