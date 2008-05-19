@@ -1,5 +1,6 @@
 ! --- xterm settings
-xterm*background: black
+xterm*utf8: 1
+xterm*background: grey9
 xterm*foreground: white
 xterm*scrollBar: false
 xterm*loginShell: true
@@ -9,7 +10,6 @@ xterm*cursorColor: red
 ! blue is usually too dark to see. this fixes that
 xterm*color4: RoyalBlue
 xterm*color12: RoyalBlue
-xterm*utf8: 1
 
 ! --- xmessage settings
 xmessage*form.okay.shapeStyle: rectangle
