@@ -76,6 +76,23 @@ xcalc*ti.button37.background: gray95
 xcalc*ti.button38.background: gray95
 xcalc*ti.button39.background: gray95
 
+! xpdf
+xpdf*initialZoom: page
+xpdf*urlCommand: firefox %s
+xpdf*enableFreetype: yes
+xpdf*antialias: yes
+
+! gv
+gv*antialias: true
+
+! xman
+xman*topBox: false
+xman*background: SlateGray
+xman*foreground: Linen
+
+! xload
+xload*update: 1
+
 ! The original xdm screen was beautiful
 ! These lines belong in /etc/X11/xdm/Xresources
 xlogin*greeting: Welcome to Fhloston Paradise
