@@ -134,7 +134,7 @@ if os.environ.has_key('DJANGO_SETTINGS_MODULE'):
     C = Client()
     setup_test_environment()
 
-    print """%(LightBlue)s
+    WELCOME += """%(LightBlue)s
 Django environment detected.
 * Your INSTALLED_APPS models have been imported into the namespace `A`.
 * The Django test client is available as `C`.
