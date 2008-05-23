@@ -382,7 +382,7 @@ import vim
 def EvaluateCurrentRange():
     eval(compile('\n'.join(vim.current.range),'','exec'),globals())
 EOL
-noremap <silent> ,pm :py EvaluateCurrentRange()<CR>
+map <C-m> :py EvaluateCurrentRange()
 
 " Enables 'gf' for Python includes
 python << EOF
