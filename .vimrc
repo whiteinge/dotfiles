@@ -66,6 +66,9 @@ map <silent> <F6> :set nolist!<CR>:set nolist?<CR>
 " Toggle spell-checking
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
+" Maps Omnicompletion to CTRL-space since ctrl-x ctrl-o is hard to reach
+inoremap <Nul> <C-x><C-o>
+
 " SVN Diffs
 " Small, fast, windowed svn diff
 noremap <silent> ,sq :new +:read\ !svn\ diff\ #<CR>:exe Scratch()<CR>:set filetype=diff<CR>:set nofoldenable<CR>
@@ -357,6 +360,9 @@ autocmd BufReadPost *
 " Auto-set certain options as well as syntax highlighting and indentation
 filetype plugin indent on
 
+" Set Omnicompletion for certain filetypes
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+
 " Not sure why the cron filetype isn't catching this...
 au FileType crontab set backupcopy=yes
 
@@ -365,6 +371,28 @@ au FileType crontab set backupcopy=yes
 au FileType xml,xslt compiler xmllint
 au FileType html compiler tidy
 au FileType java compiler javac
+
+" Python :make
+autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+
+" Python :make for a small visual selection of code
+python << EOL
+import vim
+def EvaluateCurrentRange():
+    eval(compile('\n'.join(vim.current.range),'','exec'),globals())
+EOL
+noremap <silent> ,pm :py EvaluateCurrentRange()<CR>
+
+" Enables 'gf' for Python includes
+python << EOF
+import os
+import sys
+import vim
+for p in sys.path:
+    if os.path.isdir(p):
+        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+EOF
 
 " For standards-compliant :TOhtml output
 let html_use_css=1
@@ -393,8 +421,10 @@ noremap <silent> ,< :call CommentLinePincer('<!-- ', ' -->')<CR>+
 " /regexp/replacement/[kind−spec/][flags]
 map <F3> :TlistToggle<cr>
 let Tlist_Use_Right_Window = 1
-let Tlist_Show_One_File = 1
-let Tlist_Sort_Type = "name"
+let Tlist_Compact_Format = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_GainFocus_On_ToggleOpen = 1
+let Tlist_File_Fold_Auto_Close = 1
 let tlist_xml_settings = 'xml;i:id'
 let tlist_xhtml_settings = tlist_xml_settings
 let tlist_html_settings = tlist_xml_settings
@@ -412,10 +442,10 @@ function! Scratch()
     set bufhidden=delete
     set noswapfile
 endfunction
+noremap <silent> ,s :exe Scratch()<CR>
 
-" Open a man-page in a new window
-runtime ftplugin/man.vim
-nmap K :Man <C-R>=expand("<cword>")<CR><CR>
+" Set keywordprg for certain filetypes
+au FileType python set keywordprg=pydoc
 
 " }}}
 
