@@ -302,21 +302,20 @@ svn_up_and_log()
 
 alias djrunserver="django-admin.py runserver >&! /tmp/django.log &"
 
-# run this in your base project dir
+# For a monolithic project, just run the function from the project folder.
+# For a reusable app, run the function from the folder containing the settings
+# file, and pass the settings file as an argument.
 djsetup()
 {
-    cd ..
-    export PYTHONPATH=$PWD
-    export DJANGO_SETTINGS_MODULE=$(basename $OLDPWD).settings
-    cd -
-}
-
-# This loads all the app files.
-djedit() {
-    screen -t $(basename $1) vi "+cd $1" \
-        $1/__init__.py \
-        "+argadd **/*py" \
-        "+argadd **/*html"
+    if [ x"$1" != x ]; then
+        export PYTHONPATH=$PWD
+        export DJANGO_SETTINGS_MODULE=$(basename $1 .py)
+    else
+        cd ..
+        export PYTHONPATH=$PWD
+        export DJANGO_SETTINGS_MODULE=$(basename $OLDPWD).settings
+        cd $OLDPWD
+    fi
 }
 
 # }}}
@@ -353,3 +352,17 @@ dict (){
 }
 
 # EOF
+# CSS Minifier {{{1
+
+cssmin (){
+    sed -e '
+s/^[ \t]*//g;         # remove leading space
+s/[ \t]*$//g;         # remove trailing space
+s/\([:{;,]\) /\1/g;   # remove space after a colon, brace, semicolon, or comma
+s/ {/{/g;             # remove space before a semicolon
+s/\/\*.*\*\///g;      # remove comments
+/^$/d                 # remove blank lines
+' < $1 | sed -e :a -e '$!N; s/\n\(.\)/\1/; ta # remove all newlines
+s/}/}\n/g;            # put each rule on a new line
+'
+}
