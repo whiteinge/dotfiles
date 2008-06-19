@@ -169,7 +169,7 @@ settings = {
     screen_away_active = "yes";
     neat_colorize = "yes";
     hilight_notify = "yes";
-    neat_colors = "kKrRgGbBmMpPcCwW";
+    neat_colors = "rRgGbBmMpPcCwW";
   };
 };
 
