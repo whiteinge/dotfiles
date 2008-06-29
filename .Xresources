@@ -11,6 +11,10 @@ xterm*cursorColor: red
 xterm*color4: RoyalBlue
 xterm*color12: RoyalBlue
 
+! map the tab key to escape
+xterm.vt100.translations: #override\n\
+        <Key>Tab: string("\033")\n\
+
 ! --- xmessage settings
 xmessage*form.okay.shapeStyle: rectangle
 xmessage*form.okay.background: IndianRed
