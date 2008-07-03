@@ -266,6 +266,11 @@
         <command>gmrun</command>
       </action>
     </keybind>
+    <keybind key="W-m">
+      <action name="Execute">
+        <command>xmag</command>
+      </action>
+    </keybind>
     <keybind key="W-q">
       <action name="Close"/>
     </keybind>
@@ -287,7 +292,7 @@
       <mousebind button="A-Left" action="Click">
         <action name="Unshade"/>
       </mousebind>
-      <mousebind button="A-Left" action="Drag">
+      <mousebind button="W-Left" action="Drag">
         <action name="Move"/>
       </mousebind>
       <mousebind button="A-Right" action="Press">
@@ -295,7 +300,7 @@
         <action name="Raise"/>
         <action name="Unshade"/>
       </mousebind>
-      <mousebind button="A-Right" action="Drag">
+      <mousebind button="W-Right" action="Drag">
         <action name="Resize"/>
       </mousebind>
       <mousebind button="A-Middle" action="Press">
