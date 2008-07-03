@@ -20,11 +20,10 @@ servers = (
 chatnets = {
   freenode = {
     type = "IRC";
-    autosendcmd = "/^msg nickserv identify heruli;wait -freenode 2000";
   };
   bitlbee = {
     type = "IRC";
-    autosendcmd = "wait 2000; /msg &bitlbee identify heruli";
+    autosendcmd = "wait 2000; /msg &bitlbee identify 0987";
   };
 };
 
