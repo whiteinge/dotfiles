@@ -19,7 +19,7 @@ from code import InteractiveConsole
 # Imports we want
 import datetime
 
-# Color Support {{{1
+# Color Support
 ###############
 
 class TermColors(dict):
@@ -57,7 +57,7 @@ class TermColors(dict):
             self.update(dict([(k, self.NoColor) for k,v in self.COLOR_TEMPLATES]))
 _c = TermColors()
 
-# Enable a History {{{1
+# Enable a History
 ##################
 
 HISTFILE="%s/.pyhistory" % os.environ["HOME"]
@@ -74,13 +74,13 @@ def savehist():
 
 atexit.register(savehist)
 
-# Enable Color Prompts {{{1
+# Enable Color Prompts
 ######################
 
 sys.ps1 = '%s>>> %s' % (_c['Green'], _c['Normal'])
 sys.ps2 = '%s... %s' % (_c['Red'], _c['Normal'])
 
-# Enable Pretty Printing for stdout {{{1
+# Enable Pretty Printing for stdout
 ###################################
 
 def my_displayhook(value):
@@ -89,7 +89,7 @@ def my_displayhook(value):
         pprint.pprint(value)
 sys.displayhook = my_displayhook
 
-# Welcome message {{{1
+# Welcome message
 #################
 
 WELCOME = """%(Green)s
@@ -108,7 +108,7 @@ atexit.register(lambda: sys.stdout.write("""%(DarkGray)s
 Sheesh, I thought he'd never leave. Who invited that guy?
 %(Normal)s""" % _c))
 
-# Django Helpers {{{1
+# Django Helpers
 ################
 
 def SECRET_KEY():
@@ -119,13 +119,14 @@ def SECRET_KEY():
             [choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)')
                 for i in range(50)])
 
-# If we're working with a Django project, set up the test environment
+# If we're working with a Django project, set up the environment
 if os.environ.has_key('DJANGO_SETTINGS_MODULE'):
     from django.db.models.loading import get_models
     from django.test.client import Client
     from django.test.utils import setup_test_environment, teardown_test_environment
 
     class DjangoModels(object):
+        """Loop through all the models in INSTALLED_APPS and import them."""
         def __init__(self):
             for m in get_models():
                 setattr(self, m.__name__, m)
@@ -142,7 +143,7 @@ Django environment detected.
   environment call `teardown_test_environment()`.
 %(Normal)s""" % _c
 
-# Start an external editor with \e {{{1
+# Start an external editor with \e
 ##################################     
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/438813/
 
