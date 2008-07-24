@@ -125,6 +125,8 @@ unfunction makemodal
 # }}}
 # {{{ aliases
 
+alias vi='vim'
+
 alias ls='ls -F --color'
 alias la='ls -A'
 alias ll='ls -lh'
