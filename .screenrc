@@ -29,6 +29,9 @@ bufferfile $HOME/.screen_buf
 # bindkey < eval "stuff ' '" "exec sh -c 'xclip -o > /tmp/screen-exchange'" readbuf
 
 #                           DEFAULT WINDOWS
+# To run the same command in all windows from the screen command mode:
+# at '#' stuff 'yourcommand\012'
+# \012 is the code for a carriage return
 screen -t irssi
 screen -t main
 screen -t work
