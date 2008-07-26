@@ -382,17 +382,7 @@ import vim
 def EvaluateCurrentRange():
     eval(compile('\n'.join(vim.current.range),'','exec'),globals())
 EOL
-map <C-m> :py EvaluateCurrentRange()
-
-" Enables 'gf' for Python includes
-python << EOF
-import os
-import sys
-import vim
-for p in sys.path:
-    if os.path.isdir(p):
-        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
-EOF
+" map <C-m> :py EvaluateCurrentRange()
 
 " For standards-compliant :TOhtml output
 let html_use_css=1
@@ -451,3 +441,70 @@ au FileType python set keywordprg=pydoc
 
 " eof
 " vim:ft=vim:fdm=marker:ff=unix:nowrap:tabstop=4:shiftwidth=4:softtabstop=4:smarttab:shiftround:expandtab
+
+
+" Wraps visual selection in an HTML tag
+vmap ,w <ESC>:call VisualHTMLTagWrap()<CR>
+
+function! VisualHTMLTagWrap()
+    let a:tag = toupper( input( "Tag to wrap block: ") )
+    let a:jumpright = 2 + len( a:tag )
+    normal `<
+    let a:init_line = line( "." )
+    exe "normal i<".a:tag.">"
+    normal `>
+    let a:end_line = line( "." )
+    " Don't jump if we're on a new line
+    if( a:init_line == a:end_line )
+        " Jump right to compensate for the characters we've added
+        exe "normal ".a:jumpright."l"
+    endif
+    exe "normal a</".a:tag.">"
+endfunction
+
+
+
+
+" Comment lines from mark a to mark b
+fun DoCommentMark(a,b)
+    exe "normal '" . a:a . "_\<C-V>'" . a:b . 'I' . b:comment . ' '
+endfun
+" Handles the opfunc call
+fun DoCommentOp(...)
+    call DoCommentMark('[', ']')
+endfun
+" Handles visual mode
+fun DoCommentV()
+    call DoCommentMark('<', '>')
+endfun
+
+" Uncomment lines from mark a to mark b
+fun UnCommentMark(a,b)
+    exe "'" . a:a . ",'" . a:b . 's/^\(\s*\)' . escape(b:comment,'/') . ' /\1/e'
+endfun
+fun UnCommentOp(...)
+    call UnCommentMark('[', ']')
+endfun
+fun UnCommentV()
+    call UnCommentMark('<', '>')
+endfun
+
+map <leader>c <Esc>:set opfunc=DoCommentOp<CR>g@
+map <leader>C <Esc>:set opfunc=UnCommentOp<CR>g@
+vmap <leader>c <Esc>:call DoCommentV()<CR>
+vmap <leader>C <Esc>:call UnCommentV()<CR>
+
+" There's probably a better way to set the commenting character ...
+au BufEnter * call SetComment()
+fun SetComment()
+    let b:comment = ''
+    if &ft == 'cpp' || &ft == 'java' || &ft == 'javascript'
+        let b:comment = '//'
+    elseif &ft == 'vim'
+        let b:comment = '"'
+    elseif &ft == 'python' || &ft == 'perl' || &ft == 'sh' || &ft == 'R'
+        let b:comment = '#'
+    elseif &ft == 'lisp'
+        let b:comment = ';'
+    endif
+endfun
