@@ -1,0 +1,7 @@
+[ui]
+username = Seth House <seth@eseth.com>
+ignore = ~/.hgignore
+
+[web]
+allow_archive = bz2 gz
+port = 8001
