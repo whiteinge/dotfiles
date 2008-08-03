@@ -1,5 +1,6 @@
 syntax: glob
 
+.hgignore
 *.DS_Store
 *.pyc
 *.swp
