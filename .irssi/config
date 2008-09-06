@@ -34,6 +34,8 @@ channels = (
   { name = "#utahpython"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utah"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utos"; chatnet = "freenode"; autojoin = "yes"; }
+  { name = "#ubuntu-us-ut"; chatnet = "freenode"; autojoin = "yes"; }
+  { name = "#django-hotclub"; chatnet = "freenode"; autojoin = "yes"; }
 );
 
 statusbar = {
