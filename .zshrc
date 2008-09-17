@@ -353,6 +353,10 @@ dict (){
     curl dict://dict.org/d:$1
 }
 
+spell (){
+    echo $1 | aspell -a
+}
+
 # EOF
 # CSS Minifier {{{1
 
