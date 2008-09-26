@@ -162,7 +162,7 @@ settings = {
     bell_beeps = "yes";
     beep_msg_level = "MSGS NOTICES DCC DCCMSGS HILIGHT";
     windows_auto_renumber = "no";
-    theme = "88_madcows";
+    theme = "hv";
   };
   "perl/core/scripts" = {
     screen_away_active = "yes";
@@ -170,7 +170,7 @@ settings = {
     hilight_notify = "yes";
     neat_colors = "rRgGbBmMpPcCwW";
     nicklist_automode = "screen";
-    nicklist_width = "11";
+    nicklist_width = "14";
   };
 };
 
@@ -258,3 +258,6 @@ keyboard = (
   { key = "ctrl-b"; id = "scroll_backward"; data = ""; },
   { key = "ctrl-f"; id = "scroll_forward"; data = ""; }
 );
+aliases = {
+  UNACT = "script exec foreach $$w (Irssi::windows()) { Irssi::command(\"window goto $$w->{refnum}\")\\;} ; window goto $winref";
+};
