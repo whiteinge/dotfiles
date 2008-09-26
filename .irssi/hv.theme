@@ -128,7 +128,7 @@ abstracts = {
   ##
 
   # used internally by this theme
-  action_core = "%y * $*%n";
+  action_core = "%y $*";
 
   # generic one that's used by most actions
   action = "{action_core $*} ";
@@ -205,10 +205,10 @@ abstracts = {
 
   # default background for all statusbars. You can also give
   # the default foreground color for statusbar items.
-  sb_background = "%n";
+  sb_background = "%7%K";
 
   # default backround for "default" statusbar group
-  #sb_default_bg = "%n";
+  # sb_default_bg = "%4";
   # background for prompt / input line
   sb_prompt_bg = "%n";
   # background for info statusbar
@@ -228,9 +228,9 @@ abstracts = {
 
   prompt = "%K[%n$*%K]%n ";
 
-  sb = " %g[%n$*%g]%n";
-  sbmode = "(%g+%n$*)";
-  sbaway = " (%GzZzZ%n)";
+  sb = " %K[%n$*%K]%n";
+  sbmode = "(%K+%n$*)";
+  sbaway = " (%BzZzZ%n)";
   sbservertag = ":$0 (change with ^X)";
 
   # activity in statusbar
@@ -240,9 +240,9 @@ abstracts = {
   # normal text
   sb_act_text = "%g$*";
   # public message
-  sb_act_msg = "%W$*";
+  sb_act_msg = "%k$*";
   # hilight
-  sb_act_hilight = "%Y$*";
+  sb_act_hilight = "%M$*";
   # hilight with specified color, $0 = color, $1 = text
   sb_act_hilight_color = "$0$1-%n";
 };
