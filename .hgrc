@@ -1,5 +1,6 @@
 [ui]
 username = Seth House <seth@eseth.com>
+merge = vimdiff
 ignore = ~/.hgignore
 
 [web]
@@ -9,6 +10,6 @@ port = 8001
 [extensions]
 color =
 hgext.graphlog  =
-hgext.purge=
-hgext.record=
+hgext.purge =
+hgext.record =
 hgext.mq =
