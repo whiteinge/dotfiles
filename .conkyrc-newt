@@ -7,8 +7,8 @@
 # set to yes if you want Conky to be forked in the background
 background yes
 
-maximum_width 1440
-minimum_size 1440 900
+# maximum_width 1440
+minimum_size 800 480
 text_buffer_size 1024
 
 border_margin 10
@@ -36,7 +36,7 @@ mpd_port 6600
 # mail_spool $MAIL
 
 # Update interval in seconds
-update_interval 2
+update_interval 5
 
 # This is the number of times Conky will update before quitting.
 # Set to zero to run forever.
@@ -105,16 +105,20 @@ use_spacer left
 
 TEXT
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color #ffffff}$cpu% ${color grey}cpu  ${color #ffffff}$memperc% ${color grey}ram  ${color #ffffff}$swapperc% ${color grey}swap    eth2: ${color #ffffff}${downspeed eth2} ${color grey}k/s tx  ${color #ffffff}${upspeed eth2} ${color grey}k/s rx    
+${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color grey}cpu${color #ffffff}$cpu% ($freq MHz)   ${color grey}ram${color #ffffff}$memperc%    ${color grey}ath0: tx${color #ffffff}${downspeed ath0} ${color grey}k/s, rx${color #ffffff}${upspeed ath0} ${color grey}k/s    batt${color #ffffff}$battery_percent%   
 
 $alignr$loadavg  |  $uptime  |  $user_number users    
 
+$alignr bat0 ${battery_bar 5,120}    
+$alignr$battery,  $alignr$battery_time    
 
-$alignr ip: ${color #ffffff}${addrs eth2}${color grey}    
-$alignr ns: ${color #ffffff}$nameserver${color grey}    
+
+$alignr${color grey}ip: ${color #ffffff}${addrs ath0}    
+$alignr${color grey}ns: ${color #ffffff}$nameserver    
 
 
 $alignr / ${fs_bar 5,120 /}    
+$alignr /media/sdcard ${fs_bar 5,120 /media/sdcard}    
 
 
 $alignr mpd $mpd_status  ${color #ffffff}$mpd_smart    
