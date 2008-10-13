@@ -5,3 +5,4 @@ syntax: glob
 *.pyc
 *.swp
 development.sqlite3
+debug_settings.py
