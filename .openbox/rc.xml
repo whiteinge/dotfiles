@@ -200,26 +200,10 @@
       </action>
     </keybind>
 
-    <keybind key="W-Left"> <action name="DesktopLeft"> <dialog>no</dialog> <wrap>no</wrap> </action> </keybind>
-    <keybind key="W-Right"> <action name="DesktopRight"> <dialog>no</dialog> <wrap>no</wrap> </action> </keybind>
-    <keybind key="A-Left"> <action name="DesktopLeft"> <dialog>no</dialog> <wrap>no</wrap> </action> </keybind>
-    <keybind key="A-Right"> <action name="DesktopRight"> <dialog>no</dialog> <wrap>no</wrap> </action> </keybind>
+    <keybind key="W-A-Left"> <action name="DesktopLeft"> <dialog>no</dialog> <wrap>no</wrap> </action> </keybind>
+    <keybind key="W-A-Right"> <action name="DesktopRight"> <dialog>no</dialog> <wrap>no</wrap> </action> </keybind>
 
-    <keybind key="W-A-Left">
-      <action name="SendToDesktopLeft">
-        <dialog>no</dialog>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="W-A-Right">
-      <action name="SendToDesktopRight">
-        <dialog>no</dialog>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-
-    <keybind key="W-d"> <action name="ToggleShowDesktop"/> </keybind>
-    <keybind key="A-d"> <action name="ToggleShowDesktop"/> </keybind>
+    <keybind key="W-A-d"> <action name="ToggleShowDesktop"/> </keybind>
 
     <!-- Keybindings for windows -->
     <keybind key="W-grave">
@@ -227,9 +211,6 @@
       <action name="FocusToBottom"/>
       <action name="Unfocus"/>
     </keybind>
-
-    <keybind key="W-space"> <action name="ShowMenu"> <menu>client-menu</menu> </action> </keybind>
-    <keybind key="A-space"> <action name="ShowMenu"> <menu>client-menu</menu> </action> </keybind>
 
     <keybind key="W-x"> <action name="ToggleMaximizeFull"/> </keybind>
     <keybind key="A-x"> <action name="ToggleMaximizeFull"/> </keybind>
