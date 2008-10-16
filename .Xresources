@@ -36,6 +36,9 @@ xmessage*Command.background: gray80
 xmessage*faceName: Monaco
 xmessage*faceSize: 12
 
+Xcursor.theme: whiteglass
+! Xcursor.size:  SIZE #optional
+
 ! -- xcalc settings
 xcalc*ti.button1.vertDistance: 4
 xcalc*ti.button2.vertDistance: 4
