@@ -1,21 +1,62 @@
-! --- xterm settings
+! The best, goddamn Xresources file in the whole world.
+! Author: Seth House <seth@eseth.com>
+! Modified: $LastChangedDate$
+! -----------------------------------------------------------------------------
+
+
+! --- Xft {{{1
+! -----------------------------------------------------------------------------
+Xft*dpi: 96
+Xft*hinting: true
+Xft*hintstyle: hintfull
+! Xft.hintstyle:  hintslight
+Xft*antialias: true
+! rgba subpixel hinting (for LCDs)
+Xft*rgba: none
+! Xft*rgba: rgb
+
+
+! --- Xcursor {{{1
+! -----------------------------------------------------------------------------
+Xcursor.theme: whiteglass
+! Xcursor.size:  SIZE #optional
+
+
+! --- xterm {{{1
+! -----------------------------------------------------------------------------
 xterm*utf8: 1
+xterm*eightBitInput: true
+! allows you to use meta keys in irssi like alt-1, alt-2, etc
+! but replaces using alt to insert utf characters, so is commented out
+! an alternative is to hit esc. then hit the desired meta key like 1 or 2
+! xterm*metaSendsEscape: true
 xterm*background: grey9
 xterm*foreground: white
 xterm*scrollBar: false
 xterm*loginShell: true
+! Enables True-Type rendering
+xterm*renderFont: true
 xterm*faceName: Monaco
 xterm*faceSize: 11
 xterm*cursorColor: red
-! blue is usually too dark to see. this fixes that
-xterm*color4: RoyalBlue
-xterm*color12: RoyalBlue
-
-! map the tab key to escape in xterm
+xterm*cursorUnderline: true
+xterm*cursorBlink: true
+! Scroll multiple lines at a time for faster redrawing
+xterm*jumpScroll: true
+xterm*multiScroll: true
+! Matches URLs and emails and selects them on double-click
+xterm*charClass: 33:48,37-38:48,45-47:48,64:48,58:48,126:48,61:48,63:48,43:48,35:38
+xterm*trimSelection: true
+! colors (fixes too dark blue)
+xterm*color4: DodgerBlue1
+xterm*color12: SteelBlue1
+! map the tab key to escape in xterm (becase we can!)
 ! xterm.vt100.translations: #override\n\
 !        <Key>Tab: string("\033")\n\
 
-! --- xmessage settings
+
+! --- xmessage {{{1
+! -----------------------------------------------------------------------------
 xmessage*form.okay.shapeStyle: rectangle
 xmessage*form.okay.background: IndianRed
 xmessage*form.okay.foreground: rgb:e/b/b
@@ -35,11 +76,36 @@ xmessage*Command.shapeStyle: Rectangle
 xmessage*Command.background: gray80
 xmessage*faceName: Monaco
 xmessage*faceSize: 12
+xmessage*message.scrollVertical: Always
+xmessage*message.scrollHorizontal: Never
+! add keyboard shortcuts
+xmessage*baseTranslations:#augment\
+        <Key>Return:exit()\n\
+        <Key>space:exit()
 
-Xcursor.theme: whiteglass
-! Xcursor.size:  SIZE #optional
 
-! -- xcalc settings
+! --- xmag {{{1
+! -----------------------------------------------------------------------------
+xmag*source: 100x100
+xmag*Command.background: gray85
+xmag*Command.foreground: gray15
+xmag*Label.foreground: rgb:e/b/b
+xmag*Label.background: IndianRed
+xmag*paste.background: ivory3
+xmag*helpLabel.background: gray80
+xmag*helpLabel.foreground: gray40
+! opens the window at the bottom right
+xmag*geometry: -0-0
+! automatically show the hex color and set up some keyboard shortcuts
+xmag*Scale.baseTranslations:#augment\
+        <EnterWindow>:popup-pixel()\n\
+        <Motion>:update-pixel()\n\
+        <Key>q:close()\n\
+        Ctrl<Key>c:close()\n\
+        <Key>space:replace()
+
+! --- xcalc {{{1
+! -----------------------------------------------------------------------------
 xcalc*ti.button1.vertDistance: 4
 xcalc*ti.button2.vertDistance: 4
 xcalc*ti.button3.vertDistance: 4
@@ -83,26 +149,85 @@ xcalc*ti.button37.background: gray95
 xcalc*ti.button38.background: gray95
 xcalc*ti.button39.background: gray95
 
-! xpdf
+
+! --- xpdf {{{1
+! -----------------------------------------------------------------------------
 xpdf*initialZoom: page
 xpdf*urlCommand: firefox %s
 xpdf*textEncoding: utf-8
 xpdf*enableFreetype: yes
 xpdf*antialias: yes
+xpdf*viKeys: on
 
-! gv
+
+! --- gv {{{1
+! -----------------------------------------------------------------------------
 gv*antialias: true
 
-! xman
+
+! --- xman {{{1
+! -----------------------------------------------------------------------------
 xman*topBox: false
 xman*background: SlateGray
 xman*foreground: Linen
 
-! xload
-xload*update: 1
 
-! The original xdm screen was beautiful (comparatively)
-! These lines belong in /etc/X11/xdm/Xresources
+! --- xload {{{1
+! -----------------------------------------------------------------------------
+xload*update: 1
+xload*highlight: grey50
+xload*borderWidth: 1
+xload*background: #ceccc7
+xload*padding: 3
+
+
+! --- xclock {{{1
+! -----------------------------------------------------------------------------
+xclock*analog: false
+xclock*brief: true
+xclock*foreground: white
+xclock*background: black
+
+
+! --- xdm {{{1
+! -----------------------------------------------------------------------------
+! The default xdm screen is beautiful. Empty your /etc/X11/xdm/Xresources.
 xlogin*greeting: Welcome to Fhloston Paradise
 xlogin*allowRootLogin: false
 xlogin*allowNullPasswd: false
+
+
+! --- color scheme {{{1
+! -----------------------------------------------------------------------------
+*foreground:     #DDDDDD
+*background:     #121212
+!black
+*color0:         #353535
+*color8:         #666666
+!red
+*color1:         #AE4747
+*color9:         #EE6363
+!green
+*color2:         #556B2F
+*color10:        #9ACD32
+!brown/yellow
+*color3:         #DAA520
+*color11:        #FFC125
+!blue
+*color4:         #6F99B4
+*color12:        #7C96B0
+!magenta
+*color5:         #8B7B8B
+*color13:        #D8BFD8
+!cyan
+*color6:         #A7A15E
+*color14:        #F0E68C
+!white
+*color7:         #DDDDDD
+*color15:        #FFFFFF
+
+! --- default font (for those that support ttf)
+*faceName: Monaco
+
+! can include other files with:
+! #include "FileName"
