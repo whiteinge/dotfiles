@@ -43,7 +43,7 @@ set cinwords=if,elif,else,for,while,try,except,finally,def,class
 
 set expandtab                   "et:    uses spaces instead of tab characters
 set smarttab                    "sta:   helps with backspacing because of expandtab
-set tabstop=4                   "ts:    number of spaces that a tab counts for
+set softtabstop=4               "ts:    number of spaces that a tab counts for
 set shiftwidth=4                "sw:    number of spaces to use for autoindent
 set shiftround                  "sr:    rounds indent to a multiple of shiftwidth
 
@@ -290,7 +290,8 @@ set statusline=%!MyStatusLine()
 "   All coloring options are for the non-GUI Vim (see :help cterm-colors).
 
 set t_Co=16
-color elflord
+" color elflord
+color pablo
 
 " The default fold color is too bright and looks too much like the statusline
 hi Folded cterm=bold ctermfg=8 ctermbg=none
