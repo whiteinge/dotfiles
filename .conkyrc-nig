@@ -1,0 +1,120 @@
+# Conky sample configuration
+#
+# the list of variables has been removed from this file in favour
+# of keeping the documentation more maintainable.
+# Check http://conky.sf.net for an up-to-date-list.
+
+# set to yes if you want Conky to be forked in the background
+background yes
+
+maximum_width 1200
+minimum_size 1200 1000
+text_buffer_size 1024
+
+border_margin 10
+
+# Use Xft?
+use_xft yes
+
+# Xft font when Xft is enabled
+xftfont Monaco:size=9
+
+# Text alpha when using Xft
+xftalpha 1.0
+
+# Print everything to stdout?
+# out_to_console no
+
+# MPD host/port
+mpd_host localhost
+mpd_port 6600
+
+# Print everything to console?
+# out_to_console no
+
+# mail spool
+# mail_spool $MAIL
+
+# Update interval in seconds
+update_interval 2
+
+# This is the number of times Conky will update before quitting.
+# Set to zero to run forever.
+total_run_times 0
+
+# For xcompmgr
+own_window no
+# own_window_transparent yes
+# own_window_type override
+# own_window_type desktop
+
+# Use double buffering (reduces flicker, may not work for everyone)
+double_buffer yes
+
+# Draw shades?
+# draw_shades yes
+
+# Draw outlines?
+draw_outline no
+
+# Draw borders around text
+draw_borders no
+
+# Default colors and also border colors
+default_color white
+default_shade_color black
+default_outline_color black
+
+# Text alignment, other possible values are commented
+alignment tm
+
+# Gap between borders of screen and text
+# same thing as passing -x at command line
+gap_x 0
+gap_y -11
+
+# Subtract file system buffers from used memory?
+# no_buffers yes
+
+# set to yes if you want all text to be in uppercase
+uppercase no
+
+# number of cpu samples to average
+# set to 1 to disable averaging
+cpu_avg_samples 2
+
+# number of net samples to average
+# set to 1 to disable averaging
+net_avg_samples 2
+
+# Force UTF8? note that UTF8 support required XFT
+override_utf8_locale yes
+
+# Add spaces to keep things from moving about?  This only affects certain objects.
+use_spacer left
+
+# variable is given either in format $variable or in ${variable}. Latter
+# allows characters right after the variable and must be used in network
+# stuff because of an argument
+
+# stuff after 'TEXT' will be formatted on screen
+
+TEXT
+
+${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color #ffffff}$cpu% ${color grey}cpu  ${color #ffffff}$memperc% ${color grey}ram  ${color #ffffff}$swapperc% ${color grey}swap    eth2: ${color #ffffff}${downspeed eth2} ${color grey}k/s tx  ${color #ffffff}${upspeed eth2} ${color grey}k/s rx
+
+$alignr$loadavg  |  $uptime  |  $user_number users
+
+
+$alignr ip: ${color #ffffff}${addrs eth2}${color grey}
+$alignr ns: ${color #ffffff}$nameserver${color grey}
+
+
+$alignr / ${fs_bar 5,120 /}
+
+
+$alignr mpd $mpd_status  ${color #ffffff}$mpd_smart
+$alignr ${color grey}${mpd_bar 5,200}
+$alignr Vol: ${color #ffffff}$mpd_vol   ${color grey}Rand: ${color #ffffff}$mpd_random   ${color grey}Rep: ${color #ffffff}$mpd_repeat
+
+${voffset -180}${execi 300 gcalcli --nc agenda}
