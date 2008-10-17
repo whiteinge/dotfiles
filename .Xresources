@@ -18,8 +18,7 @@ Xft*rgba: none
 
 ! --- Xcursor {{{1
 ! -----------------------------------------------------------------------------
-Xcursor.theme: whiteglass
-Xcursor.theme: FlatbedCursors.Blue.Regular
+Xcursor.theme: ComixCursors-Orange-Regular-Slim
 
 
 ! --- xterm {{{1
