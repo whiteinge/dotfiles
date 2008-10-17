@@ -143,8 +143,11 @@ alias ducks='du -cks * | sort -rn | head -15'
 alias tree="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias ps='ps -opid,uid,cpu,time,stat,command'
 
-alias sc="exec ssh-agent screen -RD"
-alias rsc="exec ssh-agent screen -e'^Ss' -RD"
+# Starts ssh-agent when screen is started/reattached, stops the agent when
+# screen is detached. Use ssh-add to activate key for the session.
+SSH_AUTH_SOCK=$HOME/.screen/ssh-auth-sock
+alias sc="exec ssh-agent sh -c 'ln -sfn \$SSH_AUTH_SOCK \$HOME/.screen/ssh-auth-sock; exec screen -S main -DRR'"
+alias rsc="exec ssh-agent sh -c 'ln -sfn \$SSH_AUTH_SOCK \$HOME/.screen/ssh-auth-sock; exec screen -e'^Ss' -S main -DRR'"
 
 # OS X versions
 if [[ $(uname) == "Darwin" ]]; then
