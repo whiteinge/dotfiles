@@ -19,7 +19,7 @@ Xft*rgba: none
 ! --- Xcursor {{{1
 ! -----------------------------------------------------------------------------
 Xcursor.theme: whiteglass
-! Xcursor.size:  SIZE #optional
+Xcursor.theme: FlatbedCursors.Blue.Regular
 
 
 ! --- xterm {{{1
