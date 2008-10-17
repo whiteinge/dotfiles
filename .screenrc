@@ -11,7 +11,7 @@ version                 # echo version on startup, 'cause old versions break thi
 autodetach on           # *sniff* I love this so much!
 defflow off             # disables (in theory) flow control ('cause it's no longer 1983)
 bind s
-vbell on                # the screen visual bell is pretty fast
+vbell off               # visual bells are hard to do right
 defutf8 on              # Default to utf
 
 #                           SCROLL-BACK MODE
