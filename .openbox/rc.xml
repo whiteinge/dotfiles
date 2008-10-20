@@ -224,7 +224,6 @@
     <!-- Keybindings for running applications -->
     <keybind key="W-space"> <action name="Execute"> <command>gmrun</command> </action> </keybind>
     <keybind key="A-space"> <action name="Execute"> <command>gmrun</command> </action> </keybind>
-    <keybind key="C-space"> <action name="Execute"> <command>gmrun</command> </action> </keybind>
 
     <keybind key="W-m"> <action name="Execute"> <command>xmag</command> </action> </keybind>
     <keybind key="A-m"> <action name="Execute"> <command>xmag</command> </action> </keybind>
