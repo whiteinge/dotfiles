@@ -46,7 +46,7 @@ xterm*multiScroll: true
 ! Matches URLs and emails and selects them on double-click
 xterm*charClass: 33:48,37-38:48,45-47:48,64:48,58:48,126:48,61:48,63:48,43:48,35:38
 xterm*trimSelection: true
-! colors (fixes too dark blue)
+! fixes too dark blue
 xterm*color4: DodgerBlue1
 xterm*color12: SteelBlue1
 ! map the tab key to escape in xterm (becase we can!)

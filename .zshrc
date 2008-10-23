@@ -353,7 +353,7 @@ TRAPUSR2() {
 # http://linuxcommando.blogspot.com/2007/10/dictionary-lookup-via-command-line.html
 
 dict (){
-    curl dict://dict.org/d:$1
+    curl 'dict://dict.org/d:$1:*'
 }
 
 spell (){

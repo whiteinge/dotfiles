@@ -66,7 +66,7 @@ map <silent> <F6> :set nolist!<CR>:set nolist?<CR>
 " Toggle spell-checking
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
-" Maps Omnicompletion to CTRL-space since ctrl-x ctrl-o is hard to reach
+" Maps Omnicompletion to CTRL-space since ctrl-x ctrl-o is for Emacs-style RSI
 inoremap <Nul> <C-x><C-o>
 
 " VCS Diffs
@@ -365,6 +365,9 @@ filetype plugin indent on
 
 " Set Omnicompletion for certain filetypes
 autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
 " Not sure why the cron filetype isn't catching this...
 au FileType crontab set backupcopy=yes
@@ -511,3 +514,12 @@ fun SetComment()
         let b:comment = ';'
     endif
 endfun
+
+
+" How to detect tabs in a file and proc a warning on bufread?
+function Kees_settabs()
+    if len(filter(getbufline(winbufnr(0), 1, "$"), 'v:val =~ "^\\t"')) > len(filter(getbufline(winbufnr(0), 1, "$"), 'v:val =~ "^ "'))
+        set noet ts=8 sw=8
+    endif
+endfunction
+autocmd BufReadPost * call Kees_settabs()
