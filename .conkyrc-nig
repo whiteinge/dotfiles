@@ -116,5 +116,3 @@ $alignr / ${fs_bar 5,120 /}
 $alignr mpd $mpd_status  ${color #ffffff}$mpd_smart
 $alignr ${color grey}${mpd_bar 5,200}
 $alignr Vol: ${color #ffffff}$mpd_vol   ${color grey}Rand: ${color #ffffff}$mpd_random   ${color grey}Rep: ${color #ffffff}$mpd_repeat
-
-${voffset -180}${execi 300 gcalcli --nc agenda}
