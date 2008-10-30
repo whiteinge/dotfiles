@@ -36,7 +36,7 @@ xterm*loginShell: true
 ! Enables True-Type rendering
 xterm*renderFont: true
 xterm*faceName: Monaco
-xterm*faceSize: 11
+xterm*faceSize: 10
 xterm*cursorColor: red
 xterm*cursorUnderline: true
 xterm*cursorBlink: true
@@ -195,38 +195,5 @@ xlogin*greeting: Welcome to Fhloston Paradise
 xlogin*allowRootLogin: false
 xlogin*allowNullPasswd: false
 
-
-! --- color scheme {{{1
-! -----------------------------------------------------------------------------
-*foreground:     #DDDDDD
-*background:     #121212
-!black
-*color0:         #353535
-*color8:         #666666
-!red
-*color1:         #AE4747
-*color9:         #EE6363
-!green
-*color2:         #556B2F
-*color10:        #9ACD32
-!brown/yellow
-*color3:         #DAA520
-*color11:        #FFC125
-!blue
-*color4:         #6F99B4
-*color12:        #7C96B0
-!magenta
-*color5:         #8B7B8B
-*color13:        #D8BFD8
-!cyan
-*color6:         #A7A15E
-*color14:        #F0E68C
-!white
-*color7:         #DDDDDD
-*color15:        #FFFFFF
-
-! --- default font (for those that support ttf)
-*faceName: Monaco
-
-! can include other files with:
-! #include "FileName"
+! --- Color scheme {{{1
+! #include ".Xresources-colors-muted"
