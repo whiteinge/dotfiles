@@ -56,6 +56,9 @@ PAGER='less -imJMW'
 MANPAGER='less -imJMW'
 BROWSER='firefox'
 
+# Silence Wine debugging output (why isn't this a default?)
+WINEDEBUG=-all
+
 # }}}
 # {{{ completions
 
