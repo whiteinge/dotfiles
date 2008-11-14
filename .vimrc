@@ -289,13 +289,7 @@ set statusline=%!MyStatusLine()
 " Color {{{
 "   All coloring options are for the non-GUI Vim (see :help cterm-colors).
 
-set t_Co=16
-" color elflord
-color pablo
-
-" The default fold color is too bright and looks too much like the statusline
-hi Folded cterm=bold ctermfg=8 ctermbg=none
-hi FoldColumn cterm=bold ctermfg=8 ctermbg=none
+color desert
 
 " I love the new CursorLine, but terminal underlining kicks legibility in the nuts.
 " So what to do? Bold is (extremely) subtle, but it's better than nothing.
