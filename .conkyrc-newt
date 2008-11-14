@@ -97,6 +97,9 @@ override_utf8_locale yes
 # Add spaces to keep things from moving about?  This only affects certain objects.
 use_spacer left
 
+# How to detect if an interface is up
+if_up_strictness address
+
 # variable is given either in format $variable or in ${variable}. Latter
 # allows characters right after the variable and must be used in network
 # stuff because of an argument
@@ -105,25 +108,29 @@ use_spacer left
 
 TEXT
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color grey}cpu${color white}$cpu% ($freq MHz)   ${color grey}ram${color white}$memperc%    ${color grey}ath0: tx${color white}${downspeed ath0} ${color grey}k/s, rx${color white}${upspeed ath0} ${color grey}k/s    batt ${color white}$battery    
+${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color grey}cpu:${color white}$cpu% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}tx:${color white}${if_up ath0}${downspeed ath0}$endif${if_up eth0}${downspeed eth0}$endif k/s, ${color grey}rx:${color white}${if_up ath0}${upspeed ath0}$endif${if_up eth0}${upspeed eth0}$endif k/s    ${color grey}batt: ${color white}$battery    
+
 
 $alignr$loadavg  |  $uptime  |  $user_number users    
 
-$alignr bat0 ${battery_bar 5,120}    
-$alignr$battery_time remaining     
-$alignr${color grey}temp ${color white}$acpitemp C    
+
+$alignr ${color grey}bat0 ${color white}${battery_bar 5,120}    
+$alignr$battery_time remaining    
+$alignr${color grey}temp${color white}${acpitemp}°    
+${if_up ath0}
 
 
-$alignr${color grey}ip: ${color white}${addrs ath0}    
+$alignr${color grey}wifi: ${color white}${wireless_essid ath0}   ${color grey}${wireless_mode ath0}    
+$alignr${wireless_link_bar 5,120 ath0}    
+$alignr${color grey}ath0: ${color white}${addrs ath0}    $endif${if_up eth0}
+$alignr${color grey}eth0: ${color white}${addrs eth0}    $endif
 $alignr${color grey}ns: ${color white}$nameserver    
 
 
-$alignr / ${fs_bar 5,120 /}    
-$alignr /media/sdcard ${fs_bar 5,120 /media/sdcard}    
+$alignr ${color grey}/ ${color white}${fs_bar 5,120 /}    ${if_mounted /media/sdcard}
+$alignr ${color grey}/media/sdcard ${color white}${fs_bar 5,120 /media/sdcard}    $endif
 
 
-$alignr mpd $mpd_status  ${color white}$mpd_smart    
+$alignr ${color grey}mpd $mpd_status  ${color white}$mpd_smart    
 $alignr ${color grey}${mpd_bar 5,200}     
 $alignr Vol: ${color white}$mpd_vol   ${color grey}Rand: ${color white}$mpd_random   ${color grey}Rep: ${color white}$mpd_repeat    
-
-${voffset -180}${execi 300 gcalcli --nc agenda}    
