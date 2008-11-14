@@ -105,24 +105,25 @@ use_spacer left
 
 TEXT
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color grey}cpu${color #ffffff}$cpu% ($freq MHz)   ${color grey}ram${color #ffffff}$memperc%    ${color grey}ath0: tx${color #ffffff}${downspeed ath0} ${color grey}k/s, rx${color #ffffff}${upspeed ath0} ${color grey}k/s    batt${color #ffffff}$battery_percent%   
+${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color grey}cpu${color white}$cpu% ($freq MHz)   ${color grey}ram${color white}$memperc%    ${color grey}ath0: tx${color white}${downspeed ath0} ${color grey}k/s, rx${color white}${upspeed ath0} ${color grey}k/s    batt ${color white}$battery    
 
 $alignr$loadavg  |  $uptime  |  $user_number users    
 
 $alignr bat0 ${battery_bar 5,120}    
-$alignr$battery,  $alignr$battery_time    
+$alignr$battery_time remaining     
+$alignr${color grey}temp ${color white}$acpitemp C    
 
 
-$alignr${color grey}ip: ${color #ffffff}${addrs ath0}    
-$alignr${color grey}ns: ${color #ffffff}$nameserver    
+$alignr${color grey}ip: ${color white}${addrs ath0}    
+$alignr${color grey}ns: ${color white}$nameserver    
 
 
 $alignr / ${fs_bar 5,120 /}    
 $alignr /media/sdcard ${fs_bar 5,120 /media/sdcard}    
 
 
-$alignr mpd $mpd_status  ${color #ffffff}$mpd_smart    
+$alignr mpd $mpd_status  ${color white}$mpd_smart    
 $alignr ${color grey}${mpd_bar 5,200}     
-$alignr Vol: ${color #ffffff}$mpd_vol   ${color grey}Rand: ${color #ffffff}$mpd_random   ${color grey}Rep: ${color #ffffff}$mpd_repeat    
+$alignr Vol: ${color white}$mpd_vol   ${color grey}Rand: ${color white}$mpd_random   ${color grey}Rep: ${color white}$mpd_repeat    
 
 ${voffset -180}${execi 300 gcalcli --nc agenda}    
