@@ -117,13 +117,11 @@ $alignr$loadavg  |  $uptime  |  $user_number users
 $alignr ${color grey}bat0 ${color white}${battery_bar 5,120}    
 $alignr$battery_time remaining    
 $alignr${color grey}temp${color white}${acpitemp}°    
-${if_up ath0}
 
 
-$alignr${color grey}wifi: ${color white}${wireless_essid ath0}   ${color grey}${wireless_mode ath0}    
+${if_up ath0}$alignr${color grey}wifi: ${color white}${wireless_essid ath0}   ${color grey}${wireless_mode ath0}    
 $alignr${wireless_link_bar 5,120 ath0}    
-$alignr${color grey}ath0: ${color white}${addrs ath0}    $endif${if_up eth0}
-$alignr${color grey}eth0: ${color white}${addrs eth0}    $endif
+$alignr${color grey}ath0: ${color white}${addrs ath0}    $endif${if_up eth0}$alignr${color grey}eth0: ${color white}${addrs eth0}    $endif
 $alignr${color grey}ns: ${color white}$nameserver    
 
 
