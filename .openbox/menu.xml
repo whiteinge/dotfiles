@@ -9,6 +9,21 @@
   <item label="firefox">
     <action name="Execute"><command>firefox</command></action>
   </item>
+  <separator />
+  <item label="gimp">
+    <action name="Execute"><command>gimp</command></action>
+  </item>
+  <item label="inkscape">
+    <action name="Execute"><command>inkscape</command></action>
+  </item>
+  <separator />
+  <item label="gmpc">
+    <action name="Execute"><command>gmpc</command></action>
+  </item>
+  <separator />
+  <item label="guild wars">
+      <action name="Execute"><command>/home/shouse/games/cxgames/bin/wine --bottle "guildwars" --start "c:/windows/profiles/All Users/Start Menu/Programs/Guild Wars/Guild Wars.lnk"</command></action>
+  </item>
 </menu>
 
 <menu id="root-menu" label="openbox 3">
