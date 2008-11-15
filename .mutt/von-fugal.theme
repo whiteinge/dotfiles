@@ -1,0 +1,76 @@
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#
+# Color definitions
+#
+# white black green magenta blue cyan yellow red default colorx
+
+# intended for a dark bg
+
+color normal color252 color233
+color quoted color24 color233
+color signature color126 color233
+color indicator brightcolor48 color233
+color error red color233
+color status color42 color237
+color tree color48 color233	# the thread tree in the index menu
+color tilde color245 color233
+color message yellow color233
+color markers yellow color233
+color attachment color221 color233
+color search color48 color240	# how to hilite search patterns in the pager
+
+# smileys :)
+#color body brightyellow default '(\(:|:\)|;\)|:-\)|:>|8-\))'
+#color body brightblue default '(\):|:\(|:-\(|:\'()'
+#color body yellow default '(:D|:-D|=-O|:-[pP]|:-\*|>:o|:\/|:-\/)'
+
+color hdrdefault color238 color233
+color header color243 color233 "^(Date|From|Subject)"
+color header color73 color233 "^(To|Reply-To):"
+color header color245 color233 "^(X-Original-To):"
+color header color96 color233 "^(User-Agent|X-Editor):"
+color body blue color233 "(ftp|http)://\w[^ ]+[^.]" # point out URLs
+color body color128 color233 '[-.+\w]+@[-.\w]+[^.]' # e-mail addresses
+color underline brightgreen color233
+
+# color-coding by sender/recipient
+# fugal.nets
+color index color19 color233 '~t "grant-family@---------"'
+color index color21 color233 '~t "lee-family@---------"'
+color index color27 color233 '~t "von-family@---------"'
+
+# self
+color index color123 color233 '~t von@---------' # mail to myself
+color index color121 color233 '~t vontrapp@---------' # mail to myself
+color index color117 color233 '~t vontrapp@---------' # mail to myself
+color index color192 color233 '~t von(trapp)?[+][a-zA-Z]+@---------' # mail to myself
+
+color index brightcolor220 color233 ~N	# New
+color index color220 color233 ~O	# Old
+
+# cassandra
+color index color198 color233 '~f cassandra'
+color index color201 color233 '~N ~f cassandra'
+# root
+color index color70 color233 '~t root'
+color index brightcolor70 color233 '~N ~t root'
+color index brightcolor70 color233 '~O ~t root'
+
+# webmaster
+color index color46 color233 '~t webmaster' # webmaster mail
+color index brightcolor46 color233 '~N ~t webmaster' # webmaster mail
+color index brightcolor48 color233 '~O ~t webmaster' # webmaster mail
+
+color index color91 color233 ~T	# tagged
+color index color238 color233 ~D	# Deleted
+color index cyan color233 ~F		# Flagged
+
+#color index magenta color233 '~h X-SpamStop-'
+#color index magenta color233 '~h X-RBL-Warning'
+#color index magenta color233 '~h X-Razor-Warning'
+
+# attributes when using a mono terminal
+#mono header underline ^(From|Subject):
+mono quoted bold
+
+# vim: filetype=muttrc

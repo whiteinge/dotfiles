@@ -1,0 +1,6 @@
+text/html; echo && lynx --dump %s; nametemplate=%s.html; copiousoutput
+application/pdf; xpdf %s
+image/jpeg; gqview %s
+image/jpg; gqview %s
+image/gif; gqview %s
+image/png; gqview %s

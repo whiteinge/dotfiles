@@ -1,0 +1,53 @@
+# Local #######################################################################
+set mbox_type = Maildir
+
+
+# IMAP Settings ###############################################################
+set realname = "Seth House"
+set from = "Seth House <whiteinge@gmail.com>"
+set imap_user = "whiteinge@gmail.com"
+set folder = "imaps://imap.gmail.com:993"
+set spoolfile = "+INBOX"
+set record = "+Sent"
+set postponed = "+Drafts"
+set mailboxes = INBOX
+# set mbox="+All Mail" # prompt to archived read messages on exit?
+
+set header_cache = ~/.mutt/cache/headers
+set message_cachedir = ~/.mutt/cache/bodies
+set certificate_file = ~/.mutt/certificates
+
+
+# Reading Mail ################################################################
+set timeout = 10
+set mail_check = 5
+set sort = threads
+set sort_aux = date
+set move = no
+set mark_old = no
+
+
+# Viewing Mail ################################################################
+set mailcap_path = ~/.mailcap
+auto_view text/html
+ignore *
+unignore Date: From: To: CC: Bcc: Subject:
+hdr_order Subject: Date: From: To: CC: Bcc:
+set index_format = "%{%b %d} %-15.15L [%Z] %s"
+
+
+# Writing Mail ################################################################
+set markers = no
+set include = yes
+set reverse_name = yes
+set reverse_realname = no
+
+
+# Sending Mail ################################################################
+set smtp_url = "smtps://whiteinge\@gmail.com@smtp.gmail.com:587/"
+set send_charset = "utf-8"
+set copy = yes
+
+
+# Others ######################################################################
+source ~/.mutt/von-fugal.theme
