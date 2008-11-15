@@ -7,8 +7,8 @@
 # set to yes if you want Conky to be forked in the background
 background yes
 
-maximum_width 1200
-minimum_size 1200 1000
+maximum_width 1400
+minimum_size 1400 900
 text_buffer_size 1024
 
 border_margin 10
@@ -70,7 +70,7 @@ alignment tm
 
 # Gap between borders of screen and text
 # same thing as passing -x at command line
-gap_x 0
+gap_x -10
 gap_y -11
 
 # Subtract file system buffers from used memory?
@@ -101,18 +101,26 @@ use_spacer left
 
 TEXT
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color #ffffff}$cpu% ${color grey}cpu  ${color #ffffff}$memperc% ${color grey}ram  ${color #ffffff}$swapperc% ${color grey}swap    eth2: ${color #ffffff}${downspeed eth2} ${color grey}k/s tx  ${color #ffffff}${upspeed eth2} ${color grey}k/s rx
+${color grey}${time %a, %d %b %y}     ${time %H:%M }$alignr ${color grey}cpu:${color white}$cpu% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}tx:${color white}${if_up eth2}${downspeed eth2}$endif k/s, ${color grey}rx:${color white}${if_up eth2}${upspeed eth2}$endif k/s
+
 
 $alignr$loadavg  |  $uptime  |  $user_number users
 
 
-$alignr ip: ${color #ffffff}${addrs eth2}${color grey}
-$alignr ns: ${color #ffffff}$nameserver${color grey}
+$alignr${color grey}temp${color white}${acpitemp}°
+
+
+${if_up eth2}$alignr${color grey}wifi: ${color white}${wireless_essid eth2}   ${color grey}${wireless_mode eth2}
+$alignr${wireless_link_bar 5,120 eth2}
+$alignr${color grey}eth2: ${color white}${addrs eth2}$endif
+$alignr${color grey}ns: ${color white}$nameserver
 
 
 $alignr / ${fs_bar 5,120 /}
+$alignr /home ${fs_bar 5,120 /home}${if_mounted /media/hd0}
+$alignr /media/hd0 ${fs_bar 5,120 /media/hd0}$endif
 
 
-$alignr mpd $mpd_status  ${color #ffffff}$mpd_smart
+$alignr ${color grey}mpd $mpd_status  ${color white}$mpd_smart
 $alignr ${color grey}${mpd_bar 5,200}
-$alignr Vol: ${color #ffffff}$mpd_vol   ${color grey}Rand: ${color #ffffff}$mpd_random   ${color grey}Rep: ${color #ffffff}$mpd_repeat
+$alignr Vol: ${color white}$mpd_vol   ${color grey}Rand: ${color white}$mpd_random   ${color grey}Rep: ${color white}$mpd_repeat
