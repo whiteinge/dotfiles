@@ -511,7 +511,7 @@ endfun
 
 
 " How to detect tabs in a file and proc a warning on bufread?
-function Kees_settabs()
+function! Kees_settabs()
     if len(filter(getbufline(winbufnr(0), 1, "$"), 'v:val =~ "^\\t"')) > len(filter(getbufline(winbufnr(0), 1, "$"), 'v:val =~ "^ "'))
         set noet ts=8 sw=8
     endif
