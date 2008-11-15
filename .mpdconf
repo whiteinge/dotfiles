@@ -1,0 +1,8 @@
+music_directory "~/Music"
+playlist_directory "~/.mpd/playlists"
+db_file "~/.mpd/database"
+log_file "~/.mpd/mpd.log"
+error_file "~/.mpd/mpd-error.log"
+
+volume_normalization "yes"
+filesystem_charset "UTF-8"
