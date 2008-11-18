@@ -5,5 +5,7 @@ syntax: glob
 *.DS_Store
 *.pyc
 *.swp
+Session.vim
+development.wsgi
 development.sqlite3
 debug_settings.py
