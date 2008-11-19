@@ -149,7 +149,7 @@ alias ps='ps -opid,uid,cpu,time,stat,command'
 # Starts ssh-agent when screen is started/reattached, stops the agent when
 # screen is detached. Use ssh-add to activate key for the session.
 SSH_AUTH_SOCK=$HOME/.screen/ssh-auth-sock
-alias sc="exec ssh-agent sh -c 'ln -sfn \$SSH_AUTH_SOCK \$HOME/.screen/ssh-auth-sock; exec screen -S main -DRR'"
+alias sc="exec ssh-agent sh -c 'ln -sfn \$SSH_AUTH_SOCK \$HOME/.screen/ssh-auth-sock; exec screen -e\"^Aa\" -S main -DRR'"
 alias rsc="exec ssh-agent sh -c 'ln -sfn \$SSH_AUTH_SOCK \$HOME/.screen/ssh-auth-sock; exec screen -e\"^Ss\" -S main -DRR'"
 
 # OS X versions
