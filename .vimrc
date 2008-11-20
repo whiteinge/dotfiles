@@ -153,6 +153,73 @@ if v:version >= 700
 endif
 
 " }}}
+" X11 Integration {{{
+" (I.e.: don't do any automatic integration, please :)
+
+set mouse=                      "       Disable mouse control for console Vim (very annoying)
+set clipboard=                  "       Disable automatic X11 clipboard crossover
+
+" }}}
+" Color {{{
+"   All coloring options are for the non-GUI Vim (see :help cterm-colors).
+
+color desert
+
+" I love the new CursorLine, but terminal underlining kicks legibility in the nuts.
+" So what to do? Bold is (extremely) subtle, but it's better than nothing.
+hi CursorLine cterm=bold
+
+" Statusline
+" I like this better than all the reverse video of the default statusline.
+hi StatusLine term=bold,reverse cterm=bold ctermfg=7 ctermbg=none
+hi StatusLineNC term=reverse cterm=bold ctermfg=8
+hi User1 ctermfg=4
+hi User2 ctermfg=1
+hi User3 ctermfg=5
+hi User4 cterm=bold ctermfg=8
+hi User5 ctermfg=6
+hi User6 ctermfg=2
+hi User7 ctermfg=2
+hi User8 ctermfg=3
+hi User9 cterm=reverse ctermfg=8 ctermbg=7
+
+" Darkens the status line for non-active windows. Needs testing!
+au BufEnter * hi User9 ctermfg=7
+
+" A nice, minimalistic tabline
+hi TabLine cterm=bold,underline ctermfg=8 ctermbg=none
+hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
+hi TabLineFill cterm=bold ctermbg=none
+
+" }}}
+" Printing {{{
+
+" Shows line numbers and adjusts the left margin not to be ridiculous
+set printoptions=number:y,left:5pc
+set printfont=Monaco:h8         " face-type (not size) ignored in PostScript output :-(
+set printencoding=utf-8
+
+" }}}
+" :Explore mode {{{
+
+" NERDTree is a pretty slick (partial) replacement for :Explore
+let NERDTreeIgnore=['\.pyc$']
+map <F4> :NERDTreeToggle<cr>
+
+let g:netrw_hide=1          " Use the hiding list
+" Hide the following file patterns (change to suit your needs):
+" (I don't know what the fuck \~$ is, but file hiding seems to break without it appearing first in the list...)
+let g:netrw_list_hide='^\..*,\.pyc$'
+
+" Commands for :Explore (verify these!)
+let g:explVertical=1    " open vertical split winow
+let g:explSplitRight=1  " Put new window to the right of the explorer
+let g:explStartRight=0  " new windows go to right of explorer window
+
+" Tree view. Adaptable?
+" ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+
+" }}}
 
 " YankList {{{1
 " Is is possbile to store the ten most recent yanks using opfunc (similar to
@@ -288,66 +355,7 @@ endfunction
 set statusline=%!MyStatusLine()
 
 " }}}
-" Color {{{
-"   All coloring options are for the non-GUI Vim (see :help cterm-colors).
 
-color desert
-
-" I love the new CursorLine, but terminal underlining kicks legibility in the nuts.
-" So what to do? Bold is (extremely) subtle, but it's better than nothing.
-hi CursorLine cterm=bold
-
-" Statusline
-" I like this better than all the reverse video of the default statusline.
-hi StatusLine term=bold,reverse cterm=bold ctermfg=7 ctermbg=none
-hi StatusLineNC term=reverse cterm=bold ctermfg=8
-hi User1 ctermfg=4
-hi User2 ctermfg=1
-hi User3 ctermfg=5
-hi User4 cterm=bold ctermfg=8
-hi User5 ctermfg=6
-hi User6 ctermfg=2
-hi User7 ctermfg=2
-hi User8 ctermfg=3
-hi User9 cterm=reverse ctermfg=8 ctermbg=7
-
-" Darkens the status line for non-active windows. Needs testing!
-au BufEnter * hi User9 ctermfg=7
-
-" A nice, minimalistic tabline
-hi TabLine cterm=bold,underline ctermfg=8 ctermbg=none
-hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
-hi TabLineFill cterm=bold ctermbg=none
-
-" }}}
-" Printing {{{
-
-" Shows line numbers and adjusts the left margin not to be ridiculous
-set printoptions=number:y,left:5pc
-set printfont=Monaco:h8         " face-type (not size) ignored in PostScript output :-(
-set printencoding=utf-8
-
-" }}}
-" :Explore mode {{{
-
-" NERDTree is a pretty slick replacement for :Explore
-let NERDTreeIgnore=['\.pyc$']
-map <F4> :NERDTreeToggle<cr>
-
-let g:netrw_hide=1          " Use the hiding list
-" Hide the following file patterns (change to suit your needs):
-" (I don't know what the fuck \~$ is, but file hiding seems to break without it appearing first in the list...)
-let g:netrw_list_hide='^\..*,\.pyc$'
-
-" Commands for :Explore (verify these!)
-let g:explVertical=1    " open vertical split winow
-let g:explSplitRight=1  " Put new window to the right of the explorer
-let g:explStartRight=0  " new windows go to right of explorer window
-
-" Tree view. Adaptable?
-" ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
-
-" }}}
 " Autocommands, plugin, and file-type-specific settings {{{
 
 " Remember last position in file
