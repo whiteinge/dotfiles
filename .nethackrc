@@ -9,7 +9,7 @@ OPTIONS=fruit:baby,dogname:Snoopy,catname:Puss,horsename:Silver
 # Graphics
 OPTIONS=windowtype=TTY,!silent
 OPTIONS=color,lit_corridor,standout,use_inverse,hilite_pet,boulder=0
-OPTIONS=time,showborn,showexp,showscore,perm_invent
+OPTIONS=time,showexp,showscore
 
 # Menus
 OPTIONS=menustyle:full,menu_headings:bold
