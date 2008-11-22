@@ -23,8 +23,7 @@ OPTIONS=number_pad=0
 OPTIONS=runmode:walk
 
 # Safe Options
-OPTIONS=safe_pet,pickup_burden:Burdened
-OPTIONS=!autopickup,pickup_types:$
+OPTIONS=safe_pet,pickup_burden:Burdened,!autopickup
 
 #
 # MenuColors is a 3rd-party patch, ymmv
