@@ -114,13 +114,13 @@ ${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color grey}cpu:$
 $alignr$loadavg  |  $uptime  |  $user_number users    
 
 
-$alignr ${color grey}bat0 ${color white}${battery_bar 5,120}    
+$alignr ${color grey}bat0: ${color white}${battery_bar 5,120}    
 $alignr$battery_time remaining    
-$alignr${color grey}temp${color white}${acpitemp}°    
+$alignr${color grey}temp:${color white}${acpitemp}°    
 
 
-${if_up ath0}$alignr${color grey}wifi: ${color white}${wireless_essid ath0}   ${color grey}${wireless_mode ath0}    
-$alignr${wireless_link_bar 5,120 ath0}    
+${if_up ath0}$alignr${color grey}wifi: ${color white}${wireless_link_bar 5,120 ath0}    
+$alignr${color grey}${wireless_mode ath0}: ${color white}${wireless_essid ath0}    
 $alignr${color grey}ath0: ${color white}${addrs ath0}    $endif${if_up eth0}$alignr${color grey}eth0: ${color white}${addrs eth0}    $endif
 $alignr${color grey}ns: ${color white}$nameserver    
 
@@ -130,5 +130,5 @@ $alignr ${color grey}/media/sdcard ${color white}${fs_bar 5,120 /media/sdcard}  
 
 
 $alignr ${color grey}mpd $mpd_status  ${color white}$mpd_smart    
-$alignr ${color grey}${mpd_bar 5,200}     
-$alignr Vol: ${color white}$mpd_vol   ${color grey}Rand: ${color white}$mpd_random   ${color grey}Rep: ${color white}$mpd_repeat    
+$alignr ${color white}${mpd_bar 5,200}     
+$alignr ${color grey}Vol: ${color white}$mpd_vol   ${color grey}Rand: ${color white}$mpd_random   ${color grey}Rep: ${color white}$mpd_repeat    
