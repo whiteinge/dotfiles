@@ -16,7 +16,7 @@ OPTIONS=menustyle:full,menu_headings:bold
 OPTIONS=sortpack,lootabc,fixinv
 
 # Messages: ctrl-p to view old messages
-OPTIONS=msg_window=r,msghistory=30
+OPTIONS=msg_window=r,msghistory=20
 
 # Controls
 OPTIONS=number_pad=0
@@ -29,12 +29,9 @@ OPTIONS=safe_pet,pickup_burden:Burdened,!autopickup
 # MenuColors is a 3rd-party patch, ymmv
 #
 OPTIONS=menucolors
-MENUCOLOR="uncursed"=green
-MENUCOLOR="blessed"=cyan&bold
-MENUCOLOR="cursed"=orange&bold
-MENUCOLOR="loadstone\|wand \(of\|called\) cancellation"=underline
-# color only the real Amulet
-MENUCOLOR="Amulet of Yendor named"=magenta
+MENUCOLOR=" cursed"=red&bold
+MENUCOLOR=" unholy"=red
+MENUCOLOR=" blessed"=cyan&bold
+MENUCOLOR=" holy"=green&bold
 MENUCOLOR="gold piece"=yellow
-# forgotten spell
-MENUCOLOR="[a-zA-Z] - [a-zA-Z ]+ [0-9]\*   [a-z]+ +[0-9]+%"=magenta
+MENUCOLOR="Amulet of Yendor named"=magenta
