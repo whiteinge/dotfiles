@@ -3,27 +3,29 @@
 # for nethack 3.4.3 with the menucolors patch
 
 # Set default names for common game items & egg laying (woot!)
-OPTIONS=name:Harrigan,gender:female
-OPTIONS=fruit:baby,dogname:Snoopy,catname:Puss,horsename:Silver
+OPTIONS=name:Harrigan, gender:female, race:random, align:random
+OPTIONS=fruit:baby, dogname:Snoopy, catname:Puss, horsename:Silver
 
 # Graphics
-OPTIONS=windowtype=TTY,!silent
-OPTIONS=color,lit_corridor,standout,use_inverse,hilite_pet,boulder=0
-OPTIONS=time,showexp,showscore
+OPTIONS=windowtype=TTY, DECgraphics, !silent
+OPTIONS=color, lit_corridor, standout, use_inverse, hilite_pet, boulder=0
+OPTIONS=time, showexp, showscore
 
 # Menus
-OPTIONS=menustyle:full,menu_headings:bold
-OPTIONS=sortpack,lootabc,fixinv
+OPTIONS=menustyle:full, menu_headings:bold, extmenu
+OPTIONS=sortpack, lootabc, fixinv
 
 # Messages: ctrl-p to view old messages
-OPTIONS=msg_window=r,msghistory=20
+OPTIONS=msg_window:reversed, msghistory:20
+OPTIONS=wraptext
 
 # Controls
-OPTIONS=number_pad=0
+OPTIONS=number_pad=0, !cmdassist
 OPTIONS=runmode:walk
+OPTIONS=autodig
 
 # Safe Options
-OPTIONS=safe_pet,pickup_burden:Burdened,!autopickup
+OPTIONS=safe_pet, pickup_burden:Burdened, !autopickup
 
 #
 # MenuColors is a 3rd-party patch, ymmv
@@ -35,3 +37,20 @@ MENUCOLOR=" blessed"=cyan&bold
 MENUCOLOR=" holy"=green&bold
 MENUCOLOR="gold piece"=yellow
 MENUCOLOR="Amulet of Yendor named"=magenta
+
+#
+# Menu navigations keys:
+#
+# menu_invert_all:@
+# menu_select_all:.
+# menu_deselect_all:-
+# menu_select_page:,
+# menu_deselect_page:\
+# menu_invert_page:~
+#
+# menu_first_page:^
+# menu_last_page:~
+# menu_next_page:>
+# menu_previous_page:<
+#
+# menu_search::
