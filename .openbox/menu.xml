@@ -20,24 +20,28 @@
   <item label="gmpc">
     <action name="Execute"><command>gmpc</command></action>
   </item>
-  <separator />
+</menu>
+
+<menu id="games-menu" label="games">
   <item label="guild wars">
       <action name="Execute"><command>/home/shouse/games/cxgames/bin/wine --bottle "guildwars" --start "c:/windows/profiles/All Users/Start Menu/Programs/Guild Wars/Guild Wars.lnk"</command></action>
   </item>
-  <menu id="x-menu" label="x.org">
+</menu>
+
+<menu id="x-menu" label="x.org">
     <item label="screenshot">
         <action name="Execute"><command>/home/shouse/games/cxgames/bin/wine --bottle "guildwars" --start "c:/windows/profiles/All Users/Start Menu/Programs/Guild Wars/Guild Wars.lnk"</command></action>
     </item>
     <item label="xmag">
         <action name="Execute"><command>xmag</command></action>
     </item>
-  </menu>
 </menu>
 
 <menu id="root-menu" label="openbox 3">
   <separator label="openbox" />
   <menu id="apps-menu" />
   <menu id="games-menu" />
+  <menu id="x-menu" />
   <separator />
   <menu id="client-list-menu" />
   <separator />
