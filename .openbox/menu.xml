@@ -24,6 +24,14 @@
   <item label="guild wars">
       <action name="Execute"><command>/home/shouse/games/cxgames/bin/wine --bottle "guildwars" --start "c:/windows/profiles/All Users/Start Menu/Programs/Guild Wars/Guild Wars.lnk"</command></action>
   </item>
+  <menu id="x-menu" label="x.org">
+    <item label="screenshot">
+        <action name="Execute"><command>/home/shouse/games/cxgames/bin/wine --bottle "guildwars" --start "c:/windows/profiles/All Users/Start Menu/Programs/Guild Wars/Guild Wars.lnk"</command></action>
+    </item>
+    <item label="xmag">
+        <action name="Execute"><command>xmag</command></action>
+    </item>
+  </menu>
 </menu>
 
 <menu id="root-menu" label="openbox 3">
