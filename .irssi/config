@@ -32,7 +32,7 @@ channels = (
   { name = "#utahpython"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utah"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utos"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#ubuntu-us-ut"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#ubuntu-us-ut"; chatnet = "freenode"; autojoin = "yes"; }
 );
 
 statusbar = {
@@ -179,13 +179,32 @@ hilights = (
   { text = "whiteing1"; nick = "yes"; word = "yes"; },
   { text = "seth"; nick = "yes"; word = "yes"; },
   { text = "oalug"; nick = "yes"; word = "yes"; },
-  { text = "conman"; nick = "yes"; word = "yes"; }
+  { text = "conman"; nick = "yes"; word = "yes"; },
+  {
+    text = "*";
+    level = "PUB";
+    nick = "no";
+    word = "no";
+    channels = ( "#oalug" );
+  }
 );
 
 ignores = (
-  { level = "JOINS"; },
-  { level = "PARTS"; },
-  { level = "QUITS"; }
+  { mask = "*zzz*"; level = "NICKS"; },
+  { mask = "*away*"; level = "NICKS"; },
+  { mask = "*afk*"; level = "NICKS"; },
+  {
+    level = "JOINS PARTS QUITS";
+    channels = (
+      "#utos-dev",
+      "#utah",
+      "#utos",
+      "#ubuntu-us-ut",
+      "#nethack",
+      "#slackware",
+      "#django"
+    );
+  }
 );
 
 windows = {
