@@ -3,6 +3,9 @@ username = Seth House <seth@eseth.com>
 merge = vimdiff
 ignore = ~/.hgignore
 
+[defaults]
+log = --style compact --limit 5
+
 [web]
 allow_archive = bz2 gz
 port = 8001
