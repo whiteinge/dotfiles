@@ -1,1 +1,48 @@
-map <F2> :sidebar Bookmarks<cr>
+" shortcut mappings
+map <F1> :buffers<cr>
+map <F3> :sidebar Bookmarks<cr>
+map <silent> <F6> :js toggle_element('PersonalToolbar')<CR>
+
+" completion options to emulate the firefox 3 location bar
+set complete=l
+set wildmode=list:full
+set wildoptions=auto
+
+" always start in normal mode when loading a webpage.
+" use `gi` to refocus the previously-focused text box
+set focuscontent
+
+" open popups in a new window if they requested a specific size
+set popups=2
+
+" disable vimperator for some URLs
+autocmd LocationChange .* :js modes.passAllKeys = /mail\.google\.com/.test(buffer.URL)
+autocmd LocationChange .* :js modes.passAllKeys = /www\.google\.com\/reader\/view/.test(buffer.URL)
+
+" Set the Vim filetype to "mail" when editing mail in GMail with the external editor: 
+autocmd LocationChange .* :set editor=gvim -f
+autocmd LocationChange mail\.google\.com :set editor=gvim -f -c 'set ft=mail'
+
+
+" Toggle toolbars in mappings
+:js << EOF
+    toggle_element = function (name) {
+        document.getElementById(name).collapsed ^= 1;
+    }
+EOF
+
+" show the feed icon in the statusbar
+javascript <<EOF
+(function(){
+    var feedPanel = document.createElement("statusbarpanel");
+    feedPanel.setAttribute("id", "feed-panel-clone");
+    feedPanel.appendChild(document.getElementById("feed-button"));
+    feedPanel.firstChild.setAttribute("style", "padding: 0; max-height: 16px;");
+    document.getElementById("status-bar")
+            .insertBefore(feedPanel, document.getElementById("security-button"));
+})();
+EOF
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim:ft=vim
