@@ -101,7 +101,7 @@ use_spacer left
 
 TEXT
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }$alignr ${color grey}cpu:${color white}$cpu% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}tx:${color white}${if_up eth2}${downspeed eth2}$endif k/s, ${color grey}rx:${color white}${if_up eth2}${upspeed eth2}$endif k/s
+${color grey}${time %a, %d %b %y}     ${time %H:%M }$alignr ${color grey}cpu:${color white}$cpu% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}swap: ${color white}${swapperc}%   ${color grey}tx:${color white}${if_up eth2}${downspeed eth2}$endif k/s, ${color grey}rx:${color white}${if_up eth2}${upspeed eth2}$endif k/s
 
 
 $alignr$loadavg  |  $uptime  |  $user_number users
