@@ -4,7 +4,7 @@ merge = vimdiff
 ignore = ~/.hgignore
 
 [defaults]
-log = --style compact --limit 5
+log = --limit 5 --template 'r{rev}\t{node|short}\t{date|age} ago\t{author|person}\n\t- {files}\n\t{desc|strip|fill68|tabindent}\n\n'
 
 [web]
 allow_archive = bz2 gz
