@@ -30,8 +30,9 @@ setopt                          \
 # {{{ environment settings
 
 umask 027
-PATH=$HOME/bin:/opt/local/bin:/opt/local/sbin:/sbin:/usr/X11/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:$PATH
-MANPATH=/opt/local/share/man:/usr/X11/man:/usr/local/man:/usr/local/share/man:/usr/man:/usr/share/man:$MANPATH
+
+PATH=$HOME/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11/bin:/bin:/sbin:/usr/bin:/usr/sbin:$PATH
+MANPATH=$HOME/man:/opt/local/share/man:/usr/local/man:/usr/local/share/man:/usr/X11/man:/usr/man:/usr/share/man:$MANPATH
 CDPATH=$CDPATH::$HOME:/usr/local
 
 export PYTHONSTARTUP=$(echo $HOME)/.pythonrc.py
