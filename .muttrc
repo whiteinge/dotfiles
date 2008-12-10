@@ -10,8 +10,9 @@ set folder = "imaps://imap.gmail.com:993"
 set spoolfile = "+INBOX"
 set record = "+Sent"
 set postponed = "+Drafts"
-set mailboxes = INBOX
-# set mbox="+All Mail" # prompt to archived read messages on exit?
+set mbox = "+All Mail"
+
+mailboxes =INBOX
 
 set header_cache = ~/.mutt/cache/headers
 set message_cachedir = ~/.mutt/cache/bodies
@@ -50,4 +51,4 @@ set copy = yes
 
 
 # Others ######################################################################
-source ~/.mutt/von-fugal.theme
+source ~/.mutt/garschall.theme
