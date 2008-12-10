@@ -181,7 +181,9 @@ hilights = (
   { text = "oalug"; nick = "yes"; word = "yes"; },
   { text = "conman"; nick = "yes"; word = "yes"; },
   {
-    text = "*";
+    text = ".*";
+    regexp = "yes";
+    color = "%N";
     level = "PUB";
     nick = "no";
     word = "no";
@@ -196,7 +198,9 @@ ignores = (
   {
     level = "JOINS PARTS QUITS";
     channels = (
+      "&bitlbee",
       "#utos-dev",
+      "#utahpython",
       "#utah",
       "#utos",
       "#ubuntu-us-ut",
@@ -278,4 +282,5 @@ keyboard = (
 );
 aliases = {
   UNACT = "script exec foreach $$w (Irssi::windows()) { Irssi::command(\"window goto $$w->{refnum}\")\\;} ; window goto $winref";
+  uis = "exec - rsync -avz main.irssi.org::irssiweb/scripts/scripts/\\*.pl ~/.irssi/scripts/autorun";
 };
