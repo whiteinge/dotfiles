@@ -54,6 +54,9 @@ set pastetoggle=<F5>            "pt:    useful so auto-indenting doesn't mess up
 " Fix for legacy vi inconsistency
 map Y y$
 
+" Shortcut to add new blank line without entering insert mode
+noremap <CR> :put_<CR>
+
 " A shortcut to show the numbered register contents
 map <F2> :reg "0123456789-*+:/<CR>
 
