@@ -317,11 +317,11 @@ alias djrunserver="django-admin.py runserver >&! /tmp/django.log &"
 djsetup()
 {
     if [ x"$1" != x ]; then
-        export PYTHONPATH=$PWD
+        export PYTHONPATH=$PWD:$PYTHONPATH
         export DJANGO_SETTINGS_MODULE=$(basename $1 .py)
     else
         cd ..
-        export PYTHONPATH=$PWD
+        export PYTHONPATH=$PWD:$PYTHONPATH
         export DJANGO_SETTINGS_MODULE=$(basename $OLDPWD).settings
         cd $OLDPWD
     fi
