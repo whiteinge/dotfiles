@@ -30,6 +30,7 @@ channels = (
   { name = "#utos-dev"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#oalug"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utahpython"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#utahdjango"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utah"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utos"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#ubuntu-us-ut"; chatnet = "freenode"; autojoin = "yes"; }
@@ -188,6 +189,15 @@ hilights = (
     nick = "no";
     word = "no";
     channels = ( "#oalug" );
+  },
+  {
+    text = ".*";
+    regexp = "yes";
+    color = "%N";
+    level = "PUB";
+    nick = "no";
+    word = "no";
+    channels = ( "#utahdjango" );
   }
 );
 
@@ -201,6 +211,7 @@ ignores = (
       "&bitlbee",
       "#utos-dev",
       "#utahpython",
+      "#utahdjango",
       "#utah",
       "#utos",
       "#ubuntu-us-ut",
@@ -258,12 +269,22 @@ windows = {
       {
         type = "CHANNEL";
         chat_type = "IRC";
-        name = "#utah";
+        name = "#utahdjango";
         tag = "freenode";
       }
     );
   };
   7 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#utah";
+        tag = "freenode";
+      }
+    );
+  };
+  8 = {
     items = (
       {
         type = "CHANNEL";
