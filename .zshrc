@@ -146,6 +146,9 @@ alias lynx='lynx -cfg=$HOME/.lynx.cfg -lss=$HOME/.lynx.lss'
 alias ducks='du -cks * | sort -rn | head -15'
 alias tree="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias ps='ps -opid,uid,cpu,time,stat,command'
+alias du='du -sh'
+alias df='df -h'
+alias cal='cal -3 -m'
 
 # Starts ssh-agent when screen is started/reattached, stops the agent when
 # screen is detached. Use ssh-add to activate key for the session.
