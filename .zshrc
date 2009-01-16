@@ -175,6 +175,19 @@ function _calc() {
 }
 
 # }}}
+# {{{ genpass()
+# Generates a tough password of a given length
+
+function genpass() {
+    if [ ! "$1" ]; then
+        echo "Usage: $0 20"
+        echo "For a random, 20-character password."
+        return 1
+    fi
+    dd if=/dev/urandom count=1 2>/dev/null | tr -cd 'A-Za-z0-9!@#$%^&*()_+' | cut -c-$1
+}
+
+# }}}
 # {{{ body() | like head and tail
 
 # Provides an in-between to head and tail to print a range of lines
