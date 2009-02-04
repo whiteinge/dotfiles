@@ -108,7 +108,7 @@ if_up_strictness address
 
 TEXT
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color grey}cpu:${color white}$cpu% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}tx:${color white}${if_up ath0}${downspeed ath0}$endif${if_up eth0}${downspeed eth0}$endif k/s, ${color grey}rx:${color white}${if_up ath0}${upspeed ath0}$endif${if_up eth0}${upspeed eth0}$endif k/s    ${color grey}batt: ${color white}$battery    
+${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color grey}cpu:${color white}$cpu% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}tx:${color white}${if_up wlan0}${downspeed wlan0}$endif${if_up eth0}${downspeed eth0}$endif k/s, ${color grey}rx:${color white}${if_up wlan0}${upspeed wlan0}$endif${if_up eth0}${upspeed eth0}$endif k/s    ${color grey}batt: ${color white}$battery    
 
 
 $alignr$loadavg  |  $uptime  |  $user_number users    
@@ -119,9 +119,9 @@ $alignr$battery_time remaining
 $alignr${color grey}temp:${color white}${acpitemp}°    
 
 
-${if_up ath0}$alignr${color grey}wifi: ${color white}${wireless_link_bar 5,120 ath0}    
-$alignr${color grey}${wireless_mode ath0}: ${color white}${wireless_essid ath0}    
-$alignr${color grey}ath0: ${color white}${addrs ath0}    $endif${if_up eth0}$alignr${color grey}eth0: ${color white}${addrs eth0}    $endif
+${if_up wlan0}$alignr${color grey}wifi: ${color white}${wireless_link_bar 5,120 wlan0}    
+$alignr${color grey}${wireless_mode wlan0}: ${color white}${wireless_essid wlan0}    
+$alignr${color grey}wlan0: ${color white}${addrs wlan0}    $endif${if_up eth0}$alignr${color grey}eth0: ${color white}${addrs eth0}    $endif
 $alignr${color grey}ns: ${color white}$nameserver    
 
 
