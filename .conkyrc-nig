@@ -101,7 +101,7 @@ use_spacer left
 
 TEXT
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }$alignr ${color grey}cpu:${color white}$cpu% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}swap: ${color white}${swapperc}%   ${color grey}tx:${color white}${if_up eth2}${downspeed eth2}$endif k/s, ${color grey}rx:${color white}${if_up eth2}${upspeed eth2}$endif k/s
+${color grey}${time %a, %d %b %y}     ${time %H:%M }$alignr ${color grey}cpu:${color white}$cpu% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}swap: ${color white}${swapperc}%   ${color grey}tx:${color white}${if_up wlan0}${downspeed wlan0}$endif k/s, ${color grey}rx:${color white}${if_up wlan0}${upspeed wlan0}$endif k/s
 
 
 $alignr$loadavg  |  $uptime  |  $user_number users
@@ -110,9 +110,9 @@ $alignr$loadavg  |  $uptime  |  $user_number users
 $alignr${color grey}temp${color white}${acpitemp}°
 
 
-${if_up eth2}$alignr${color grey}wifi: ${color white}${wireless_essid eth2}   ${color grey}${wireless_mode eth2}
-$alignr${wireless_link_bar 5,120 eth2}
-$alignr${color grey}eth2: ${color white}${addrs eth2}$endif
+${if_up wlan0}$alignr${color grey}wifi: ${color white}${wireless_essid wlan0}   ${color grey}${wireless_mode wlan0}
+$alignr${wireless_link_bar 5,120 wlan0}
+$alignr${color grey}wlan0: ${color white}${addrs wlan0}$endif
 $alignr${color grey}ns: ${color white}$nameserver
 
 
