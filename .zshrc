@@ -2,7 +2,6 @@
 #
 # Best Goddamn zshrc in the whole world (if you're obsessed with Vim).
 # Author: Seth House <seth@eseth.com>
-# Release: 1.1.0
 # Version: $LastChangedRevision$
 # Modified: $LastChangedDate$
 # thanks to Adam Spiers, Steve Talley
@@ -188,15 +187,6 @@ function genpass() {
 }
 
 # }}}
-# {{{ body() | like head and tail
-
-# Provides an in-between to head and tail to print a range of lines
-# Usage: `body firstline lastline filename`
-function body() {   
-    head -$2 $3 | tail -$(($2-($1-1)))
-}
-
-# }}}
 # {{{ bookletize()
 # Converts a PDF to a fold-able booklet sized PDF
 # Print it double-sided and fold in the middle
@@ -222,104 +212,6 @@ bookletize ()
 
 joinpdf () {
     gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=merged.pdf "$@"
-}
-
-# }}}
-# {{{ dotsync()
-# Checks for the lastest versions of various config files
-
-dotsync ()
-{
-    dotsyncURI=http://eseth.org/filez/prefs
-    dotsyncFiles=(
-        Xresources
-        lynx.cfg
-        lynx.lss
-        lynxrc
-        nethackrc
-        screenrc
-        toprc
-        vimrc
-        gvimrc
-        zshrc
-    )
-    dotsyncVimPlugins=(
-        ToggleComment.vim
-        vimbuddy.vim
-    )
-    dotsyncMozFiles=(
-        bookmarks.html
-        user.js
-    )
-    dotsyncMozChrome=(
-        userChrome.css
-        userContent.css
-    )
-
-    # Firefox files
-    if [[ $1 == 'moz' ]]; then
-        if pgrep firefox >& /dev/null; then
-            echo "Please close Firefox first since it will overwrite these files on exit"
-            return 1;
-        fi
-        if [[ ! -L $HOME/.firefox_home ]]; then
-            echo "Symlink your Firefox profile dir to ~/.firefox_home first"
-            return 1;
-        fi
-        for file in $dotsyncMozFiles
-        do
-            curl -f $dotsyncURI/$file -o $HOME/.firefox_home/$file
-        done
-        for file in $dotsyncMozChrome
-        do
-            curl -f $dotsyncURI/$file -o $HOME/.firefox_home/chrome/$file
-        done
-        return 0;
-    fi
-
-    # Misc dot files
-    for file in $dotsyncFiles
-    do
-        curl -f -z $HOME/.$file $dotsyncURI/$file -o $HOME/.$file
-    done
-
-    # Vim files
-    mkdir -m 750 -p $HOME/.vim/{tmp,plugin}
-    for file in $dotsyncVimPlugins
-    do
-        curl -f -z $HOME/.vim/plugin/$file $dotsyncURI/$file -o $HOME/.vim/plugin/$file
-    done
-
-}
-
-# }}}
-# Useful for the Sony Reader {{{
-
-html2reader() {
-    echo htmldoc --gray --no-title --no-embedfonts --textcolor black --fontsize 12 --header ... --footer ... --left 1mm --right 1mm --top 1mm --bottom 1mm --size 90x120mm -f $(basename $1 '.html').pdf $1
-}
-
-# }}}
-# svn_up_and_log() {{{
-# As seen on http://woss.name/2007/02/01/display-svn-changelog-on-svn-up/
-
-# Get the current revision of a repository
-svn_revision()
-{
-  svn info $@ | awk '/^Revision:/ {print $2}'
-}
-# Does an svn up and then displays the changelog between your previous
-# version and what you just updated to.
-svn_up_and_log()
-{
-  local old_revision=`svn_revision $@`
-  local first_update=$((${old_revision} + 1))
-  svn up -q $@
-  if [ $(svn_revision $@) -gt ${old_revision} ]; then
-    svn log -v -rHEAD:${first_update} $@
-  else
-    echo "No changes."
-  fi
 }
 
 # }}}
@@ -380,7 +272,7 @@ spell (){
     echo $1 | aspell -a
 }
 
-# EOF
+# }}}
 # CSS Minifier {{{1
 
 cssmin (){
@@ -395,3 +287,42 @@ s/\/\*.*\*\///g;      # remove comments
 s/}/}\n/g;            # put each rule on a new line
 '
 }
+
+# }}}
+# iwlist scan formatter {{{1
+
+wifiscan (){
+    iwlist scan 2> /dev/null | awk '
+    # skip first line
+    NR==1{ next }
+    {
+        # left-justify
+        sub(/^[ \t]+/, "");
+        # seperate records with newlines
+        sub(/^Cell.*/,"");
+        print;
+    }
+    ' | awk '
+    # Trim leading labels
+    !/^Quality/{ gsub(/^.*:/, "") };
+    /^Quality/{
+        gsub(/^.*=/, "");
+        gsub(/  .*$/, "")
+    };
+    { print }
+    ' | awk '
+    BEGIN {
+        RS=""; FS="\n"; ORS="\n"; OFS="\t"
+        print "ESSID", "Mode", "Channel", "Quality", "Encryption";
+    }
+    {
+        if ($7 ~ /WPA/) {
+            print $1, $2, $3, $5, $7;
+        } else {
+            print $1, $2, $3, $5, $6;
+        }
+    }
+    ' | column -tx
+}
+
+# }}}
