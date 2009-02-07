@@ -326,3 +326,10 @@ wifiscan (){
 }
 
 # }}}
+# Output total memory currently in use by you {{{1
+
+memtotaller() {
+    ps -u $(whoami) -o pid,rss,command | awk '{sum+=$2} END {print "Total " sum / 1024 " MB"}'
+}
+
+# }}}
