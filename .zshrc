@@ -59,6 +59,14 @@ BROWSER='firefox'
 # Silence Wine debugging output (why isn't this a default?)
 WINEDEBUG=-all
 
+# Set grep to ignore SCM directories
+if ! $(grep --exclude-dir 2> /dev/null); then
+    GREP_OPTIONS="--color --exclude-dir=.svn --exclude=\*.pyc --exclude-dir=.hg --exclude-dir=.bzr --exclude-dir=.git"
+else
+    GREP_OPTIONS="--color --exclude=\*.svn\* --exclude=\*.pyc --exclude=\*.hg\* --exclude=\*.bzr\* --exclude=\*.git\*"
+fi
+export GREP_OPTIONS
+
 # }}}
 # {{{ completions
 
@@ -133,9 +141,6 @@ alias vi='vim'
 alias ls='ls -F --color'
 alias la='ls -A'
 alias ll='ls -lh'
-
-# .svn exclusion doesn't work very well, but it's better than nothing.
-alias grep='grep --color --exclude=\*.svn\* --exclude=\*.pyc'
 
 alias less='less -imJMW'
 alias cls='clear' # note: ctrl-L under zsh does something similar
