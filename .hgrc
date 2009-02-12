@@ -15,4 +15,5 @@ color =
 hgext.graphlog  =
 hgext.purge =
 hgext.record =
-hgext.mq =
+hgext.rebase = 
+hgext.bookmarks =
