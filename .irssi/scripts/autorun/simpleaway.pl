@@ -7,32 +7,32 @@
 
 use strict;
 use vars qw($VERSION %IRSSI);
-$VERSION = "20090215";
+
+use Irssi;
+$VERSION = "0.01";
 %IRSSI = (
     authors     => "Seth House",
     contact     => "seth\@eseth.com",
     name        => "simpleaway",
     description => "A featureless autoaway timer.",
     license     => "GPLv2",
-    changed     => "$VERSION",
+    changed     => "20090216",
 );
-use Irssi 20020324;
-use vars qw($timer @signals);
 
-@signals = ('gui key pressed');
+use vars qw($timer $signal);
 
 sub set_away {
+    Irssi::signal_remove($signal, "reset_timer");
     Irssi::timeout_remove($timer);
     my $message = Irssi::settings_get_str("simpleaway_message");
     my @servers = Irssi::servers();
     return unless @servers;
-    Irssi::signal_remove($_, "reset_timer") foreach (@signals);
     $servers[0]->command('AWAY '.$message);
-    Irssi::signal_add($_, "start_timer") foreach (('away mode changed'));
+    Irssi::signal_add('notifylist away changed', "start_timer");
 }
 
 sub start_timer {
-    Irssi::signal_add($_, "reset_timer") foreach (@signals);
+    $signal = Irssi::signal_add('gui key pressed', "reset_timer");
     reset_timer();
 }
 
