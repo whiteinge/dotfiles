@@ -154,12 +154,6 @@ alias du='du -sh'
 alias df='df -h'
 alias cal='cal -3 -m'
 
-# Starts ssh-agent when screen is started/reattached, stops the agent when
-# screen is detached. Use ssh-add to activate key for the session.
-SSH_AUTH_SOCK=$HOME/.screen/ssh-auth-sock
-alias sc="exec ssh-agent sh -c 'ln -sfn \$SSH_AUTH_SOCK \$HOME/.screen/ssh-auth-sock; exec screen -e\"^Aa\" -S main -DRR'"
-alias rsc="exec ssh-agent sh -c 'ln -sfn \$SSH_AUTH_SOCK \$HOME/.screen/ssh-auth-sock; exec screen -e\"^Ss\" -S main -DRR'"
-
 # OS X versions
 if [[ $(uname) == "Darwin" ]]; then
     alias ls='ls -FG'
@@ -167,6 +161,26 @@ if [[ $(uname) == "Darwin" ]]; then
     alias lynx='lynx -cfg=$HOME/.lynx.cfg'
     alias top='top -ocpu'
 fi
+
+# Integrate ssh-agent with GNU Screen:
+######################################
+#
+# ssh-agent varies the location of the socket pointed to by SSH_AUTH_SOCK; to
+# avoid having to update that variable in every terminal running in Screen
+# every time we reattach we create a permanent pointer that is easier to update
+SCREEN_AUTH_SOCK=$HOME/.screen/ssh-auth-sock
+#
+# For local Screen sessions, start ssh-agent and update SCREEN_AUTH_SOCK to
+# point to the new ssh-agent socket. Bonus: when the screen session is detached
+# the agent will be killed, securing your session. Simply run ssh-add every
+# time you start a new screen session or reattach.
+alias sc="exec ssh-agent sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec screen -e\"^Aa\" -S main -DRR'"
+#
+# For remote Screen sessions (e.g. ssh-ed Screen inside local Screen), update
+# SCREEN_AUTH_SOCK to point at the (hopefully) existing forwarded SSH_AUTH_SOCK
+# that points to your locally running agent. (For more info see ForwardAgent in
+# the ssh_config manpage.)
+alias rsc="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec screen -e\"^Ss\" -S main -DRR'"
 
 # }}}
 # Miscellaneous Functions:
