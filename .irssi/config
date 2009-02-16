@@ -217,7 +217,8 @@ ignores = (
       "#ubuntu-us-ut",
       "#nethack",
       "#slackware",
-      "#django"
+      "#django",
+      "#couchdb"
     );
   }
 );
