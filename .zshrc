@@ -185,6 +185,7 @@ alias rsc="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; SSH_AUTH_SOCK=
 # }}}
 # Miscellaneous Functions:
 # A lightweight, one-off application launcher {{{1
+# by Mikael Magnusson (I think)
 #
 # To run a command without closing the dialog press ctrl-j instead of enter
 # Invoke like:
