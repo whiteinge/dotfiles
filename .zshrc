@@ -184,6 +184,25 @@ alias rsc="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; SSH_AUTH_SOCK=
 
 # }}}
 # Miscellaneous Functions:
+# A lightweight, one-off application launcher {{{1
+#
+# To run a command without closing the dialog press ctrl-j instead of enter
+# Invoke like:
+# sh -c 'ZSHRUN=1 uxterm -geometry 100x4+0+0 +ls'
+
+if [[ -n "$ZSHRUN" ]]; then
+    unset ZSHRUN
+    function _accept_and_quit() {
+        zsh -c "${BUFFER}" &|
+        exit
+    }
+    zle -N _accept_and_quit
+    bindkey "^M" _accept_and_quit
+    prompt off
+    PS1="zshrun %~> "
+fi
+
+# }}}
 # {{{ calc()
 # Command-line calculator (has some limitations...not sure the extent)(based on zsh functionality)
 
@@ -352,3 +371,4 @@ memtotaller() {
 }
 
 # }}}
+#
