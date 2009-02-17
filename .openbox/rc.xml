@@ -206,11 +206,8 @@
     <keybind key="W-A-d"> <action name="ToggleShowDesktop"/> </keybind>
 
     <!-- Keybindings for windows -->
-    <keybind key="W-grave">
-      <action name="Lower"/>
-      <action name="FocusToBottom"/>
-      <action name="Unfocus"/>
-    </keybind>
+    <keybind key="W-grave"> <action name="Lower"/> <action name="FocusToBottom"/> <action name="Unfocus"/> </keybind>
+    <keybind key="A-grave"> <action name="Lower"/> <action name="FocusToBottom"/> <action name="Unfocus"/> </keybind>
 
     <keybind key="W-x"> <action name="ToggleMaximizeFull"/> </keybind>
     <keybind key="A-x"> <action name="ToggleMaximizeFull"/> </keybind>
