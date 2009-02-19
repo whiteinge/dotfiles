@@ -1,6 +1,4 @@
-! Map the Tab key to Escape and map the backslash key to Tab.
-! * To insert a backslash hold Meta_R and hit backslash.
-! * To send shift-tab hold shift, meta-r, and hit backslash.
-keysym Tab = Escape
-keycode 51 = Tab bar backslash ISO_Left_Tab
+! Add an extra Escape key with the backslash key.
+! To insert a backslash, hold Meta_R and hit the backslash key.
+keycode 51 = Escape bar backslash
 keysym Meta_R = Mode_switch
