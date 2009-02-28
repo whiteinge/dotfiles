@@ -144,14 +144,13 @@ alias ll='ls -lh'
 
 alias less='less -imJMW'
 alias cls='clear' # note: ctrl-L under zsh does something similar
-alias ssh='ssh -X -C'
 alias locate='locate -i'
 alias lynx='lynx -cfg=$HOME/.lynx.cfg -lss=$HOME/.lynx.lss'
 alias ducks='du -cks * | sort -rn | head -15'
 alias tree="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias ps='ps -opid,uid,cpu,time,stat,command'
-alias du='du -sh'
 alias df='df -h'
+alias dus='du -sh'
 alias cal='cal -3 -m'
 
 # OS X versions
@@ -181,6 +180,11 @@ alias sc="exec ssh-agent sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; SSH_A
 # that points to your locally running agent. (For more info see ForwardAgent in
 # the ssh_config manpage.)
 alias rsc="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec screen -e\"^Ss\" -S main -DRR'"
+
+# If running GNU Screen, open new ssh connections in new windows
+if [[ $TERM == *screen* ]]; then
+    ssh() { screen -t $@ ssh "$@"; }
+fi
 
 # }}}
 # Miscellaneous Functions:
