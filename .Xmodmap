@@ -1,4 +1,0 @@
-! Add an extra Escape key with the backslash key.
-! To insert a backslash, hold Meta_R and hit the backslash key.
-keycode 51 = Escape bar backslash
-keysym Meta_R = Mode_switch
