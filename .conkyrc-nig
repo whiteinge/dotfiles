@@ -124,3 +124,5 @@ $alignr /media/hd0 ${fs_bar 5,120 /media/hd0}$endif
 $alignr ${color grey}mpd $mpd_status  ${color white}$mpd_smart
 $alignr ${color grey}${mpd_bar 5,200}
 $alignr Vol: ${color white}$mpd_vol   ${color grey}Rand: ${color white}$mpd_random   ${color grey}Rep: ${color white}$mpd_repeat
+
+${voffset -160}${execi 300 gcalcli --nc agenda}    
