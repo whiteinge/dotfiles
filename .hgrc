@@ -1,10 +1,14 @@
 [ui]
 username = Seth House <seth@eseth.com>
-merge = vimdiff
 ignore = ~/.hgignore
 
 [alias]
-llog = log --limit 5 --template '{rev}:{node|short}\t{date|age} ago\t{author|person}\n\t- {files}\n\t{desc|strip|fill68|tabindent}\n\n'
+ll = log --limit 5 --template '{rev}:{node|short}\t{date|age} ago\t{author|person}\n\t- {files}\n\t{desc|strip|fill68|tabindent}\n\n'
+
+[merge-tools]
+vimdiff.executable = vimdiff
+vimdiff.premerge = True
+vimdiff.gui = False
 
 [web]
 allow_archive = bz2 gz
@@ -18,3 +22,4 @@ hgext.purge =
 hgext.record =
 hgext.rebase = 
 hgext.bookmarks =
+svn = /usr/local/lib/python/site-packages/hgsubversion
