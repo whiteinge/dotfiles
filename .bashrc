@@ -1,3 +1,7 @@
+shopt -s globstar
+shopt -s checkjobs
+shopt -s autocd
+
 # PS1 from http://thesmithfam.org/blog/2009/01/06/best-bash-prompt-ever/
 BLACK="\[\033[0;30m\]"
 DARK_GRAY="\[\033[1;30m\]"
