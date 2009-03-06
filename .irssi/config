@@ -163,6 +163,7 @@ settings = {
     beep_msg_level = "MSGS NOTICES DCC DCCMSGS HILIGHT";
     windows_auto_renumber = "no";
     theme = "hv";
+    autolog = "yes";
   };
   "perl/core/scripts" = {
     screen_away_active = "yes";
@@ -205,22 +206,7 @@ ignores = (
   { mask = "*zzz*"; level = "NICKS"; },
   { mask = "*away*"; level = "NICKS"; },
   { mask = "*afk*"; level = "NICKS"; },
-  {
-    level = "JOINS PARTS QUITS";
-    channels = (
-      "&bitlbee",
-      "#utos-dev",
-      "#utahpython",
-      "#utahdjango",
-      "#utah",
-      "#utos",
-      "#ubuntu-us-ut",
-      "#nethack",
-      "#slackware",
-      "#django",
-      "#couchdb"
-    );
-  }
+  { level = "JOINS PARTS QUITS MODE"; }
 );
 
 windows = {
