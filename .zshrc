@@ -34,7 +34,9 @@ PATH=$HOME/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/us
 MANPATH=$HOME/man:/opt/local/share/man:/usr/local/man:/usr/local/share/man:/usr/X11/man:/usr/man:/usr/share/man:$MANPATH
 CDPATH=$CDPATH::$HOME:/usr/local
 
-export PYTHONSTARTUP=$(echo $HOME)/.pythonrc.py
+PYTHONPATH=$HOME/lib/python/site-packages:$HOME/src:$PYTHONPATH
+PYTHONSTARTUP=$HOME/.pythonrc.py
+export PYTHONSTARTUP PYTHONPATH
 
 HISTFILE=$HOME/.zsh_history
 HISTFILESIZE=65536  # search this with `grep | sort -u`
@@ -84,7 +86,7 @@ zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|ftp|rsync):*' hosts 'reply=(
 autoload -U promptinit
 promptinit
 
-prompt adam2 bg_grey green magenta white
+prompt adam2 grey green magenta white
 
 # }}}
 # {{{ vi mode, mode display and extra vim-style keybindings
