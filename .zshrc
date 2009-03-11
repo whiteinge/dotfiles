@@ -183,10 +183,8 @@ alias sc="exec ssh-agent sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; SSH_A
 # the ssh_config manpage.)
 alias rsc="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec screen -e\"^Ss\" -S main -DRR'"
 
-# If running GNU Screen, open new ssh connections in new windows
-if [[ $TERM == *screen* ]]; then
-    ssh() { screen -t $@ ssh "$@"; }
-fi
+# Start ssh session in a new Screen window
+sssh() { screen -t $@ ssh "$@"; }
 
 # }}}
 # Miscellaneous Functions:
