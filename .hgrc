@@ -22,4 +22,6 @@ hgext.purge =
 hgext.record =
 hgext.rebase = 
 hgext.bookmarks =
-svn = /usr/local/lib/python/site-packages/hgsubversion
+
+[hooks]
+pretxncommit.pdb = hg export tip | (! grep 'pdb') 
