@@ -33,7 +33,8 @@ channels = (
   { name = "#utahdjango"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utah"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utos"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#ubuntu-us-ut"; chatnet = "freenode"; autojoin = "yes"; }
+  { name = "#ubuntu-us-ut"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#uphpu"; chatnet = "freenode"; autojoin = "yes"; }
 );
 
 statusbar = {
@@ -281,6 +282,16 @@ windows = {
       }
     );
   };
+  9 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#uphpu";
+        tag = "freenode";
+      }
+    );
+  };
 };
 logs = { };
 keyboard = (
@@ -292,3 +303,4 @@ aliases = {
   UNACT = "script exec foreach $$w (Irssi::windows()) { Irssi::command(\"window goto $$w->{refnum}\")\\;} ; window goto $winref";
   uis = "exec - rsync -avz main.irssi.org::irssiweb/scripts/scripts/\\*.pl ~/.irssi/scripts/autorun";
 };
+notifies = { agentc0re = { }; };
