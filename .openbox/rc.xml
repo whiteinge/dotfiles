@@ -117,7 +117,7 @@
   </desktops>
   <resize>
     <drawContents>yes</drawContents>
-    <popupShow>Nonpixel</popupShow>
+    <popupShow>Always</popupShow>
     <!-- 'Always', 'Never', or 'Nonpixel' (xterms and such) -->
     <popupPosition>Center</popupPosition>
     <!-- 'Center', 'Top', or 'Fixed' -->
@@ -162,18 +162,56 @@
   <keyboard>
     <chainQuitKey>C-g</chainQuitKey>
     <!-- Switch to Desktops -->
-
-    <keybind key="W-a"> <action name="DesktopLast"> <dialog>no</dialog> </action> </keybind>
-    <keybind key="W-F1"> <action name="Desktop"> <desktop>1</desktop> </action> </keybind>
-    <keybind key="W-F2"> <action name="Desktop"> <desktop>2</desktop> </action> </keybind>
-    <keybind key="W-F3"> <action name="Desktop"> <desktop>3</desktop> </action> </keybind>
-    <keybind key="W-F4"> <action name="Desktop"> <desktop>4</desktop> </action> </keybind>
-    <keybind key="A-a"> <action name="DesktopLast"> <dialog>no</dialog> </action> </keybind>
-    <keybind key="A-F1"> <action name="Desktop"> <desktop>1</desktop> </action> </keybind>
-    <keybind key="A-F2"> <action name="Desktop"> <desktop>2</desktop> </action> </keybind>
-    <keybind key="A-F3"> <action name="Desktop"> <desktop>3</desktop> </action> </keybind>
-    <keybind key="A-F4"> <action name="Desktop"> <desktop>4</desktop> </action> </keybind>
-
+    <keybind key="W-a">
+      <action name="DesktopLast">
+        <dialog>no</dialog>
+      </action>
+    </keybind>
+    <keybind key="W-F1">
+      <action name="Desktop">
+        <desktop>1</desktop>
+      </action>
+    </keybind>
+    <keybind key="W-F2">
+      <action name="Desktop">
+        <desktop>2</desktop>
+      </action>
+    </keybind>
+    <keybind key="W-F3">
+      <action name="Desktop">
+        <desktop>3</desktop>
+      </action>
+    </keybind>
+    <keybind key="W-F4">
+      <action name="Desktop">
+        <desktop>4</desktop>
+      </action>
+    </keybind>
+    <keybind key="A-a">
+      <action name="DesktopLast">
+        <dialog>no</dialog>
+      </action>
+    </keybind>
+    <keybind key="A-F1">
+      <action name="Desktop">
+        <desktop>1</desktop>
+      </action>
+    </keybind>
+    <keybind key="A-F2">
+      <action name="Desktop">
+        <desktop>2</desktop>
+      </action>
+    </keybind>
+    <keybind key="A-F3">
+      <action name="Desktop">
+        <desktop>3</desktop>
+      </action>
+    </keybind>
+    <keybind key="A-F4">
+      <action name="Desktop">
+        <desktop>4</desktop>
+      </action>
+    </keybind>
     <!-- Send windows to other Desktops -->
     <keybind key="W-A-F1">
       <action name="SendToDesktop">
@@ -199,34 +237,84 @@
         <follow>no</follow>
       </action>
     </keybind>
-
-    <keybind key="W-A-Left"> <action name="DesktopLeft"> <dialog>no</dialog> <wrap>no</wrap> </action> </keybind>
-    <keybind key="W-A-Right"> <action name="DesktopRight"> <dialog>no</dialog> <wrap>no</wrap> </action> </keybind>
-
-    <keybind key="W-A-d"> <action name="ToggleShowDesktop"/> </keybind>
-
+    <keybind key="W-A-Left">
+      <action name="DesktopLeft">
+        <dialog>no</dialog>
+        <wrap>no</wrap>
+      </action>
+    </keybind>
+    <keybind key="W-A-Right">
+      <action name="DesktopRight">
+        <dialog>no</dialog>
+        <wrap>no</wrap>
+      </action>
+    </keybind>
+    <keybind key="W-A-d">
+      <action name="ToggleShowDesktop"/>
+    </keybind>
     <!-- Keybindings for windows -->
-    <keybind key="W-grave"> <action name="Lower"/> <action name="FocusToBottom"/> <action name="Unfocus"/> </keybind>
-    <keybind key="A-grave"> <action name="Lower"/> <action name="FocusToBottom"/> <action name="Unfocus"/> </keybind>
-
-    <keybind key="W-x"> <action name="ToggleMaximizeFull"/> </keybind>
-    <keybind key="A-x"> <action name="ToggleMaximizeFull"/> </keybind>
-
+    <keybind key="W-grave">
+      <action name="Lower"/>
+      <action name="FocusToBottom"/>
+      <action name="Unfocus"/>
+    </keybind>
+    <keybind key="A-grave">
+      <action name="Lower"/>
+      <action name="FocusToBottom"/>
+      <action name="Unfocus"/>
+    </keybind>
+    <keybind key="W-x">
+      <action name="ToggleMaximizeFull"/>
+    </keybind>
+    <keybind key="A-x">
+      <action name="ToggleMaximizeFull"/>
+    </keybind>
     <!-- Keybindings for window switching -->
-    <keybind key="W-Tab"> <action name="NextWindow"/> </keybind>
-    <keybind key="W-S-Tab"> <action name="PreviousWindow"/> </keybind>
-    <keybind key="A-Tab"> <action name="NextWindow"/> </keybind>
-    <keybind key="A-S-Tab"> <action name="PreviousWindow"/> </keybind>
-
+    <keybind key="W-Tab">
+      <action name="NextWindow"/>
+    </keybind>
+    <keybind key="W-S-Tab">
+      <action name="PreviousWindow"/>
+    </keybind>
+    <keybind key="A-Tab">
+      <action name="NextWindow"/>
+    </keybind>
+    <keybind key="A-S-Tab">
+      <action name="PreviousWindow"/>
+    </keybind>
+    <!-- Toggle "pass-through" mode for otherwise bound key bindings. -->
+    <keybind key="C-A-q" chroot="true">
+      <keybind key="C-A-q">
+        <action name="BreakChroot"/>
+      </keybind>
+    </keybind>
     <!-- Keybindings for running applications -->
-    <keybind key="W-space"> <action name="Execute"> <command>sh -c 'ZSHRUN=1 uxterm -geometry 90x5+0+0 +ls -bg white -fg black -T zshrun'</command> </action> </keybind>
-    <keybind key="A-space"> <action name="Execute"> <command>sh -c 'ZSHRUN=1 uxterm -geometry 90x5+0+0 +ls -bg white -fg black -T zshrun'</command> </action> </keybind>
-
-    <keybind key="W-m"> <action name="Execute"> <command>xmag</command> </action> </keybind>
-    <keybind key="A-m"> <action name="Execute"> <command>xmag</command> </action> </keybind>
-
-    <keybind key="W-q"> <action name="Close"/> </keybind>
-    <keybind key="A-q"> <action name="Close"/> </keybind>
+    <keybind key="W-space">
+      <action name="Execute">
+        <command>sh -c 'ZSHRUN=1 uxterm -geometry 90x5+0+0 +ls -bg white -fg black -T zshrun'</command>
+      </action>
+    </keybind>
+    <keybind key="A-space">
+      <action name="Execute">
+        <command>sh -c 'ZSHRUN=1 uxterm -geometry 90x5+0+0 +ls -bg white -fg black -T zshrun'</command>
+      </action>
+    </keybind>
+    <keybind key="W-m">
+      <action name="Execute">
+        <command>xmag</command>
+      </action>
+    </keybind>
+    <keybind key="A-m">
+      <action name="Execute">
+        <command>xmag</command>
+      </action>
+    </keybind>
+    <keybind key="W-q">
+      <action name="Close"/>
+    </keybind>
+    <keybind key="A-q">
+      <action name="Close"/>
+    </keybind>
   </keyboard>
   <mouse>
     <dragThreshold>8</dragThreshold>

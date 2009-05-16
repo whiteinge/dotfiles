@@ -7,8 +7,8 @@
 # set to yes if you want Conky to be forked in the background
 background yes
 
-maximum_width 1400
-minimum_size 1400 900
+# maximum_width 1400
+minimum_size 890 900
 text_buffer_size 1024
 
 border_margin 10
@@ -66,11 +66,11 @@ default_shade_color black
 default_outline_color black
 
 # Text alignment, other possible values are commented
-alignment tm
+alignment tl
 
 # Gap between borders of screen and text
 # same thing as passing -x at command line
-gap_x -10
+# gap_x -10
 gap_y -11
 
 # Subtract file system buffers from used memory?
@@ -101,7 +101,7 @@ use_spacer left
 
 TEXT
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }$alignr ${color grey}cpu:${color white}${cpu cpu1}% ${cpu cpu2}% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}swap: ${color white}${swapperc}%   ${color grey}tx:${color white}${if_up wlan0}${downspeed wlan0}$endif k/s, ${color grey}rx:${color white}${if_up wlan0}${upspeed wlan0}$endif k/s
+${color grey}${time %a, %d %b %y}     ${time %H:%M }$alignr ${color grey}cpu:${color white}${cpu cpu1}% ${cpu cpu2}% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}swap: ${color white}${swapperc}%   ${color grey}rx:${color white}${if_up wlan0}${downspeed wlan0}$endif, ${color grey}tx:${color white}${if_up wlan0}${upspeed wlan0}$endif
 
 
 $alignr$loadavg  |  $uptime  |  $user_number users

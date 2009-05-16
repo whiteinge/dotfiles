@@ -1,6 +1,6 @@
 " Ok-ish gvimrc 'cause sometimes assholes make you use GUIs
 " Author: Seth House <seth@eseth.com>
-" $Id$
+" $Id: .gvimrc 139 2007-11-19 22:38:41Z shouse $
 
 color desert
 hi LineNr guibg=#222222

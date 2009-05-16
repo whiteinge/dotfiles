@@ -1,19 +1,21 @@
 ! The best, goddamn Xresources file in the whole world.
 ! Author: Seth House <seth@eseth.com>
-! Modified: $LastChangedDate$
+! Modified: $LastChangedDate: 2009-04-03 10:48:24 -0600 (Fri, 03 Apr 2009) $
 ! -----------------------------------------------------------------------------
 
 
 ! --- Xft {{{1
 ! -----------------------------------------------------------------------------
-Xft*dpi: 96
-Xft*hinting: true
-Xft*hintstyle: hintfull
-! Xft.hintstyle:  hintslight
+! calculate dpi with xdpyinfo | grep resolution
+Xft*dpi: 90
 Xft*antialias: true
-! rgba subpixel hinting (for LCDs)
+Xft*hinting: true
+! font-dependant. also try hintslight, hintsfull, hintsmedium, or hintsnone.
+Xft*hintstyle: hintfull
+! set to vrgb for subpixel hinting on LCDs, or none on CRTs
 Xft*rgba: none
-! Xft*rgba: rgb
+! Choices: lcdnone, lcddefault, lcdlight, lcdlegacy
+Xft.lcdfilter: lcddefault
 
 
 ! --- Xcursor {{{1
@@ -77,7 +79,7 @@ xmessage*faceName: Monaco
 xmessage*faceSize: 12
 xmessage*message.scrollVertical: Always
 xmessage*message.scrollHorizontal: Never
-! add keyboard shortcuts
+! add keyboard shortcuts to easily quit program
 xmessage*baseTranslations:#augment\
         <Key>Return:exit()\n\
         <Key>space:exit()
@@ -102,6 +104,7 @@ xmag*Scale.baseTranslations:#augment\
         <Key>q:close()\n\
         Ctrl<Key>c:close()\n\
         <Key>space:replace()
+
 
 ! --- xcalc {{{1
 ! -----------------------------------------------------------------------------
@@ -194,6 +197,7 @@ xclock*background: black
 xlogin*greeting: Welcome to Fhloston Paradise
 xlogin*allowRootLogin: false
 xlogin*allowNullPasswd: false
+
 
 ! --- Color scheme {{{1
 ! #include ".Xresources-colors-muted"

@@ -1,27 +1,54 @@
 [ui]
+#####################################################################
+
 username = Seth House <seth@eseth.com>
 ignore = ~/.hgignore
 
 [alias]
+#####################################################################
+
 ll = log --limit 5 --template '{rev}:{node|short}\t{date|age} ago\t{author|person}\n\t- {files}\n\t{desc|strip|fill68|tabindent}\n\n'
 
+# Show status output for the current patch
+qstatus = status --rev -2:.
+
+# Output all applied patches as a single diff
+qudiff = diff -r $(hg parents -r qbase --template '#rev#') -r qtip
+
 [merge-tools]
+#####################################################################
+
 vimdiff.executable = vimdiff
 vimdiff.premerge = True
 vimdiff.gui = False
 
 [web]
+#####################################################################
+
 allow_archive = bz2 gz
-port = 8001
+# push_ssl = false
+# allow_push = *
 
 [extensions]
+#####################################################################
+
 color =
 alias =
-hgext.graphlog  =
+hgext.graphlog =
 hgext.purge =
+hgext.mq =
 hgext.record =
-hgext.rebase = 
+hgext.rebase =
 hgext.bookmarks =
 
 [hooks]
+#####################################################################
+
+# Don't commit any code that contains 'pdb'
 pretxncommit.pdb = hg export tip | (! grep 'pdb') 
+
+# Prevent "hg pull" if MQ patches are applied.
+prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
+
+# Prevent "hg push" if MQ patches are applied.
+preoutgoing.mq-no-push = ! hg qtop > /dev/null 2>&1

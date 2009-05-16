@@ -8,4 +8,3 @@ syntax: glob
 Session.vim
 development.wsgi
 development.sqlite3
-debug_settings.py

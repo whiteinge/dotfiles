@@ -7,7 +7,7 @@ complement this file."""
 
 AUTHOR = 'Seth House'
 CONTACT = 'seth@eseth.com'
-LAST_MODIFIED = '$Date$'
+LAST_MODIFIED = '$Date: 2009-04-09 21:33:47 -0600 (Thu, 09 Apr 2009) $'
 
 ##########################################################################
 
@@ -92,15 +92,15 @@ sys.displayhook = my_displayhook
 # Welcome message
 #################
 
-WELCOME = """%(Green)s
+WELCOME = """%(LightBlue)s
 The Python shell is coming at 'ya, punk!
 %(Cyan)s
 You've got color, history, and pretty printing.
 (If your ~/.inputrc doesn't suck, you've also
 got completion and vi-mode keybindings.)
-%(LightPurple)s
-Type \e to get an external editor.
 %(Brown)s
+Type \e to get an external editor.
+%(Blue)s
 Oh yeah, it is that cool.
 %(Normal)s""" % _c
 
@@ -124,6 +124,7 @@ if os.environ.has_key('DJANGO_SETTINGS_MODULE'):
     from django.db.models.loading import get_models
     from django.test.client import Client
     from django.test.utils import setup_test_environment, teardown_test_environment
+    from django.conf import settings as S
 
     class DjangoModels(object):
         """Loop through all the models in INSTALLED_APPS and import them."""
@@ -133,14 +134,19 @@ if os.environ.has_key('DJANGO_SETTINGS_MODULE'):
 
     A = DjangoModels()
     C = Client()
-    setup_test_environment()
 
-    WELCOME += """%(LightBlue)s
+    WELCOME += """%(Green)s
 Django environment detected.
 * Your INSTALLED_APPS models have been imported into the namespace `A`.
+* Your project settings are available as `S`.
 * The Django test client is available as `C`.
-* The Django test environment has been set up. To restore the normal
-  environment call `teardown_test_environment()`.
+%(Normal)s""" % _c
+
+    setup_test_environment()
+
+    WELCOME += """%(LightPurple)s
+Note: The Django test environment has been set up.
+To restore the normal environment call `teardown_test_environment()`.
 %(Normal)s""" % _c
 
 # Start an external editor with \e

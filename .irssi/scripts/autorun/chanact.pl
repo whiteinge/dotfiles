@@ -4,14 +4,14 @@ use Irssi::TextUI;
 
 use vars qw($VERSION %IRSSI);
 
-$VERSION = "0.5.5";
+$VERSION = "0.5.10";
 %IRSSI = (
     authors     => 'BC-bd, Veli',
     contact     => 'bd@bc-bd.org, veli@piipiip.net',
     name        => 'chanact',
     description => 'Adds new powerful and customizable [Act: ...] item (chanelnames,modes,alias). Lets you give alias characters to windows so that you can select those with meta-<char>',
     license     => 'GNU GPLv2 or later',
-    url         => 'http://bc-bd.org/software.php3#irssi'
+    url         => 'https://bc-bd.org/svn/repos/irssi/chanact'
 );
 
 # Adds new powerful and customizable [Act: ...] item (chanelnames,modes,alias).
@@ -29,6 +29,9 @@ $VERSION = "0.5.5";
 # veli@piipiip.net   /window_alias code
 # qrczak@knm.org.pl  chanact_abbreviate_names
 # qerub@home.se      Extra chanact_show_mode and chanact_chop_status
+# madduck@madduck.net Better channel aliasing (case-sensitive, cross-network)
+# Jan 'jast' Krueger <jast@heapsort.de>, 2004-06-22
+# Ivo Timmermans <ivo@o2w.nl>	win->{hilight} patch
 # 
 #########
 # USAGE
@@ -39,7 +42,7 @@ $VERSION = "0.5.5";
 # In irssi:
 #
 #		/script load chanact
-#		/statusbar window add chanact -after act
+#		/statusbar window add -after act chanact
 #
 # If you want the item to appear on another position read the help
 # for /statusbar.
@@ -73,9 +76,17 @@ $VERSION = "0.5.5";
 # OPTIONS
 #########
 #
-# /set chanact_show_all <ON|OFF>
-#		* ON  : show all windows
-#		* OFF : show only those with activity
+# /set chanact_chop_status <ON|OFF>
+#               * ON  : shorten (Status) to S
+#               * OFF : don't do it
+#
+# /set chanact_show_mode <ON|OFF>
+#               * ON  : show channel modes
+#               * OFF : don't show channel modes
+#
+# /set chanact_sort_by_activity <ON|OFF>
+#               * ON  : sorts the list by last activity
+#               * OFF : sorts the list by window number
 #
 # /set chanact_display <string>
 #		* string : Format String for one Channel. The following $'s are expanded:
@@ -111,7 +122,7 @@ $VERSION = "0.5.5";
 #		* ON  : show the aliase instead of the refnum
 #		* OFF : shot the refnum
 #
-# /set chanact_separator <str>
+# /set chanact_header <str>
 # 	* <str> : Characters to be displayed at the start of the item.
 # 	          Defaults to: "Act: "
 #
@@ -129,8 +140,26 @@ $VERSION = "0.5.5";
 # /set chanact_renumber_start <int>
 # 		* <int> : Move the window to first available slot after this
 # 		          num when "chanact_autorenumber" is ON.
-# 		
-# 
+#
+# /set chanact_remove_hash <ON|OFF>
+# 		* ON  : Remove &#+!= from channel names
+# 		* OFF : Don't touch channel names
+#
+# /set chanact_remove_prefix <string>
+# 		* <string> : Regular expression used to remove from the
+# 		             beginning of the channel name.
+# 		* example  :
+# 		    To shorten a lot of debian channels:
+# 		    
+# 			/set chanact_remove_prefix deb(ian.(devel-)?)?
+#
+# /set chanact_filter <int>
+# 		* 0 : show all channels
+# 		* 1 : hide channels without activity
+# 		* 2 : hide channels with only join/part/etc messages
+# 		* 3 : hide channels with text messages
+# 		* 4 : hide all channels (now why would you want to do that)
+#
 #########
 # HINTS
 #########
@@ -146,6 +175,13 @@ $VERSION = "0.5.5";
 #
 ###
 #################
+
+my %show = (
+	0 => "{%n ",			# NOTHING
+	1 => "{sb_act_text ",		# TEXT
+	2 => "{sb_act_msg ",		# MSG
+	3 => "{sb_act_hilight ",	# HILIGHT
+);
 
 my ($actString,$needRemake);
 
@@ -173,20 +209,30 @@ sub chanact {
 
 # this is the real creation method
 sub remake() {
-	my ($afternumber,$finish,$hilight,$mode,$number,$display);
+	my ($afternumber,$finish,$hilight,$mode,$number,$display,@windows);
 	my $separator = Irssi::settings_get_str('chanact_separator'); 
 	my $abbrev = Irssi::settings_get_int('chanact_abbreviate_names');
-	
+	my $remove_prefix = Irssi::settings_get_str('chanact_remove_prefix');
+	my $remove_hash = Irssi::settings_get_bool('chanact_remove_hash');
+
+ 	if (Irssi::settings_get_bool('chanact_sort_by_activity')) {
+		@windows = sort { ($b->{last_line} <=> $a->{last_line}) }
+			Irssi::windows;
+	} else {
+		@windows = sort { ($a->{refnum}) <=> ($b->{refnum}) }
+			Irssi::windows;
+	}
+
 	$actString = "";
-	foreach my $win (sort { ($a->{refnum}) <=> ($b->{refnum})} Irssi::windows) {
+	foreach my $win (@windows) {
 	
 		# since irssi is single threaded this shouldn't happen
 		!ref($win) && next;
 
-		my $name = $win->get_active_name;
 		my $active = $win->{active};
+		!ref($active) && next;
 
-		!ref($win) && next;
+		my $name = $win->get_active_name;
 
 		# (status) is an awfull long name, so make it short to 'S'
 		# some people don't like it, so make it configurable
@@ -216,32 +262,32 @@ sub remake() {
 			}
 		}
 
-		# find the right color
-		if ($win->{data_level} == 1) {
-			$hilight = "{sb_act_text ";
-		} elsif ($win->{data_level} == 2) {
-			$hilight = "{sb_act_msg ";
-		} elsif ($win->{data_level} == 3) {
-			$hilight = "{sb_act_hilight ";
+		next if (Irssi::settings_get_int('chanact_filter') > $win->{data_level});
+
+		# in case we have a specific hilightcolor use it
+		if ($win->{hilight_color}) {
+			$hilight = "{sb_act_hilight_color $win->{hilight_color} ";
 		} else {
-			if (Irssi::settings_get_bool('chanact_show_all') == 1) {
-				$hilight = "{%n ";
-			} else {
-				next;
-			}
+			$hilight = $show{$win->{data_level}};
 		}
 
+		if ($remove_prefix) {
+			$name =~ s/^([&#+!=]?)$remove_prefix/$1/;
+		}
 		if ($abbrev) {
 			if ($name =~ /^[&#+!=]/) {
-				$name = substr($name, 0, $abbrev + 1);
+				$name = substr($name, 1, $abbrev + 1);
 			} else {
 				$name = substr($name, 0, $abbrev);
 			}
 		}
+		if ($remove_hash) {
+			$name =~ s/^[&#+!=]//;
+		}
 
 		if (Irssi::settings_get_bool('chanact_show_alias') == 1 && 
-				$win->{name} =~ /^[a-zA-Z+]$/) {
-			$number = $win->{name};
+				$win->{name} =~ /^([a-zA-Z+]):(.+)$/) {
+			$number = "$1";
 			$display = Irssi::settings_get_str('chanact_display_alias'); 
 		} else {
 			$number = $win->{refnum};
@@ -256,10 +302,10 @@ sub remake() {
 		# Remove the last separator
 		$actString =~ s/$separator$//;
 		
-		if (Irssi::settings_get_bool('chanact_show_all') == 1) {
-			$actString = "{sb ".$actString."}";
-		} else {
+		if (Irssi::settings_get_int('chanact_filter')) {
 			$actString = "{sb ".Irssi::settings_get_str('chanact_header').$actString."}";
+		} else {
+			$actString = "{sb ".$actString."}";
 		}
 	}
 
@@ -271,6 +317,10 @@ sub remake() {
 # remember that we have to remake it the next time we are called
 sub chanactHasChanged()
 {
+	# if needRemake is already set, no need to trigger a redraw as we will
+	# be redrawing the item anyway.
+	return if $needRemake;
+
 	$needRemake = 1;
 
 	Irssi::statusbar_items_redraw('chanact');
@@ -338,9 +388,12 @@ sub cmd_window_alias {
 		Irssi::print("Moved the window from $old_refnum to $winnum");
 	}
 	
-	$window->set_name($data);
-	$server->command("/bind meta-$data change_window $winnum");
-	Irssi::print("Window $winnum is now known as '$data'");
+	my $winname = $witem->{name};
+	my $winserver = $window->{active_server}->{tag};
+	my $winhandle = "$winserver/$winname";
+	$window->set_name("$data:$winhandle");
+	$server->command("/bind meta-$data change_window $data:$winhandle");
+	Irssi::print("Window $winhandle is now accessible with meta-$data");
 }
 
 # function by veli@piipiip.net
@@ -374,14 +427,17 @@ Irssi::command_bind('window_unalias','cmd_window_unalias');
 # our config item
 Irssi::settings_add_str('chanact', 'chanact_display', '$H$N:$M$C$S');
 Irssi::settings_add_str('chanact', 'chanact_display_alias', '$H$N$M$S');
-Irssi::settings_add_bool('chanact', 'chanact_show_all', 0);
 Irssi::settings_add_int('chanact', 'chanact_abbreviate_names', 0);
 Irssi::settings_add_bool('chanact', 'chanact_show_alias', 1);
 Irssi::settings_add_str('chanact', 'chanact_separator', " ");
 Irssi::settings_add_bool('chanact', 'chanact_autorenumber', 0);
+Irssi::settings_add_bool('chanact', 'chanact_remove_hash', 0);
+Irssi::settings_add_str('chanact', 'chanact_remove_prefix', "");
 Irssi::settings_add_int('chanact', 'chanact_renumber_start', 50);
 Irssi::settings_add_str('chanact', 'chanact_header', "Act: ");
 Irssi::settings_add_bool('chanact', 'chanact_chop_status', 1);
+Irssi::settings_add_bool('chanact', 'chanact_sort_by_activity', 1);
+Irssi::settings_add_int('chanact', 'chanact_filter', 0);
 
 # register the statusbar item
 Irssi::statusbar_item_register('chanact', '$0', 'chanact');
@@ -390,10 +446,15 @@ Irssi::statusbar_item_register('chanact', '$0', 'chanact');
 
 # register all that nifty callbacks on special events
 Irssi::signal_add_last('setup changed', 'chanactHasChanged');
+Irssi::signal_add_last('window changed', 'chanactHasChanged');
+Irssi::signal_add_last('window item changed', 'chanactHasChanged');
 Irssi::signal_add_last('window hilight', 'chanactHasChanged');
+Irssi::signal_add_last('window item hilight', 'chanactHasChanged');
 Irssi::signal_add("window created", "chanactHasChanged");
 Irssi::signal_add("window destroyed", "chanactHasChanged");
 Irssi::signal_add("window name changed", "chanactHasChanged");
+Irssi::signal_add("window activity", "chanactHasChanged");
+Irssi::signal_add("print text", "chanactHasChanged");
 Irssi::signal_add('nick mode changed', 'chanactHasChanged');
 
 Irssi::signal_add_last('window refnum changed', 'refnum_changed');
@@ -403,9 +464,40 @@ Irssi::signal_add_last('window refnum changed', 'refnum_changed');
 #
 # Changelog
 # 
+# 0.5.10
+# 	- fixed irssi crash when using Irssi::print from within remake()
+#       - added option to filter out some data levels, based on a patch by
+#         Juergen Jung <juergen@Winterkaelte.de>, see
+#         https://bc-bd.org/trac/irssi/ticket/15
+#         	+ retired chanact_show_all in favour of chanact_filter
+#
+# 0.5.9
+# 	- changes by stefan voelkel
+# 		+ sort channels by activity, see
+# 		  https://bc-bd.org/trac/irssi/ticket/5, based on a patch by jan
+# 		  krueger
+# 		+ fixed chrash on /exec -interactive, see
+# 		https://bc-bd.org/trac/irssi/ticket/7
+#
+# 	- changes by Jan 'jast' Krueger <jast@heapsort.de>, 2004-06-22
+# 		+ updated documentation in script's comments
+#
+# 	- changes by Ivo Timmermans <ivo@o2w.nl>
+# 		+ honor actcolor /hilight setting if present
+#
+# 0.5.8
+# - made aliases case-sensitive and include network in channel names by madduck
+#
+# 0.5.7
+# - integrated remove patch by Christoph Berg <myon@debian.org>
+#
+# 0.5.6
+# - fixed a bug (#1) reported by Wouter Coekaert
+# 
 # 0.5.5
 # - some speedups from David Leadbeater <dgl@dgl.cx>
 # 
+#
 # 0.5.4
 # - added help for chanact_display_alias
 #

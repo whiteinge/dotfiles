@@ -7,16 +7,29 @@
     <action name="Execute"><command>uxterm</command></action>
   </item>
   <item label="firefox">
-    <action name="Execute"><command>firefox</command></action>
+      <action name="Execute">
+          <startupnotify><enabled>yes</enabled></startupnotify>
+          <command>firefox</command>
+      </action>
   </item>
+
   <separator />
+
   <item label="gimp">
-    <action name="Execute"><command>gimp</command></action>
+      <action name="Execute">
+          <startupnotify><enabled>yes</enabled></startupnotify>
+          <command>gimp</command>
+      </action>
   </item>
   <item label="inkscape">
-    <action name="Execute"><command>inkscape</command></action>
+      <action name="Execute">
+          <startupnotify><enabled>yes</enabled></startupnotify>
+          <command>inkscape</command>
+      </action>
   </item>
+
   <separator />
+
   <item label="gmpc">
     <action name="Execute"><command>gmpc</command></action>
   </item>
@@ -24,7 +37,10 @@
 
 <menu id="games-menu" label="games">
   <item label="guild wars">
-      <action name="Execute"><command>gw</command></action>
+      <action name="Execute">
+          <command>gw</command>
+          <startupnotify><enabled>yes</enabled></startupnotify>
+      </action>
   </item>
 </menu>
 

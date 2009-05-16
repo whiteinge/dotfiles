@@ -2,8 +2,8 @@
 #
 # Best Goddamn zshrc in the whole world (if you're obsessed with Vim).
 # Author: Seth House <seth@eseth.com>
-# Version: $LastChangedRevision$
-# Modified: $LastChangedDate$
+# Version: $LastChangedRevision: 627 $
+# Modified: $LastChangedDate: 2009-04-24 21:21:43 -0600 (Fri, 24 Apr 2009) $
 # thanks to Adam Spiers, Steve Talley
 # and to Unix Power Tools by O'Reilly
 #
@@ -24,6 +24,9 @@ setopt                          \
         mark_dirs               \
         path_dirs               \
         rm_star_wait
+
+# Push a command onto a stack allowing you to run another command first
+bindkey '^J' push-line
 
 # }}}
 # {{{ environment settings
@@ -96,6 +99,23 @@ prompt adam2 grey green magenta white
 # TODO: bug when searching through hist with n and N, when you pass the EOF the
 #       term decrements the indent of $VIMODE on the right, which will collide
 #       with the command you're typing
+# TODO: Can this be improved on with Aaron's widget technique?
+# It works in an entirely different way and doesn't seem to be compatible with
+# using zsh builtin prompts at first glance.
+# function zle-keymap-select {
+    # VIMODE="${${KEYMAP/vicmd/ M:command}/(main|viins)/}"
+    # zle reset-prompt
+# }
+# zle -N zle-keymap-select
+#
+########## Or this one?:
+# function zle-line-init zle-keymap-select {
+    # RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+    # RPS2=$RPS1
+    # zle reset-prompt
+# }
+# zle -N zle-line-init
+# zle -N zle-keymap-select
 
 bindkey -v
 bindkey "^?" backward-delete-char
@@ -107,6 +127,7 @@ bindkey -M vicmd '^p' history-beginning-search-backward
 bindkey -M viins '^n' history-beginning-search-forward
 bindkey -M vicmd '^n' history-beginning-search-forward
 
+# Allows editing the command line with an external editor
 autoload edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd "v" edit-command-line
@@ -154,6 +175,14 @@ alias ps='ps -opid,uid,cpu,time,stat,command'
 alias df='df -h'
 alias dus='du -sh'
 alias cal='cal -3 -m'
+alias info='info --vi-keys'
+
+# Selects a random file: ``ls RANDOM``
+alias -g RANDOM='$(ls | shuf | head -1)'
+
+# trailing space helps sudo recognize aliases
+# breaks if flags are given (e.g. sudo -u someuser vi /etc/hosts)
+alias sudo='command sudo '
 
 # OS X versions
 if [[ $(uname) == "Darwin" ]]; then
@@ -188,7 +217,7 @@ sssh() { screen -t $@ ssh "$@"; }
 
 # }}}
 # Miscellaneous Functions:
-# A lightweight, one-off application launcher {{{1
+# zshrun A lightweight, one-off application launcher {{{1
 # by Mikael Magnusson (I think)
 #
 # To run a command without closing the dialog press ctrl-j instead of enter
@@ -206,6 +235,39 @@ if [[ -n "$ZSHRUN" ]]; then
     prompt off
     PS1="zshrun %~> "
 fi
+
+# }}}
+# ..(), ...() for quickly changing $CWD {{{1
+# http://www.shell-fu.org/lister.php?id=769
+
+# Go up n levels:
+# .. 3
+function .. (){
+    local arg=${1:-1};
+    local dir=""
+    while [ $arg -gt 0 ]; do
+        dir="../$dir"
+        arg=$(($arg - 1));
+    done
+    cd $dir >&/dev/null
+}
+
+# Go up to a named dir
+# ... usr
+function ... (){
+    if [ -z "$1" ]; then
+        return
+    fi
+    local maxlvl=16
+    local dir=$1
+    while [ $maxlvl -gt 0 ]; do
+        dir="../$dir"
+        maxlvl=$(($maxlvl - 1));
+        if [ -d "$dir" ]; then 
+            cd $dir >&/dev/null
+        fi
+    done
+}
 
 # }}}
 # {{{ calc()
@@ -251,23 +313,32 @@ bookletize ()
 
 # }}}
 # {{{ joinpdf()
-# Merges, or joins multiple PDF files into "merged.pdf"
+# Merges, or joins multiple PDF files into "joined.pdf"
 
 joinpdf () {
-    gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=merged.pdf "$@"
+    gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=joined.pdf "$@"
 }
 
 # }}}
-# Django functions djedit & djsetup {{{
+# Django helper functions {{{
 
-alias djrunserver="django-admin.py runserver >&! /tmp/django.log &"
+# Background the fake mail server and start the development server
+djrunserver()
+{
+    if [ $1 == 'w' ]; then
+        django-admin.py runserver
+    else
+        python -m smtpd -n -c DebuggingServer localhost:1025 &
+        django-admin.py runserver
+    fi
+}
 
 # For a monolithic project, just run the function from the project folder.
 # For a reusable app, run the function from the folder containing the settings
 # file, and pass the settings file as an argument.
 djsetup()
 {
-    if [ x"$1" != x ]; then
+    if [ x"$1" != x ]; then   # no args were given
         export PYTHONPATH=$PWD:$PYTHONPATH
         export DJANGO_SETTINGS_MODULE=$(basename $1 .py)
     else
@@ -332,47 +403,25 @@ s/}/}\n/g;            # put each rule on a new line
 }
 
 # }}}
-# iwlist scan formatter {{{1
-
-wifiscan (){
-    iwlist scan 2> /dev/null | awk '
-    # skip first line
-    NR==1{ next }
-    {
-        # left-justify
-        sub(/^[ \t]+/, "");
-        # seperate records with newlines
-        sub(/^Cell.*/,"");
-        print;
-    }
-    ' | awk '
-    # Trim leading labels
-    !/^Quality/{ gsub(/^.*:/, "") };
-    /^Quality/{
-        gsub(/^.*=/, "");
-        gsub(/  .*$/, "")
-    };
-    { print }
-    ' | awk '
-    BEGIN {
-        RS=""; FS="\n"; ORS="\n"; OFS="\t"
-        print "ESSID", "Mode", "Channel", "Quality", "Encryption";
-    }
-    {
-        if ($7 ~ /WPA/) {
-            print $1, $2, $3, $5, $7;
-        } else {
-            print $1, $2, $3, $5, $6;
-        }
-    }
-    ' | column -tx
-}
-
-# }}}
 # Output total memory currently in use by you {{{1
 
 memtotaller() {
     /bin/ps -u $(whoami) -o pid,rss,command | awk '{sum+=$2} END {print "Total " sum / 1024 " MB"}'
+}
+
+# }}}
+# makepkg-likeslack() {{{
+# For making Arch Linux packages without writing a PKGBUILD script
+# (useful when testing a prog)
+# make install DESTDIR=../pkg
+# makepkg -R -A
+
+makepkg-likeslack() {
+    echo "pkgname=$1\npkgver=0.0\npkgrel=0" > PKGBUILD
+    mkdir -p {src,pkg}
+    if [ x"$2" != x ]; then   # no args were given
+        tar -C src -xf $2
+    fi
 }
 
 # }}}
