@@ -1,0 +1,189 @@
+% Entry types
+
+new.entry.type    = {Article}
+new.entry.type    = {Book}
+new.entry.type    = {InBook}
+new.entry.type    = {Booklet}
+new.entry.type    = {Collection}
+new.entry.type    = {InCollection}
+new.entry.type    = {Conference}
+new.entry.type    = {Electronic}
+new.entry.type    = {Manual}
+new.entry.type    = {MastersThesis}
+new.entry.type    = {Misc}
+new.entry.type    = {Online}
+new.entry.type    = {Patent}
+new.entry.type    = {Periodical}
+new.entry.type    = {PhDThesis}
+new.entry.type    = {Proceedings}
+new.entry.type    = {InProceedings}
+new.entry.type    = {Report}
+new.entry.type    = {Set}
+new.entry.type    = {TechReport}
+new.entry.type    = {Thesis}
+new.entry.type    = {Unpublished}
+new.entry.type    = {WWW}
+
+new.entry.type    = {Artwork}
+new.entry.type    = {Audio}
+new.entry.type    = {Commentary}
+new.entry.type    = {Image}
+new.entry.type    = {InReference}
+new.entry.type    = {Jurisdiction}
+new.entry.type    = {Legal}
+new.entry.type    = {Legislation}
+new.entry.type    = {Letter}
+new.entry.type    = {Movie}
+new.entry.type    = {Music}
+new.entry.type    = {Performance}
+new.entry.type    = {Reference}
+new.entry.type    = {Review}
+new.entry.type    = {Software}
+new.entry.type    = {Standard}
+new.entry.type    = {SuppBook}
+new.entry.type    = {SuppCollection}
+new.entry.type    = {SuppPeriodical}
+new.entry.type    = {Video}
+
+new.entry.type    = {CustomA}
+new.entry.type    = {CustomB}
+new.entry.type    = {CustomC}
+new.entry.type    = {CustomD}
+new.entry.type    = {CustomE}
+new.entry.type    = {CustomF}
+
+% Sorting order of fields
+
+sort.order{ * =
+ crossref
+ #xref
+ #entryset
+ #entrysubtype
+ #keywords
+ #options
+ #execute
+ #shorthand
+ #shorthandintro
+ #label
+ #hyphenation
+ #presort
+ #key
+ #sortkey
+ #sortname
+ #sortyear
+ #sorttitle
+ #indexsorttitle
+ #gender
+ #author
+ #authortype
+ #shortauthor
+ #bookauthor
+ #editor
+ #editortype
+ #shorteditor
+ #nameaddon
+ #translator
+ #redactor
+ #annotator
+ #commentator
+ #introduction
+ #foreword
+ #afterword
+ #holder
+ #indextitle
+ #title
+ #subtitle
+ #titleaddon
+ #shorttitle
+ #booktitle
+ #booksubtitle
+ #booktitleaddon
+ #maintitle
+ #mainsubtitle
+ #maintitleaddon
+ #reprinttitle
+ #eventtitle
+ #venue
+ #language
+ #journal
+ #journaltitle
+ #journalsubtitle
+ #shortjournal
+ #issuetitle
+ #issuesubtitle
+ #institution
+ #organization
+ #school
+ #type
+ #part
+ #volume
+ #volumes
+ #series
+ #shortseries
+ #number
+ #eid
+ #issue
+ #edition
+ #version
+ #howpublished
+ #publisher
+ #location
+ #address
+ #date
+ #day
+ #month
+ #year
+ #note
+ #isan
+ #isbn
+ #ismn
+ #isrn
+ #issn
+ #iswc
+ #doi
+ #chapter
+ #pages
+ #pagetotal
+ #pagination
+ #bookpagination
+ #addendum
+ #origlanguage
+ #origtitle
+ #origpublisher
+ #origlocation
+ #origyear
+ #url
+ #urldate
+ #urlday
+ #urlmonth
+ #urlyear
+ #eprint
+ #eprinttype
+ #annotation
+ #annote
+ #abstract
+ #library
+ #file
+ #pdf
+ #namea
+ #nameatype
+ #nameb
+ #namebtype
+ #namec
+ #namectype
+ #lista
+ #listb
+ #listc
+ #listd
+ #liste
+ #listf
+ #usera
+ #userb
+ #userc
+ #userd
+ #usere
+ #userf
+ #verba
+ #verbb
+ #verbc
+}

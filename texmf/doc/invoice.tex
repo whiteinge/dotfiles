@@ -1,0 +1,742 @@
+\documentclass[11pt]{ltxdoc}
+\usepackage{invoice}
+\usepackage{pslatex,hyperref}
+
+\title{\texttt{invoice \InvoiceVersion}\\
+	A Package for Writing Invoices}
+\author{Oliver Corff}
+\date{December 16th, 2003}
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+The \texttt{invoice} package was conceived in late 2000 when the
+author had to dig through a truly aweful pile of expense bills
+without having a spreadsheet featuring \LaTeXe-compliant output (or
+any spreadsheet, for that purpose) available. After several
+miscalculations with a pocket calculator due to forgotten or
+double entries the idea came up to have \LaTeXe\ do the calculation
+work. As such, the package in its present stage is highly
+specialized with regard to the documents it generates. The
+\texttt{invoice} package is basically a tailor-made solution for a
+consultant who charges fees and claims all sorts of expenses,
+sometimes working on different assignments for the same client.
+
+The author expresses his gratitude to
+Robert Inder,
+Thilo Barth,
+Jacco Kok,
+Fred Donck,
+Jacopo,
+Johann Spies,
+Ian Wormsbecker,
+Vincent Tougait
+and
+Robin Fairbairns
+who contributed ideas, corrections,
+bugfixes and caption translations after the first discussions on
+\texttt{comp.text.tex} and the initial release of \texttt{invoice}.
+
+Given the current capabilities of \texttt{invoice}, it should well
+be possible to extend the capabilities of this package in the future
+or to rewrite it in a generalized fashion.
+
+\section{Software Requirements}
+
+The \texttt{invoice} environment runs under \LaTeXe\ and relies on the
+\texttt{calc.sty} (providing infix arithmetic) and \texttt{realcalc}
+(providing real arithmetic) utilities to do its work which can be found
+at CTAN%
+	\footnote{The \texttt{realcalc} package is found at
+	\texttt{CTAN:macros/generic/realcalc},
+	and \texttt{calc} is found at
+	\texttt{CTAN:macros/latex/required/tools/}.}.
+Compile and read \texttt{00README.tex} for further information if
+you are not sure whether these packages are installed at your site.
+
+\section{The \texttt{invoice} Environment}
+
+Within a given document, invoices are built with the
+\texttt{invoice} environment\footnote{Users of the KOMA-Script 
+	class \texttt{scrlettr.cls} are kindly requested to use
+	\texttt{invoiceenv} instead; see also page~\pageref{koma}.}.
+Figure~\ref{structure} on page~\pageref{structure} shows the
+logical structure of an invoice as well as its basic commands.
+In case a full-fledged invoice stationary is needed, it is recommended
+to use the \texttt{invoice} environment within existing business 
+letters which may have been pre-defined already. The \texttt{invoice}
+package itself does not provide tools for including company logos,
+recipient's addresses, bank account numbers etc. as these are usually
+covered by the various \texttt{letter} classes available for \LaTeXe.
+
+\begin{figure}[h]
+\begin{center}
+\fbox{
+\begin{minipage}{8.5cm}%
+\textbf{\huge --- Invoice ---\\[2mm]}
+	\texttt{\Large \char92 begin\{invoice\}\{...\}\{...\}\\[2mm]}
+	\fbox{
+	\begin{minipage}{7.0cm}
+		\textbf{\Large --- Project ---\\[1.5mm]}
+		\texttt{\large\char92 ProjectTitle\{...\}\\[1.5mm]}
+		\fbox{
+		\begin{minipage}{5.5cm}
+			\textbf{\large --- Fees ---\\}
+			\texttt{\char92 Fee\{...\}\{...\}\{...\}}\\
+			...\\
+			...\\
+		\end{minipage}
+		}\\[2mm]
+		\fbox{
+		\begin{minipage}{5.5cm}
+			\textbf{\large --- Expenses  (local) ---\\}
+			\texttt{\char92 EBC\{...\}\{...\}}\\
+			...\\
+			...\\
+			\textbf{\large --- Expenses (foreign) ---\\}
+		\texttt{\char92 EFC\{...\}\{...\}\{...\}\{...\}\{...\}}\\
+			...\\
+			...\\
+		\end{minipage}
+		}\\[2mm]
+	\end{minipage}
+	}\\[2mm]
+	\fbox{
+	\begin{minipage}{7.0cm}
+		\textbf{\Large --- \dots\ More Projects\dots\ ---}
+	\end{minipage}
+	}\\[2mm]
+%	\fbox{
+%	\begin{minipage}{7.0cm}
+%		\textbf{\Large --- Project ---}
+%	\end{minipage}
+%	}\\
+	\texttt{\Large\char92 end\{invoice\}}
+\end{minipage}
+}
+\end{center}
+\caption{The \texttt{invoice} Environment
+	and its Logical Structure\label{structure}}
+\end{figure}
+
+Invoices contain one or more projects which in return contain the charged
+items, either fees (plus tax, if applicable) and/or expenses. An
+invoice with one project is announced by saying 
+
+\begin{verbatim}
+\begin{invoice}{<Base Currency>}{<VAT>}
+	\ProjectTitle{...}%
+\end{invoice}
+\end{verbatim}
+
+There is no limit for the number of projects in an invoice, as there
+is no limit for the number of invoices per document.
+
+The \texttt{invoice} environment requires two arguments: 
+\begin{enumerate}
+	\item \texttt{<Base Currency>} is the name of the currency
+		in which the invoice is charged, e.\,g. DM, Euro,
+		US\$, RMB etc.
+	\item \texttt{<VAT>} is the percentage rate of VAT which is charged;
+		in Germany this is currently (winter 2003) 16\%. If
+		no VAT is required, enter a \texttt{0}
+		(\textit{zero}) here. It is neither necessary nor
+		permissible to use a percent sign here. As some
+		countries (e.\,g. France) have fractions of
+		percentages (like 16.9\%), you would in this case
+		enter \verb|16.9| (without any percent sign).
+
+		Setting the VAT rate to \verb-0- produces the side
+		effect that the lines stating the VAT subtotals and
+		totals disappear.
+
+		If it is, however, desired to show the VAT results
+		even if they amount to zero, enter \verb-0.0- instead.
+\end{enumerate}
+
+
+\subsection{Projects}
+
+An invoice contains items which are usually, in the case of e.\,g.
+consultancy fees and related expenses like hotel bills and air
+fares, attributed to a given case or \textit{project}, or
+cost center, or ``Kostenstelle'' (in German).
+
+A project contains any of three different types of charged items:
+\begin{enumerate}
+	\item \textbf{Fees}. A tax can be added, if applicable. Fees 
+		are always charged in the
+			base currency
+		of the invoice.
+	\item \textbf{Local Expenses}. Local expenses are charged in 
+		units of the 
+			base currency
+		of the invoice.
+	\item \textbf{Foreign Expenses}. Foreign expenses are charged in 
+		units of any given foreign currency. Either the
+			base currency
+		equivalent is known (as taken from a credit card
+		billing statement, for example), or, if not, an
+		exchange rate between foreign currency and base
+		currency has to be stated.
+\end{enumerate}
+
+\textbf{Nota bene:} The order of fees and expenses is fixed. Either fees or
+expenses can be omitted, but expenses must be charged \textit{after}
+fees.
+
+
+\section{The First Example: How to Charge Fees}
+
+
+A consultant charges fees per day, hour or any other unit. Usually
+this unit is agreed upon in a contract and there is no further need
+to refer to this unit but by its count. This is done by the
+\verb-\Fee{}{}{}- command:
+
+\begin{verbatim}
+	\Fee{<Contents>}{<Rate/Unit>}{<Count>}
+\end{verbatim}
+
+Let's assume an interim manager
+charges DM 1818.00 a day for 12 working days while
+negotiating a major project, nicknamed \textit{Project Phenix}.
+He also charges DM 2750.00 a day for analysing and negotiating
+the restructuring of the sales division, a work he spent 9 days with.
+
+\subsection{Invoices with VAT}
+
+We further assume that the consultant is required to charge VAT.
+All information above would be entered into the invoice as follows:
+
+\begin{verbatim}
+\begin{invoice}{DM}{16}
+   \ProjectTitle{Project Phenix}%
+       %    Contents                    Rate/Unit   Count
+       \Fee{Some really lengthy and utterly
+       		tedious negotiation}     {1818.00}   {12}
+
+   \ProjectTitle{Sales Restructuring}%
+       %    Contents                    Rate/Unit   Count
+       \Fee{Sales Structure Analysis}   {2750.00}   { 6}
+       \Fee{Negotiation with Agents}    {2750.00}   { 3}
+\end{invoice}
+\end{verbatim}
+
+And here is how the result looks like:
+
+\begin{invoice}{DM}{16}
+	\ProjectTitle{Project Phenix}%
+	\Fee{Some really lengthy and utterly 
+		tedious negotiation}	{1818.00}	{12}
+
+	\ProjectTitle{Sales Restructuring}%
+        \Fee{Sales Structure Analysis}   {2750.00}   { 6}
+        \Fee{Negotiation with Agents}    {2750.00}   { 3}
+\end{invoice}
+
+Hints: If the base currency is to contain a dollar sign (\$), then
+dollar sign must be entered in the form of \verb|\string$|
+or otherwise the command writing the log file data will fail. The
+contents of each fee may be verbose; while the column width is
+limited, text contents longer than the column width wraps over
+several columns, if necessary.
+
+The astute observer will note that a line beginning with ``Subtotal~Fees''
+appeared in the output of the Sales Restructuring Project without explicit
+input to this effect from the user's side. The full grammar of the Fee block
+requires that all fees are closed by a fee subtotal. Internally,
+\texttt{invoice} is defined as a finite state automaton providing
+mechanisms to insert a fee subtotal if logic requires it, and print
+its value if it makes sense to humans, which is the case if there is more
+than one fee.
+
+Note that there is an explicit command \texttt{\char92 STFee} which will
+produce a subtotal of the fees charged so far. This can be used if
+you want to show fee subtotals within the same project.
+
+
+\subsection{Invoices without VAT}
+
+As mentioned above, an invoice may be calculated without any VAT.
+The VAT lines may completely disappear, as in the following
+example:
+\begin{verbatim}
+\begin{invoice}{DM}{0}
+   \ProjectTitle{Project Phenix}%
+       %    Contents                    Rate/Unit   Count
+       \Fee{Some really lengthy and utterly
+       		tedious negotiation}     {1818.00}   {12}
+
+   \ProjectTitle{Sales Restructuring}%
+       %    Contents                    Rate/Unit   Count
+       \Fee{Sales Structure Analysis}   {2750.00}   { 6}
+       \Fee{Negotiation with Agents}    {2750.00}   { 3}
+\end{invoice}
+\end{verbatim}
+
+
+Figure~\ref{invoice_without_VAT} on
+page~\pageref{invoice_without_VAT}
+shows the result.
+
+\begin{figure}[h]
+\begin{invoice}{DM}{0}
+	\ProjectTitle{Project Phenix}%
+	\Fee{Some really lengthy and utterly 
+		tedious negotiation}	{1818.00}	{12}
+
+	\ProjectTitle{Sales Restructuring}%
+        \Fee{Sales Structure Analysis}   {2750.00}   { 6}
+        \Fee{Negotiation with Agents}    {2750.00}   { 3}
+\end{invoice}
+\caption{A complete invoice
+		with fees but no VAT.\label{invoice_without_VAT}}
+\end{figure}
+
+In contrast, if for any reason the VAT subtotals and totals should
+be kept visible despite a \textit{value} of zero, then use a VAT
+value of \verb-0.0- as in the following example:
+\begin{verbatim}
+\begin{invoice}{DM}{0.0}
+   \ProjectTitle{Project Phenix}%
+       %    Contents                    Rate/Unit   Count
+       \Fee{Some really lengthy and utterly
+       		tedious negotiation}     {1818.00}   {12}
+
+   \ProjectTitle{Sales Restructuring}%
+       %    Contents                    Rate/Unit   Count
+       \Fee{Sales Structure Analysis}   {2750.00}   { 6}
+       \Fee{Negotiation with Agents}    {2750.00}   { 3}
+\end{invoice}
+\end{verbatim}
+
+
+Figure~\ref{invoice_with_zero_VAT} on
+page~\pageref{invoice_with_zero_VAT}
+shows the result.
+
+\begin{figure}[h]
+\begin{invoice}{DM}{0.0}
+	\ProjectTitle{Project Phenix}%
+	\Fee{Some really lengthy and utterly 
+		tedious negotiation}	{1818.00}	{12}
+
+	\ProjectTitle{Sales Restructuring}%
+        \Fee{Sales Structure Analysis}   {2750.00}   { 6}
+        \Fee{Negotiation with Agents}    {2750.00}   { 3}
+\end{invoice}
+\caption{A complete invoice
+		with fees but zero VAT.\label{invoice_with_zero_VAT}}
+\end{figure}
+
+
+\section{The Second Example: How to Claim Expenses}
+
+Expenses can be charged in base currency or in any foreign currency.
+The base currency's name should be announced once at the beginning
+of the invoice.
+
+\subsection{Expenses in Base Currency}
+
+The shape of an expense item in base currency is simple:
+
+\begin{verbatim}
+\EBC{<Contents>}                {<Amount>}
+\end{verbatim}
+
+Both fields contain mandatory arguments:
+
+\begin{enumerate}
+	\item \texttt{<Contents>} contains a description of the
+		charged item, e.\,g. ``Hotel'', ``Airport Tax'' or
+		whatever.
+	\item \texttt{<Amount>} contains the amount in base currency
+		units.
+\end{enumerate}
+
+
+\subsection{Expenses in Foreign Currency}
+
+Charging an expense in foreign currency is only slightly more
+complicated. The command is:
+
+\begin{verbatim}
+\EFC{<Contents>}
+    {<Foreign Currency>}{<Amount>}
+    {<Conversion Rate>}{<Base Currency Result>}
+\end{verbatim}
+
+Arguments to the five fields are partially mandatory, partially optional:
+\begin{enumerate}
+	\item \texttt{<Contents>} contains a description of the
+		charged item, e.\,g. ``Hotel'', ``Airport Tax'' or
+		whatever.
+
+	\item \texttt{<Foreign Currency>} contains the name of the
+		foreign currency.
+
+	\item \texttt{<Amount>} contains the amount in foreign currency
+		units.
+	
+	\item \texttt{<Conversion Rate>} contains the factor by
+		which the foreign currency amount has to be
+		multiplied in order to achieve the base currency
+		result. If the base currency result is stated,
+		then, and only then, the Conversion Rate can be
+		omitted.
+	
+	\item \texttt{<Base Currency Result>} contains an optional
+		amount in base currency units. Credit card billing
+		statements show this amount which usually contains
+		certain service charges of the credit card issuer;
+		the base currency result is thus the true amount of
+		money to be charged. If a \texttt{<Conversion Rate>}
+		is given, stating a base currency result becomes
+		optional. This is usually applied for expenses made
+		with cash money.
+\end{enumerate}
+
+
+Since some of the arguments given to \verb-\EFC- are optional,
+there are basically two different forms of using this command.
+With the variant
+
+\begin{verbatim}
+\EFC{<Contents>}{<Foreign Currency>}{<Amount>}
+        {<Conversion Rate>}               % Conversion rate
+        {}                                % Base currency empty!
+\end{verbatim}
+
+(amount in foreign currency given, as well as exchange rate stated),
+the command will automatically calculate the resulting amount in
+base currency.
+
+\begin{verbatim}
+\EFC{<Contents>}
+        {<Foreign Currency>}{<Amount>}
+        {}                                % Conversion rate empty!
+        {<Base Currency Result>}          % Base currency
+\end{verbatim}
+
+If, however, the exchange rate is omitted and the target amount in
+base currency is given, then this value is taken directly. Stating
+the resulting amount overrides the internal calculation mechanism.
+Examples are given below. We use our interim manager's invoice
+again, assuming this time that she spent working on Project Phenix 
+12 days in her home country while the Sales Restructuring effort
+took her to Hong Kong. The taxi bills are paid in cash, hence she
+enters the (fictive) conversion rate, whereas the hotel is paid by
+credit card. She can then take the final amount from her credit card
+billing statement; an example input would look as follows:
+
+\begin{verbatim}
+\begin{invoice}{DM}{16}
+   \ProjectTitle{Project Phenix}%
+       %    Contents                    Rate/Unit   Count
+       \Fee{Negotiation}                {1818.00}   {12}
+       %
+       %    Contents                    Amount
+       \EBC{Hotel, 12 nights}           {2400.00}
+
+   \ProjectTitle{Sales Restructuring}%
+       %    Contents                    Rate/Unit   Count
+       \Fee{Sales Structure Analysis}   {2750.00}   { 6}
+       \Fee{Negotiation with Agents}    {2750.00}   { 3}
+       %
+       %    Contents              Currency  Amount  Conv.Rate Result
+       \EFC{Taxi Airport -- Hotel} {HK\$}  {325.00} {0.2354}   {}
+       \EFC{Hotel, 9 nights}       {HK\$}  {9180.00}   {}    {2111.40}
+\end{invoice}
+\end{verbatim}
+
+Figure~\ref{full_invoice} on
+page~\pageref{full_invoice}
+shows the result.
+
+\begin{figure}[h]
+\begin{invoice}{DM}{16}
+	\ProjectTitle{Project Phenix}%
+	\Fee{Negotiation}		{1818.00}	{12}
+       %
+       %    Contents                    Amount
+       \EBC{Hotel, 12 nights}		{2400.00}
+
+	\ProjectTitle{Sales Restructuring}%
+       \Fee{Sales Structure Analysis}   {2750.00}   { 6}
+       \Fee{Negotiation with Agents}    {2750.00}   { 3}
+       %
+       %    Contents              Currency  Amount  Conv.Rate Result
+       \EFC{Taxi Airport -- Hotel} {HK\$}  {325.00} {0.2354}   {}
+       \EFC{Hotel, 9 nights}       {HK\$}  {9180.00}   {} {2111.40}
+\end{invoice}
+\caption{A complete invoice with fees and expenses.\label{full_invoice}}
+\end{figure}
+
+Again, a subtotal of the expenses appears only if there is more than
+one expense item in a project.
+
+
+\subsection{Hidden Expense Details}
+
+Occasionally it may be desirable to list only the total of expenses
+incurred, while hiding the structure of expenses. In such a case,
+the expense commands can be modified by attaching an \verb|i| to
+their names (as in \textit{invisible}).
+
+A hidden expense in base currency is thus declared as:
+
+\begin{verbatim}
+\EBCi{<Contents>}                {<Amount>}
+\end{verbatim}
+
+A hidden expense in foreign currency is declared as:
+
+\begin{verbatim}
+\EFCi{<Contents>}
+     {<Foreign Currency>}{<Amount>}
+     {<Conversion Rate>}{<Base Currency Result>}
+\end{verbatim}
+
+Both commands accept and require exactly the same arguments as their
+visible counterparts. The expenses will be added to the expense subtotals
+and the invoice total in the same way as if they were visible. If there
+is no visible expense stated at all it may be useful to have at least 
+a line with the expense subtotal appear; this is done by the \verb|STExpenses|
+command, as shown in the following example:
+
+\begin{verbatim}
+\begin{invoice}{DM}{16}
+   \ProjectTitle{Project Phenix}%
+       %    Contents                    Rate/Unit   Count
+       \Fee{Negotiation}                {1818.00}   {12}
+       %
+       %    Contents                    Amount
+       \EBCi{Hotel, 12 nights}           {2400.00}
+       %
+       \STExpenses
+
+   \ProjectTitle{Sales Restructuring}%
+       %    Contents                    Rate/Unit   Count
+       \Fee{Sales Structure Analysis}   {2750.00}   { 6}
+       \Fee{Negotiation with Agents}    {2750.00}   { 3}
+       %
+       %    Contents              Currency  Amount  Conv.Rate Result
+       \EFCi{Taxi Airport -- Hotel} {HK\$}  {325.00} {0.2354}   {}
+       \EFCi{Hotel, 9 nights}       {HK\$}  {9180.00}   {}    {2111.40}
+       \STExpenses
+\end{invoice}
+\end{verbatim}
+
+Figure~\ref{invoice_with_hidden_expenses} on
+page~\pageref{invoice_with_hidden_expenses}
+shows the result.
+
+\begin{figure}[h]
+\begin{invoice}{DM}{16}
+       \ProjectTitle{Project Phenix}%
+       \Fee{Negotiation}		{1818.00}	{12}
+       %
+       %    Contents                    Amount
+       \EBCi{Hotel, 12 nights}		{2400.00}
+       % 
+       \STExpenses
+
+       \ProjectTitle{Sales Restructuring}%
+       \Fee{Sales Structure Analysis}   {2750.00}   { 6}
+       \Fee{Negotiation with Agents}    {2750.00}   { 3}
+       %
+       %    Contents              Currency  Amount  Conv.Rate Result
+       \EFCi{Taxi Airport -- Hotel} {HK\$}  {325.00} {0.2354}   {}
+       \EFCi{Hotel, 9 nights}       {HK\$}  {9180.00}   {} {2111.40}
+       \STExpenses
+\end{invoice}
+\caption{A complete invoice with visible fees
+		but invisible expenses.\label{invoice_with_hidden_expenses}}
+\end{figure}
+
+
+\section{Deduction of Discounts and Downpayments}
+
+Finally, it may be possible that previous downpayments etc. have to 
+be considered for the invoice total. An optional discount line
+can state the item and deduct the amount from the invoice total.
+Deductions are always stated in base currency. They follow the following
+syntax:
+
+
+\begin{verbatim}
+\Discount{<Contents>}     {<Amount>}
+\end{verbatim}
+
+Both fields contain mandatory arguments:
+
+\begin{enumerate}
+	\item \texttt{<Contents>} contains a description of the
+		discount item, e.\,g. ``Downpayment'', ``Tickets for 
+		private use'' or whatever.
+	\item \texttt{<Amount>} contains the amount in base currency
+		units.
+\end{enumerate}
+
+Figure~\ref{full_and_discounted_invoice} on
+page~\pageref{full_and_discounted_invoice}
+shows the result.
+
+\begin{figure}[h]
+\begin{invoice}{DM}{16}
+	\ProjectTitle{Project Phenix}%
+	\Fee{Negotiation}		{1818.00}	{12}
+       %
+       %    Contents                    Amount
+       \EBC{Hotel, 12 nights}		{2400.00}
+
+	\ProjectTitle{Sales Restructuring}%
+       \Fee{Sales Structure Analysis}   {2750.00}   { 6}
+       \Fee{Negotiation with Agents}    {2750.00}   { 3}
+       %
+       %    Contents              Currency  Amount  Conv.Rate Result
+       \EFC{Taxi Airport -- Hotel} {HK\$}  {325.00} {0.2354}   {}
+       \EFC{Hotel, 9 nights}       {HK\$}  {9180.00}   {} {2111.40}
+       \Discount{Downpayment received}  {2000.00}
+\end{invoice}
+\caption{A complete invoice with fees,
+		expenses and a deduction.\label{full_and_discounted_invoice}}
+\end{figure}
+
+\section{Postprocessing}
+
+In order to allow the further processing of
+\texttt{invoice}-generated data, the log file contains the totals of
+fees, expenses and taxes in the form of \verb-key:value- pairs. This
+information appears also on the terminal while \LaTeXe\ runs. Please
+note that the key appearing in the log file is expressed in the same
+language as that of the master document.
+
+\section{Document Language}
+
+All column headers appearing in \texttt{invoice} can be redefined in
+order to match the language of the master document. E.\,g., headings
+like ``Total'' will automatically appear as ``Gesamtsumme'' if the
+document language is set to German (either via \texttt{babel} or
+\verb-\usepackage{german}-).
+
+Please observe that the \texttt{invoice} package must be called {\em
+after} the document language has been selected.
+
+This is correct:
+
+\begin{verbatim}
+\documentclass[10pt]{ltxdoc}
+\usepackage{german}
+\usepackage{invoice} % labels will now appear in German!
+\end{verbatim}
+
+This will not work:
+
+\begin{verbatim}
+\documentclass[10pt]{ltxdoc}
+\usepackage{invoice}
+\usepackage{german} % labels will still appear in English!
+\end{verbatim}
+
+
+\subsection{Specifying the Desired Language}
+
+It is also possible to ignore the global language settings and select
+a language local to the \texttt{invoice} package by specifying the
+desired language as an option:
+
+\begin{verbatim}
+\documentclass[10pt]{ltxdoc}
+\usepackage[german]{invoice} % labels in German, rest 
+                             % of document in English
+\end{verbatim}
+
+This is useful whenever the desired language is not provided by the
+installation base where \texttt{invoice} is executed.
+
+\subsection{Adding Labels in a New Language}
+
+At present, column labels produced by \texttt{invoice} can appear
+in six languages: Afrikaans, Dutch, English, French, German and Italian.
+Other languages can be added easily by editing the file
+\verb-invoice.def-. Language-dependent definitions are contained in
+the \verb-\if-clause. Extending the file is simple: 
+
+\begin{enumerate}
+	\item Copy the labels template to the end of the file.
+	\item Remove the comments (\verb-%-) in column 1.
+	\item Fill each label definition with the appropriate
+		foreign language translation.
+	\item Put the correct internal name of the foreign language
+		into the condition expression of the \verb-\ifx--
+		and \verb-\ifnum--clauses.
+\end{enumerate}
+
+\begin{sloppypar}
+Whenever you create your own foreign language extension please kindly
+consider sending your modified \verb-invoice.def- file to the author
+(at \verb+corff@zedat.fu-berlin.de+ or \verb+oliver.corff@email.de+)
+so that it can be included in the next update. Future users can then
+share your work.
+\end{sloppypar}
+
+\section{Bugs}
+
+Certainly there are bugs. After all, this is not Moon, but Earth
+(where life is supposed to exist, as opposed to Moon). The author 
+has not conducted extensive tests on the algebraic functions, and
+there may be rounding and truncating errors.
+
+The author considers it a bug that the decimal point cannot be
+replaced by a comma at present, while entering dollar signs
+requires the \verb|\string$| notation.
+
+Spurious spaces may distort the table layout. It is especially
+recommended to close all \verb"\ProjectTitle{...}%" lines with a
+percent mark, as shown. If the percent mark is omitted, the first
+column header is not properly aligned to the left.
+
+Breaking long invoice statements with many projects over several
+pages results in many orphans and widows.
+
+\subsection{\label{koma}Compatibility with KOMA-Script}
+
+Unfortunately, when first writing this package the author was not aware
+of the KOMA-Script classes, notably the class \texttt{scrlettr.cls}
+which defines its own \verb-\invoice{#1}- command, albeit with completely
+different scope, usage and syntax. KOMA-Script's \verb-\invoice{#1}- command
+accepts a number and prints ``Invoice no. \#1'' in a letter 
+opening. Now that the names of the \texttt{invoice} package and
+environment have stuck it is easier to think of a workaround than to
+conceive a new name. Therefore, If the class \texttt{scrlettr.cls} is
+used, the environment \texttt{invoice} is automatically renamed to
+\texttt{invoiceenv}. Writing 
+
+\begin{verbatim}
+\documentclass[10pt]{scrlettr}
+\usepackage{invoice}
+\begin{invoice}{DM}{16}
+...
+...
+\end{verbatim}
+
+will result in an error message. Say \verb-\begin{invoiceenv}{DM}{16}-
+instead.  KOMA-Script's own \verb-\invoice{#1}- command is renamed to
+\verb-\invoiceno{#1}-, while \verb-\invoice{#1}- now generates an 
+error message reminding KOMA-Script users to apply the renamed
+commands.
+
+\section{Desiderata}
+
+The \verb-invoice- package is far from complete. Future expansions
+should aim at making the package more flexible. How taxes are
+treated, etc., is at present a rather particular arrangement
+suitable for the author's immediate needs, but a more general
+solution can be designed as soon as more users reflect their needs
+to the author.
+\end{document}

@@ -1,0 +1,25 @@
+%
+% This file presents the `debug' style
+%
+\documentclass[a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}
+\usepackage[babel]{csquotes}
+\usepackage[style=debug,hyperref]{biblatex}
+\usepackage{hyperref}
+\bibliography{examples}
+% Some generic settings:
+\newcommand{\cmd}[1]{\texttt{\textbackslash #1}}
+\begin{document}
+
+\section*{The \texttt{debug} style}
+
+This style prints all bibliographic data in tabular format. It is
+intended for debugging only.
+
+\clearpage
+
+\nocite{companion}
+\printbibliography
+
+\end{document}

@@ -1,0 +1,120 @@
+% $Id: authortitle-comp.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{authortitle-comp.cbx}
+[\blx@cbxid $Id: authortitle-comp.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\ExecuteBibliographyOptions{sortcites,autocite=footnote}
+\newbool{cbx:parens}
+
+\newbibmacro*{cite:init}{%
+  \global\let\cbx@tempa=\empty
+  \global\undef\cbx@lasthash}
+
+\newbibmacro*{cite}{%
+  \iffieldundef{shorthand}
+    {\iffieldequals{namehash}{\cbx@lasthash}
+       {\gdef\cbx@tempa{\compcitedelim}}
+       {\cbx@tempa
+        \ifnameundef{labelname}
+          {\global\let\cbx@tempa=\empty}
+          {\printnames{labelname}%
+           \gdef\cbx@tempa{\addcomma\space}}%
+        \savefield{namehash}{\cbx@lasthash}}%
+     \usebibmacro{cite:title}}
+    {\usebibmacro{cite:shorthand}%
+     \usebibmacro{cite:init}}%
+  \global\let\cbx@tempa=\multicitedelim}
+
+\newbibmacro*{citetitle}{%
+  \iffieldundef{shorthand}
+    {\usebibmacro{cite:title}}
+    {\usebibmacro{cite:shorthand}}%
+  \global\let\cbx@tempa=\multicitedelim}
+
+\newbibmacro*{textcite}{%
+  \iffieldequals{namehash}{\cbx@lasthash}
+    {\gdef\cbx@tempa{\compcitedelim}}
+    {\cbx@tempa
+     \ifnameundef{labelname}
+       {\global\let\cbx@tempa=\empty}
+       {\printnames{labelname}%
+        \gdef\cbx@tempa{%
+	  \global\booltrue{cbx:parens}%
+	  \addspace\bibleftparen}}%
+     \savefield{namehash}{\cbx@lasthash}}%
+  \iffieldundef{shorthand}
+    {\usebibmacro{cite:title}}%
+    {\usebibmacro{cite:shorthand}}%
+  \gdef\cbx@tempa{%
+    \ifbool{cbx:parens}
+      {\bibrightparen
+       \global\boolfalse{cbx:parens}}
+      {}%
+    \multicitedelim}}
+
+\newbibmacro*{cite:title}{%
+  \cbx@tempa
+  \printtext[bibhyperref]{\printfield[citetitle]{labeltitle}}}
+
+\newbibmacro*{cite:shorthand}{%
+  \cbx@tempa
+  \printtext[bibhyperref]{\printfield{shorthand}}}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\cite}
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{citetitle}}
+  {}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\parencite}[\mkbibparens]
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{citetitle}}
+  {}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\bibsentence
+   \usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\textcite}
+  {\boolfalse{cbx:parens}%
+   \usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{textcite}}
+  {}
+  {\iffieldundef{postnote}
+     {\ifbool{cbx:parens}
+        {\bibrightparen}
+	{}}
+     {\ifbool{cbx:parens}
+        {\postnotedelim}
+	{\addspace\bibleftparen}%
+      \printfield{postnote}\bibrightparen}}
+
+\endinput

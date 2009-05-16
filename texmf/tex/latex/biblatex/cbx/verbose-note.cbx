@@ -1,0 +1,94 @@
+% $Id: verbose-note.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{verbose-note.cbx}
+[\blx@cbxid $Id: verbose-note.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\ExecuteBibliographyOptions{citetracker=context,singletitle,autocite=footnote}
+\newbool{cbx:pageref}
+
+\DeclareBibliographyOption{pageref}[true]{%
+  \setbool{cbx:pageref}{#1}%
+  \ifbool{cbx:pageref}
+    {\ExecuteBibliographyOptions{pagetracker}}
+    {}}
+
+\newbibmacro*{cite}{%
+  \iffieldundef{shorthand}
+    {\usedriver
+       {\DeclareNameAlias{sortname}{default}}
+       {\thefield{entrytype}}}
+    {\printfield{shorthand}}}
+
+\newbibmacro*{footcite}{%
+  \ifciteseen
+    {\iffieldundef{shorthand}
+       {\usebibmacro{footcite:note}}
+       {\usebibmacro{footcite:shorthand}}}
+    {\usebibmacro{footcite:full}%
+     \usebibmacro{footcite:save}}}
+
+\newbibmacro*{footcite:save}{%
+  \csxdef{cbx@first@\thefield{entrykey}}{\the\value{instcount}}%
+  \label{cbx@\the\value{instcount}}}
+
+\newbibmacro*{footcite:full}{%
+  \printtext{%
+    \bibhypertarget{\thefield{entrykey}:\the\value{instcount}}{%
+      \usedriver
+	{\DeclareNameAlias{sortname}{default}}
+	{\thefield{entrytype}}}}%
+  \usebibmacro{shorthandintro}}
+
+\newbibmacro*{footcite:note}{%
+  \ifnameundef{labelname}
+    {\printfield{label}}
+    {\printnames{labelname}}%
+  \ifsingletitle
+    {}
+    {\setunit*{\addcomma\space}%
+     \printfield[title]{labeltitle}}%
+  \setunit*{\addcomma\space}%
+  \printtext{%
+    \bibstring{seenote}\addnbspace
+    \ref{cbx@\csuse{cbx@first@\thefield{entrykey}}}%
+    \ifbool{cbx:pageref}
+      {\ifsamepage{\the\value{instcount}}
+                  {\csuse{cbx@first@\thefield{entrykey}}}
+         {}
+	 {\addcomma\space\bibstring{page}\addnbspace
+	  \pageref{cbx@\csuse{cbx@first@\thefield{entrykey}}}}}
+      {}}}
+
+\newbibmacro*{footcite:shorthand}{%
+  \printtext{%
+    \bibhyperlink{\thefield{entrykey}:%
+                  \csuse{cbx@first@\thefield{entrykey}}}{%
+      \printfield{shorthand}}}}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \iffootnote
+     {\usebibmacro{footcite}}
+     {\usebibmacro{cite}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \iffootnote
+     {\usebibmacro{footcite}}
+     {\usebibmacro{cite}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\bibsentence
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{footcite}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\endinput

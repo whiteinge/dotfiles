@@ -1,0 +1,274 @@
+% $Id: norwegian.lbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{norwegian.lbx}
+[\blx@lbxid $Id: norwegian.lbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+% STATUS OF THIS FILE
+% almost complete, translated by native speaker; peer review pending
+
+\DeclareBibliographyExtras{%
+  \let\bibrangedash\textendash
+  \let\finalandcomma\empty
+  \def\mkbibordinal#1{%
+    \@tempcnta0#1 \the\@tempcnta\adddot}%
+  \def\bibdatelong{%
+    \thefield{day}\adddot\nobreakspace
+    \mkbibmonth{\thefield{month}}\space
+    \thefield{year}}%
+  \def\bibdateshort{%
+    \thefield{day}\adddot\thinspace
+    \thefield{month}\adddot\thinspace
+    \thefield{year}}%
+  \def\biburldatelong{%
+    \thefield{urlday}\adddot\nobreakspace
+    \mkbibmonth{\thefield{urlmonth}}\space
+    \thefield{urlyear}}%
+  \def\biburldateshort{%
+    \thefield{urlday}\adddot\thinspace
+    \thefield{urlmonth}\adddot\thinspace
+    \thefield{urlyear}}%
+}
+
+\DeclareBibliographyStrings{%
+  bibliography     = {{Bibliografi}{Bibliografi}},
+  references       = {{Referanser}{Referanser}},
+  shorthands       = {{Forkortelsesliste}{Liste over forkortelser}},
+  editor           = {{\lbx@typeeditor}{\lbx@typeeditor}},
+  editors          = {{\lbx@typeeditors}{\lbx@typeeditors}},
+  typeeditor       = {{editor}{ed\adddot}},
+  typeeditors      = {{editorere}{ed\adddot}},
+  typecompiler     = {{sammenstiller}{sammenst\adddot}},
+  typecompilers    = {{sammenstillere}{sammenst\adddot}},
+  translator       = {{oversetter}{overs\adddot}},
+  translators      = {{oversettere}{overs\adddot}},
+  redactor         = {{redakt\o r}{red\adddot}},
+  redactors        = {{redakt\o rer}{red\adddot}},
+  commentator      = {{kommentator}{kom\adddot}},
+  commentators     = {{kommentatorer}{kom\adddot}},
+  annotator        = {{forklaring}{forkl\adddot}},
+  annotators       = {{forklaringer}{forkl\adddot}},
+  commentary       = {{kommentar}{komm\adddot}},
+  annotations      = {{forklaring}{forkl\adddot}},
+  introduction     = {{innledning}{innl\adddot}},
+  foreword         = {{forord}{forord}},
+  afterword        = {{etterord}{etterord}},
+  byauthor         = {{\lbx@bytypeauthor}{\lbx@bytypeauthor}},
+  bytypeauthor     = {{av}{av}},
+  byeditor         = {{\lbx@bytypeeditor\ av}{\lbx@bytypeeditor\addabbrvspace av}},
+  bytypeeditor     = {{utgitt}{utg\adddot}},
+  bytypecompiler   = {{sammenstillet}{sammenst\adddot}},
+  bytranslator     = {{oversatt \lbx@fromlang\ av}{oversatt \lbx@fromlang\ av}},
+  byredactor       = {{bearbeidet av}{bearb\adddot\ av}},
+  bycommentator    = {{kommentert av}{komm\adddot\ av}},
+  byannotator      = {{forklart av}{forkl\adddot\ av}}, 
+  withcommentator  = {{med en kommentar av}{med en komm\adddot\ av}},
+  withannotator    = {{med forklaring av}{med forkl\adddot\ av}},
+  withintroduction = {{med en innledning av}{med en innl\adddot\ av}},
+  withforeword     = {{med et forord av}{med et forord av}},
+  withafterword    = {{med et etterord av}{med et etterord av}},
+  byeditortr       = {{\lbx@bytypeeditor\ og oversatt \lbx@fromlang\ av}%
+                      {\lbx@bytypeeditor\addabbrvspace og oversatt \lbx@fromlang\ av}},
+  byeditorco       = {{\lbx@bytypeeditor\ og kommentert av}%
+                      {\lbx@bytypeeditor\addabbrvspace og komm\adddot\ av}},
+  byeditoran       = {{\lbx@bytypeeditor\ og forklart av}%
+                      {\lbx@bytypeeditor\addabbrvspace og forkl\adddot\ av}},
+  byeditorin       = {{\lbx@bytypeeditor\ og med en innledning skrevet av}%
+                      {\lbx@bytypeeditor\addabbrvspace og med en innledning skrev\adddot\ av}},
+  byeditorfo       = {{\lbx@bytypeeditor\ og med et forord skrevet av}%
+                      {\lbx@bytypeeditor\addabbrvspace og med et forord skrev\adddot\ av}},
+  byeditoraf       = {{\lbx@bytypeeditor\ og med et etterord skrevet av}%
+                      {\lbx@bytypeeditor\addabbrvspace og med et etterord skrev\adddot\ av}},
+  byeditortrco     = {{\lbx@bytypeeditor, oversatt \lbx@fromlang\ og kommentert av}%
+                      {\lbx@bytypeeditor,\addabbrvspace oversatt \lbx@fromlang\ og komm\adddot\ av}},
+  byeditortran     = {{\lbx@bytypeeditor, oversatt \lbx@fromlang\ og forklart av}%
+                      {\lbx@bytypeeditor,\addabbrvspace oversatt \lbx@fromlang\ og forkl\adddot\ av}},
+  byeditortrin     = {{\lbx@bytypeeditor, oversatt \lbx@fromlang\ og med en innledning skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace oversatt \lbx@fromlang\ og med en innl\adddot\ skrev\adddot\ av}},
+  byeditortrfo     = {{\lbx@bytypeeditor, oversatt \lbx@fromlang\ og med et forord skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace oversatt \lbx@fromlang\ og med et forord skrev\adddot\ av}},
+  byeditortraf     = {{\lbx@bytypeeditor, oversatt \lbx@fromlang\ og med et etterord skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace oversatt \lbx@fromlang\ og med et etterord skrev\adddot\ av}},
+  byeditorcoin     = {{\lbx@bytypeeditor, kommentert og med en innledning skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace komm\adddot\ og med en innl\adddot\ skrev\adddot\ av}},
+  byeditorcofo     = {{\lbx@bytypeeditor, kommentert og med et forord skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace komm\adddot\ og med et forord skrev\adddot\ av}},
+  byeditorcoaf     = {{\lbx@bytypeeditor, kommentert og med et etterord skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace komm\adddot\ og med et etterord skrev\adddot\ av}},
+  byeditoranin     = {{\lbx@bytypeeditor, forklart og med en innledning skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace forkl\adddot\ og med en innl\adddot\ skrev\adddot\ av}},
+  byeditoranfo     = {{\lbx@bytypeeditor, forklart og med et forord skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace forkl\adddot\ og med et forord skrev\adddot\ av}},
+  byeditoranaf     = {{\lbx@bytypeeditor, forklart og med et etterord skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace forkl\adddot\ og med et etterord skrev\adddot\ av}},
+  byeditortrcoin   = {{\lbx@bytypeeditor, oversatt \lbx@fromlang, kommentert og med en innledning skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace oversatt \lbx@fromlang, komm\adddot\ og med en innl\adddot\ skrev\adddot\ av}},
+  byeditortrcofo   = {{\lbx@bytypeeditor, oversatt \lbx@fromlang, kommentert og med et forord skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace oversatt \lbx@fromlang, komm\adddot\ og med et forord skrev\adddot\ av}},
+  byeditortrcoaf   = {{\lbx@bytypeeditor, oversatt \lbx@fromlang, kommentert og med et etterord skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace oversatt \lbx@fromlang, komm\adddot\ og med et etterord skrev\adddot\ av}},
+  byeditortranin   = {{\lbx@bytypeeditor, oversatt \lbx@fromlang, forklart og med en innledning skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace oversatt \lbx@fromlang, forkl\adddot\ og med en innl\adddot\ skrev\adddot\ av}}, 
+  byeditortranfo   = {{\lbx@bytypeeditor, oversatt \lbx@fromlang, forklart og med et forord skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace oversatt \lbx@fromlang, forkl\adddot\ og med et forord skrev\adddot\ av}},
+  byeditortranaf   = {{\lbx@bytypeeditor, oversatt \lbx@fromlang, forklart og med et etterord skrevet av}%
+                      {\lbx@bytypeeditor,\addabbrvspace oversatt \lbx@fromlang, forkl\adddot\ og med et etterord skrev\adddot\ av}}, 
+  bytranslatorco   = {{oversatt \lbx@fromlang\ og kommentert av}%
+                      {oversatt \lbx@fromlang\ og komm\adddot\ av}},
+  bytranslatoran   = {{oversatt \lbx@fromlang\ og forklart av}%
+                      {oversatt \lbx@fromlang\ og forkl\adddot\ av}}, 
+  bytranslatorin   = {{oversatt \lbx@fromlang\ og med en innledning skrevet av}%
+                      {oversatt \lbx@fromlang\ og med en innl\adddot\ skrev\adddot\ av}},
+  bytranslatorfo   = {{oversatt \lbx@fromlang\ og med et forord skrevet av}%
+                      {oversatt \lbx@fromlang\ og med et forord skrev\adddot\ av}},
+  bytranslatoraf   = {{oversatt \lbx@fromlang\ og med et etterord skrevet av}%
+                      {oversatt \lbx@fromlang\ og med et etterord skrev\adddot\ av}},
+  bytranslatorcoin = {{oversatt \lbx@fromlang, kommentert og med en innledning skrevet av}%
+                      {oversatt \lbx@fromlang, komm\adddot\ og med en innl\adddot\ skrev\adddot\ av}},
+  bytranslatorcofo = {{oversatt \lbx@fromlang, kommentert og med et forord skrevet av}%
+                      {oversatt \lbx@fromlang, komm\adddot\ og med et forord skrev\adddot\ av}},
+  bytranslatorcoaf = {{oversatt \lbx@fromlang, kommentert og med et etterord skrevet av}%
+                      {oversatt \lbx@fromlang, komm\adddot\ og med et etterord skrev\adddot\ av}},
+  bytranslatoranin = {{oversatt \lbx@fromlang, forklart og med en innledning skrevet av}%
+                      {oversatt \lbx@fromlang, forkl\adddot\ og med en innl\adddot\ skrev\adddot\ av}},
+  bytranslatoranfo = {{oversatt \lbx@fromlang, forklart og med et forord skrevet av}%
+                      {oversatt \lbx@fromlang, forkl\adddot\ og med et forord skrev\adddot\ av}},
+  bytranslatoranaf = {{oversatt \lbx@fromlang, forklart og med et etterord skrevet av}%
+                      {oversatt \lbx@fromlang, forkl\adddot\ og med et etterord skrev\adddot\ av}},
+  and              = {{og}{og}},
+  andothers        = {{bl.\,a\adddot}{bl.\,a\adddot}},
+  andmore          = {{og mer}{og mer}},
+  volume           = {{bind}{bd\adddot}},
+  volumes          = {{bind}{bd\adddot}}, 
+  jourvol          = {{\aa rgang}{\aa g\adddot}},
+  jourser          = {{serie}{ser\adddot}},
+  newseries        = {{ny serie}{n.\,s\adddot}},
+  oldseries        = {{gammel serie}{g.\,s\adddot}},
+  edition          = {{utgave}{utg\adddot}},
+  reprint          = {{gjenopptrykk}{gjenopptrykk}},
+  reprintof        = {{gjenopptrykk av}{gjenopptrykk av}},
+  reprintas        = {{gjenopptrykk som}{gjenopptrykk som}},
+  page             = {{side}{s\adddot}},
+  pages            = {{sider}{s\adddot}},
+  column           = {{spalte}{sp\adddot}},
+  columns          = {{spalter}{sp\adddot}},
+  line             = {{linje}{l\adddot}},
+  lines            = {{linjer}{l\adddot}},
+  verse            = {{vers}{v\adddot}},
+  verses           = {{vers}{v\adddot}},
+% section          = {{}{\S}},   % FIXME: missing
+% sections         = {{}{\S\S}}, % FIXME: missing
+% paragraph        = {{}{}}, % FIXME: missing
+% paragraphs       = {{}{}}, % FIXME: missing
+  in               = {{i}{i}},
+  inseries         = {{rekken}{rekken}},
+  ofseries         = {{av rekken}{av rekken}},
+  number           = {{nummer}{nr\adddot}},
+  chapter          = {{kapittel}{kap\adddot}},
+  mathesis         = {{masteroppgave}{masteropp\adddot}},
+  phdthesis        = {{PhD avhandling}{PhD avh\adddot}},
+  resreport        = {{forskningsrapport}{forskningsrapport}},
+  techreport       = {{teknisk rapport}{tek\adddot\ rap\adddot}},
+  software         = {{programvare}{programvare}},
+  datacd           = {{data CD}{data CD}},
+  audiocd          = {{lyd CD}{lyd CD}},
+  version          = {{versjon}{versjon}},
+  url              = {{side}{side}},
+  urlseen          = {{sjekket}{sjekket}},
+  citedas          = {{fremover sitert som}{fremover sit\adddot\ som}},
+  seenote          = {{se notat}{se notat}},
+  quotedin         = {{sitert i}{sitert i}},
+  idem             = {{den samme}{den~s\adddot}},
+  idemsf           = {{den samme}{den~s\adddot}},
+  idemsm           = {{den samme}{den~s\adddot}},
+  idemsn           = {{det samme}{det~s\adddot}},
+  idempf           = {{de samme}{de~s\adddot}},
+  idempm           = {{de samme}{de~s\adddot}},
+  idempn           = {{de samme}{de~s\adddot}},
+  idempp           = {{de samme}{de~s\adddot}},
+  ibidem           = {{ibidem}{ibid\adddot}},
+  opcit            = {{op.\,cit\adddot}{op.\,cit\adddot}},
+  loccit           = {{loc.\,cit\adddot}{loc.\,cit\adddot}},
+  confer           = {{sammenlikn}{smlk\adddot}},
+  sequens          = {{sq\adddot}{sq\adddot}},
+  sequentes        = {{sqq\adddot}{sqq\adddot}},
+  passim           = {{passim}{pass\adddot}},
+  see              = {{se}{s\adddot}},
+  seealso          = {{se ogs\aa}{s.\,\aa\adddot}},
+  january          = {{januar}{jan\adddot}},
+  february         = {{februar}{feb\adddot}},
+  march            = {{marts}{mar\adddot}},
+  april            = {{april}{apr\adddot}},
+  may              = {{mai}{mai}},
+  june             = {{juni}{jun\adddot}},
+  july             = {{juli}{jul\adddot}},
+  august           = {{august}{aug\adddot}},
+  september        = {{september}{sep\adddot}},
+  october          = {{oktober}{okt\adddot}},
+  november         = {{november}{nov\adddot}},
+  december         = {{desember}{des\adddot}},
+  langamerican     = {{amerikansk}{amerikansk}},
+% langdanish       = {{}{}}, % FIXME: missing
+  langenglish      = {{engelsk}{engelsk}},
+  langfrench       = {{fransk}{fransk}},
+  langgerman       = {{tysk}{tysk}},
+  langgreek        = {{gresk}{gresk}},
+  langitalian      = {{italiensk}{italiensk}},
+  langlatin        = {{latin}{latin}},
+  langnorwegian    = {{norsk}{norsk}},
+  langspanish      = {{spansk}{spansk}},
+% langswedish      = {{}{}}, % FIXME: missing
+  fromamerican     = {{fra amerikansk}{fra amerikansk}},
+% fromdanish       = {{}{}}, % FIXME: missing
+  fromenglish      = {{fra engelsk}{fra engelsk}},
+  fromfrench       = {{fra fransk}{fra fransk}},
+  fromgerman       = {{fra tysk}{fra tysk}},
+  fromgreek        = {{fra gresk}{fra gresk}},
+  fromitalian      = {{fra italiensk}{fra italiensk}},
+  fromlatin        = {{fra latin}{fra latin}},
+  fromnorwegian    = {{fra norsk}{fra norsk}},
+  fromspanish      = {{fra spansk}{fra spansk}},
+% fromswedish      = {{}{}}, % FIXME: missing
+  countryca        = {{Kanada}{CA}},
+  countryde        = {{Tyskland}{DE}},
+% countrydk        = {{}{DK}}, % FIXME: missing
+  countryes        = {{Spania}{ES}},
+  countryeu        = {{Europeiske Union}{EU}},
+  countryep        = {{Europeiske Union}{EP}},
+  countryfr        = {{Frankrike}{FR}},
+  countryit        = {{Italia}{IT}},
+  countryno        = {{Norge}{NO}},
+% countryse        = {{}{SE}}, % FIXME: missing
+  countryuk        = {{Storbritania}{GB}},
+  countryus        = {{USA}{US}},
+  countrywo        = {{verden}{WO}},
+  patent           = {{patent}{patent}},
+  patentca         = {{kanadisk patent}{kan\adddot\ pat\adddot}},
+  patentde         = {{tysk patent}{tys\adddot\ pat\adddot}},
+% patentdk         = {{}{}}, % FIXME: missing
+  patentes         = {{spansk patent}{spa\adddot\ pat\adddot}}, 
+  patenteu         = {{europeisk patent}{eur\adddot\ pat\adddot}}, 
+  patentfr         = {{fransk patent}{fra\adddot\ pat\adddot}},
+  patentit         = {{italiensk patent}{ita\adddot\ pat\adddot}},
+  patentno         = {{norsk patent}{nor\adddot\ pat\adddot}},
+% patentse         = {{}{}}, % FIXME: missing
+  patentuk         = {{storbritansk patent}{UK pat\adddot}},
+  patentus         = {{US amerikansk patent}{US pat\adddot}},
+  patreq           = {{s\o knad om patent}{pat\adddot\ s\o k\adddot}}, 
+  patreqca         = {{s\o knad om kanadisk patent}{kan\adddot\ pat\adddot\ s\o k\adddot}},
+  patreqde         = {{s\o knad om tysk patent}{tys\adddot\ pat\adddot\ s\o k\adddot}},
+% patreqdk         = {{}{}}, % FIXME: missing
+  patreqes         = {{s\o knad om spansk patent}{spa\adddot\ pat\adddot\ s\o k\adddot}},
+  patreqeu         = {{s\o knad om europeisk patent}{eur\adddot\ pat\adddot\ s\o k\adddot}},
+  patreqfr         = {{s\o knad om fransk patent}{fra\adddot\ pat\adddot\ s\o k\adddot}},
+  patreqit         = {{s\o knad om italiensk patent}{ita\adddot\ pat\adddot\ s\o k\adddot}},
+  patreqno         = {{s\o knad om norsk patent}{nor\adddot\ pat\adddot\ s\o k\adddot}},
+% patreqse         = {{}{}}, % FIXME: missing
+  patrequk         = {{s\o knad om storbritansk patent}{UK pat\adddot\ s\o k\adddot}},
+  patrequs         = {{s\o knad om US amerikansk patent}{US pat\adddot\ s\o k\adddot}},
+% file             = {{}{}}, % FIXME: missing
+% library          = {{}{}}, % FIXME: missing
+% abstract         = {{}{}}, % FIXME: missing
+% annotation       = {{}{}}, % FIXME: missing
+}
+
+\endinput

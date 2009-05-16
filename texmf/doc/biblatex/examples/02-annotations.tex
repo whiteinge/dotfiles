@@ -1,0 +1,17 @@
+%
+% The example entries in examples.bib feature `annotation' fields
+% with some remarks about the respective entry. The sole purpose of
+% this file is to print an annotated bibliography which includes
+% these fields.
+%
+\documentclass[a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}
+\usepackage[babel]{csquotes}
+\usepackage[style=reading,abstract=false,hyperref]{biblatex}
+\bibliography{examples}
+\usepackage{hyperref}
+\begin{document}
+\nocite{*}
+\printbibliography
+\end{document}

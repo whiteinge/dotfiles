@@ -1,0 +1,27 @@
+%
+% This example demonstrates how to subdivide a bibliography by type,
+% using `type' filters.
+%
+\documentclass[a4paper,oneside]{book}
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}
+\usepackage[babel]{csquotes}
+\usepackage[style=authoryear,hyperref]{biblatex}
+\usepackage{hyperref}
+\bibliography{examples}
+\defbibheading{printed}{\section*{Printed Sources}}
+\defbibheading{online}{\section*{Online Sources}}
+\begin{document}
+
+\chapter{References by type}
+
+This is just filler text \parencite{knuth:ct:a}.
+This is just filler text \parencite{ctan}.
+This is just filler text \parencite{companion}.
+This is just filler text \parencite{markey}.
+
+\chapter*{Bibliography}
+\printbibliography[heading=printed,nottype=online]
+\printbibliography[heading=online,type=online]
+
+\end{document}

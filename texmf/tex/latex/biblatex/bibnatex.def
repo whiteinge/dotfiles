@@ -1,0 +1,89 @@
+% $Id: bibnatex.def,v 0.8a 2008/11/29 18:06:53 lehman beta $
+
+\ProvidesFile{bibnatex.def}
+[\blx@rcsid $Id: bibnatex.def,v 0.8a 2008/11/29 18:06:53 lehman beta $
+ biblatex natbib compatibility]
+
+\renewcommand*{\nameyeardelim}{\addcomma\space}
+
+\newrobustcmd*{\citet}{%
+  \@ifstar
+    {\AtNextCite{\defcounter{maxnames}{999}}%
+     \textcite}
+    {\textcite}}
+
+\newrobustcmd*{\citep}{%
+  \@ifstar
+    {\AtNextCite{\defcounter{maxnames}{999}}%
+     \parencite}
+    {\parencite}}
+
+\newrobustcmd*{\citealt}{%
+  \@ifstar
+    {\AtNextCite{%
+       \def\nameyeardelim{\addspace}%
+       \defcounter{maxnames}{999}}%
+     \cite}
+    {\AtNextCite{\def\nameyeardelim{\addspace}}%
+     \cite}}
+
+\newrobustcmd*{\citealp}{%
+  \@ifstar
+    {\AtNextCite{\defcounter{maxnames}{999}}%
+     \cite}
+    {\cite}}
+
+\DeclareCiteCommand*{\citeauthor}
+  {\defcounter{maxnames}{999}%
+   \boolfalse{citetracker}%
+   \boolfalse{pagetracker}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printnames{labelname}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\citeyearpar}[\mkbibparens]
+  {\boolfalse{citetracker}%
+   \boolfalse{pagetracker}%
+   \usebibmacro{prenote}}
+  {\printfield{year}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\newrobustcmd*{\Citet}{\bibsentence\citet}
+\newrobustcmd*{\Citep}{\bibsentence\citep}
+\newrobustcmd*{\Citealt}{\bibsentence\citealt}
+\newrobustcmd*{\Citealp}{\bibsentence\citealp}
+\newrobustcmd*{\citefullauthor}{\citeauthor*}
+\newrobustcmd*{\Citefullauthor}{\bibsentence\citeauthor*}
+\newrobustcmd*{\citetext}{\mkbibparens}
+
+\newrobustcmd*{\defcitealias}[2]{%
+  \ifcsdef{bib@alias@\detokenize{#1}}
+    {\PackageWarning{biblatex}{%
+       Overwriting alias for citation '\detokenize{#1}'}}
+    {}%
+  \csgdef{bib@alias@\detokenize{#1}}{#2}}
+
+\newcommand*{\@citealias}[1]{%
+  \ifcsdef{bib@alias@#1}
+    {\csuse{bib@alias@#1}}
+    {\PackageWarning{biblatex}{No alias for citation '#1'}%
+     \textbf{#1}}}
+
+\DeclareCiteCommand{\citetalias}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \@citealias{\thefield{entrykey}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\citepalias}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \@citealias{\thefield{entrykey}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\endinput

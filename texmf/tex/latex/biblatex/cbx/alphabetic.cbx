@@ -1,0 +1,59 @@
+% $Id: alphabetic.cbx,v 0.8b 2008/12/13 17:34:16 lehman beta $
+
+\ProvidesFile{alphabetic.cbx}
+[\blx@cbxid $Id: alphabetic.cbx,v 0.8b 2008/12/13 17:34:16 lehman beta $]
+
+\ExecuteBibliographyOptions{labelalpha,autocite=inline}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}\bibleftbracket}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelalpha}%
+     \printfield{extraalpha}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}\bibrightbracket}
+
+\DeclareCiteCommand{\parencite}[\mkbibbrackets]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelalpha}%
+     \printfield{extraalpha}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\bibsentence
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelalpha}%
+     \printfield{extraalpha}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\textcite}
+  {\let\cbx@tempa=\empty
+   \undef\cbx@lasthash
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \iffieldequals{namehash}{\cbx@lasthash}
+     {\multicitedelim}
+     {\cbx@tempa
+      \ifnameundef{labelname}
+        {}
+        {\printnames{labelname}\space}%
+      \bibleftbracket}%
+   \printtext[bibhyperref]{%
+     \printfield{labelalpha}%
+     \printfield{extraalpha}}%
+   \savefield{namehash}{\cbx@lasthash}%
+   \gdef\cbx@tempa{\bibrightbracket\multicitedelim}}
+  {}
+  {\usebibmacro{postnote}\bibrightbracket}
+
+\DeclareMultiCiteCommand{\cites}[\mkbibbrackets]{\parencite}{\multicitedelim}
+\DeclareMultiCiteCommand{\parencites}[\mkbibbrackets]{\parencite}{\multicitedelim}
+
+\endinput

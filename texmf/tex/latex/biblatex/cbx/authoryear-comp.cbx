@@ -1,0 +1,179 @@
+% $Id: authoryear-comp.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{authoryear-comp.cbx}
+[\blx@cbxid $Id: authoryear-comp.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\ExecuteBibliographyOptions{labelyear,uniquename,sortcites,autocite=inline}
+\newbool{cbx:parens}
+
+\newbibmacro*{cite:init}{%
+  \global\boolfalse{cbx:parens}%
+  \global\let\cbx@tempa=\empty
+  \global\undef\cbx@lasthash
+  \global\undef\cbx@lastyear}
+
+\newbibmacro*{cite}{%
+  \iffieldundef{shorthand}
+    {\ifthenelse{\ifnameundef{labelname}\OR\iffieldundef{year}}
+       {\cbx@tempa
+        \usebibmacro{cite:label}%
+	\setunit{\addspace}%
+	\usebibmacro{cite:year+labelyear}%
+        \usebibmacro{cite:init}}
+       {\iffieldequals{namehash}{\cbx@lasthash}
+          {\iffieldequals{year}{\cbx@lastyear}
+             {\setunit{\addcomma}%
+              \usebibmacro{cite:labelyear}}
+             {\setunit{\compcitedelim}%
+              \usebibmacro{cite:year+labelyear}%
+              \savefield{year}{\cbx@lastyear}}}
+          {\cbx@tempa
+           \printnames{labelname}%
+  	   \setunit{\nameyeardelim}%
+           \usebibmacro{cite:year+labelyear}%
+           \savefield{namehash}{\cbx@lasthash}%
+           \savefield{year}{\cbx@lastyear}}}}
+    {\cbx@tempa
+     \usebibmacro{cite:shorthand}%
+     \usebibmacro{cite:init}}%
+  \global\let\cbx@tempa=\multicitedelim}
+
+\newbibmacro*{citeyear}{%
+  \iffieldundef{shorthand}
+    {\iffieldundef{year}
+       {\cbx@tempa
+        \usebibmacro{cite:label}%
+        \usebibmacro{cite:init}}
+       {\iffieldequals{namehash}{\cbx@lasthash}
+          {\iffieldequals{year}{\cbx@lastyear}
+             {\setunit{\addcomma}%
+              \usebibmacro{cite:labelyear}}
+             {\setunit{\compcitedelim}%
+              \usebibmacro{cite:year+labelyear}%
+              \savefield{year}{\cbx@lastyear}}}
+          {\cbx@tempa
+           \usebibmacro{cite:year+labelyear}%
+           \savefield{namehash}{\cbx@lasthash}%
+           \savefield{year}{\cbx@lastyear}}}}
+    {\cbx@tempa
+     \usebibmacro{cite:shorthand}%
+     \usebibmacro{cite:init}}%
+  \global\let\cbx@tempa=\multicitedelim}
+
+\newbibmacro*{textcite}{%
+  \iffieldequals{namehash}{\cbx@lasthash}
+    {\iffieldundef{shorthand}
+       {\iffieldequals{year}{\cbx@lastyear}
+          {\setunit{\addcomma}%
+           \usebibmacro{cite:labelyear}}
+          {\setunit{\compcitedelim}%
+           \usebibmacro{cite:year+labelyear}%
+           \savefield{year}{\cbx@lastyear}}}
+       {\setunit{\compcitedelim}%
+        \usebibmacro{cite:shorthand}%
+        \global\undef\cbx@lastyear}}
+    {\cbx@tempa
+     \ifnameundef{labelname}
+       {\iffieldundef{shorthand}
+          {\usebibmacro{cite:label}%
+	   \setunit{%
+	     \global\booltrue{cbx:parens}%
+	     \addspace\bibleftparen}%
+	   \usebibmacro{cite:year+labelyear}}
+          {\usebibmacro{cite:shorthand}}}
+       {\printnames{labelname}%
+	\setunit{%
+	  \global\booltrue{cbx:parens}%
+	  \addspace\bibleftparen}%
+        \iffieldundef{shorthand}
+          {\iffieldundef{year}
+             {\usebibmacro{cite:label}}
+             {\usebibmacro{cite:year+labelyear}}%
+           \savefield{year}{\cbx@lastyear}}
+          {\usebibmacro{cite:shorthand}%
+           \global\undef\cbx@lastyear}%
+        \savefield{namehash}{\cbx@lasthash}}}%
+  \gdef\cbx@tempa{%
+    \ifbool{cbx:parens}
+      {\bibrightparen\global\boolfalse{cbx:parens}}
+      {}%
+    \multicitedelim}}
+
+\newbibmacro*{cite:shorthand}{%
+  \printtext[bibhyperref]{\printfield{shorthand}}}
+
+\newbibmacro*{cite:label}{%
+  \iffieldundef{label}
+    {\printtext[bibhyperref]{\printfield[citetitle]{labeltitle}}}
+    {\printtext[bibhyperref]{\printfield{label}}}}
+
+\newbibmacro*{cite:year}{%
+  \printtext[bibhyperref]{\printfield{year}}}
+
+\newbibmacro*{cite:labelyear}{%
+  \printtext[bibhyperref]{\printfield{labelyear}}}
+
+\newbibmacro*{cite:year+labelyear}{%
+  \iffieldundef{year}
+    {}
+    {\printtext[bibhyperref]{%
+       \printfield{year}%
+       \printfield{labelyear}}}}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\cite}
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{citeyear}}
+  {}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\parencite}[\mkbibparens]
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{citeyear}}
+  {}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\bibsentence
+   \usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\textcite}
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{textcite}}
+  {}
+  {\iffieldundef{postnote}
+     {\ifbool{cbx:parens}
+        {\bibrightparen}
+	{}}
+     {\ifbool{cbx:parens}
+        {\postnotedelim}
+	{\addspace\bibleftparen}%
+      \printfield{postnote}\bibrightparen}}
+
+\endinput

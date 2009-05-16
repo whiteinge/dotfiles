@@ -1,0 +1,96 @@
+%
+% This file presents the 'verbose-inote' style
+%
+\documentclass[a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}
+\usepackage[babel]{csquotes}
+\usepackage[style=verbose-inote,hyperref]{biblatex}
+\usepackage{hyperref}
+\bibliography{examples}
+\newcommand{\cmd}[1]{\texttt{\textbackslash #1}}
+\begin{document}
+
+\section*{The \texttt{verbose-inote} style}
+
+This citation style is a slightly more compact variant of the
+\texttt{verbose-note} style. Immediately repeated citations are
+replaced by the abbreviation `ibidem' unless the citation is the
+first one on the current page or double page spread. This style is
+exclusively intended for citations given in footnotes. If you want
+`ibidem' to be printed in italics, redefine \cmd{mkibid} as follows:
+
+\begin{verbatim}
+\renewcommand*{\mkibid}{\emph}
+\end{verbatim}
+%
+Note that `ibidem' is sometimes taken to mean both `same
+author+title' and `same author+title+page'. By default, this is not
+the case in this style because it may lead to ambiguous citations.
+If you you prefer the alternative interpretation of `ibidem', set
+the package option \texttt{ibidpage=true} or simply
+\texttt{ibidpage} in the preamble.
+
+This style defines a package option called \texttt{pageref} which
+adds the page to the footnote number pointing to the full citation
+if it is located on a different page or page spread (depending on
+the setting of the \texttt{pagetracker} option). Set the package
+option \texttt{pageref=true} or simply \texttt{pageref} in the
+preamble if you want such references rendered as `see note~3,
+page~5'.
+
+\subsection*{\cmd{footcite} examples}
+
+% The initial citation of an entry includes all the data.
+This is just filler text.\footcite{aristotle:anima}
+This is just filler text.\footcite{aristotle:physics}
+This is just filler text \footcite{averroes/bland}.
+% Subsequent citations are pointers to the initial citation.
+This is just filler text.\footcite{aristotle:anima}
+This is just filler text.\footcite{aristotle:physics}
+% If there is only one work by an author in the bibliography, the
+% title is omitted from the pointer.
+This is just filler text \footcite{averroes/bland}.
+
+\clearpage
+
+% Immediately repeated citations are replaced by the
+% abbreviation `ibidem'...
+This is just filler text.\footcite{aristotle:anima}
+This is just filler text.\footcite{aristotle:anima}
+This is just filler text.\footcite{aristotle:physics}
+This is just filler text.\footcite{aristotle:physics}
+\clearpage
+% ... unless the citation is the first one on the current page
+% or double page spread (depending on the setting of the
+% `pagetracker' package option).
+This is just filler text.\footcite{aristotle:physics}
+This is just filler text.\footcite{aristotle:physics}
+
+\clearpage
+
+% If the `shorthand' field is defined, the shorthand is introduced
+% on the first citation.
+This is just filler text.\footcite{kant:kpv}
+This is just filler text.\footcite{kant:ku}
+% All subsequent citations will then use the shorthand instead of
+% a reference to a previous footnote.
+This is just filler text.\footcite[24]{kant:kpv}
+This is just filler text.\footcite[59--63]{kant:ku}
+
+\clearpage
+
+\subsection*{\cmd{autocite} examples}
+
+% The \autocite command works like \footcite. Note that
+% the period is moved and placed before the footnote.
+
+This is just filler text \autocite{aristotle:rhetoric}.
+This is just filler text \autocite{averroes/bland}.
+This is just filler text \autocite{aristotle:rhetoric}.
+This is just filler text \autocite{aristotle:anima}.
+This is just filler text \autocite{aristotle:anima}.
+This is just filler text \autocite{aristotle:physics}.
+This is just filler text \autocite{aristotle:physics}.
+
+\end{document}

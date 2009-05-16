@@ -1,0 +1,38 @@
+% $Id: american.lbx,v 0.8c 2009/01/10 18:00:00 lehman beta $
+
+\ProvidesFile{american.lbx}
+[\blx@lbxid $Id: american.lbx,v 0.8c 2009/01/10 18:00:00 lehman beta $]
+
+% STATUS OF THIS FILE
+% complete, peer review pending; the translations should be ok,
+% but all abbreviations in english.lbx need to be double-checked
+% by a native speaker
+
+\DeclareBibliographyExtras{%
+  \uspunctuation
+  \let\bibrangedash\textendash
+  \def\finalandcomma{\addcomma}%
+  \def\mkbibordinal#1{%
+    \@tempcnta0#1 \the\@tempcnta
+    \@whilenum\@tempcnta>100\do{\advance\@tempcnta-100}%
+    \ifnum\@tempcnta>20
+      \@whilenum\@tempcnta>9\do{\advance\@tempcnta-10}%
+    \fi
+    \ifcase\@tempcnta th\or st\or nd\or rd\else th\fi}%
+  \def\bibdatelong{%
+    \@tempcnta0\thefield{day} %
+    \mkbibmonth{\thefield{month}}\nobreakspace
+    \the\@tempcnta,\space\thefield{year}}%
+  \def\bibdateshort{%
+    \thefield{month}/\thefield{day}/\thefield{year}}%
+  \def\biburldatelong{%
+    \@tempcnta0\thefield{urlday} %
+    \mkbibmonth{\thefield{urlmonth}}\nobreakspace
+    \the\@tempcnta,\space\thefield{urlyear}}%
+  \def\biburldateshort{%
+    \thefield{urlmonth}/\thefield{urlday}/\thefield{urlyear}}%
+}
+
+\InheritBibliographyStrings{english}
+
+\endinput

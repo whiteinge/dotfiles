@@ -1,0 +1,36 @@
+%
+% This file presents the 'numeric-verb' style
+%
+\documentclass[a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}
+\usepackage[babel]{csquotes}
+\usepackage[style=numeric-verb,hyperref,subentry]{biblatex}
+\usepackage{hyperref}
+\bibliography{examples}
+% Some generic settings.
+\newcommand{\cmd}[1]{\texttt{\textbackslash #1}}
+\setlength{\parindent}{0pt}
+\begin{document}
+
+\section*{The \texttt{numeric-verb} style}
+
+This style is similar to \texttt{numeric} except that a list of
+multiple citations is printed in a slightly more verbose format.
+
+\subsection*{Multiple citations}
+
+\cite{hammond,massa,augustine,cotton,set,murray,bertram,stdmodel}
+
+\cite{set:yoon,stdmodel:salam,set:herrmann}
+
+\subsection*{Multiple citations with \cmd{supercite}}
+
+This is just filler text.\supercite{hammond,massa,augustine,cotton,set,murray,bertram,stdmodel}
+
+This is just filler text.\supercite{set:yoon,stdmodel:salam,set:herrmann}
+
+\clearpage
+\printbibliography
+
+\end{document}

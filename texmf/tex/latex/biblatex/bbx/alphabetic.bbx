@@ -1,0 +1,43 @@
+% $Id: alphabetic.bbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{alphabetic.bbx}
+[\blx@bbxid $Id: alphabetic.bbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\RequireBibliographyStyle{standard}
+\ExecuteBibliographyOptions{labelalpha,sorting=anyt}
+
+\DeclareNameAlias{author}{default}
+\DeclareNameAlias{editor}{default}
+
+\DeclareFieldFormat{labelalphawidth}{\mkbibbrackets{#1}}
+\DeclareFieldFormat{shorthandwidth}{\mkbibbrackets{#1}}
+\renewcommand*{\thebibitem}{\item}
+\renewcommand*{\thelositem}{\item}
+
+\renewenvironment*{thebibliography}
+  {\list
+     {\printtext[labelalphawidth]{%
+        \printfield{labelalpha}%
+        \printfield{extraalpha}}}
+     {\setlength{\labelwidth}{\labelalphawidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}%
+      \renewcommand*{\makelabel}[1]{##1\hss}}
+  {\endlist}
+
+\renewenvironment*{theshorthands}
+  {\list
+     {\printfield[shorthandwidth]{shorthand}}
+     {\setlength{\labelwidth}{\shorthandwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}%
+      \renewcommand*{\makelabel}[1]{##1\hss}}}
+  {\endlist}
+
+\endinput

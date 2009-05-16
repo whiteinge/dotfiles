@@ -1,0 +1,61 @@
+% $Id: authortitle.bbx,v 0.8a 2008/11/29 18:06:53 lehman beta $
+
+\ProvidesFile{authortitle.bbx}
+[\blx@bbxid $Id: authortitle.bbx,v 0.8a 2008/11/29 18:06:53 lehman beta $]
+
+\RequireBibliographyStyle{standard}
+\ExecuteBibliographyOptions{pagetracker}
+
+\DeclareFieldFormat{shorthandwidth}{#1}
+\renewcommand*{\thebibitem}{\item}
+\renewcommand*{\thelositem}{\item}
+\setlength{\bibitemsep}{0pt}
+
+\renewenvironment*{thebibliography}
+  {\list
+     {}
+     {\setlength{\leftmargin}{\bibhang}%
+      \setlength{\itemindent}{-\leftmargin}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}}
+  {\endlist}
+
+\renewenvironment*{theshorthands}
+  {\list
+     {\printfield[shorthandwidth]{shorthand}}
+     {\setlength{\labelwidth}{\shorthandwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}%
+      \renewcommand*{\makelabel}[1]{##1\hss}}}
+  {\endlist}
+
+\InitializeBibliographyStyle{%
+  \global\undef\bbx@lasthash}
+
+\renewbibmacro*{author}{%
+  \ifthenelse{\ifuseauthor\AND\NOT\ifnameundef{author}}
+    {\ifthenelse{\iffieldequals{fullhash}{\bbx@lasthash}\AND
+                 \NOT\iffirstonpage}
+       {\bibnamedash}
+       {\printnames{author}%
+	\setunit{\addcomma\space}%
+        \savefield{fullhash}{\bbx@lasthash}}%
+     \usebibmacro{authorstrg}}
+    {\global\undef\bbx@lasthash}}
+
+\renewbibmacro*{editor}{%
+  \ifthenelse{\ifuseeditor\AND\NOT\ifnameundef{editor}}
+    {\ifthenelse{\iffieldequals{fullhash}{\bbx@lasthash}\AND
+                 \NOT\iffirstonpage}
+       {\bibnamedash}
+       {\printnames{editor}%
+	\setunit{\addcomma\space}%
+        \savefield{fullhash}{\bbx@lasthash}}%
+     \usebibmacro{editorstrg}%
+     \clearname{editor}}
+    {\global\undef\bbx@lasthash}}
+
+\endinput

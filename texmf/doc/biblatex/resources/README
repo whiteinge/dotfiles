@@ -1,0 +1,31 @@
+This directory contains miscellaneous resources which are not part
+of the biblatex package but which may be useful for users of
+biblatex nonetheless.
+
+latin1.csf
+
+A codepage and sort definition file for the 8-bit implementation of
+BibTeX. This file adds support for ISO 8859-1 (Latin 1). It is a
+modified and expanded version of the 88591lat.csf file that ships
+with bibtex8. latin1.csf implements a generic sorting order; the
+latin1_*.csf files are optimized for specific languages.
+
+latin9.csf
+
+A codepage and sort definition file for the 8-bit implementation of
+BibTeX. This file adds support for ISO 8859-15 (Latin 9). latin9.csf
+implements a generic sorting order; the latin9_*.csf files are
+optimized for specific languages.
+
+winansi.csf
+
+A codepage and sort definition file for the 8-bit implementation of
+BibTeX. This file adds support for Microsoft Codepage 1252 (Windows
+Ansi). winansi.csf implements a generic sorting order; the
+winansi_*.csf files are optimized for specific languages.
+
+bibtoolrsc
+
+A configuration file for bibtool with support for the additional
+entry types and fields provided by biblatex. Add the contents of
+this file to your existing `.bibtoolrsc' file.

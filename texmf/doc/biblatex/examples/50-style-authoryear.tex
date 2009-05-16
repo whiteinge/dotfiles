@@ -1,0 +1,110 @@
+%
+% This file presents the `authoryear' style
+%
+\documentclass[a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}
+\usepackage[babel]{csquotes}
+\usepackage[style=authoryear,hyperref]{biblatex}
+\usepackage{hyperref}
+\bibliography{examples}
+\setlength{\parindent}{0pt}
+% Some generic settings.
+\newcommand{\cmd}[1]{\texttt{\textbackslash #1}}
+\setlength{\parindent}{0pt}
+\begin{document}
+
+\section*{The \texttt{authoryear} style}
+
+This style implements the author-year citation scheme.
+
+\subsection*{\cmd{cite} examples}
+
+\cite{companion}
+
+\cite[59]{companion}
+
+\cite[See][]{companion}
+
+\cite[See][59--63]{companion}
+
+\subsection*{\cmd{parencite} examples}
+
+This is just filler text \parencite{companion}.
+
+This is just filler text \parencite[59]{companion}.
+
+This is just filler text \parencite[See][]{companion}.
+
+This is just filler text \parencite[See][59--63]{companion}.
+
+\subsection*{\cmd{parencite*} examples}
+
+\citeauthor{companion} show that this is just filler
+text \parencite*{companion}.
+
+\subsection*{\cmd{footcite} examples}
+
+% Even though the author-year scheme is usually employed in
+% conjuntion with in-text citations, it works just fine in
+% footnotes, too.
+
+This is just filler text.\footcite{companion}
+
+This is just filler text.\footcite[59]{companion}
+
+This is just filler text.\footcite[See][]{companion}
+
+This is just filler text.\footcite[See][59--63]{companion}
+
+\subsection*{\cmd{textcite} examples}
+
+\textcite{companion} show that this is just filler text.
+
+\textcite[59]{companion} show that this is just filler text.
+
+\textcite[See][]{companion} for more filler text.
+
+\textcite[See][59--63]{companion} for more filler text.
+
+\subsection*{\cmd{autocite} examples}
+
+% By default, the \autocite command works like \parencite.
+% The starred version works like \parencite*.
+
+This is just filler text \autocite{companion}.
+
+\citeauthor{companion} show that this is just filler
+text \autocite*{companion}.
+
+\subsection*{Multiple citations}
+
+% By default, a list of multiple citations is not sorted. You can
+% enable sorting by setting the `sortcites' package option.
+
+\cite{knuth:ct:c,aristotle:physics,knuth:ct:b,aristotle:poetics,aristotle:rhetoric,knuth:ct:d}
+
+\subsection*{Shorthand examples}
+
+% If an entry in the bib file includes a `shorthand' field, the
+% shorthand replaces the regular author-title citation.
+
+\cite{kant:kpv,kant:ku}
+
+\clearpage
+
+% The list of shorthands.
+
+\printshorthands
+
+% The list of references. Note that the year is printed after the
+% author or editor and that recurring author and editor names are
+% replaced by a dash unless the entry is the first one on the
+% current page or double page spread (depending on the setting of
+% the `pagetracker' package option). This style will implicitly set
+% `pagetracker=spread' at load time.
+
+\nocite{*}
+\printbibliography
+
+\end{document}

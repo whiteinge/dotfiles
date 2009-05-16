@@ -1,0 +1,112 @@
+% $Id: debug.bbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{debug.bbx}
+[\blx@bbxid $Id: debug.bbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\ExecuteBibliographyOptions{sorting=debug}
+\DeclareFieldFormat{entrykey}{\ttfamily[#1]}
+\DeclareFieldFormat{shorthandwidth}{#1}
+\renewcommand*{\thebibitem}{\item}
+\renewcommand*{\thelositem}{\item}
+
+\renewenvironment*{thebibliography}
+  {\list
+     {}
+     {\setlength{\leftmargin}{8em}%
+      \setlength{\itemindent}{-\leftmargin}%
+      \setlength{\itemsep}{0pt}%
+      \setlength{\parsep}{0pt}%
+      \interlinepenalty\@M
+      \raggedbottom\raggedright
+      \frenchspacing
+      \normalfont\footnotesize}}
+  {\endlist}
+
+\renewenvironment*{theshorthands}
+  {\list
+     {\printfield[shorthandwidth]{shorthand}}
+     {\setlength{\labelwidth}{8em}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \addtolength{\labelwidth}{-\labelsep}%
+      \setlength{\itemsep}{0pt}%
+      \setlength{\parsep}{0pt}%
+      \renewcommand*{\makelabel}[1]{##1\hss}%
+      \interlinepenalty\@M
+      \raggedbottom\raggedright
+      \frenchspacing
+      \normalfont\footnotesize}}
+  {\endlist}
+
+\DeclareNameFormat{debug}{%
+  \bbx@fieldlabel{\bbx@tempa}%
+  \ifblank{#3}{}{\detokenize{#3}\space}%
+  \ifblank{#5}{}{\detokenize{#5}\ifpunctmark{'}{}{\space}}%
+  #1\ifblank{#7}{}{\space\detokenize{#7}}%
+  \ifblank{#3}{}{\bbx@subfieldlabel{first}\detokenize{#3}}%
+  \ifblank{#1}{}{\bbx@subfieldlabel{last}\detokenize{#1}}%
+  \ifblank{#5}{}{\bbx@subfieldlabel{prefix}\detokenize{#5}}%
+  \ifblank{#7}{}{\bbx@subfieldlabel{affix}\detokenize{#7}}}
+\DeclareListFormat{debug}{%
+  \bbx@fieldlabel{\bbx@tempa}\detokenize{#1}}
+\DeclareFieldFormat{debug}{\detokenize{#1}}
+
+\def\bbx@debugname#1{%
+  \ifnameundef{#1}
+    {}
+    {\def\bbx@tempa{#1}%
+     \printnames[debug][-\thelisttotal]{#1}}}%
+\def\bbx@debuglist#1{%
+  \iflistundef{#1}
+    {}
+    {\def\bbx@tempa{#1}%
+     \printlist[debug][-\thelisttotal]{#1}}}%
+\def\bbx@debugfield#1{%
+  \iffieldundef{#1}
+    {}
+    {\bbx@fieldlabel{#1}%
+     \printfield[debug]{#1}}}
+
+\def\bbx@fieldlabel#1{%
+  \thebibitem
+  \texttt{\makebox[\leftmargin][l]{[#1]}}}
+\def\bbx@subfieldlabel#1{%
+  \par\nobreak
+  \makebox[6em][l]{\ttfamily [#1]}}
+
+\DeclareBibliographyDriver{debug}{%
+  \item\begingroup\ttfamily\leavevmode
+  \xleaders\hbox to 0.75em{\hss-\hss}\hfill\kern\z@
+  \space\printfield{entrykey}\space
+  \xleaders\hbox to 0.75em{\hss-\hss}\hfill\kern\z@
+  \endgroup
+  \let\do\bbx@debugname
+  \bib@donames
+  \let\do\bbx@debuglist
+  \bib@dolists
+  \let\do\bbx@debugfield
+  \bib@dofields\do{options}\do{execute}%
+  \item\begingroup\ttfamily\leavevmode
+  \xleaders\hbox to 0.75em{\hss-\hss}\hfill\kern\z@
+  \endgroup
+  \clearpage}
+
+\DeclareBibliographyAlias{article}{debug}
+\DeclareBibliographyAlias{book}{debug}
+\DeclareBibliographyAlias{booklet}{debug}
+\DeclareBibliographyAlias{collection}{debug}
+\DeclareBibliographyAlias{inbook}{debug}
+\DeclareBibliographyAlias{incollection}{debug}
+\DeclareBibliographyAlias{inproceedings}{debug}
+\DeclareBibliographyAlias{manual}{debug}
+\DeclareBibliographyAlias{misc}{debug}
+\DeclareBibliographyAlias{online}{debug}
+\DeclareBibliographyAlias{patent}{debug}
+\DeclareBibliographyAlias{periodical}{debug}
+\DeclareBibliographyAlias{proceedings}{debug}
+\DeclareBibliographyAlias{report}{debug}
+\DeclareBibliographyAlias{thesis}{debug}
+\DeclareBibliographyAlias{unpublished}{debug}
+\DeclareBibliographyDriver{shorthands}{%
+  \texttt{\printfield{entrykey}}}
+
+\endinput

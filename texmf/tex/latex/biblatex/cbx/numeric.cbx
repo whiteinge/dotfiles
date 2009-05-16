@@ -1,0 +1,88 @@
+% $Id: numeric.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{numeric.cbx}
+[\blx@cbxid $Id: numeric.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\ExecuteBibliographyOptions{labelnumber,autocite=inline}
+\renewcommand*{\multicitedelim}{\addcomma\space}
+\providebool{bbx:subentry}
+\DeclareFieldFormat{entrysetcount}{\mknumalph{#1}}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}%
+   \bibleftbracket}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelnumber}%
+     \ifbool{bbx:subentry}
+       {\printfield{entrysetcount}}
+       {}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}%
+   \bibrightbracket}
+
+\DeclareCiteCommand{\parencite}[\mkbibbrackets]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelnumber}%
+     \ifbool{bbx:subentry}
+       {\printfield{entrysetcount}}
+       {}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\bibsentence
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelnumber}%
+     \ifbool{bbx:subentry}
+       {\printfield{entrysetcount}}
+       {}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\textcite}
+  {\let\cbx@tempa=\empty
+   \undef\cbx@lasthash
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \iffieldequals{namehash}{\cbx@lasthash}
+     {\multicitedelim}
+     {\cbx@tempa
+      \ifnameundef{labelname}
+        {}
+        {\printnames{labelname}\space}%
+      \bibleftbracket}%
+   \printtext[bibhyperref]{%
+     \printfield{labelnumber}%
+     \ifbool{bbx:subentry}
+       {\printfield{entrysetcount}}
+       {}}%
+   \savefield{namehash}{\cbx@lasthash}%
+   \gdef\cbx@tempa{\bibrightbracket\multicitedelim}}
+  {}
+  {\usebibmacro{postnote}\bibrightbracket}
+
+\DeclareCiteCommand{\supercite}[\mkbibsuperscript]
+  {\iffieldundef{prenote}
+     {}
+     {\BibliographyWarning{Ignoring prenote argument}}%
+   \iffieldundef{postnote}
+     {}
+     {\BibliographyWarning{Ignoring postnote argument}}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelnumber}%
+     \ifbool{bbx:subentry}
+       {\printfield{entrysetcount}}
+       {}}}
+  {\supercitedelim}
+  {}
+
+\DeclareMultiCiteCommand{\cites}[\mkbibbrackets]{\parencite}{\multicitedelim}
+\DeclareMultiCiteCommand{\parencites}[\mkbibbrackets]{\parencite}{\multicitedelim}
+
+\endinput

@@ -1,0 +1,42 @@
+% $Id: draft.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{draft.cbx}
+[\blx@cbxid $Id: draft.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\ExecuteBibliographyOptions{autocite=plain}
+
+\DeclareFieldFormat{citekey}{\cbx@mkcitekey{#1}}
+\DeclareUrlCommand{\cbx@mkcitekey}{\urlstyle{citekey}}
+\def\url@citekeystyle{\def\UrlFont{\bfseries}}
+
+\newbibmacro*{cite:entrykey}{%
+  \printtext[bibhyperref]{\printfield[citekey]{entrykey}}}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{cite:entrykey}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\textcite}
+  {\usebibmacro{prenote}}
+  {\printnames{labelname}
+   \setunit*{\space}%
+   \usebibmacro{cite:entrykey}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{cite:entrykey}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\bibsentence
+   \usebibmacro{prenote}}
+  {\usebibmacro{cite:entrykey}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\endinput

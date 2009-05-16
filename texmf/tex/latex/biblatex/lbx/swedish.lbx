@@ -1,0 +1,274 @@
+% $Id: swedish.lbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{swedish.lbx}
+[\blx@lbxid $Id: swedish.lbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+% STATUS OF THIS FILE
+% complete; translations + peer review by native speakers
+
+\DeclareBibliographyExtras{%
+  \let\bibrangedash\textendash
+  \let\finalandcomma\empty
+  \def\mkbibordinal#1{%
+    \@tempcnta0#1 \the\@tempcnta\adddot}%
+  \def\bibdatelong{%
+    \thefield{day}\adddot\nobreakspace
+    \mkbibmonth{\thefield{month}}\space
+    \thefield{year}}%
+  \def\bibdateshort{%
+    \thefield{year}-%
+    \thefield{month}-%
+    \thefield{day}}%
+  \def\biburldatelong{%
+    \thefield{urlday}\adddot\nobreakspace
+    \mkbibmonth{\thefield{urlmonth}}\space
+    \thefield{urlyear}}%
+  \def\biburldateshort{%
+    \thefield{urlyear}-%
+    \thefield{urlmonth}-%
+    \thefield{urlday}}%
+}
+
+\DeclareBibliographyStrings{%
+  bibliography     = {{Litteraturf\"orteckning}{Litteratur}},
+  references       = {{Referenser}{Referenser}},
+  shorthands       = {{F\"orkortningar}{F\"ork\addot}},
+  editor           = {{\lbx@typeeditor}{\lbx@typeeditor}},
+  editors          = {{\lbx@typeeditors}{\lbx@typeeditors}},
+  typeeditor       = {{redakt\"or}{red\adddot}},
+  typeeditors      = {{redakt\"orer}{red\adddot}},
+  typecompiler     = {{redakt\"or}{red\adddot}},
+  typecompilers    = {{redakt\"orer}{red\adddot}},
+  translator       = {{\"overs\"attare}{\"overs\adddot}},
+  translators      = {{\"overs\"attare}{\"overs\adddot}},
+  redactor         = {{redakt\"or}{red\adddot}},
+  redactors        = {{redakt\"or}{red\adddot}},
+  commentator      = {{kommentator}{kommentator}},
+  commentators     = {{kommentatorer}{kommentatorer}},
+  annotator        = {{kommentator}{kommentator}},
+  annotators       = {{kommentatorer}{kommentatorer}},
+  commentary       = {{kommentar}{komm\adddot}},
+  annotations      = {{f\"orklaring}{f\"orkl\adddot}},
+  introduction     = {{inledning}{inl\adddot}},
+  foreword         = {{f\"orord}{f\"orord}},
+  afterword        = {{efterord}{efterord}},
+  byauthor         = {{\lbx@bytypeauthor}{\lbx@bytypeauthor}},
+  bytypeauthor     = {{av}{av}},
+  byeditor         = {{\lbx@bytypeeditor av}{\lbx@bytypeeditor\addabbrvspace av}},
+  bytypeeditor     = {{utgiven}{utg\adddot}},
+  bytypecompiler   = {{sammanst\"alld}{sammanst\adddot}},
+  bytranslator     = {{\"oversatt \lbx@fromlang\ av}{\"overs\adddot\ \lbx@fromlang\ av}},
+  byredactor       = {{bearbetad av}{bearb\adddot\ av}},
+  bycommentator    = {{kommenterad av}{kommenterad av}},
+  byannotator      = {{f\"orklarad av}{f\"ork\adddot\ av}},
+  withcommentator  = {{med kommentarer av}{med kommentarer av}},
+  withannotator    = {{med f\"orklaringar av}{med f\"orkl\adddot\ av}},
+  withintroduction = {{med inledning av}{med inl\adddot\ av}},
+  withforeword     = {{med f\"orord av}{med f\"orord av}},
+  withafterword    = {{med efterord av}{med efterord av}},
+  byeditortr       = {{\lbx@bytypeeditor\ och \"oversatt \lbx@fromlang\ av}%
+                      {\lbx@bytypeeditor\addabbrvspace och \"overs\adddot\ \lbx@fromlang\ av}},
+  byeditorco       = {{\lbx@bytypeeditor\ och kommenterad av}%
+                      {\lbx@bytypeeditor\addabbrvspace och kommenterad av}},
+  byeditoran       = {{\lbx@bytypeeditor\ och f\"orklarad av}%
+                      {\lbx@bytypeeditor\addabbrvspace och f\"orkl\adddot\ av}},
+  byeditorin       = {{\lbx@bytypeeditor\ och f\"orsedd med en inledning av}%
+                      {\lbx@bytypeeditor\addabbrvspace och f\"orsedd med en inl\adddot\ av}},
+  byeditorfo       = {{\lbx@bytypeeditor\ och f\"orsedd med ett f\"orord av}%
+                      {\lbx@bytypeeditor\addabbrvspace och f\"orsedd med ett f\"orord av}},
+  byeditoraf       = {{\lbx@bytypeeditor\ och f\"orsedd med ett efterord av}%
+                      {\lbx@bytypeeditor\addabbrvspace och f\"orsedd med ett efterord av}},
+  byeditortrco     = {{\lbx@bytypeeditor, \"oversatt \lbx@fromlang\ och kommenterad av}%
+                      {\lbx@bytypeeditor,\addabbrvspace\"overs\adddot\ \lbx@fromlang\ och kommenterad av}},
+  byeditortran     = {{\lbx@bytypeeditor, \"oversatt \lbx@fromlang\ och f\"orkl\"autert av}%
+                      {\lbx@bytypeeditor,\addabbrvspace\"overs\adddot\ \lbx@fromlang\ och f\"orkl\adddot\ av}},
+  byeditortrin     = {{\lbx@bytypeeditor, \"oversatt \lbx@fromlang\ och f\"orsedd med en inledning av}%
+                      {\lbx@bytypeeditor,\addabbrvspace \"overs\adddot\ \lbx@fromlang\ och med en inl\adddot\ av}},
+  byeditortrfo     = {{\lbx@bytypeeditor, \"oversatt \lbx@fromlang\ och f\"orsedd med ett f\"orord av}%
+                      {\lbx@bytypeeditor,\addabbrvspace \"overs\adddot\ \lbx@fromlang\ och med ett f\"orord av}},
+  byeditortraf     = {{\lbx@bytypeeditor, \"oversatt \lbx@fromlang\ och f\"orsedd med ett efterord av}%
+                      {\lbx@bytypeeditor,\addabbrvspace \"overs\adddot\ \lbx@fromlang\ och med ett efterord av}},
+  byeditorcoin     = {{\lbx@bytypeeditor, kommenterad och f\"orsedd med en inledning av}%
+                      {\lbx@bytypeeditor,\addabbrvspace kommenterad och med en inl\adddot\ av}},
+  byeditorcofo     = {{\lbx@bytypeeditor, kommenterad och f\"orsedd med ett f\"orord av}%
+                      {\lbx@bytypeeditor,\addabbrvspace kommenterad och med ett f\"orord av}},
+  byeditorcoaf     = {{\lbx@bytypeeditor, kommenterad och f\"orsedd med ett efterord av}%
+                      {\lbx@bytypeeditor,\addabbrvspace kommenterad och med ett efterord av}},
+  byeditoranin     = {{\lbx@bytypeeditor, f\"orklarad och f\"orsedd med en inledning av}%
+                      {\lbx@bytypeeditor,\addabbrvspace f\"orkl\adddot\ och med en inl\adddot\ av}},
+  byeditoranfo     = {{\lbx@bytypeeditor, f\"orklarad och f\"orsedd med ett f\"orord av}%
+                      {\lbx@bytypeeditor,\addabbrvspace f\"orkl\adddot\ och med ett f\"orord av}},
+  byeditoranaf     = {{\lbx@bytypeeditor, f\"orklarad och f\"orsedd med ett efterord av}%
+                      {\lbx@bytypeeditor,\addabbrvspace f\"orkl\adddot\ och med ett efterord av}},
+  byeditortrcoin   = {{\lbx@bytypeeditor, \"oversatt \lbx@fromlang, kommenterad och f\"orsedd med en inledning av}%
+                      {\lbx@bytypeeditor,\addabbrvspace \"overs\adddot\ \lbx@fromlang, kommenterad och med en inl\adddot\ av}},
+  byeditortrcofo   = {{\lbx@bytypeeditor, \"oversatt \lbx@fromlang, kommenterad och f\"orsedd med ett f\"orord av}%
+                      {\lbx@bytypeeditor,\addabbrvspace \"overs\adddot\ \lbx@fromlang, kommenterad och med ett f\"orord av}},
+  byeditortrcoaf   = {{\lbx@bytypeeditor, \"oversatt \lbx@fromlang, kommenterad och f\"orsedd med ett efterord av}%
+                      {\lbx@bytypeeditor,\addabbrvspace \"overs\adddot\ \lbx@fromlang, kommenterad och med ett efterord av}},
+  byeditortranin   = {{\lbx@bytypeeditor, \"oversatt \lbx@fromlang, f\"orklarad och f\"orsedd med en inledning av}%
+                      {\lbx@bytypeeditor,\addabbrvspace \"overs\adddot\ \lbx@fromlang, f\"orkl\adddot\ och med en inl\adddot\ av}},
+  byeditortranfo   = {{\lbx@bytypeeditor, \"oversatt \lbx@fromlang, f\"orklarad och f\"orsedd med ett f\"orord av}%
+                      {\lbx@bytypeeditor,\addabbrvspace \"overs\adddot\ \lbx@fromlang, f\"orkl\adddot\ och med ett f\"orord av}},
+  byeditortranaf   = {{\lbx@bytypeeditor, \"oversatt \lbx@fromlang, f\"orklarad och f\"orsedd med ett efterord av}%
+                      {\lbx@bytypeeditor,\addabbrvspace \"overs\adddot\ \lbx@fromlang, f\"orkl\adddot\ och med ett efterord av}},
+  bytranslatorco   = {{\"oversatt \lbx@fromlang\ och kommenterad av}%
+                      {\"overs\adddot\ \lbx@fromlang\ och kommenterad av}},
+  bytranslatoran   = {{\"oversatt \lbx@fromlang\ och f\"orklarad av}%
+                      {\"overs\adddot\ \lbx@fromlang\ och f\"orkl\adddot\ av}},
+  bytranslatorin   = {{\"oversatt \lbx@fromlang\ och f\"orsedd med en inledning av}%
+                      {\"overs\adddot\ \lbx@fromlang\ och f\"ors\adddot\ med en inl\adddot\ av}},
+  bytranslatorfo   = {{\"oversatt \lbx@fromlang\ och f\"orsedd med ett f\"orord av}%
+                      {\"overs\adddot\ \lbx@fromlang\ och f\"ors\adddot\ med ett f\"orord av}},
+  bytranslatoraf   = {{\"oversatt \lbx@fromlang\ och f\"orsedd med ett efterord av}%
+                      {\"overs\adddot\ \lbx@fromlang\ och f\"orsedd med ett efterord av}},
+  bytranslatorcoin = {{\"oversatt \lbx@fromlang, kommenterad och f\"orsedd med en inledning av}%
+                      {\"overs\adddot\ \lbx@fromlang, kommenterad och f\"orsedd med en inledn\adddot\ vers\adddot\ av}},
+  bytranslatorcofo = {{\"oversatt \lbx@fromlang, kommenterad och f\"orsedd med ett f\"ordord av}%
+                      {\"overs\adddot\ \lbx@fromlang, kommenterad och f\"orsedd med ett f\"ordord vers\adddot\ av}},
+  bytranslatorcoaf = {{\"oversatt \lbx@fromlang, kommenterad och f\"orsedd med ett efterord av}%
+                      {\"overs\adddot\ \lbx@fromlang, kommenterad och f\"orsedd med ett efterord av}},
+  bytranslatoranin = {{\"oversatt \lbx@fromlang, f\"orklarad och f\"orsedd med en inledning av}%
+                      {\"overs\adddot\ \lbx@fromlang, f\"orkl\adddot\ och f\"orsedd med en inledning\ av}},
+  bytranslatoranfo = {{\"oversatt \lbx@fromlang, ef\"orklarad och f\"orsedd med ett f\"orord av}%
+                      {\"overs\adddot\ \lbx@fromlang, f\"orkl\adddot\ och f\"orsedd med ett f\"orord av}},
+  bytranslatoranaf = {{\"oversatt \lbx@fromlang, f\"orklarad och f\"orsedd med ett efterord av}%
+                      {\"overs\adddot\ \lbx@fromlang, f\"orkl\adddot\ och f\"orsedd med ett efterord av}},
+  and              = {{och}{och}},
+  andothers        = {{m.\,fl\adddot}{m.\,fl\adddot}},
+  andmore          = {{m.\,m\adddot}{m.\,m\adddot}},
+  volume           = {{volym}{vol\adddot}},
+  volumes          = {{volym}{vol\adddot}},
+  jourvol          = {{\aa rg\aa ng}{\aa rg\adddot}},
+  jourser          = {{serie}{ser\adddot}},
+  newseries        = {{ny f\"oljd}{ny f\"oljd}},
+  oldseries        = {{gammal f\"oljd}{gammal f\"oljd}},
+  edition          = {{upplaga}{uppl\adddot}},
+  reprint          = {{nytryck}{nytr\adddot}},
+  reprintof        = {{nytryck av}{nytr\addabbrvspace av}},
+  reprintas        = {{nytryckt som}{nytr\addabbrvspace som}},
+  page             = {{sida}{s\adddot}},
+  pages            = {{sidor}{s\adddot}},
+  column           = {{spalt}{sp\adddot}},
+  columns          = {{spalter}{sp\adddot}},
+  line             = {{linje}{l\adddot}},
+  lines            = {{linjer}{l\adddot}},
+  verse            = {{vers}{v\adddot}},
+  verses           = {{verser}{v\adddot}},
+  section          = {{paragraf}{\S}},     % FIXME: check
+  sections         = {{paragrafer}{\S\S}}, % FIXME: check
+% paragraph        = {{}{}}, % FIXME: missing
+% paragraphs       = {{}{}}, % FIXME: missing
+  in               = {{i}{i}},
+  inseries         = {{i}{i}},
+  ofseries         = {{i}{i}},
+  number           = {{nummer}{nr\adddot}},
+  chapter          = {{kapitel}{kap\adddot}},
+  mathesis         = {{examensarbete}{exarb\adddot}},
+  phdthesis        = {{doktorsavhandling}{avh\adddot}},
+  resreport        = {{forskningsrapport}{forskn\adddotspace rap\adddot}},
+  techreport       = {{teknisk rapport}{tekn\adddotspace rapp\adddot}},
+  software         = {{datorprogram}{datorprog\adddot}},
+  datacd           = {{data-cd}{data-cd}},
+  audiocd          = {{ljud-cd}{ljud-cd}},
+  version          = {{version}{version}},
+  url              = {{webbadress}{URL}},
+  urlseen          = {{senast kontrollerad}{bes\"okt}},
+  citedas          = {{nedan citerad som}{nedan cit\adddotspace som}},
+  seenote          = {{se not}{se not}},
+  quotedin         = {{citerad i}{cit\adddotspace i}},
+  idem             = {{den samma}{den~s\adddot}},
+  idemsf           = {{den samma}{den~s\adddot}},
+  idemsm           = {{den samma}{den~s\adddot}},
+  idemsn           = {{den samma}{den~s\adddot}},
+  idempf           = {{de samma}{de~s\adddot}},
+  idempm           = {{de samma}{de~s\adddot}},
+  idempn           = {{de samma}{de~s\adddot}},
+  idempp           = {{de samma}{de~s\adddot}},
+  ibidem           = {{ibidem}{ibid\adddot}},
+  opcit            = {{op\adddotspace cit\adddot}{op\adddotspace cit\adddot}},
+  loccit           = {{loc\adddotspace cit\adddot}{loc\adddotspace cit\adddot}},
+  confer           = {{j\"amf\"or}{jfr\adddot}},
+  sequens          = {{f\adddot}{f\adddot}},
+  sequentes        = {{ff\adddot}{ff\adddot}},
+  passim           = {{passim}{pass\adddot}},
+  see              = {{se}{se}},
+  seealso          = {{se \"aven}{se \"aven}},
+  january          = {{januari}{jan\adddot}},
+  february         = {{februari}{feb\adddot}},
+  march            = {{mars}{mars}},
+  april            = {{april}{apr\adddot}},
+  may              = {{maj}{maj}},
+  june             = {{juni}{juni}},
+  july             = {{juli}{juli}},
+  august           = {{augusti}{aug\adddot}},
+  september        = {{september}{sep\adddot}},
+  october          = {{oktober}{okt\adddot}},
+  november         = {{november}{nov\adddot}},
+  december         = {{december}{dec\adddot}},
+  langamerican     = {{amerikanska}{amerikanska}},
+  langdanish       = {{danska}{danska}},
+  langenglish      = {{engelska}{engelska}},
+  langfrench       = {{franska}{franska}},
+  langgerman       = {{tyska}{tyska}},
+  langgreek        = {{grekiska}{grekiska}},
+  langitalian      = {{italienska}{italienska}},
+  langlatin        = {{latin}{latin}},
+  langnorwegian    = {{norska}{norska}},
+  langspanish      = {{spanska}{spanska}},
+  langswedish      = {{svenska}{svenska}},
+  fromamerican     = {{fr\aa n amerikanska}{fr\aa n amerikanska}},
+  fromdanish       = {{fr\aa n danska}{fr\aa n danska}},
+  fromenglish      = {{fr\aa n engelska}{fr\aa n engelska}},
+  fromfrench       = {{fr\aa n franska}{fr\aa n franska}},
+  fromgerman       = {{fr\aa n tyska}{fr\aa n tyska}},
+  fromgreek        = {{fr\aa n grekiska}{fr\aa n grekiska}},
+  fromitalian      = {{fr\aa n italienska}{fr\aa n italienska}},
+  fromlatin        = {{fr\aa n latin}{fr\aa n latin}},
+  fromnorwegian    = {{fr\aa n norska}{fr\aa n norska}},
+  fromspanish      = {{fr\aa n spanska}{fr\aa n spanska}},
+  fromswedish      = {{fr\aa n svenska}{fr\aa n svenska}},
+  countryca        = {{Kanada}{CA}},
+  countryde        = {{Tyskland}{DE}},
+  countrydk        = {{Danmark}{DK}},
+  countryep        = {{Europeiska Unionen}{EP}},
+  countryes        = {{Spanien}{ES}},
+  countryeu        = {{Europeiska Unionen}{EU}},
+  countryfr        = {{Frankrike}{FR}},
+  countryit        = {{Italien}{IT}},
+  countryno        = {{Norge}{NO}},
+  countryse        = {{Sverige}{SE}},
+  countryuk        = {{Storbritanien}{GB}},
+  countryus        = {{USA}{US}},
+  countrywo        = {{v\"arlden}{WO}},
+  patent           = {{patent}{patent}},
+  patentca         = {{kanadensiskt patent}{kan\adddot\ pat\adddot}},
+  patentde         = {{tyskt patent}{tys\adddot\ pat\adddot}},
+  patentdk         = {{danskt patent}{dan\adddot\ pat\adddot}},
+  patentes         = {{spanskt patent}{spa\adddot\ pat\adddot}}, 
+  patenteu         = {{europeiskt patent}{eur\adddot\ pat\adddot}}, 
+  patentfr         = {{franskt patent}{fra\adddot\ pat\adddot}},
+  patentit         = {{italienskt patent}{ita\adddot\ pat\adddot}},
+  patentno         = {{norskt patent}{nor\adddot\ pat\adddot}},
+  patentse         = {{svenskt patent}{sv\adddot\ pat\adddot}},
+  patentuk         = {{brittiskt patent}{UK pat\adddot}},
+  patentus         = {{amerikanskt patent}{US pat\adddot}},
+  patreq           = {{ans\"okning om patent}{pat\adddot\ ans\"okn\adddot}}, 
+  patreqca         = {{ans\"okning om kanadensiskt patent}{kan\adddot\ pat\adddot\ ans\"okn\adddot}},
+  patreqde         = {{ans\"okning om tyskt patent}{tys\adddot\ pat\adddot\ ans\"okn\adddot}},
+  patreqdk         = {{ans\"okning om danskt patent}{dan\adddot\ pat\adddot\ ans\"okn\adddot}},
+  patreqes         = {{ans\"okning om spanskt patent}{spa\adddot\ pat\adddot\ ans\"okn\adddot}},
+  patreqeu         = {{ans\"okning om europeiskt patent}{eur\adddot\ pat\adddot\ ans\"okn\adddot}},
+  patreqfr         = {{ans\"okning om franskt patent}{fra\adddot\ pat\adddot\ ans\"okn\adddot}},
+  patreqit         = {{ans\"okning om italienskt patent}{ita\adddot\ pat\adddot\ ans\"okn\adddot}},
+  patreqno         = {{ans\"okning om norskt patent}{nor\adddot\ pat\adddot\ ans\"okn\adddot}},
+  patreqse         = {{ans\"okning om svenskt patent}{sv\adddot\ pat\adddot\ ans\"okn\adddot}},
+  patrequk         = {{ans\"okning om brittiskt patent}{UK pat\adddot\ ans\"okn\adddot}},
+  patrequs         = {{ans\"okning om amerikanskt patent}{US pat\adddot\ ans\"okn\adddot}},
+% file             = {{}{}}, % FIXME: missing
+% library          = {{}{}}, % FIXME: missing
+% abstract         = {{}{}}, % FIXME: missing
+% annotation       = {{}{}}, % FIXME: missing
+}
+
+\endinput

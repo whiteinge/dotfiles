@@ -1,0 +1,161 @@
+%
+% This file presents the 'verbose-trad2' style
+%
+\documentclass[a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}
+\usepackage[babel]{csquotes}
+\usepackage[style=verbose-trad2]{biblatex}
+\bibliography{examples}
+% Some generic settings:
+\newcommand{\cmd}[1]{\texttt{\textbackslash #1}}
+\newenvironment*{pseudofootnotes}
+  {\list\labelenumi{%
+     \def\makelabel##1{\hss\llap{##1}}%
+     \def\labelenumi{\theenumi}%
+     \usecounter{enumi}%
+     \setlength{\leftmargin}{0pt}%
+     \setlength{\labelsep}{0.75em}%
+     \setlength{\itemsep}{0pt}%
+     \setlength{\parsep}{0pt}}%
+   \citereset
+   \def\footcite##1{\item\Cite{##1}.}%
+   \def\footnote##1{\item##1}}
+  {\endlist}
+\newenvironment*{pseudofootnotes*}
+  {\pseudofootnotes
+   \def\footnote##1{\item##1\mancite}}
+  {\endpseudofootnotes}
+\begin{document}
+
+\section*{The \texttt{verbose-trad2} style}
+
+This is another traditional style which uses scholarly abbreviations
+like \emph{ibidem} and \emph{idem}. Despite its name, the `logic' of
+this style is more closely related to styles like
+\texttt{verbose-ibid} and \texttt{verbose-inote} than to the rather
+special citation scheme implemented in the \texttt{verbose-trad1}
+style.
+
+\subsection*{Additional package options}
+
+\subsubsection*{The \texttt{ibidpage} option}
+
+The scholarly abbreviation \emph{ibidem} is sometimes taken to mean
+both `same author~+ same title' and `same author~+ same title~+ same
+page' in traditional citation schemes. By default, this is not the
+case in this style because it may lead to ambiguous citations. If
+you you prefer the wider interpretation of \emph{ibidem}, set
+the package option \texttt{ibidpage=true} or simply
+\texttt{ibidpage} in the preamble.
+
+\subsubsection*{The \texttt{strict} option}
+
+A case related to the definition of \emph{ibidem} is the scope of
+the \emph{ibidem} and \emph{idem} replacements. By default, this
+style will only use such abbreviations if the respective citations
+are given in the same footnote or in consecutive footnotes. The
+point of this restriction is also to avoid potentially ambiguous
+citations. Here's an example:
+
+\begin{verbatim}
+...\footcite{aristotle:anima}
+...\footcite{aristotle:anima}
+...\footnote{Averroes touches upon this issue in his \emph{Epistle
+             on the Possibility of Conjunction}.}
+...\footcite{aristotle:anima}
+\end{verbatim}
+%
+This could be rendered as follows:
+
+\begin{pseudofootnotes}
+\footcite{aristotle:anima}
+\footcite{aristotle:anima}
+\footnote{Averroes touches upon this issue in his \emph{Epistle on
+the Possibility of Conjunction}.}
+\footcite{aristotle:anima}
+\end{pseudofootnotes}
+%
+What does the \emph{ibidem} in the last footnote refer to? The last
+formal citation, as given in the first and the second footnote
+(Aristotle), or the informal reference in the third one (Averroes)?
+Too avoid such citations, this style will only use \emph{ibidem} and
+\emph{idem} replacements if the respective citations are given in
+the same footnote or in consecutive footnotes:
+
+\begin{pseudofootnotes*}
+\footcite{aristotle:anima}
+\footcite{aristotle:anima}
+\footnote{Averroes touches upon this issue in his \emph{Epistle on
+the Possibility of Conjunction}.}
+\footcite{aristotle:anima}
+\end{pseudofootnotes*}
+%
+Depending on your writing and citing habits, however, you may prefer
+the less strict \emph{ibidem} and \emph{idem} handling. You can
+force that by setting the package option \texttt{strict=false} in
+the preamble. It is still possible to mark a manually inserted
+discursive citation with \cmd{mancite} when required:
+
+\begin{verbatim}
+...\footcite{aristotle:anima}
+...\footnote{\mancite Averroes touches upon this issue in his
+             \emph{Epistle on the Possibility of Conjunction}.}
+...\footcite{aristotle:anima}
+\end{verbatim}
+%
+This will suppress the \emph{ibidem} in the last footnote.
+
+\subsection*{Hints and caveats}
+
+If you want terms such as \emph{ibidem} to be printed in italics,
+redefine \cmd{mkibid} as follows:
+
+\begin{verbatim}
+\renewcommand*{\mkibid}{\emph}
+\end{verbatim}
+
+\clearpage
+
+\subsection*{\cmd{footcite} examples}
+
+% The initial citation of an entry includes all the data.
+This is just filler text.\footcite{aristotle:anima}
+This is just filler text.\footcite{averroes/bland}
+% Subsequent citations use a shorter format.
+This is just filler text.\footcite[26]{aristotle:anima}
+This is just filler text.\footcite[59--61]{averroes/bland}
+This is just filler text.\footcite{aristotle:physics}
+% Repeated authors are replaced by the abbreviation 'idem':
+This is just filler text.\footcite{aristotle:anima}
+This is just filler text.\footcite[55]{aristotle:physics}
+% Immediately repeated citations are replaced by the
+% abbreviation 'ibidem'.
+This is just filler text.\footcite[55]{aristotle:physics}
+
+\clearpage
+
+% If the 'shorthand' field is defined, the shorthand is introduced
+% on the first citation.
+This is just filler text.\footcite{kant:kpv}
+This is just filler text.\footcite{kant:ku}
+% All subsequent citations will then use the shorthand instead of
+% the short author-title format.
+This is just filler text.\footcite[24]{kant:kpv}
+This is just filler text.\footcite[59--63]{kant:ku}
+
+\clearpage
+
+\subsection*{\cmd{autocite} examples}
+
+% The \autocite command works like \footcite. Note that
+% the period is moved and placed before the footnote.
+
+This is just filler text \autocite{aristotle:rhetoric}.
+This is just filler text \autocite{averroes/bland}.
+This is just filler text \autocite{aristotle:rhetoric}.
+This is just filler text \autocite{aristotle:anima}.
+This is just filler text \autocite{aristotle:physics}.
+This is just filler text \autocite{aristotle:physics}.
+
+\end{document}

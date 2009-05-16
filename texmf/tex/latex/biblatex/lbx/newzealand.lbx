@@ -1,0 +1,36 @@
+% $Id: newzealand.lbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{newzealand.lbx}
+[\blx@lbxid $Id: newzealand.lbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+% STATUS OF THIS FILE
+% complete, peer review pending; the translations are the US ones;
+% should be double-checked by a native speaker from New Zealand
+
+\DeclareBibliographyExtras{%
+  \let\bibrangedash\textendash
+  \let\finalandcomma\empty
+  \def\mkbibordinal#1{%
+    \@tempcnta0#1 \the\@tempcnta
+    \@whilenum\@tempcnta>100\do{\advance\@tempcnta-100}%
+    \ifnum\@tempcnta>20
+      \@whilenum\@tempcnta>9\do{\advance\@tempcnta-10}%
+    \fi
+    \ifcase\@tempcnta th\or st\or nd\or rd\else th\fi}%
+  \def\bibdatelong{%
+    \@tempcnta0\thefield{day} \the\@tempcnta\nobreakspace
+    \mkbibmonth{\thefield{month}}\space
+    \thefield{year}}%
+  \def\bibdateshort{%
+    \thefield{day}/\thefield{month}/\thefield{year}}%
+  \def\biburldatelong{%
+    \@tempcnta0\thefield{urlday} \the\@tempcnta\nobreakspace
+    \mkbibmonth{\thefield{urlmonth}}\space
+    \thefield{urlyear}}%
+  \def\biburldateshort{%
+    \thefield{urlday}/\thefield{urlmonth}/\thefield{urlyear}}%
+}
+
+\InheritBibliographyStrings{english}
+
+\endinput

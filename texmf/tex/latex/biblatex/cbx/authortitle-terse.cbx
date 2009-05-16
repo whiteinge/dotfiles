@@ -1,0 +1,48 @@
+% $Id: authortitle-terse.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{authortitle-terse.cbx}
+[\blx@cbxid $Id: authortitle-terse.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\RequireCitationStyle{authortitle}
+\ExecuteBibliographyOptions{singletitle,uniquename,autocite=inline}
+
+\renewbibmacro*{cite}{%
+  \global\let\cbx@tempa=\empty
+  \iffieldundef{shorthand}
+    {\ifnameundef{labelname}
+       {}
+       {\ifsingletitle
+          {\printtext[bibhyperref]{\printnames{labelname}}}
+          {\printnames{labelname}}%
+        \gdef\cbx@tempa{\addcomma\space}}%
+     \usebibmacro{cite:title}}%
+    {\usebibmacro{cite:shorthand}}}
+
+\renewbibmacro*{citetitle}{%
+  \global\let\cbx@tempa=\empty
+  \iffieldundef{shorthand}
+    {\printtext[bibhyperref]{%
+       \printfield[citetitle]{labeltitle}}}%
+    {\usebibmacro{cite:shorthand}}}
+
+\renewbibmacro*{textcite}{%
+  \ifnameundef{labelname}
+    {\global\let\cbx@tempa=\empty}
+    {\ifsingletitle
+       {\printtext[bibhyperref]{\printnames{labelname}}}
+       {\printnames{labelname}}%
+     \gdef\cbx@tempa{%
+       \global\booltrue{cbx:parens}%
+       \addspace\bibleftparen}}%
+  \iffieldundef{shorthand}
+    {\usebibmacro{cite:title}}%
+    {\usebibmacro{cite:shorthand}}}
+
+\renewbibmacro*{cite:title}{%
+  \ifsingletitle
+    {}
+    {\cbx@tempa
+     \printtext[bibhyperref]{%
+       \printfield[citetitle]{labeltitle}}}}
+
+\endinput

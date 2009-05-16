@@ -1,0 +1,119 @@
+% $Id: verbose-trad1.cbx,v 0.8c 2009/01/10 18:00:00 lehman beta $
+
+\ProvidesFile{verbose-trad1.cbx}
+[\blx@cbxid $Id: verbose-trad1.cbx,v 0.8c 2009/01/10 18:00:00 lehman beta $]
+
+\ExecuteBibliographyOptions{citetracker=context,ibidtracker=constrict,
+                            idemtracker=constrict,opcittracker=context,
+			    loccittracker=context,autocite=footnote}
+\providecommand*{\mkibid}[1]{#1}
+\newbool{cbx:loccit}
+\newbool{cbx:noidem}
+
+\DeclareBibliographyOption{ibidpage}[true]{%
+  \ifstrequal{#1}{true}
+    {\renewbibmacro*{cite:ibid:page}{\global\booltrue{cbx:loccit}}}
+    {\renewbibmacro*{cite:ibid:page}{}}}
+
+\DeclareBibliographyOption{strict}[true]{%
+  \ifstrequal{#1}{true}
+    {\ExecuteBibliographyOptions{ibidtracker=constrict,idemtracker=constrict}}
+    {\ExecuteBibliographyOptions{ibidtracker=context,idemtracker=context}}}
+
+\newbibmacro*{cite:save}{%
+  \csxdef{cbx@lastcite@\thefield{entrykey}}{\the\value{instcount}}%
+  \global\boolfalse{cbx:noidem}}
+
+\newbibmacro*{cite}{%
+  \global\boolfalse{cbx:loccit}%
+  \bibhypertarget{cite\the\value{instcount}}{%
+    \ifciteseen
+      {\iffieldundef{shorthand}
+         {\ifciteibid
+            {\usebibmacro{cite:ibid}}
+            {\ifthenelse{\ifciteidem\AND\NOT\boolean{cbx:noidem}}
+               {\usebibmacro{cite:idem}%
+                \usebibmacro{cite:title}}
+               {\ifnameundef{labelname}
+                  {\usebibmacro{cite:title}}
+                  {\usebibmacro{cite:name}%
+                   \ifopcit
+                     {\ifloccit
+		        {\usebibmacro{cite:loccit}}
+		        {\usebibmacro{cite:opcit}}}
+                     {\usebibmacro{cite:title}}}}}%
+          \usebibmacro{cite:save}}
+         {\usebibmacro{cite:shorthand}}}
+      {\usebibmacro{cite:full}%
+       \usebibmacro{cite:save}}}}
+
+\newbibmacro*{cite:full}{%
+  \printtext[bibhypertarget]{%
+    \usedriver
+      {\DeclareNameAlias{sortname}{default}}
+      {\thefield{entrytype}}}%
+  \usebibmacro{shorthandintro}}
+
+\newbibmacro*{cite:name}{%
+  \printnames{labelname}%
+  \setunit*{\addcomma\space}}
+
+\newbibmacro*{cite:idem}{%
+  \bibstring[\mkibid]{idem\thefield{gender}}%
+  \setunit{\addcomma\space}}
+
+\newbibmacro*{cite:title}{%
+  \printtext[bibhyperlink]{%
+    \printfield[citetitle]{labeltitle}}}
+
+\newbibmacro*{cite:opcit}{%
+  \printtext[bibhyperlink]{\bibstring[\mkibid]{opcit}}}
+
+\newbibmacro*{cite:loccit}{%
+  \printtext{%
+    \bibhyperlink{cite\csuse{cbx@lastcite@\thefield{entrykey}}}{%
+      \bibstring[\mkibid]{loccit}}}%
+  \global\booltrue{cbx:loccit}}
+
+\newbibmacro*{cite:ibid}{%
+  \printtext{%
+    \bibhyperlink{cite\csuse{cbx@lastcite@\thefield{entrykey}}}{%
+      \bibstring[\mkibid]{ibidem}}}%
+  \ifloccit
+    {\usebibmacro{cite:ibid:page}}
+    {}}
+
+\newbibmacro*{cite:ibid:page}{}
+
+\newbibmacro*{cite:shorthand}{%
+  \printtext[bibhyperlink]{\printfield{shorthand}}%
+  \global\booltrue{cbx:noidem}}
+
+\newbibmacro*{cite:postnote}{%
+  \ifbool{cbx:loccit}
+    {}
+    {\usebibmacro{postnote}}}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}}
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\bibsentence
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}}
+
+\endinput

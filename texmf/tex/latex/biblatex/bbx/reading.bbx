@@ -1,0 +1,158 @@
+% $Id: reading.bbx,v 0.8b 2008/12/13 17:34:16 lehman beta $
+
+\ProvidesFile{reading.bbx}
+[\blx@bbxid $Id: reading.bbx,v 0.8b 2008/12/13 17:34:16 lehman beta $]
+
+\newbool{bbx:entrykey}
+\newbool{bbx:annotation}
+\newbool{bbx:abstract}
+\newbool{bbx:library}
+\newbool{bbx:file}
+
+\def\bbx@head{0}
+\def\bbx@head@false{0}
+\def\bbx@head@true{1}
+\def\bbx@head@full{1}
+\def\bbx@head@name{2}
+
+\DeclareBibliographyOption{entryhead}[true]{%
+  \ifcsdef{bbx@head@#1}
+    {\letcs\bbx@head{bbx@head@#1}}
+    {\BibliographyWarning{Invalid option 'header=#1'}}}
+\DeclareBibliographyOption{entrykey}[true]{%
+  \csuse{bool#1}{bbx:entrykey}}
+\DeclareBibliographyOption{annotation}[true]{%
+  \csuse{bool#1}{bbx:annotation}}
+\DeclareBibliographyOption{abstract}[true]{%
+  \csuse{bool#1}{bbx:abstract}}
+\DeclareBibliographyOption{library}[true]{%
+  \csuse{bool#1}{bbx:library}}
+\DeclareBibliographyOption{file}[true]{%
+  \csuse{bool#1}{bbx:file}}
+
+\RequireBibliographyStyle{standard}
+\ExecuteBibliographyOptions{loadfiles,entryhead,entrykey,annotation,abstract,library,file}
+
+\DeclareNameAlias{author}{default}
+\DeclareNameAlias{editor}{default}
+
+\DeclareFieldFormat{entrykey}{\mbox{\bfseries#1}}
+\DeclareFieldFormat{annotation}{\bibstring[\textbf]{annotation}\textbf{:} #1}
+\DeclareFieldFormat{abstract}{\bibstring[\textbf]{abstract}\textbf{:} #1}
+\DeclareFieldFormat{library}{\bibstring[\textbf]{library}\textbf{:} #1}
+\DeclareFieldFormat{file}{\bibstring[\textbf]{file}\textbf{:} \url{#1}}
+\DeclareFieldFormat{shorthandwidth}{#1}
+
+\setlength{\bibitemsep}{0.25\baselineskip}
+\setlength{\bibparsep}{0pt}
+
+\InitializeBibliographyStyle{%
+  \global\undef\bbx@lasthash}
+
+\renewcommand*{\thebibitem}{%
+  \ifcase\bbx@head\relax
+    \item
+  \or
+    \bbx@thebibitem
+  \or
+    \iffieldequals{fullhash}{\bbx@lasthash}
+      {\item}
+      {\bbx@thebibitem}%
+  \fi}
+
+\def\bbx@thebibitem{%
+  \@itempenalty\z@
+  \itemsep4\bibitemsep
+  \item\relax
+  \@itempenalty\@M
+  \itemsep\bibitemsep
+  \begingroup
+  \samepage\bfseries
+  \def\finentrypunct{\strut}%
+  \ifnum\bbx@head<\tw@
+    \usebibmacro{entryhead:full}%
+    \ifbool{bbx:entrykey}
+      {\def\newblockpunct{%
+	 \nobreak\hskip\z@skip\strut
+	 \hfill\penalty100\hskip1em\relax
+	 \hbox{}\nobreak\hfill\strut}%
+       \def\finentrypunct{%
+	 \parfillskip\z@\finalhyphendemerits\z@
+	 \par\nobreak}%
+       \newblock
+       \printfield{entrykey}}
+      {}%
+  \else
+    \usebibmacro{entryhead:name}%
+  \fi
+  \finentry
+  \endgroup
+  \hrule height 1.25pt\relax
+  \item\strut}
+
+\renewcommand*{\thelositem}{\item}
+
+\renewenvironment*{thebibliography}
+  {\trivlist\parindent\z@}
+  {\endtrivlist}
+
+\renewenvironment*{theshorthands}
+  {\list
+     {\printfield[shorthandwidth]{shorthand}}
+     {\setlength{\labelwidth}{\shorthandwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}%
+      \renewcommand*{\makelabel}[1]{##1\hss}}}
+  {\endlist}
+
+\newbibmacro*{entryhead:full}{%
+  \printnames[labelname][-1]{labelname}%
+  \setunit*{\addcolon\space}%
+  \printfield{labeltitle}}
+
+\newbibmacro*{entryhead:name}{%
+  \ifnameundef{labelname}
+    {\printfield{labeltitle}}
+    {\printnames[labelname]{labelname}}%
+  \savefield{fullhash}{\bbx@lasthash}}
+
+\newbibmacro*{entrytail}{%
+  \newunit\newblock
+  \begingroup
+  \def\newblockpunct{\item}%
+  \ifbool{bbx:annotation}
+    {\usebibmacro{annotation}%
+     \newunit\newblock}
+    {}%
+  \ifbool{bbx:abstract}
+    {\usebibmacro{abstract}%
+     \newunit\newblock}
+    {}%
+  \ifbool{bbx:file}
+    {\printfield{file}%
+     \newunit\newblock}
+    {}%
+  \ifbool{bbx:library}
+    {\printfield{library}%
+     \newunit\newblock}
+    {}%
+  \endgroup}
+
+\renewbibmacro*{finentry}{%
+  \ifbibliography
+    {\usebibmacro{entrytail}}
+    {}%
+  \finentry}
+
+\DeclareBibliographyDriver{set}{%
+  \renewbibmacro*{finentry}{\finentry}%
+  \entryset{}{}%
+  \ifbibliography
+    {\usebibmacro{entrytail}}
+    {}%
+  \finentry}
+
+\endinput

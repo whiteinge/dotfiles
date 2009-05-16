@@ -1,0 +1,37 @@
+%
+% This file presents the `authortitle-tcomp' style
+%
+\documentclass[a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}
+\usepackage[babel]{csquotes}
+\usepackage[style=authortitle-tcomp,hyperref]{biblatex}
+\usepackage{hyperref}
+\bibliography{examples}
+% Some generic settings.
+\newcommand{\cmd}[1]{\texttt{\textbackslash #1}}
+\setlength{\parindent}{0pt}
+\begin{document}
+
+\section*{The \texttt{authortitle-tcomp} style}
+
+This style essentially combines \texttt{authortitle-terse} and
+\texttt{authortitle-comp}. It will implicitly enable the
+\texttt{sortcites} package option at load time.
+
+\subsection*{\cmd{cite} examples}
+
+\cite{averroes/bland}
+
+\cite{aristotle:physics}
+
+\cite{aristotle:rhetoric}
+
+\subsection*{Multiple citations}
+
+\cite{aristotle:rhetoric,averroes/bland,aristotle:physics,aristotle:poetics}
+
+\clearpage
+\printbibliography
+
+\end{document}

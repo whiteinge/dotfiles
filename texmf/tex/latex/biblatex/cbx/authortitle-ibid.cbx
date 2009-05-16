@@ -1,0 +1,127 @@
+% $Id: authortitle-ibid.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{authortitle-ibid.cbx}
+[\blx@cbxid $Id: authortitle-ibid.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\ExecuteBibliographyOptions{ibidtracker=constrict,pagetracker,autocite=footnote}
+\providecommand*{\mkibid}[1]{#1}
+\newbool{cbx:parens}
+\newbool{cbx:loccit}
+
+\DeclareBibliographyOption{ibidpage}[true]{%
+  \ifstrequal{#1}{true}
+    {\ExecuteBibliographyOptions{loccittracker=constrict}}
+    {\ExecuteBibliographyOptions{loccittracker=false}}}
+
+\newbibmacro*{cite}{%
+  \global\boolfalse{cbx:loccit}%
+  \global\let\cbx@tempa=\empty
+  \iffieldundef{shorthand}
+    {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
+       {\usebibmacro{cite:ibid}}
+       {\ifnameundef{labelname}
+	  {}
+	  {\printnames{labelname}%
+           \gdef\cbx@tempa{\addcomma\space}}%
+	\usebibmacro{cite:title}}}%
+    {\usebibmacro{cite:shorthand}}}
+
+\newbibmacro*{citetitle}{%
+  \global\boolfalse{cbx:loccit}%
+  \global\let\cbx@tempa=\empty
+  \iffieldundef{shorthand}
+    {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
+       {\usebibmacro{cite:ibid}}
+       {\usebibmacro{cite:title}}}%
+    {\usebibmacro{cite:shorthand}}}
+
+\newbibmacro*{textcite}{%
+  \global\boolfalse{cbx:loccit}%
+  \ifnameundef{labelname}
+    {\global\let\cbx@tempa=\empty}
+    {\printnames{labelname}%
+     \gdef\cbx@tempa{%
+       \global\booltrue{cbx:parens}%
+       \addspace\bibleftparen}}%
+  \iffieldundef{shorthand}
+    {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
+       {\usebibmacro{cite:ibid}}
+       {\usebibmacro{cite:title}}}%
+    {\usebibmacro{cite:shorthand}}}
+
+\newbibmacro*{cite:title}{%
+  \cbx@tempa
+  \printtext[bibhyperref]{%
+    \printfield[citetitle]{labeltitle}}}
+
+\newbibmacro*{cite:shorthand}{%
+  \cbx@tempa
+  \printtext[bibhyperref]{\printfield{shorthand}}}
+
+\newbibmacro*{cite:ibid}{%
+  \cbx@tempa
+  \printtext[bibhyperref]{\bibstring[\mkibid]{ibidem}}%
+  \ifloccit
+    {\global\booltrue{cbx:loccit}}
+    {}}
+
+\newbibmacro*{cite:postnote}{%
+  \ifbool{cbx:loccit}
+    {}
+    {\usebibmacro{postnote}}}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}}
+
+\DeclareCiteCommand*{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{citetitle}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}}
+
+\DeclareCiteCommand*{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{citetitle}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\bibsentence
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}}
+
+\DeclareCiteCommand{\textcite}
+  {\boolfalse{cbx:parens}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{textcite}}
+  {\ifbool{cbx:parens}
+     {\bibrightparen\boolfalse{cbx:parens}}
+     {}%
+   \multicitedelim}
+  {\iffieldundef{postnote}
+     {\ifbool{cbx:parens}
+        {\bibrightparen}
+	{}}
+     {\ifbool{cbx:parens}
+        {\postnotedelim}
+	{\addspace\bibleftparen}%
+      \printfield{postnote}\bibrightparen}}
+
+\endinput

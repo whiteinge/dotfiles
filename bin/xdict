@@ -1,0 +1,2 @@
+#!/bin/sh
+curl dict://dict.org/d:$1:* | tr -d '\r' | xmessage -file -

@@ -1,0 +1,134 @@
+% $Id: numeric-comp.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{numeric-comp.cbx}
+[\blx@cbxid $Id: numeric-comp.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\ExecuteBibliographyOptions{labelnumber,sortcites,autocite=inline}
+\renewcommand*{\multicitedelim}{\addcomma\space}
+\providebool{bbx:subentry}
+\DeclareFieldFormat{entrysetcount}{\mknumalph{#1}}
+
+\newbibmacro*{cite:init}{%
+  \let\cbx@tempa=\empty
+  \undef\cbx@lasthash
+  \@tempcnta=\z@
+  \@tempcntb=-2\relax}
+
+\newbibmacro*{cite:comp}{%
+  \global\advance\@tempcntb\@ne
+  \iffieldundef{shorthand}
+    {\ifbool{bbx:subentry}
+       {\iffieldundef{entrysetcount}
+	  {\usebibmacro{cite:comp:comp}}
+          {\usebibmacro{cite:comp:inset}}}
+       {\usebibmacro{cite:comp:comp}}}
+    {\usebibmacro{cite:comp:shand}}}
+
+\newbibmacro*{cite:comp:comp}{%
+  \ifnum\thefield{labelnumber}=\@tempcntb
+    \savefield{entrykey}{\cbx@lastkey}%
+    \savefield{labelnumber}{\cbx@lastnumber}%
+    \global\advance\@tempcnta\@ne
+  \else
+    \ifnum\thefield{labelnumber}=\numexpr\@tempcntb-\@ne\relax
+    \else
+      \usebibmacro{cite:dump}%
+      \ifnum\@tempcntb>\m@ne\multicitedelim\fi
+      \printtext[bibhyperref]{\printfield{labelnumber}}%
+    \fi
+  \fi
+  \global\@tempcntb=\thefield{labelnumber}\relax}
+
+\newbibmacro*{cite:comp:inset}{%
+  \usebibmacro{cite:dump}%
+  \ifnum\@tempcntb>\m@ne\multicitedelim\fi
+  \printtext[bibhyperref]{%
+    \printfield{labelnumber}%
+    \printfield{entrysetcount}}%
+  \global\@tempcntb=\m@ne}
+
+\newbibmacro*{cite:comp:shand}{%
+  \usebibmacro{cite:dump}%
+  \ifnum\@tempcntb>\m@ne\multicitedelim\fi
+  \printtext[bibhyperref]{\printfield{shorthand}}%
+  \global\@tempcntb=\m@ne}
+
+\newbibmacro*{cite:dump}{%
+  \ifnum\@tempcnta>\z@
+    \ifnum\@tempcnta>\@ne
+      \bibrangedash
+    \else
+      \multicitedelim
+    \fi
+    \bibhyperref[\cbx@lastkey]{%
+      \printtext[labelnumber]{\cbx@lastnumber}}%
+    \global\@tempcnta=\z@
+  \fi}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}%
+   \bibleftbracket}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite:comp}}
+  {}
+  {\usebibmacro{cite:dump}%
+   \usebibmacro{postnote}%
+   \bibrightbracket}
+
+\DeclareCiteCommand{\parencite}[\mkbibbrackets]
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite:comp}}
+  {}
+  {\usebibmacro{cite:dump}%
+   \usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\bibsentence
+   \usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite:comp}}
+  {}
+  {\usebibmacro{cite:dump}%
+   \usebibmacro{postnote}}
+
+\DeclareCiteCommand{\textcite}
+  {\usebibmacro{cite:init}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \iffieldequals{namehash}{\cbx@lasthash}
+     {\usebibmacro{cite:comp}}
+     {\usebibmacro{cite:dump}\cbx@tempa
+      \usebibmacro{cite:init}%
+      \ifnameundef{labelname}
+        {}
+        {\printnames{labelname}\space}%
+      \bibleftbracket
+      \usebibmacro{cite:comp}}%
+   \savefield{namehash}{\cbx@lasthash}%
+   \gdef\cbx@tempa{\bibrightbracket\multicitedelim}}
+  {}
+  {\usebibmacro{cite:dump}%
+   \usebibmacro{postnote}\bibrightbracket}
+
+\DeclareCiteCommand{\supercite}[\mkbibsuperscript]
+  {\usebibmacro{cite:init}%
+   \let\multicitedelim=\supercitedelim
+   \iffieldundef{prenote}
+     {}
+     {\BibliographyWarning{Ignoring prenote argument}}%
+   \iffieldundef{postnote}
+     {}
+     {\BibliographyWarning{Ignoring postnote argument}}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite:comp}}
+  {}
+  {\usebibmacro{cite:dump}}
+
+\DeclareMultiCiteCommand{\cites}[\mkbibbrackets]{\parencite}{\multicitedelim}
+\DeclareMultiCiteCommand{\parencites}[\mkbibbrackets]{\parencite}{\multicitedelim}
+
+\endinput

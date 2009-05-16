@@ -1,0 +1,383 @@
+% $Id: french.lbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{french.lbx}
+[\blx@lbxid $Id: french.lbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+% STATUS OF THIS FILE
+% complete; initial peer review by native speaker
+
+\DeclareBibliographyExtras{%
+  \let\bibrangedash\textendash
+  \let\finalandcomma\empty
+  \def\mkbibordinal{\mkbibmascord}%
+  \def\mkbibmascord{\lbx@fr@ordinal{er}}%
+  \def\mkbibfemord{\lbx@fr@ordinal{re}}%
+  \def\bibdatelong{%
+    \@tempcnta0\thefield{day} \the\@tempcnta
+    \ifnum\@tempcnta=\@ne\textsuperscript{er}\fi\nobreakspace
+    \mkbibmonth{\thefield{month}}\space
+    \thefield{year}}%
+  \def\bibdateshort{%
+    \thefield{day}/\thefield{month}/\thefield{year}}%
+  \def\biburldatelong{%
+    \@tempcnta0\thefield{urlday} \the\@tempcnta
+    \ifnum\@tempcnta=\@ne\textsuperscript{er}\fi\nobreakspace
+    \mkbibmonth{\thefield{urlmonth}}\space
+    \thefield{urlyear}}%
+  \def\biburldateshort{%
+    \thefield{urlday}/\thefield{urlmonth}/\thefield{urlyear}}%
+  \providecommand*{\FDP@thinspace}{\addnbthinspace}% FDP@* -> frenchb.ldf (babel)
+  \providecommand*{\FDP@colonspace}{\addnbspace}%
+  \def\bib@semicolon{%
+    \ifdim\lastkern>\z@\unkern\fi
+    \FDP@thinspace\bib@puncthook{;}}%
+  \def\bib@colon{%
+    \ifdim\lastkern>\z@\unkern\fi
+    \FDP@colonspace\bib@puncthook{:}}%
+  \def\bib@exclam{%
+    \ifdim\lastkern>\z@\unkern\fi
+    \FDP@thinspace\bib@puncthook{!}}%
+  \def\bib@question{%
+    \ifdim\lastkern>\z@\unkern\fi
+    \FDP@thinspace\bib@puncthook{?}}%
+  \savecommand\mkbibnamelast
+  \def\mkbibnamelast#1{{\hyphenrules{nohyphenation}\textsc{#1}}}%
+  \savefieldformat{edition}%
+  \savefieldformat[article]{series}%
+  \savefieldformat[periodical]{series}%
+  \DeclareFieldFormat{edition}{%
+    \ifinteger{#1}
+      {\mkbibfemord{#1}~\bibstring{edition}}
+      {#1}}%
+  \DeclareFieldFormat[article]{series}{%
+    \ifinteger{#1}
+      {\mkbibfemord{#1}~\bibstring{jourser}}
+      {\ifbibstring{#1}{\bibstring{#1}}{#1}}}%
+  \DeclareFieldAlias[periodical]{series}[article]{series}%
+}
+
+\UndeclareBibliographyExtras{%
+  \restorecommand\mkbibnamelast
+  \restorefieldformat{edition}%
+  \restorefieldformat[article]{series}%
+  \restorefieldformat[periodical]{series}%
+}
+
+\DeclareBibliographyStrings{%
+  bibliography     = {{Bibliographie}{Bibliographie}},
+  references       = {{R\'ef\'erences}{R\'ef\'erences}},
+  shorthands       = {{Liste des sigles}{Sigles}},
+  editor           = {{\lbx@typeeditor}{\lbx@typeeditor}},
+  editors          = {{\lbx@typeeditors}{\lbx@typeeditors}},
+  typeeditor       = {{\'editeur}{\'ed\adddot}},
+  typeeditors      = {{\'editeurs}{\'eds\adddot}},
+  typecompiler     = {{compilateur}{comp\adddot}},
+  typecompilers    = {{compilateurs}{comp\adddot}},
+  translator       = {{traducteur}{trad\adddot}},
+  translators      = {{traducteurs}{trad\adddot}},
+  redactor         = {{r\'edacteur}{r\'ed\adddot}},
+  redactors        = {{r\'edacteurs}{r\'ed\adddot}},
+  commentator      = {{commentateur}{comm\adddot}},
+  commentators     = {{commentateurs}{comm\adddot}},
+  annotator        = {{annotateur}{annot\adddot}},
+  annotators       = {{annotateurs}{annot\adddot}},
+  commentary       = {{commentaires}{comment\adddot}},
+  annotations      = {{annotations}{annot\adddot}},
+  introduction     = {{introduction}{introd\adddot}},
+  foreword         = {{pr\'eface}{pr\'ef\adddot}},
+  afterword        = {{postface}{postf\adddot}},
+  byauthor         = {{\lbx@bytypeauthor}{\lbx@bytypeauthor}},
+  bytypeauthor     = {{par}{par}},
+  byeditor         = {{\lbx@bytypeeditor\ par}{\lbx@bytypeeditor\addabbrvspace par}},
+  bytypeeditor     = {{\'edit\'e}{\'ed\adddot}},
+  bytypecompiler   = {{compil\'e}{comp\adddot}},
+  bytranslator     = {{traduit \lbx@fromlang\ par}{trad\adddot\ \lbx@fromlang\ par}},
+  byredactor       = {{r\'edig\'e par}{r\'ed\adddot\ par}},
+  bycommentator    = {{comment\'e par}{comm\adddot\ par}},
+  byannotator      = {{annot\'e par}{annot\adddot\ par}},
+  withcommentator  = {{avec des commentaires par}{avec des comment\adddot\ par}},
+  withannotator    = {{avec des annotations par}{avec des annot\adddot\ par}},
+  withintroduction = {{avec une introduction par}{avec une introd\adddot\ par}},
+  withforeword     = {{avec une pr\'eface par}{avec une pr\'ef\adddot\ par}},
+  withafterword    = {{avec un postface par}{avec un postf\adddot\ par}},
+  byeditortr       = {{\lbx@bytypeeditor\ et traduit \lbx@fromlang\ par}%
+                      {\lbx@bytypeeditor\addabbrvspace et trad\adddot\ \lbx@fromlang\ par}},
+  byeditorco       = {{\lbx@bytypeeditor\ et comment\'e par}%
+                      {\lbx@bytypeeditor\addabbrvspace et comm\adddot\ par}},
+  byeditoran       = {{\lbx@bytypeeditor\ et annot\'e par}%
+                      {\lbx@bytypeeditor\addabbrvspace et annot\adddot\ par}},
+  byeditorin       = {{\lbx@bytypeeditor\ et introduit par}%
+                      {\lbx@bytypeeditor\addabbrvspace et introd\adddot\ par}},
+  byeditorfo       = {{\lbx@bytypeeditor\ et pr\'efac\'e par}%
+                      {\lbx@bytypeeditor\addabbrvspace et pr\'ef\adddot\ par}},
+  byeditoraf       = {{\lbx@bytypeeditor\ et postfac\'e par}%
+                      {\lbx@bytypeeditor\addabbrvspace et postf\adddot\ par}},
+  byeditortrco     = {{\lbx@bytypeeditor, traduit \lbx@fromlang\ et comment\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace trad\adddot\ \lbx@fromlang\ et comm\adddot\ par}},
+  byeditortran     = {{\lbx@bytypeeditor, traduit \lbx@fromlang\ et annot\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace trad\adddot\ \lbx@fromlang\ et annot\adddot\ par}},
+  byeditortrin     = {{\lbx@bytypeeditor, traduit \lbx@fromlang\ et introduit par}%
+                      {\lbx@bytypeeditor,\addabbrvspace trad\adddot\ \lbx@fromlang\ et introd\adddot\ par}},
+  byeditortrfo     = {{\lbx@bytypeeditor, traduit \lbx@fromlang\ et pr\'efac\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace trad\adddot\ \lbx@fromlang\ et pr\'ef\adddot\ par}},
+  byeditortraf     = {{\lbx@bytypeeditor, traduit \lbx@fromlang\ et postfac\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace trad\adddot\ \lbx@fromlang\ et postf\adddot\ par}},
+  byeditorcoin     = {{\lbx@bytypeeditor, comment\'e et introduit par}%
+                      {\lbx@bytypeeditor,\addabbrvspace comm\adddot\ et introd\adddot\ par}},
+  byeditorcofo     = {{\lbx@bytypeeditor, comment\'e et pr\'efac\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace comm\adddot\ et pr\'ef\adddot\ par}},
+  byeditorcoaf     = {{\lbx@bytypeeditor, comment\'e et postfac\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace comm\adddot\ et postf\adddot\ par}},
+  byeditoranin     = {{\lbx@bytypeeditor, annot\'e et introduit par}%
+                      {\lbx@bytypeeditor,\addabbrvspace annot\adddot\ et introd\adddot\ par}},
+  byeditoranfo     = {{\lbx@bytypeeditor, annot\'e et pr\'efac\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace annot\adddot\ et pr\'ef\adddot\ par}},
+  byeditoranaf     = {{\lbx@bytypeeditor, annot\'e et postfac\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace annot\adddot\ et postf\adddot\ par}},
+  byeditortrcoin   = {{\lbx@bytypeeditor, traduit \lbx@fromlang, comment\'e et introduit par}%
+                      {\lbx@bytypeeditor,\addabbrvspace trad\adddot\ \lbx@fromlang, comm\adddot\ et introd\adddot\ par}},
+  byeditortrcofo   = {{\lbx@bytypeeditor, traduit \lbx@fromlang, comment\'e et pr\'efac\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace trad\adddot\ \lbx@fromlang, comm\adddot\ et pr\'ef\adddot\ par}},
+  byeditortrcoaf   = {{\lbx@bytypeeditor, traduit \lbx@fromlang, comment\'e et postfac\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace trad\adddot\ \lbx@fromlang, comm\adddot\ et postf\adddot\ par}},
+  byeditortranin   = {{\lbx@bytypeeditor, traduit \lbx@fromlang, annot\'e et introduit par}%
+                      {\lbx@bytypeeditor,\addabbrvspace trad\adddot\ \lbx@fromlang, annot\adddot\ et introd\adddot\ par}},
+  byeditortranfo   = {{\lbx@bytypeeditor, traduit \lbx@fromlang, annot\'e et pr\'efac\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace trad\adddot\ \lbx@fromlang, annot\adddot\ et pr\'ef\adddot\ par}},
+  byeditortranaf   = {{\lbx@bytypeeditor, traduit \lbx@fromlang, annot\'e et postfac\'e par}%
+                      {\lbx@bytypeeditor,\addabbrvspace trad\adddot\ \lbx@fromlang, annot\adddot\ et postf\adddot\ par}},
+  bytranslatorco   = {{traduit \lbx@fromlang\ et comment\'e par}%
+                      {trad\adddot\ \lbx@fromlang\ et comm\adddot\ par}},
+  bytranslatoran   = {{traduit \lbx@fromlang\ et annot\'e par}%
+                      {trad\adddot\ \lbx@fromlang\ et annot\adddot\ par}},
+  bytranslatorin   = {{traduit \lbx@fromlang\ et introduit par}%
+                      {trad\adddot\ \lbx@fromlang\ et introd\adddot\ par}},
+  bytranslatorfo   = {{traduit \lbx@fromlang\ et pr\'efac\'e par}%
+                      {trad\adddot\ \lbx@fromlang\ et pr\'ef\adddot\ par}},
+  bytranslatoraf   = {{traduit \lbx@fromlang\ et postfac\'e par}%
+                      {trad\adddot\ \lbx@fromlang\ et postf\adddot\ par}},
+  bytranslatorcoin = {{traduit \lbx@fromlang, comment\'e et introduit par}%
+                      {trad\adddot\ \lbx@fromlang, comm\adddot\ et introd\adddot\ par}},
+  bytranslatorcofo = {{traduit \lbx@fromlang, comment\'e et pr\'efac\'e par}%
+                      {trad\adddot\ \lbx@fromlang, comm\adddot\ et pr\'ef\adddot\ par}},
+  bytranslatorcoaf = {{traduit \lbx@fromlang, comment\'e et postfac\'e par}%
+                      {trad\adddot\ \lbx@fromlang, comm\adddot\ et postf\adddot\ par}},
+  bytranslatoranin = {{traduit \lbx@fromlang, annot\'e et introduit par}%
+                      {trad\adddot\ \lbx@fromlang, annot\adddot\ et introd\adddot\ par}},
+  bytranslatoranfo = {{traduit \lbx@fromlang, annot\'e et pr\'efac\'e par}%
+                      {trad\adddot\ \lbx@fromlang, annot\adddot\ et pr\'ef\adddot\ par}},
+  bytranslatoranaf = {{traduit \lbx@fromlang, annot\'e et postfac\'e par}%
+                      {trad\adddot\ \lbx@fromlang, annot\adddot\ et postf\adddot\ par}},
+  and              = {{et}{et}},
+  andothers        = {{et\addabbrvspace al\adddot}{et\addabbrvspace al\adddot}},
+  andmore          = {{et\addabbrvspace al\adddot}{et\addabbrvspace al\adddot}},
+  volume           = {{tome}{t\adddot}},
+  volumes          = {{tomes}{t\adddot}},
+  jourvol          = {{tome}{t\adddot}},
+  jourser          = {{s\'erie}{s\'er\adddot}},
+  newseries        = {{nouvelle s\'erie}{nouv\adddot\ s\'er\adddot}},
+  oldseries        = {{ancienne s\'erie}{anc\adddot\ s\'er\adddot}},
+  edition          = {{\'edition}{\'ed\adddot}},
+  reprint          = {{r\'eimpression}{r\'eimpr\adddot}},
+  reprintof        = {{r\'eimpression de}{r\'eimpr\adddot de}},
+  reprintas        = {{r\'eimpression sous le titre}{r\'eimpr\adddot sous le titre}},
+  page             = {{page}{p\adddot}},
+  pages            = {{pages}{p\adddot}},
+  column           = {{colonne}{col\adddot}},
+  columns          = {{colonnes}{col\adddot}},
+  line             = {{ligne}{l\adddot}},
+  lines            = {{lignes}{l\adddot}},
+  verse            = {{vers}{v\adddot}},
+  verses           = {{vers}{v\adddot}},
+  section          = {{article}{\S}},
+  sections         = {{articles}{\S\S}},
+  paragraph        = {{paragraphe}{par\adddot}},
+  paragraphs       = {{paragraphes}{par\adddot}},
+  in               = {{dans}{dans}},
+  inseries         = {{dans}{dans}},
+  ofseries         = {{de}{de}},
+  number           = {{num\'ero}{n\textsuperscript{o}}},
+  chapter          = {{chapitre}{chap\adddot}},
+  mathesis         = {{m\'emoire de ma\^{\i}trise}{m\'em\adddot de ma\^{\i}tr\adddot}},
+  phdthesis        = {{th\`ese de doctorat}{th\`ese de doct\adddot}},
+  resreport        = {{rapport scientifique}{rap\adddot\ scient\adddot}},
+  techreport       = {{rapport technique}{rap\adddot\ tech\adddot}},
+  software         = {{logiciel}{logiciel}},
+  datacd           = {{c\'ed\'erom}{c\'ed\'erom}},
+  audiocd          = {{disque compact audio}{CD}},
+  version          = {{version}{version}},
+  url              = {{adresse}{adresse}},
+  urlseen          = {{visit\'e le}{visit\'e le}},
+  citedas          = {{d\'esign\'e ci-apr\`es par}{ci-apr\`es}},
+  seenote          = {{voir note}{cf\adddotspace note}},
+  quotedin         = {{cit\'e dans}{cit\'e dans}},
+  idem             = {{idem}{id\adddot}},
+  idemsf           = {{idem}{id\adddot}},
+  idemsm           = {{idem}{id\adddot}},
+  idemsn           = {{idem}{id\adddot}},
+  idempf           = {{idem}{id\adddot}},
+  idempm           = {{idem}{id\adddot}},
+  idempn           = {{idem}{id\adddot}},
+  idempp           = {{idem}{id\adddot}},
+  ibidem           = {{ibidem}{ibid\adddot}},
+  opcit            = {{op\adddotspace cit\adddot}{op\adddotspace cit\adddot}},
+  loccit           = {{loc\adddotspace cit\adddot}{loc\adddotspace cit\adddot}},
+  confer           = {{cf\adddot}{cf\adddot}},
+  sequens          = {{sq\adddot}{sq\adddot}},
+  sequentes        = {{sqq\adddot}{sqq\adddot}},
+  passim           = {{passim}{pass\adddot}},
+  see              = {{cf\adddot}{cf\adddot}},
+  seealso          = {{cf\adddot\ aussi}{cf\adddot\ aussi}},
+  january          = {{janvier}{jan\adddot}},
+  february         = {{f\'evrier}{f\'ev\adddot}},
+  march            = {{mars}{mar\adddot}},
+  april            = {{avril}{avr\adddot}},
+  may              = {{mai}{mai}},
+  june             = {{juin}{juin}},
+  july             = {{juillet}{juil\adddot}},
+  august           = {{ao\^ut}{ao\^ut}},
+  september        = {{septembre}{sept\adddot}},
+  october          = {{octobre}{oct\adddot}},
+  november         = {{novembre}{nov\adddot}},
+  december         = {{d\'ecembre}{d\'ec\adddot}},
+  langamerican     = {{am\'ericain}{am\'ericain}},
+  langdanish       = {{danois}{danois}},
+  langenglish      = {{anglais}{anglais}},
+  langfrench       = {{fran\c{c}ais}{fran\c{c}ais}},
+  langgerman       = {{allemand}{allemand}},
+  langgreek        = {{grec}{grec}},
+  langitalian      = {{italien}{italien}},
+  langlatin        = {{latin}{latin}},
+  langnorwegian    = {{norv\'egien}{norv\'egien}},
+  langspanish      = {{espagnol}{espagnol}},
+  langswedish      = {{su\'edois}{su\'edois}},
+  fromamerican     = {{de l'am\'ericain}{de l'am\'ericain}},
+  fromenglish      = {{de l'anglais}{de l'anglais}},
+  fromdanish       = {{du danois}{du danois}},
+  fromfrench       = {{du fran\c{c}ais}{du fran\c{c}ais}},
+  fromgerman       = {{de l'allemand}{de l'allemand}},
+  fromgreek        = {{du grec}{du grec}},
+  fromitalian      = {{de l'italien}{de l'italien}},
+  fromlatin        = {{du latin}{du latin}},
+  fromnorwegian    = {{du norv\'egien}{du norv\'egien}},
+  fromspanish      = {{de l'espagnol}{de l'espagnol}},
+  fromswedish      = {{du su\'edois}{du su\'edois}},
+  countryca        = {{Canada}{CA}},
+  countryde        = {{Allemagne}{DE}},
+  countrydk        = {{Danemark}{DK}},
+  countryes        = {{Espagne}{ES}},
+  countryeu        = {{Union europ\'eenne}{EU}},
+  countryep        = {{Union europ\'eenne}{EP}},
+  countryfr        = {{France}{FR}},
+  countryit        = {{Italie}{IT}},
+  countryno        = {{Norv\`ege}{NO}},
+  countryse        = {{Su\`ede}{SE}},
+  countryuk        = {{Royaume-Uni}{GB}},
+  countryus        = {{\'Etats-Unis}{US}},
+  countrywo        = {{monde}{WO}},
+  patent           = {{brevet}{brev\adddot}},
+  patentca         = {{brevet canadien}{brev\adddot\ canadien}},
+  patentde         = {{brevet allemand}{brev\adddot\ allemand}},
+  patentdk         = {{brevet danois}{brev\adddot\ danois}},
+  patentes         = {{brevet espagnol}{brev\adddot\ espagnol}},
+  patenteu         = {{brevet europ\'een}{brev\adddot\ europ\'een}},
+  patentfr         = {{brevet fran\c{c}ais}{brev\adddot\ fran\c{c}ais}},
+  patentit         = {{brevet italien}{brev\adddot\ italien}},
+  patentno         = {{brevet norv\'egien}{brev\adddot\ norv\'egien}},
+  patentse         = {{brevet su\'edois}{brev\adddot\ su\'edois}},
+  patentuk         = {{brevet britannique}{brev\adddot\ britannique}},
+  patentus         = {{brevet am\'ericain}{brev\adddot\ am\'ericain}},
+  patreq           = {{demande de brevet}{demande de brev\adddot}},
+  patreqca         = {{demande de brevet canadienne}{demande de brev\adddot\ canadienne}},
+  patreqde         = {{demande de brevet allemande}{demande de brev\adddot\ allemande}},
+  patreqdk         = {{demande de brevet danoise}{demande de brev\adddot\ danoise}},
+  patreqes         = {{demande de brevet espagnole}{demande de brev\adddot\ espagnole}},
+  patreqeu         = {{demande de brevet europ\'eenne}{demande de brev\adddot\ europ\'eenne}},
+  patreqfr         = {{demande de brevet fran\c{c}aise}{demande de brev\adddot\ fran\c{c}aise}},
+  patreqit         = {{demande de brevet italienne}{demande de brev\adddot\ italienne}},
+  patreqno         = {{demande de brevet norv\'egienne}{demande de brev\adddot\ norv\'egienne}},
+  patreqse         = {{demande de brevet su\'edoise}{demande de brev\adddot\ su\'edoise}},
+  patrequk         = {{demande de brevet britannique}{demande de brev\adddot\ britannique}},
+  patrequs         = {{demande de brevet am\'ericaine}{demande de brev\adddot\ am\'ericaine}},
+% file             = {{}{}}, % FIXME: missing
+% library          = {{}{}}, % FIXME: missing
+% abstract         = {{}{}}, % FIXME: missing
+% annotation       = {{}{}}, % FIXME: missing
+}
+
+\gdef\lbx@fr@ordinal#1#2{%
+  \@tempcnta0#2 \the\@tempcnta
+  \@whilenum\@tempcnta>100\do{\advance\@tempcnta-100}%
+  \ifnum\@tempcnta>20
+    \@whilenum\@tempcnta>9\do{\advance\@tempcnta-10}%
+  \fi
+  \ifnum\@tempcnta=\@ne
+    \textsuperscript{#1}%
+  \else
+    \textsuperscript{e}%
+  \fi}%
+
+\begingroup
+\catcode`\&=3
+
+\gdef\lbx@fr@smartof{%
+  \iftoggle{smartof}{\lbx@fr@smartof@i}{\@gobble}}
+
+\protected\long\gdef\lbx@fr@smartof@i#1{%
+  \global\togglefalse{smartof}%
+  \begingroup
+  \def\forceD##1{a\relax}%
+  \def\forceDE##1{x\relax}%
+  \def\do##1{\let##1\@empty}%
+  \bib@dosingleaccents
+  \bib@dodoubleaccents
+  \def\i{i}\def\j{j}%
+  \def\AE{a}\def\ae{a}%
+  \def\OE{o}\def\oe{o}%
+  \def\O{o}\def\o{o}%
+  \let\IeC\@firstofone
+  \let\@tabacckludge\@gobble
+  \ifnum\catcode`\"=\active
+    \uccode`\~=`\"
+    \uppercase{\let~\@empty}%
+  \fi
+  \ifnum\catcode`\~=\active
+    \let~\@empty
+  \fi
+  \let\protect\noexpand
+  \lowercase{\edef\lbx@tempa{#1}}%
+  \expandafter\futurelet
+  \expandafter\lbx@tempa
+  \expandafter\lbx@fr@smartof@ii
+  \lbx@tempa&}
+
+\gdef\lbx@fr@smartof@ii{%
+  \ifcat\bgroup\noexpand\lbx@tempa
+    \def\lbx@tempa##1{\futurelet\lbx@tempa\lbx@fr@smartof@ii##1}%
+  \else\ifcat\noexpand~\noexpand\lbx@tempa
+    \def\lbx@tempa##1{\futurelet\lbx@tempa\lbx@fr@smartof@ii}%
+  \else\if a\noexpand\lbx@tempa
+    \let\lbx@tempa\lbx@fr@smartof@d
+  \else\if e\noexpand\lbx@tempa
+    \let\lbx@tempa\lbx@fr@smartof@d
+  \else\if i\noexpand\lbx@tempa
+    \let\lbx@tempa\lbx@fr@smartof@d
+  \else\if o\noexpand\lbx@tempa
+    \let\lbx@tempa\lbx@fr@smartof@d
+  \else\if u\noexpand\lbx@tempa
+    \let\lbx@tempa\lbx@fr@smartof@d
+  \else\if y\noexpand\lbx@tempa
+    \let\lbx@tempa\lbx@fr@smartof@d
+  \else\if h\noexpand\lbx@tempa
+    \def\lbx@tempa##1{\futurelet\lbx@tempa\lbx@fr@smartof@ii}%
+  \else
+    \let\lbx@tempa\lbx@fr@smartof@de
+  \fi\fi\fi\fi\fi\fi\fi\fi\fi
+  \lbx@tempa}
+
+\gdef\lbx@fr@smartof@d#1&{\endgroup d'}
+\gdef\lbx@fr@smartof@de#1&{\endgroup de\space}
+
+\endgroup
+
+\endinput

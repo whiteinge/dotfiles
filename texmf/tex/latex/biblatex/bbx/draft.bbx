@@ -1,0 +1,39 @@
+% $Id: draft.bbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{draft.bbx}
+[\blx@bbxid $Id: draft.bbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\RequireBibliographyStyle{standard}
+\ExecuteBibliographyOptions{sorting=debug}
+
+\DeclareNameAlias{author}{default}
+\DeclareNameAlias{editor}{default}
+
+\DeclareFieldFormat{shorthandwidth}{#1}
+\renewcommand*{\thebibitem}{\item}
+\renewcommand*{\thelositem}{\item}
+
+\renewenvironment*{thebibliography}
+  {\list
+     {\printfield{entrykey}}
+     {\setlength{\labelwidth}{0pt}%
+      \setlength{\itemindent}{-\leftmargin}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}%
+      \renewcommand*{\makelabel}[1]{%
+	\hspace\labelsep\bfseries##1}}}
+  {\endlist}
+
+\renewenvironment*{theshorthands}
+  {\list
+     {\printfield[shorthandwidth]{shorthand}}
+     {\setlength{\labelwidth}{\shorthandwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}%
+      \renewcommand*{\makelabel}[1]{##1\hss}}}
+  {\endlist}
+
+\endinput

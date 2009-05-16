@@ -1,0 +1,53 @@
+% $Id: alphabetic-verb.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{alphabetic-verb.cbx}
+[\blx@cbxid $Id: alphabetic-verb.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\ExecuteBibliographyOptions{labelalpha,autocite=inline}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \bibleftbracket
+   \printtext[bibhyperref]{%
+     \printfield{labelalpha}%
+     \printfield{extraalpha}}}
+  {\bibrightbracket\multicitedelim}
+  {\usebibmacro{postnote}%
+   \bibrightbracket}
+
+\DeclareCiteCommand{\parencite}[\mkbibbrackets]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelalpha}%
+     \printfield{extraalpha}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\bibsentence
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelalpha}%
+     \printfield{extraalpha}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\textcite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \ifnameundef{labelname}
+     {}
+     {\printnames{labelname}\space}%
+   \bibleftbracket
+   \printtext[bibhyperref]{%
+     \printfield{labelalpha}%
+     \printfield{extraalpha}}}
+  {\bibrightbracket\multicitedelim}
+  {\usebibmacro{postnote}\bibrightbracket}
+
+\DeclareMultiCiteCommand{\parencites}[\mkbibbrackets]{\parencite}{\multicitedelim}
+
+\endinput

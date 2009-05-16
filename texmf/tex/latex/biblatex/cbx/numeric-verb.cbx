@@ -1,0 +1,79 @@
+% $Id: numeric-verb.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{numeric-verb.cbx}
+[\blx@cbxid $Id: numeric-verb.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\ExecuteBibliographyOptions{labelnumber,autocite=inline}
+\providebool{bbx:subentry}
+\DeclareFieldFormat{entrysetcount}{\mknumalph{#1}}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \bibleftbracket
+   \printtext[bibhyperref]{%
+     \printfield{labelnumber}%
+     \ifbool{bbx:subentry}
+       {\printfield{entrysetcount}}
+       {}}}
+  {\bibrightbracket\multicitedelim}
+  {\usebibmacro{postnote}%
+   \bibrightbracket}
+
+\DeclareCiteCommand{\parencite}[\mkbibbrackets]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelnumber}%
+     \ifbool{bbx:subentry}
+       {\printfield{entrysetcount}}
+       {}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\bibsentence
+   \usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelnumber}%
+     \ifbool{bbx:subentry}
+       {\printfield{entrysetcount}}
+       {}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand{\textcite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \ifnameundef{labelname}
+     {}
+     {\printnames{labelname}\space}%
+   \bibleftbracket
+   \printtext[bibhyperref]{%
+     \printfield{labelnumber}%
+     \ifbool{bbx:subentry}
+       {\printfield{entrysetcount}}
+       {}}}%
+  {\bibrightbracket\multicitedelim}
+  {\usebibmacro{postnote}\bibrightbracket}
+
+\DeclareCiteCommand{\supercite}[\mkbibsuperscript]
+  {\iffieldundef{prenote}
+     {}
+     {\BibliographyWarning{Ignoring prenote argument}}%
+   \iffieldundef{postnote}
+     {}
+     {\BibliographyWarning{Ignoring postnote argument}}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{%
+     \printfield{labelnumber}%
+     \ifbool{bbx:subentry}
+       {\printfield{entrysetcount}}
+       {}}}
+  {\supercitedelim}
+  {}
+
+\DeclareMultiCiteCommand{\parencites}[\mkbibbrackets]{\parencite}{\multicitedelim}
+
+\endinput

@@ -1,0 +1,37 @@
+% $Id: canadian.lbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{canadian.lbx}
+[\blx@lbxid $Id: canadian.lbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+% STATUS OF THIS FILE
+% complete, peer review pending; the translations are the US ones;
+% should be double-checked by a native speaker from Canada
+
+\DeclareBibliographyExtras{%
+  \DeclareQuotePunctuation{.,}% FIXME: correct?
+  \let\bibrangedash\textendash
+  \def\finalandcomma{\addcomma}%
+  \def\mkbibordinal#1{%
+    \@tempcnta0#1 \the\@tempcnta
+    \@whilenum\@tempcnta>100\do{\advance\@tempcnta-100}%
+    \ifnum\@tempcnta>20
+      \@whilenum\@tempcnta>9\do{\advance\@tempcnta-10}%
+    \fi
+    \ifcase\@tempcnta th\or st\or nd\or rd\else th\fi}%
+  \def\bibdatelong{%
+    \mkbibordinal{\thefield{day}}\nobreakspace
+    \mkbibmonth{\thefield{month}}\space
+    \thefield{year}}%
+  \def\bibdateshort{%
+    \thefield{day}/\thefield{month}/\thefield{year}}%
+  \def\biburldatelong{%
+    \mkbibordinal{\thefield{urlday}}\nobreakspace
+    \mkbibmonth{\thefield{urlmonth}}\space
+    \thefield{urlyear}}%
+  \def\biburldateshort{%
+    \thefield{urlday}/\thefield{urlmonth}/\thefield{urlyear}}%
+}
+
+\InheritBibliographyStrings{english}
+
+\endinput

@@ -1,0 +1,31 @@
+%
+% This file presents the 'authortitle-comp' style
+%
+\documentclass[a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[american]{babel}
+\usepackage[babel]{csquotes}
+\usepackage[style=authortitle-comp,hyperref]{biblatex}
+\usepackage{hyperref}
+\bibliography{examples}
+% Some generic settings:
+\newcommand{\cmd}[1]{\texttt{\textbackslash #1}}
+\setlength{\parindent}{0pt}
+\begin{document}
+
+\section*{The \texttt{authortitle-comp} style}
+
+This style is a compact version of the \texttt{authortitle} style
+which prints the author only once if subsequent references passed to
+a single citation command share the same author. This style will
+implicitly enable the \texttt{sortcites} package option at load
+time.
+
+\subsection*{Multiple citations}
+
+\cite{aristotle:rhetoric,averroes/bland,aristotle:physics,aristotle:poetics}
+
+\clearpage
+\printbibliography
+
+\end{document}

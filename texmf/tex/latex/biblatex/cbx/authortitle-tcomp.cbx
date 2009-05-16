@@ -1,0 +1,68 @@
+% $Id: authortitle-tcomp.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $
+
+\ProvidesFile{authortitle-tcomp.cbx}
+[\blx@cbxid $Id: authortitle-tcomp.cbx,v 0.8 2008/10/02 17:33:27 lehman beta $]
+
+\RequireCitationStyle{authortitle-comp}
+\ExecuteBibliographyOptions{singletitle,uniquename,autocite=inline}
+
+\renewbibmacro*{cite}{%
+  \iffieldundef{shorthand}
+    {\iffieldequals{namehash}{\cbx@lasthash}
+       {\gdef\cbx@tempa{\compcitedelim}}
+       {\cbx@tempa
+        \ifnameundef{labelname}
+          {\global\let\cbx@tempa=\empty}
+          {\ifsingletitle
+             {\printtext[bibhyperref]{\printnames{labelname}}}
+             {\printnames{labelname}}%
+           \gdef\cbx@tempa{\addcomma\space}}%
+        \savefield{namehash}{\cbx@lasthash}}%
+     \usebibmacro{cite:title}}
+    {\usebibmacro{cite:shorthand}%
+     \usebibmacro{cite:init}}%
+  \global\let\cbx@tempa=\multicitedelim}
+
+\renewbibmacro*{citetitle}{%
+  \iffieldundef{shorthand}
+    {\iffieldequals{namehash}{\cbx@lasthash}
+       {\gdef\cbx@tempa{\compcitedelim}}
+       {\savefield{namehash}{\cbx@lasthash}}%
+     \cbx@tempa
+     \printtext[bibhyperref]{%
+       \printfield[citetitle]{labeltitle}}}
+    {\usebibmacro{cite:shorthand}%
+     \usebibmacro{cite:init}}%
+  \global\let\cbx@tempa=\multicitedelim}
+
+\renewbibmacro*{textcite}{%
+  \iffieldequals{namehash}{\cbx@lasthash}
+    {\gdef\cbx@tempa{\compcitedelim}}
+    {\cbx@tempa
+     \ifnameundef{labelname}
+       {\global\let\cbx@tempa=\empty}
+       {\ifsingletitle
+          {\printtext[bibhyperref]{\printnames{labelname}}}
+          {\printnames{labelname}}%
+        \gdef\cbx@tempa{%
+	  \global\booltrue{cbx:parens}%
+	  \addspace\bibleftparen}}%
+     \savefield{namehash}{\cbx@lasthash}}%
+  \iffieldundef{shorthand}
+    {\usebibmacro{cite:title}}%
+    {\usebibmacro{cite:shorthand}}%
+  \gdef\cbx@tempa{%
+    \ifbool{cbx:parens}
+      {\bibrightparen
+       \global\boolfalse{cbx:parens}}
+      {}%
+    \multicitedelim}}
+
+\renewbibmacro*{cite:title}{%
+  \ifsingletitle
+    {}
+    {\cbx@tempa
+     \printtext[bibhyperref]{%
+       \printfield[citetitle]{labeltitle}}}}
+
+\endinput

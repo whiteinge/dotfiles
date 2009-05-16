@@ -1,0 +1,28 @@
+\documentclass[12pt]{article}
+\usepackage[american]{babel}
+\usepackage{csquotes}
+\usepackage[style=mla]{biblatex}
+\usepackage[bookmarks]{hyperref}
+
+% Uncomment the following lines to turn off the colored boxes around links within the document.
+%\hypersetup{colorlinks,% 
+%citecolor=black,% 
+%filecolor=black,% 
+%linkcolor=black,% 
+%urlcolor=black}
+
+\bibliography{samples}
+
+\begin{document}
+	Here is a standard citation \autocite[32]{haggis99aa}.  Here's another to the same book \autocite[33--40]{haggis99aa}.
+	
+	Here is another citation \autocite[12]{askme06aa}.  Here's another to a different work by the same author \autocite[30]{askme92aa}.
+	
+	Here's an article with a shorthand \autocite[12]{taskme06aa}.  Here's a citation to a completely different work \autocite[32]{haggis99aa}. Here's a second citation to an article with shorthand \autocite[17]{taskme06aa}.
+	
+	Here's a citation for something listed by the translator \autocite[22]{coulson64aa}.  Here's one for something listed by book title \autocite[978]{octovian86aa}.  Here's an anonymous book review \autocite{danish1972aa}.
+
+\nocite{*}
+\newpage
+\printbibliography[heading=bibintoc]
+\end{document}
