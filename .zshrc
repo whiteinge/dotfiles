@@ -349,6 +349,22 @@ djsetup()
     fi
 }
 
+# Django virtualenv helpers
+VIRTUALENV_PROJECTS=$HOME/src
+ 
+# work on virtualenv
+function djworkon(){
+    cd $VIRTUALENV_PROJECTS/$1
+    unset PYTHONPATH
+    source ./bin/activate
+
+    # Set up django environ vars
+    if [[ -h project && -f project/debug_settings.py ]]; then
+        export DJANGO_SETTINGS_MODULE=$(basename\
+                $(readlink project)).debug_settings
+    fi
+}
+ 
 # }}}
 # Displays the titles and their length in a VIDEO_TS folder {{{
 
@@ -413,8 +429,6 @@ memtotaller() {
 # makepkg-likeslack() {{{
 # For making Arch Linux packages without writing a PKGBUILD script
 # (useful when testing a prog)
-# make install DESTDIR=../pkg
-# makepkg -R -A
 
 makepkg-likeslack() {
     echo "pkgname=$1\npkgver=0.0\npkgrel=0" > PKGBUILD
@@ -422,6 +436,9 @@ makepkg-likeslack() {
     if [ x"$2" != x ]; then   # no args were given
         tar -C src -xf $2
     fi
+    echo "Now:"
+    echo "make install DESTDIR=../pkg"
+    echo "makepkg -R -A"
 }
 
 # }}}
