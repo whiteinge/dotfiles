@@ -1,10 +1,17 @@
+" Set Firefox Preferences
+set! browser.startup.homepage="http://www.google.com/ig"
+set! network.http.pipelining=true
+set! network.http.proxy.pipelining=true
+set! network.http.pipelining.maxrequests=8
+set! nglayout.initialpaint.delay=0
+
 " shortcut mappings
 map <F1> :buffers<cr>
 map <F3> :sidebar Bookmarks<cr>
-map <silent> <F6> :js toggle_element('PersonalToolbar')<CR>
+map <F4> :sbclose<cr>
 
 " completion options to emulate the firefox 3 location bar
-set complete=l
+set complete=sfl
 set wildmode=list:full
 set wildoptions=auto
 
@@ -16,20 +23,16 @@ set focuscontent
 set popups=2
 
 " disable vimperator for some URLs
-autocmd LocationChange .* :js modes.passAllKeys = /mail\.google\.com/.test(buffer.URL)
-autocmd LocationChange .* :js modes.passAllKeys = /www\.google\.com\/reader\/view/.test(buffer.URL)
+" NOTE: if both settings use the .* match, the latter setting seems to override the former
+autocmd LocationChange .* :js modes.passAllKeys = /(mail|docs)\.google\.com/.test(buffer.URL)
+autocmd LocationChange www\.google\.com\/reader :js modes.passAllKeys = /www\.google\.com\/reader/.test(buffer.URL)
+
 
 " Set the Vim filetype to "mail" when editing mail in GMail with the external editor: 
-autocmd LocationChange .* :set editor=gvim -f
-autocmd LocationChange mail\.google\.com :set editor=gvim -f -c 'set ft=mail'
+autocmd LocationChange .* :set editor="gvim -f"
+autocmd LocationChange mail\.google\.com :set editor="gvim -f -c 'set ft=mail'"
+autocmd LocationChange groups\.google\.com :set editor="gvim -f -c 'set ft=mail'"
 
-
-" Toggle toolbars in mappings
-:js << EOF
-    toggle_element = function (name) {
-        document.getElementById(name).collapsed ^= 1;
-    }
-EOF
 
 " show the feed icon in the statusbar
 javascript <<EOF
