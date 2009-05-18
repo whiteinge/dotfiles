@@ -108,7 +108,7 @@ if_up_strictness address
 
 TEXT
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color grey}cpu:${color white}$cpu% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}tx:${color white}${if_up wlan0}${downspeed wlan0}$endif${if_up eth0}${downspeed eth0}$endif k/s, ${color grey}rx:${color white}${if_up wlan0}${upspeed wlan0}$endif${if_up eth0}${upspeed eth0}$endif k/s    ${color grey}batt: ${color white}$battery    
+${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color grey}cpu:${color white}$cpu% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}tx:${color white}${if_up wlan0}${downspeed wlan0}$endif${if_up eth0}${downspeed eth0}$endif ${color grey}rx:${color white}${if_up wlan0}${upspeed wlan0}$endif${if_up eth0}${upspeed eth0}$endif    ${color grey}batt: ${color white}$battery    
 
 
 $alignr$loadavg  |  $uptime  |  $user_number users    
