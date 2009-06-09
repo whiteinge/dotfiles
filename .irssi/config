@@ -40,7 +40,6 @@ channels = (
   { name = "#jquery"; chatnet = "freenode"; autojoin = "yes"; }
   { name = "#xorg"; chatnet = "freenode"; autojoin = "yes"; }
   { name = "#archlinux"; chatnet = "freenode"; autojoin = "yes"; }
-  { name = "#utahsaves"; chatnet = "freenode"; autojoin = "yes"; }
 );
 
 statusbar = {
@@ -210,15 +209,6 @@ hilights = (
     word = "no";
     channels = ( "#utahdjango" );
   },
-  {
-    text = ".*";
-    regexp = "yes";
-    color = "%N";
-    level = "PUB";
-    nick = "no";
-    word = "no";
-    channels = ( "#utahsaves" );
-  }
 );
 
 ignores = (
