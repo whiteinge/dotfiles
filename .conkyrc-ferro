@@ -106,7 +106,7 @@ ${color grey}${time %a, %d %b %y}     ${time %H:%M }$alignr ${color grey}cpu: ${
 $alignr$loadavg  |  $uptime  |  $user_number users
 
 
-$alignr ${color grey}bat0: ${color white}${battery_bar 5,120 BAT1}
+$alignr ${color grey}bat1: ${color white}${battery_bar 5,120 BAT1}
 $alignr${battery_time BAT1} remaining
 $alignr${color grey}temp:${color white}${acpitemp}°
 
