@@ -32,6 +32,10 @@ set showmatch                   "sm:    flashes matching brackets or parentheses
 set nobackup                    "bk:    does not write a persistent backup file of an edited file
 set writebackup                 "wb:    does keep a backup file while editing a file
 
+" Highlight lines that are longer than 80 chars
+au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
+au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+
 " Searches the current directory as well as subdirectories with commands like :find, :grep, etc.
 set path=.,**
 
