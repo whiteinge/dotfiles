@@ -32,10 +32,6 @@ set showmatch                   "sm:    flashes matching brackets or parentheses
 set nobackup                    "bk:    does not write a persistent backup file of an edited file
 set writebackup                 "wb:    does keep a backup file while editing a file
 
-" Highlight lines that are longer than 80 chars
-au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
-au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-
 " Searches the current directory as well as subdirectories with commands like :find, :grep, etc.
 set path=.,**
 
@@ -57,7 +53,7 @@ set pastetoggle=<F5>            "pt:    useful so auto-indenting doesn't mess up
 map Y y$
 
 " Shortcut to add new blank line without entering insert mode
-noremap <CR> :put_<CR>
+noremap ,<CR> :put_<CR>
 
 " A shortcut to show the numbered register contents
 map <F2> :reg "0123456789-*+:/<CR>
@@ -73,6 +69,18 @@ map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 
 " Maps Omnicompletion to CTRL-space since ctrl-x ctrl-o is for Emacs-style RSI
 inoremap <Nul> <C-x><C-o>
+
+" Highlight lines that are longer than 80 chars toggle with \l
+au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
+au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+nnoremap <silent> <Leader>l
+    \ :if exists('w:m1') <Bar>
+    \   silent! call clearmatches() <Bar>
+    \   unlet w:m1 <Bar>
+    \ else <Bar>
+    \   let w:m1=matchadd('Search', '\%<81v.\%>77v', -1) <Bar>
+    \   let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1) <Bar>
+    \ endif <CR>
 
 " VCS Diffs
 " Small, fast, windowed diff
