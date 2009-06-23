@@ -343,6 +343,10 @@ autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
+" Turn on UniCycle for certain textual filetypes
+autocmd FileType rst UniCycleOn
+autocmd FileType mail UniCycleOn
+
 " Not sure why the cron filetype isn't catching this...
 au FileType crontab set backupcopy=yes
 
