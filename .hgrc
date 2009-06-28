@@ -7,7 +7,8 @@ ignore = ~/.hgignore
 [alias]
 #####################################################################
 
-ll = log --limit 5 --template '{rev}:{node|short}\t{date|age} ago\t{author|person}\n\t- {files}\n\t{desc|strip|fill68|tabindent}\n\n'
+ll = glog --limit 5 --template '{rev}:{node|short}    {tags} {parents}'\
+    '{date|age} ago   {author|user}\n  {desc|firstline|strip}\n\n'
 
 # Show status output for the current patch
 qstatus = status --rev -2:.
