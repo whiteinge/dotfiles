@@ -1,127 +1,70 @@
-# Conky sample configuration
-#
-# the list of variables has been removed from this file in favour
-# of keeping the documentation more maintainable.
-# Check http://conky.sf.net for an up-to-date-list.
+# Conky Dockapp configuration
 
-# set to yes if you want Conky to be forked in the background
+# Run flags
 background yes
+update_interval 2
+total_run_times 0
 
-minimum_size 1350 768
-text_buffer_size 1024
-
-border_margin 10
-
-# Use Xft?
+# Text
 use_xft yes
-
-# Xft font when Xft is enabled
-xftfont Monaco:size=9
-
-# Text alpha when using Xft
+xftfont Monaco:size=7
 xftalpha 1.0
+alignment tl
+override_utf8_locale yes
+use_spacer left
 
-# Print everything to stdout?
-# out_to_console no
+# Dockapp-ify
+own_window yes
+own_window_type dock
+maximum_width 64
+minimum_size 64
 
-# MPD host/port
+# Drawing
+double_buffer yes
+draw_shades yes
+draw_borders yes
+border_margin 5
+
+# Colors
+default_color gray20
+default_shade_color black
+
+# Individual Monitor Settings
+cpu_avg_samples 2
+net_avg_samples 2
+
 mpd_host localhost
 mpd_port 6600
 
-# Print everything to console?
-# out_to_console no
-
-# mail spool
-# mail_spool $MAIL
-
-# Update interval in seconds
-update_interval 2
-
-# This is the number of times Conky will update before quitting.
-# Set to zero to run forever.
-total_run_times 0
-
-# For xcompmgr
-own_window no
-# own_window_transparent yes
-# own_window_type override
-# own_window_type desktop
-
-# Use double buffering (reduces flicker, may not work for everyone)
-double_buffer yes
-
-# Draw shades?
-# draw_shades yes
-
-# Draw outlines?
-draw_outline no
-
-# Draw borders around text
-draw_borders no
-
-# Default colors and also border colors
-default_color white
-default_shade_color black
-default_outline_color black
-
-# Text alignment, other possible values are commented
-alignment tl
-
-# Gap between borders of screen and text
-# same thing as passing -x at command line
-# gap_x -10
-gap_y -11
-
-# Subtract file system buffers from used memory?
-# no_buffers yes
-
-# set to yes if you want all text to be in uppercase
-uppercase no
-
-# number of cpu samples to average
-# set to 1 to disable averaging
-cpu_avg_samples 2
-
-# number of net samples to average
-# set to 1 to disable averaging
-net_avg_samples 2
-
-# Force UTF8? note that UTF8 support required XFT
-override_utf8_locale yes
-
-# Add spaces to keep things from moving about?  This only affects certain objects.
-use_spacer left
-
-# variable is given either in format $variable or in ${variable}. Latter
-# allows characters right after the variable and must be used in network
-# stuff because of an argument
-
-# stuff after 'TEXT' will be formatted on screen
 
 TEXT
+${color grey}${time %H:%M}
+${time %a, %d %b %y}
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }$alignr ${color grey}cpu: ${color white}${cpu cpu1}% ${cpu cpu2}% ($freq MHz)   ${color grey}ram: ${color white}$memperc%    ${color grey}swap: ${color white}${swapperc}%   ${color grey}rx:${color white}${if_up ra0}${downspeed ra0}$endif ${color grey}tx:${color white}${if_up ra0}${upspeed ra0}$endif    ${color grey}batt: ${color white}${battery BAT1}
+$freq_g GHz
+${cpugraph cpu0 25,29 DDDDDD 1992d6} ${cpugraph cpu1 25,29 DDDDDD 1992d6}
+${color grey}cpu ${color white}${cpu cpu1}% ${cpu cpu2}%
+${color grey}ram ${color white}$memperc%
+${color grey}swp ${color white}${swapperc}%
 
+${color grey}temp${color white}${acpitemp}°
+$loadavg
+${color grey}up ${color white}$uptime
+$user_number users
 
-$alignr$loadavg  |  $uptime  |  $user_number users
+${color grey}diskio
+${diskiograph DDDDDD 1992d6}
 
+${if_up ra0}${color grey}ra0
+${color white}${wireless_essid ra0}
+${color grey}${downspeedgraph 25,29 DDDDDD 1992d6 ra0} ${upspeedgraph 25,29 DDDDDD 1992d6 ra0}
+${color grey}rx${color white}${downspeed ra0}
+${color grey}tx${color white}${upspeed ra0}$endif
 
-$alignr ${color grey}bat1: ${color white}${battery_bar 5,120 BAT1}
-$alignr${battery_time BAT1} remaining
-$alignr${color grey}temp:${color white}${acpitemp}°
+${color grey}/${color white} ${fs_used_perc /}%
+${color grey}/var${color white} ${fs_used_perc /var}%
+${color grey}/home${color white} ${fs_used_perc /home}%
 
-
-${if_up ra0}$alignr${color grey}wifi: ${color white}${wireless_essid ra0}   ${color grey}${wireless_mode ra0}
-$alignr${wireless_link_bar 5,120 ra0}
-$alignr${color grey}ra0: ${color white}${addrs ra0}$endif
-$alignr${color grey}ns: ${color white}$nameserver
-
-
-$alignr / ${fs_bar 5,120 /}
-$alignr /var ${fs_bar 5,120 /var}
-$alignr /home ${fs_bar 5,120 /home}
-
-
-$alignr ${color grey}mpd $mpd_status  ${color white}$mpd_smart
-$alignr ${color grey}${mpd_bar 5,200}
-$alignr Vol: ${color white}$mpd_vol   ${color grey}Rand: ${color white}$mpd_random   ${color grey}Rep: ${color white}$mpd_repeat
+${color grey}BAT1
+${color white}${battery_short BAT1}
+-${battery_time BAT1}
