@@ -2,6 +2,12 @@
 
 <openbox_menu xmlns="http://openbox.org/3.4/menu">
 
+<menu id="date-menu" label="date" execute="~/.openbox/pipemenus/date-menu.sh" />
+<menu id="proc-menu" label="kill" execute="~/.openbox/pipemenus/processes.py" />
+<menu id="batt-menu" label="batt" execute="~/.openbox/pipemenus/batt.sh" />
+<menu id="dir-menu" label="dir" execute="~/.openbox/pipemenus/dir-menu ~" />
+<menu id="mpd-menu" label="mpd" execute="~/.openbox/pipemenus/ob-mpd.py"/>
+
 <menu id="apps-menu" label="applications">
   <item label="uxterm">
     <action name="Execute"><command>uxterm</command></action>
@@ -58,6 +64,12 @@
   <menu id="apps-menu" />
   <menu id="games-menu" />
   <menu id="x-menu" />
+  <separator />
+  <menu id="date-menu" />
+  <menu id="batt-menu" />
+  <menu id="proc-menu" />
+  <menu id="dir-menu" />
+  <menu id="mpd-menu" />
   <separator />
   <menu id="client-list-menu" />
   <separator />
