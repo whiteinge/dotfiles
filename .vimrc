@@ -71,15 +71,13 @@ map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 inoremap <Nul> <C-x><C-o>
 
 " Highlight lines that are longer than 80 chars toggle with \l
-au BufWinEnter * let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
-au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+au BufWinEnter * let w:m1=matchadd('ErrorMsg', '\%>80v.\+', -1)
 nnoremap <silent> <Leader>l
     \ :if exists('w:m1') <Bar>
     \   silent! call clearmatches() <Bar>
     \   unlet w:m1 <Bar>
     \ else <Bar>
-    \   let w:m1=matchadd('Search', '\%<81v.\%>77v', -1) <Bar>
-    \   let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1) <Bar>
+    \   let w:m1=matchadd('ErrorMsg', '\%>80v.\+', -1) <Bar>
     \ endif <CR>
 
 " VCS Diffs
