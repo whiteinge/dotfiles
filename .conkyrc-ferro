@@ -4,20 +4,22 @@
 background yes
 update_interval 2
 total_run_times 0
+out_to_console no
 
 # Text
 use_xft yes
 xftfont Monaco:size=7
 xftalpha 1.0
-alignment tl
 override_utf8_locale yes
 use_spacer left
 
 # Dockapp-ify
 own_window yes
 own_window_type dock
+own_window_colour gray3
 maximum_width 64
 minimum_size 64
+alignment tl
 
 # Drawing
 double_buffer yes
@@ -38,7 +40,7 @@ mpd_port 6600
 
 
 TEXT
-${color grey}${time %H:%M}
+${color grey}${font Monaco:bold:size=11}${time %H:%M}$font
 ${time %a, %d %b %y}
 
 $freq_g GHz
