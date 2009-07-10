@@ -61,6 +61,12 @@ ${color grey}${downspeedgraph 25,29 DDDDDD 1992d6 ra0} ${upspeedgraph 25,29 DDDD
 ${color grey}rx${color white}${downspeed ra0}
 ${color grey}tx${color white}${upspeed ra0}$endif
 
+${if_up eth0}${color grey}eth0
+${color grey}${downspeedgraph 25,29 DDDDDD 1992d6 eth0} ${upspeedgraph 25,29 DDDDDD 1992d6 eth0}
+${color grey}rx${color white}${downspeed eth0}
+${color grey}tx${color white}${upspeed eth0}$endif
+
+${color grey}disk
 ${color grey}/${color white} ${fs_used_perc /}%
 ${color grey}/var${color white} ${fs_used_perc /var}%
 ${color grey}/home${color white} ${fs_used_perc /home}%
