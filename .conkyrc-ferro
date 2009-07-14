@@ -4,7 +4,6 @@
 background yes
 update_interval 2
 total_run_times 0
-out_to_console no
 
 # Text
 use_xft yes
@@ -18,13 +17,13 @@ own_window yes
 own_window_type dock
 own_window_colour gray3
 maximum_width 64
-minimum_size 64
+minimum_size 64 64
 alignment tl
 
 # Drawing
 double_buffer yes
 draw_shades yes
-draw_borders yes
+draw_borders no
 border_margin 5
 
 # Colors
@@ -34,14 +33,19 @@ default_shade_color black
 # Individual Monitor Settings
 cpu_avg_samples 2
 net_avg_samples 2
+if_up_strictness address
 
 mpd_host localhost
 mpd_port 6600
 
 
 TEXT
+${color SteelBlue}$nodename
+
 ${color grey}${font Monaco:bold:size=11}${time %H:%M}$font
 ${time %a, %d %b %y}
+
+${execpi 18000 weather.py}${execpi 18000 moonphase.py}
 
 $freq_g GHz
 ${cpugraph cpu1 25,29 DDDDDD 1992d6} ${cpugraph cpu2 25,29 DDDDDD 1992d6}
@@ -52,21 +56,23 @@ ${color grey}swp ${color white}${swapperc}%
 ${color grey}temp${color white}${acpitemp}°
 $loadavg
 ${color grey}up ${color white}$uptime
-$user_number users
+$user_number users${if_up ra0}
 
-${color grey}diskio
-${diskiograph DDDDDD 1992d6}
-
-${if_up ra0}${color grey}ra0
+${color grey}ra0
 ${color white}${wireless_essid ra0}
 ${color grey}${downspeedgraph 25,29 DDDDDD 1992d6 ra0} ${upspeedgraph 25,29 DDDDDD 1992d6 ra0}
 ${color grey}rx${color white}${downspeed ra0}
-${color grey}tx${color white}${upspeed ra0}$endif
+${color grey}tx${color white}${upspeed ra0}
+$endif${if_up eth0}
 
-${if_up eth0}${color grey}eth0
+${color grey}eth0
 ${color grey}${downspeedgraph 25,29 DDDDDD 1992d6 eth0} ${upspeedgraph 25,29 DDDDDD 1992d6 eth0}
 ${color grey}rx${color white}${downspeed eth0}
-${color grey}tx${color white}${upspeed eth0}$endif
+${color grey}tx${color white}${upspeed eth0}
+$endif
+
+${color grey}diskio
+${diskiograph DDDDDD 1992d6}
 
 ${color grey}disk
 ${color grey}/${color white} ${fs_used_perc /}%
