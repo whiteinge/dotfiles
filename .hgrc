@@ -34,7 +34,6 @@ allow_archive = bz2 gz
 #####################################################################
 
 color =
-alias =
 hgext.graphlog =
 hgext.purge =
 hgext.mq =
