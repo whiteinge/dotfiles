@@ -139,10 +139,10 @@
   </dock>
 
   <keyboard>
-    <chainQuitKey>C-g</chainQuitKey>
+    <chainQuitKey>C-c</chainQuitKey>
 
     <!-- Toggle "pass-through" mode for otherwise bound key bindings. -->
-    <keybind key="W-C-q" chroot="true"><keybind key="C-A-q"><action name="BreakChroot"/></keybind></keybind>
+    <keybind key="W-z" chroot="true"><action name="BreakChroot"/></keybind>
 
     <!-- Misc -->
     <keybind key="W-A-d"><action name="ToggleDockAutohide"/></keybind>
@@ -159,16 +159,6 @@
     <keybind key="A-F2"><action name="Desktop"><desktop>2</desktop></action></keybind>
     <keybind key="A-F3"><action name="Desktop"><desktop>3</desktop></action></keybind>
     <keybind key="A-F4"><action name="Desktop"><desktop>4</desktop></action></keybind>
-
-    <!-- Send windows to other Desktops -->
-    <keybind key="W-C-F1"><action name="SendToDesktop"><desktop>1</desktop><follow>no</follow></action></keybind>
-    <keybind key="W-C-F2"><action name="SendToDesktop"><desktop>2</desktop><follow>no</follow></action></keybind>
-    <keybind key="W-C-F3"><action name="SendToDesktop"><desktop>3</desktop><follow>no</follow></action></keybind>
-    <keybind key="W-C-F4"><action name="SendToDesktop"><desktop>4</desktop><follow>no</follow></action></keybind>
-    <keybind key="W-A-F1"><action name="SendToDesktop"><desktop>1</desktop><follow>yes</follow></action></keybind>
-    <keybind key="W-A-F2"><action name="SendToDesktop"><desktop>2</desktop><follow>yes</follow></action></keybind>
-    <keybind key="W-A-F3"><action name="SendToDesktop"><desktop>3</desktop><follow>yes</follow></action></keybind>
-    <keybind key="W-A-F4"><action name="SendToDesktop"><desktop>4</desktop><follow>yes</follow></action></keybind>
 
     <!-- Keybindings for window switching -->
     <keybind key="W-grave"><action name="Lower"/><action name="FocusToBottom"/><action name="Unfocus"/></keybind>
@@ -197,17 +187,21 @@
     <!-- http://icculus.org/openbox/index.php/Help:ClaysViStyleSpatial -->
 
     <keybind key="W-w">
+        <!-- "Move the cursor to other windows" to move windows -->
         <keybind key="h"><action name="MoveToEdgeWest"/></keybind>
         <keybind key="l"><action name="MoveToEdgeEast"/></keybind>
         <keybind key="j"><action name="MoveToEdgeSouth"/></keybind>
         <keybind key="k"><action name="MoveToEdgeNorth"/></keybind>
+        <!-- This a fudge, as there isn't a great Vim equivalent -->
         <keybind key="equal"><action name="MoveToCenter"/></keybind>
 
+        <!-- "Move the window" to grow windows -->
         <keybind key="S-h"><action name="GrowToEdgeWest"/></keybind>
         <keybind key="S-l"><action name="GrowToEdgeEast"/></keybind>
         <keybind key="S-j"><action name="GrowToEdgeSouth"/></keybind>
         <keybind key="S-k"><action name="GrowToEdgeNorth"/></keybind>
 
+        <!-- the following blocks have fairly canonical Vim equivalents -->
         <keybind key="S-bar"><action name="ToggleMaximizeHorz"/></keybind>
         <keybind key="S-underscore"><action name="ToggleMaximizeVert"/></keybind>
 
@@ -216,41 +210,38 @@
         <keybind key="S-plus"><action name="ResizeRelative"><top>2</top></action></keybind>
         <keybind key="minus"><action name="ResizeRelative"><bottom>2</bottom></action></keybind>
 
+        <keybind key="o"><action name="ToggleMaximizeFull"/></keybind>
         <keybind key="c"><action name="Close"/></keybind>
         <keybind key="p"><action name="DesktopLast"/></keybind>
-        <keybind key="g">
-            <keybind key="f"><action name="SendToDesktopPrevious"><follow>yes</follow></action></keybind>
-            <keybind key="S-f"><action name="SendToDesktopNext"><follow>yes</follow></action></keybind>
-            <keybind key="t"><action name="SendToDesktopPrevious"><follow>no</follow></action></keybind>
-            <keybind key="S-t"><action name="SendToDesktopNext"><follow>no</follow></action></keybind>
-        </keybind>
 
-        <!-- Send to Desktop bindings
-        Not true to Vim, thus commented out by default.
-        Since the W-Fn are better for moving between desktops, we're using
-        these key sequences to send a window to a particular desktop.
-        -->
+        <!-- "Split windows" to send them to nearby destops, "vertical splits" don't follow
+             Use a "count" to send a window to a specific desktop.
+             Special case: using a capital when using a "count" sends the window to a specific monitor. -->
+        <keybind key="s"><action name="SendToDesktopNext"><follow>yes</follow></action></keybind>
+        <keybind key="S-s"><action name="SendToDesktopPrevious"><follow>yes</follow></action></keybind>
+        <keybind key="v"><action name="SendToDesktopNext"><follow>no</follow></action></keybind>
+        <keybind key="S-v"><action name="SendToDesktopPrevious"><follow>no</follow></action></keybind>
+
         <keybind key="1">
-            <keybind key="g">
-                <keybind key="t"><action name="SendToDesktop"><desktop>1</desktop><follow>no</follow></action></keybind>
-            </keybind>
+            <keybind key="s"><action name="SendToDesktop"><desktop>1</desktop><follow>yes</follow></action></keybind>
+            <keybind key="v"><action name="SendToDesktop"><desktop>1</desktop><follow>no</follow></action></keybind>
+            <keybind key="S-s"><action name="MoveResizeTo"><monitor>1</monitor></action></keybind>
         </keybind>
         <keybind key="2">
-            <keybind key="g">
-                <keybind key="t"><action name="SendToDesktop"><desktop>2</desktop><follow>no</follow></action></keybind>
-            </keybind>
+            <keybind key="s"><action name="SendToDesktop"><desktop>2</desktop><follow>yes</follow></action></keybind>
+            <keybind key="v"><action name="SendToDesktop"><desktop>2</desktop><follow>no</follow></action></keybind>
+            <keybind key="S-s"><action name="MoveResizeTo"><monitor>2</monitor></action></keybind>
         </keybind>
         <keybind key="3">
-            <keybind key="g">
-                <keybind key="t"><action name="SendToDesktop"><desktop>3</desktop><follow>no</follow></action></keybind>
-            </keybind>
+            <keybind key="s"><action name="SendToDesktop"><desktop>3</desktop><follow>yes</follow></action></keybind>
+            <keybind key="v"><action name="SendToDesktop"><desktop>3</desktop><follow>no</follow></action></keybind>
+            <keybind key="S-s"><action name="MoveResizeTo"><monitor>3</monitor></action></keybind>
         </keybind>
         <keybind key="4">
-            <keybind key="g">
-                <keybind key="t"><action name="SendToDesktop"><desktop>4</desktop><follow>no</follow></action></keybind>
-            </keybind>
+            <keybind key="s"><action name="SendToDesktop"><desktop>4</desktop><follow>yes</follow></action></keybind>
+            <keybind key="v"><action name="SendToDesktop"><desktop>4</desktop><follow>no</follow></action></keybind>
+            <keybind key="S-s"><action name="MoveResizeTo"><monitor>4</monitor></action></keybind>
         </keybind>
-
     </keybind>
 
   </keyboard>
