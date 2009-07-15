@@ -70,7 +70,6 @@ ${color grey}${downspeedgraph 25,29 DDDDDD 1992d6 eth0} ${upspeedgraph 25,29 DDD
 ${color grey}rx${color white}${downspeed eth0}
 ${color grey}tx${color white}${upspeed eth0}
 $endif
-
 ${color grey}diskio
 ${diskiograph DDDDDD 1992d6}
 
