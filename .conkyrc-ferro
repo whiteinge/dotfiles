@@ -40,43 +40,44 @@ mpd_port 6600
 
 
 TEXT
-${color SteelBlue}$nodename
+${color SteelBlue}${font Monaco:bold:size=11}${time %H:%M}$font
+${color gray}${time %a, %d %b %y}
 
-${color grey}${font Monaco:bold:size=11}${time %H:%M}$font
-${time %a, %d %b %y}
+${color gray}$nodename
 
-${texeci 18000 weather.py}
 $freq_g GHz
 ${cpugraph cpu1 25,29 DDDDDD 1992d6} ${cpugraph cpu2 25,29 DDDDDD 1992d6}
-${color grey}cpu ${color white}${cpu cpu1}% ${cpu cpu2}%
-${color grey}ram ${color white}$memperc%
-${color grey}swp ${color white}${swapperc}%
+${color gray}cpu ${color white}${cpu cpu1}% ${cpu cpu2}%
+${color gray}ram ${color white}$memperc%
+${color gray}swp ${color white}${swapperc}%
 
-${color grey}temp${color white}${acpitemp}°
+${color gray}temp${color white}${acpitemp}°
 $loadavg
-${color grey}up ${color white}$uptime
+${color gray}up ${color white}$uptime
 $user_number users${if_up ra0}
 
-${color grey}ra0
+${color gray}ra0
 ${color white}${wireless_essid ra0}
-${color grey}${downspeedgraph 25,29 DDDDDD 1992d6 ra0} ${upspeedgraph 25,29 DDDDDD 1992d6 ra0}
-${color grey}rx${color white}${downspeed ra0}
-${color grey}tx${color white}${upspeed ra0}
+${color gray}${downspeedgraph 25,29 DDDDDD 1992d6 ra0} ${upspeedgraph 25,29 DDDDDD 1992d6 ra0}
+${color gray}rx${color white}${downspeed ra0}
+${color gray}tx${color white}${upspeed ra0}
 $endif${if_up eth0}
 
-${color grey}eth0
-${color grey}${downspeedgraph 25,29 DDDDDD 1992d6 eth0} ${upspeedgraph 25,29 DDDDDD 1992d6 eth0}
-${color grey}rx${color white}${downspeed eth0}
-${color grey}tx${color white}${upspeed eth0}
+${color gray}eth0
+${color gray}${downspeedgraph 25,29 DDDDDD 1992d6 eth0} ${upspeedgraph 25,29 DDDDDD 1992d6 eth0}
+${color gray}rx${color white}${downspeed eth0}
+${color gray}tx${color white}${upspeed eth0}
 $endif
-${color grey}diskio
+${color gray}diskio
 ${diskiograph DDDDDD 1992d6}
 
-${color grey}disk
-${color grey}/${color white} ${fs_used_perc /}%
-${color grey}/var${color white} ${fs_used_perc /var}%
-${color grey}/home${color white} ${fs_used_perc /home}%
+${color gray}disk
+${color gray}/${color white} ${fs_used_perc /}%
+${color gray}/var${color white} ${fs_used_perc /var}%
+${color gray}/home${color white} ${fs_used_perc /home}%
 
-${color grey}BAT1
+${color gray}BAT1
 ${color white}${battery_short BAT1}
 -${battery_time BAT1}
+
+${texeci 18000 weather.py}
