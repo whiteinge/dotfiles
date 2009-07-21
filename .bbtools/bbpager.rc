@@ -1,0 +1,155 @@
+!**********************************************************************
+!** bbpager.rc: bbpager configuration file                           **
+!**                                                                  **
+!** This is the global bbpager configuration file. To make           **
+!** user-specific modifications, you should copy this file to your   **
+!** home directory in $HOME/.bbtools/bbpager.rc and edit that file.  **
+!**                                                                  **
+!** All options have been commented out in this file. To change an   **
+!** option from its default setting, uncomment it and modify the     **
+!** setting.                                                         **
+!**********************************************************************
+
+
+!**********************************************************************
+!** behavior section
+!**********************************************************************
+
+!** Indicate whether the bbpager window is withdrawn. If using with
+!**   blackbox, "withdrawn" means it will be placed in the slit.
+bbpager.withdrawn:     True
+
+!** Set the position of the bbpager window.
+!** Relevant only when bbpager.withdrawn is False.
+!bbpager.position:               +0-0
+
+!** Set the width and height of bbpager's model of the desktop windows.
+bbpager.desktop.width:          30
+bbpager.desktop.height:         30
+
+!** Set the desktop orientation.
+!** Possible values: horizontal, vertical
+bbpager.desktop.orientation:	horizontal
+
+!** Define the maximum number of columns. The number of rows will
+!**   increase as necessary to accommodate additional desktops.
+!** Relevant only when bbpager.desktop.orientation is horizontal.
+bbpager.desktop.columns:               2
+
+!** Define the maximum number of rows. The number of columns will
+!**   increase as necessary to accommodate additional desktops.
+!** Relevant only when bbpager.desktop.orientation is vertical.
+! bbpager.desktop.rows:                  1
+
+!** Set the window focus style. This is the method to distinguish
+!**   the focused window from unfocused windows. When set to none,
+!**   a window will appear the same whether or not it is focused.
+!**   When set to border, a window's border may change when it is
+!**   focused, but its interior appearance will not. When set to
+!**   texture, a window's border and interior appearance may
+!**   change when it is focused.
+!** Possible values: none, border, texture
+bbpager.window.focusStyle:      texture
+
+!** Set the desktop focus style. This is the method to distinguish
+!**   the focused desktop from the other desktops. When set to none,
+!**   a desktop will appear the same whether or not it is focused.
+!**   When set to border, a desktop's border may change when it is
+!**   focused, but its interior appearance will not. When set to
+!**   texture, a desktop's border and interior appearance may
+!**   change when it is focused.
+!** Possible values: none, border, texture
+bbpager.desktop.focusStyle:	 border
+
+!** Set the mouse button used to perform various actions.
+!** Typically, button 1 is the left mouse button, 2 middle, 3 right,
+!**   etc., though this may be changed in the user's X configuration.
+!** A value of 0 may be assigned to bbpager.windowFocusButton or
+!**   bbpager.windowRaiseButton, meaning that no button will perform
+!**   these actions.
+!** Multiple functions may be assigned to a single mouse button. For
+!**   example, raise and focus might be good candidates to assign to
+!**   the same button.
+bbpager.desktopChangeButton:	1
+bbpager.windowMoveButton:       3
+!bbpager.windowFocusButton:	0
+!bbpager.windowRaiseButton:	0
+
+
+!**********************************************************************
+!** style section
+!**
+!** See the blackbox documentation for a description of the style
+!** syntax.
+!**********************************************************************
+
+!** Set the margin between the edge of the tool and the desktops.
+bbpager.margin:             4
+
+!** Set the margin between the desktops.
+bbpager.desktop.margin:	 1
+
+!** Define the frame style.
+!** bbpager will attempt to copy these options from the blackbox
+!**   toolbar style.
+bbpager.frame.appearance: Raised Gradient Vertical
+bbpager.frame.color1:     black
+bbpager.frame.color2:     black
+
+!** Define the desktop window style. This style is used to draw
+!**   all desktops when bbpager.desktop.focusStyle is none or border,
+!**   and it is used to draw the unfocused desktops when
+!**   bbpager.desktop.focusStyle is texture.
+!** bbpager will attempt to copy these options from the blackbox
+!**   toolbar.label style.
+bbpager.desktop.appearance: Sunken Gradient Vertical
+bbpager.desktop.color1:     black
+bbpager.desktop.color2:     black
+
+!** Define the focused desktop window style. This style is used
+!**   to draw the focused desktop when bbpager.desktop.focusStyle
+!**   is texture.
+bbpager.desktop.focus.appearance: Sunken Gradient Vertical
+bbpager.desktop.focus.color1:     white
+bbpager.desktop.focus.color2:     slategrey
+
+!** Define the border for the focused desktop window.
+!** Set borderWidth to 0 for no border.
+!** Not relevant when bbpager.desktop.focusStyle is none.
+bbpager.active.desktop.borderColor:	white
+bbpager.active.desktop.borderWidth:	1
+
+!** Define the border for unfocused desktop windows.
+!** Set borderWidth to 0 for no border.
+bbpager.inactive.desktop.borderColor:	black
+bbpager.inactive.desktop.borderWidth:	0
+
+!** Define the window style. This style is used to draw all
+!**   windows when bbpager.window.focusStyle is none or border,
+!**   and it is used to draw the unfocused windows when
+!**   bbpager.window.focusStyle is texture.
+!** bbpager will attempt to copy these options from the blackbox
+!**   window.label.unfocus style.
+bbpager.window.appearance: Raised Gradient Diagonal
+bbpager.window.color1:     white
+bbpager.window.color2:     white
+
+!** Define the focused window style. This style is used to draw
+!**   the focused window when bbpager.window.focusStyle is
+!**   texture.
+!** bbpager will attempt to copy these options from the blackbox
+!**   window.label.focus style.
+bbpager.window.focus.appearance: Raised Gradient Vertical
+bbpager.window.focus.color1:     white
+bbpager.window.focus.color2:     slategrey
+
+!** Define the border for the focused window.
+!** Set borderWidth to 0 for no border.
+!** Not relevant when bbpager.window.focusStyle is none.
+bbpager.active.window.borderColor:	lightgrey
+bbpager.active.window.borderWidth:	1
+
+!** Define the border for unfocused windows.
+!** Set borderWidth to 0 for no border.
+bbpager.inactive.window.borderColor:	black
+bbpager.inactive.window.borderWidth:	1
