@@ -45,7 +45,7 @@ ${color SteelBlue}$nodename
 ${color grey}${font Monaco:bold:size=11}${time %H:%M}$font
 ${time %a, %d %b %y}
 
-${execpi 18000 weather.py}
+${texeci 18000 weather.py}
 $freq_g GHz
 ${cpugraph cpu1 25,29 DDDDDD 1992d6} ${cpugraph cpu2 25,29 DDDDDD 1992d6}
 ${color grey}cpu ${color white}${cpu cpu1}% ${cpu cpu2}%
