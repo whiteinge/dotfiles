@@ -10,6 +10,8 @@ map <F1> :buffers<cr>
 map <F3> :sidebar Bookmarks<cr>
 map <F4> :sbclose<cr>
 
+map <Leader>r :bmlreloadcss<cr>
+
 " completion options to emulate the firefox 3 location bar
 set wildmode=list:full
 set wildoptions=auto
