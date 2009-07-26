@@ -40,6 +40,7 @@ hgext.mq =
 hgext.record =
 hgext.rebase =
 hgext.bookmarks =
+hgext.hg-git = /home/shouse/lib/python/site-packages/hg-git
 
 [hooks]
 #####################################################################
