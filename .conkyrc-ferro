@@ -80,4 +80,4 @@ ${color gray}BAT1
 ${color white}${battery_short BAT1}
 -${battery_time BAT1}
 
-${texeci 18000 weather.py}
+${texeci 7200 weather.py}
