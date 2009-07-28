@@ -1,134 +1,77 @@
-# Conky sample configuration
-#
-# the list of variables has been removed from this file in favour
-# of keeping the documentation more maintainable.
-# Check http://conky.sf.net for an up-to-date-list.
+# Conky Dockapp configuration
 
-# set to yes if you want Conky to be forked in the background
+# Run flags
 background yes
+update_interval 2
+total_run_times 0
 
-# maximum_width 1440
-minimum_size 800 480
-text_buffer_size 1024
-
-border_margin 10
-
-# Use Xft?
+# Text
 use_xft yes
-
-# Xft font when Xft is enabled
-xftfont Monaco:size=9
-
-# Text alpha when using Xft
+xftfont Monaco:size=7
 xftalpha 1.0
+override_utf8_locale yes
+use_spacer left
 
-# Print everything to stdout?
-# out_to_console no
+# Dockapp-ify
+own_window yes
+own_window_type dock
+own_window_colour gray3
+maximum_width 64
+minimum_size 64 64
+alignment tl
 
-# MPD host/port
+# Drawing
+double_buffer yes
+draw_shades yes
+draw_borders no
+border_margin 5
+
+# Colors
+default_color gray20
+default_shade_color black
+
+# Individual Monitor Settings
+cpu_avg_samples 2
+net_avg_samples 2
+if_up_strictness address
+
 mpd_host localhost
 mpd_port 6600
 
-# Print everything to console?
-# out_to_console no
-
-# mail spool
-# mail_spool $MAIL
-
-# Update interval in seconds
-update_interval 5
-
-# This is the number of times Conky will update before quitting.
-# Set to zero to run forever.
-total_run_times 0
-
-# For xcompmgr
-own_window no
-# own_window_transparent yes
-# own_window_type override
-# own_window_type desktop
-
-# Use double buffering (reduces flicker, may not work for everyone)
-double_buffer yes
-
-# Draw shades?
-# draw_shades yes
-
-# Draw outlines?
-draw_outline no
-
-# Draw borders around text
-draw_borders no
-
-# Default colors and also border colors
-default_color white
-default_shade_color black
-default_outline_color black
-
-# Text alignment, other possible values are commented
-alignment tm
-# alignment top_right
-# alignment bottom_left
-# alignment bottom_right
-# alignment right
-
-# Gap between borders of screen and text
-# same thing as passing -x at command line
-gap_x -10
-gap_y -11
-
-# Subtract file system buffers from used memory?
-# no_buffers yes
-
-# set to yes if you want all text to be in uppercase
-uppercase no
-
-# number of cpu samples to average
-# set to 1 to disable averaging
-cpu_avg_samples 2
-
-# number of net samples to average
-# set to 1 to disable averaging
-net_avg_samples 2
-
-# Force UTF8? note that UTF8 support required XFT
-override_utf8_locale yes
-
-# Add spaces to keep things from moving about?  This only affects certain objects.
-use_spacer left
-
-# How to detect if an interface is up
-if_up_strictness address
-
-# variable is given either in format $variable or in ${variable}. Latter
-# allows characters right after the variable and must be used in network
-# stuff because of an argument
-
-# stuff after 'TEXT' will be formatted on screen
 
 TEXT
+${color SteelBlue}${font Monaco:bold:size=11}${time %H:%M}$font
+${color gray}${time %a, %d %b %y}
 
-${color grey}${time %a, %d %b %y}     ${time %H:%M }  $alignr ${color grey}cpu:${color white}$cpu% ($freq MHz)   ${color grey}ram:${color white}$memperc%    ${color grey}tx:${color white}${if_up wlan0}${downspeed wlan0}$endif${if_up eth0}${downspeed eth0}$endif ${color grey}rx:${color white}${if_up wlan0}${upspeed wlan0}$endif${if_up eth0}${upspeed eth0}$endif    ${color grey}batt: ${color white}$battery    
+${color gray}$nodename
 
+$freq MHz
+${cpugraph cpu1 DDDDDD 1992d6}
+${color gray}cpu ${color white}${cpu cpu1}%
+${color gray}ram ${color white}$memperc%
+${color gray}swp ${color white}${swapperc}%
 
-$alignr$loadavg  |  $uptime  |  $user_number users    
+${color gray}temp${color white}${acpitemp}°
+$loadavg
+${color gray}up ${color white}$uptime
+$user_number users${if_up wlan0}
 
+${color gray}wlan0
+${color white}${wireless_essid wlan0}
+${color gray}${downspeedgraph 25,29 DDDDDD 1992d6 wlan0} ${upspeedgraph 25,29 DDDDDD 1992d6 wlan0}
+${color gray}rx${color white}${downspeed wlan0}
+${color gray}tx${color white}${upspeed wlan0}
+$endif${if_up eth0}
 
-$alignr ${color grey}bat0: ${color white}${battery_bar 5,120}    
-$alignr$battery_time remaining    
-$alignr${color grey}temp:${color white}${acpitemp}°    
+${color gray}eth0
+${color gray}${downspeedgraph 25,29 DDDDDD 1992d6 eth0} ${upspeedgraph 25,29 DDDDDD 1992d6 eth0}
+${color gray}rx${color white}${downspeed eth0}
+${color gray}tx${color white}${upspeed eth0}
+$endif
+${color gray}diskio
+${diskiograph DDDDDD 1992d6}
+${color gray}/${color white} ${fs_used_perc /}%
 
-
-${if_up wlan0}$alignr${color grey}wifi: ${color white}${wireless_link_bar 5,120 wlan0}    
-$alignr${color grey}${wireless_mode wlan0}: ${color white}${wireless_essid wlan0}    
-$alignr${color grey}wlan0: ${color white}${addrs wlan0}    $endif${if_up eth0}$alignr${color grey}eth0: ${color white}${addrs eth0}    $endif
-$alignr${color grey}ns: ${color white}$nameserver    
-
-
-$alignr ${color grey}/ ${color white}${fs_bar 5,120 /}    ${if_mounted /media/sdcard}
-$alignr ${color grey}/media/sdcard ${color white}${fs_bar 5,120 /media/sdcard}    $endif
-
-
-$alignr ${color grey}mpd $mpd_status  ${color white}$mpd_smart    
-$alignr ${color white}${mpd_bar 5,200}     
-$alignr ${color grey}Vol: ${color white}$mpd_vol   ${color grey}Rand: ${color white}$mpd_random   ${color grey}Rep: ${color white}$mpd_repeat    
+${color gray}BAT0
+${color white}${battery_short BAT0}
+-${battery_time BAT0}

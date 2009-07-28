@@ -356,9 +356,9 @@ function djworkon(){
     source ./bin/activate
 
     # Set up django environ vars
-    if [[ -h project && -f project/debug_settings.py ]]; then
-        export DJANGO_SETTINGS_MODULE=$(basename\
-                $(readlink project)).debug_settings
+    if [[ -f project/debug_settings.py ]]; then
+        export PYTHONPATH=$PWD/project:$PYTHONPATH
+        export DJANGO_SETTINGS_MODULE=debug_settings
     fi
 }
  
