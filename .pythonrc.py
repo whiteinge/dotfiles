@@ -146,7 +146,7 @@ Django environment detected.
 * Your INSTALLED_APPS models have been imported into the namespace `A`.
 * Your project settings are available as `S`.
 
-  * Changing S.DEBUG_PROPAGATE_EXCEPTIONS = False is useful with pdb.
+  * Changing S.DEBUG_PROPAGATE_EXCEPTIONS = True is useful with pdb.
 
 * The Django test client is available as `C`.
 %(Normal)s""" % _c
