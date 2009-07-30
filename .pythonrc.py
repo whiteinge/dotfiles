@@ -12,12 +12,18 @@ LAST_MODIFIED = '$Date: 2009-04-09 21:33:47 -0600 (Thu, 09 Apr 2009) $'
 ##########################################################################
 
 # Imports we need
-import sys, os, readline, rlcompleter, atexit, pprint, __builtin__, __main__
+import sys
+import os
+import readline, rlcompleter
+import atexit
+import pprint
+import __builtin__
 from tempfile import mkstemp
 from code import InteractiveConsole
 
 # Imports we want
 import datetime
+import pdb
 
 # Color Support
 ###############
