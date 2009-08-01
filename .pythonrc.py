@@ -143,26 +143,26 @@ if os.environ.has_key('DJANGO_SETTINGS_MODULE'):
 
     WELCOME += """%(Green)s
 Django environment detected.
-* Your INSTALLED_APPS models have been imported into the namespace `A`.
+* Your INSTALLED_APPS models are available as `A`.
 * Your project settings are available as `S`.
-
-  * Changing S.DEBUG_PROPAGATE_EXCEPTIONS = True is useful with pdb.
-
 * The Django test client is available as `C`.
 %(Normal)s""" % _c
 
     setup_test_environment()
+    S.DEBUG_PROPAGATE_EXCEPTIONS = True
 
     WELCOME += """%(LightPurple)s
-Note: The Django test environment has been set up.
-To restore the normal environment call `teardown_test_environment()`.
+Warning: the Django test environment has been set up; to restore the
+normal environment call `teardown_test_environment()`.
+
+Warning: DEBUG_PROPAGATE_EXCEPTIONS has been set to True.
 %(Normal)s""" % _c
 
 # Start an external editor with \e
 ##################################     
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/438813/
 
-EDITOR = os.environ.get('EDITOR', 'vim')
+EDITOR = os.environ.get('EDITOR', 'vi')
 EDIT_CMD = '\e'
 
 class EditableBufferInteractiveConsole(InteractiveConsole):
