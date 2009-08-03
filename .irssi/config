@@ -190,7 +190,6 @@ hilights = (
   { text = "whiteing1"; nick = "yes"; word = "yes"; },
   { text = "\\<seth\\>"; nick = "no"; word = "yes"; regexp = "yes"; }
   { text = "oalug"; nick = "yes"; word = "yes"; },
-  { text = "conman"; nick = "yes"; word = "yes"; },
   {
     text = ".*";
     regexp = "yes";
