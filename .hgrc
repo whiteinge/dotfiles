@@ -40,13 +40,13 @@ hgext.mq =
 hgext.record =
 hgext.rebase =
 hgext.bookmarks =
-hgext.hg-git = /home/shouse/lib/python/site-packages/hg-git
+hgext.hg-git = ~/lib/python/site-packages/hg-git
 
 [hooks]
 #####################################################################
 
 # Don't commit any code that contains 'pdb'
-pretxncommit.pdb = hg export tip | (! grep 'pdb') 
+# pretxncommit.pdb = hg export tip | (! grep 'pdb') 
 
 # Prevent "hg pull" if MQ patches are applied.
 prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
