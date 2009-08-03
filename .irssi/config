@@ -40,6 +40,7 @@ channels = (
   { name = "#jquery"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#xorg"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#archlinux"; chatnet = "freenode"; autojoin = "yes"; }
+  { name = "#erlang-otp"; chatnet = "freenode"; autojoin = "yes"; }
 );
 
 statusbar = {
@@ -170,7 +171,7 @@ settings = {
     windows_auto_renumber = "no";
     theme = "hv";
     autolog = "no";
-    activity_hide_targets = "#utah #uphpu #django #geodjango #slamd64 #jquery #xorg #archlinux";
+    activity_hide_targets = "#utah #uphpu #django #geodjango #slamd64 #jquery #xorg #archlinux #erlang-otp";
   };
   "perl/core/scripts" = {
     screen_away_active = "yes";
