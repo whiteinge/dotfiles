@@ -171,7 +171,7 @@ settings = {
     windows_auto_renumber = "no";
     theme = "hv";
     autolog = "no";
-    activity_hide_targets = "#utah #uphpu #django #geodjango #slamd64 #jquery #xorg #archlinux #erlang-otp";
+    activity_hide_targets = "#utah #uphpu #django #geodjango #slamd64 #jquery #xorg #archlinux #erlang-otp #erlang #couchdb";
   };
   "perl/core/scripts" = {
     screen_away_active = "yes";
