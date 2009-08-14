@@ -5,9 +5,6 @@
 
 set nocompatible                "cp:    turns off strct vi compatibility
 
-" Fix until the Arch/testing situation gets unfucked **pdb
-" set runtimepath+=/usr/share/vim/vim72
-
 " Search {{{
 
 set incsearch                   "is:    automatically begins searching as you type
