@@ -6,7 +6,7 @@
 set nocompatible                "cp:    turns off strct vi compatibility
 
 " Fix until the Arch/testing situation gets unfucked **pdb
-set runtimepath+=/usr/share/vim/vim72
+" set runtimepath+=/usr/share/vim/vim72
 
 " Search {{{
 
