@@ -8,10 +8,11 @@ set from = "Seth House <whiteinge@gmail.com>"
 set imap_user = "whiteinge@gmail.com"
 set folder = "imaps://imap.gmail.com:993"
 set spoolfile = "+INBOX"
-set record = "+Sent"
-set postponed = "+Drafts"
-set mbox = "+All Mail"
+set record = "+[Gmail]/Sent Mail"
+set postponed = "+[Gmail]/Drafts"
+set trash = "+[Gmail]/Trash"
 
+set mbox = "+[Gmail]/All Mail"
 mailboxes =INBOX
 
 set header_cache = ~/.mutt/cache/headers
@@ -21,11 +22,14 @@ set certificate_file = ~/.mutt/certificates
 
 # Reading Mail ################################################################
 set timeout = 10
-set mail_check = 5
+set mail_check = 5                  # check for msgs every 5 mins
 set sort = threads
-set sort_aux = date
-set move = no
+set sort_aux = last-date-received
+set imap_check_subscribed = yes
+set imap_list_subscribed = no
+set move = no                       # move read msgs to your mbox folder?
 set mark_old = no
+set charset = utf-8
 
 
 # Viewing Mail ################################################################
@@ -50,5 +54,51 @@ set send_charset = "utf-8"
 set copy = yes
 
 
-# Others ######################################################################
-source ~/.mutt/garschall.theme
+# Getting Around ##############################################################
+bind editor <space> noop
+macro index,pager s "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive"
+macro index,pager d "<save-message>=[Gmail]/Trash<enter><enter>" "Trash"
+macro index,pager p "<save-message>=[Gmail]/Spam<enter><enter>" "Spam"
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index ga "<change-folder>=[Gmail]/All Mail<enter>" "Go to all mail"
+macro index gs "<change-folder>=[Gmail]/Starred<enter>" "Go to starred messages"
+macro index gd "<change-folder>=[Gmail]/Drafts<enter>" "Go to drafts"
+macro index go "<change-folder>=[Gmail]/Sent Mail<enter>" "Go to sent mail"
+macro index gp "<change-folder>=[Gmail]/Spam<enter>" "Go to spam"
+
+
+# Color ######################################################################
+color indicator default blue                        # current highlighted line
+color tree blue default                             # threads arrow
+color status blue white                             # top and bottom status
+color index cyan default "~Q"                       # replied to
+color index green default "~N"                      # new
+color index green default "~O"                      # unread
+color index green default "~U"                      # unread
+color index blue default "~D"                       # deleted
+color index magenta default "~F"                    # flagged
+
+color header green default "^To:"
+color header green default "^cc"
+color header red default "^From:"
+color header brightblue default "^date:"
+color header brightyellow default "^subject"
+color signature blue default
+color attachment magenta default
+color tilde blue default
+color quoted green default
+color quoted1 cyan default
+color quoted2 brightgreen default
+color quoted3 brightcyan default
+
+# highlight URLs
+color body yellow default "(finger|ftp|http|https|news|telnet)://[^ >]*"
+color body yellow default "<URL:[^ ]*>"
+color body yellow default "www\\.[-.a-z0-9]+\\.[a-z][a-z][a-z]?([-_./~a-z0-9]+)?"
+color body yellow default "mailto: *[^ ]+\(\\i?subject=[^ ]+\)?"
+color body yellow default "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+
+# highlight *bold* _underlined_ /italic/ text
+color body brightwhite default "[^[:alnum:]][*_/][-_&!.,[:alnum:]]+[*_/][^[:alnum:]]"
+color body brightwhite default "^[*_/][-_&!.,[:alnum:]]+[*_/][^[:alnum:]]"
+color body brightwhite default "^[*_/][-_&!.,[:alnum:]]+[*_/]$"

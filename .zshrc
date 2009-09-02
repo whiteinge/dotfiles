@@ -317,23 +317,13 @@ joinpdf () {
 }
 
 # }}}
-# Django helper functions {{{
+# Python development helpers {{{
 
-# Background the fake mail server and start the development server
-# E.g.::
-#   # To start both the mail server and dev server:
-#   djrunserver
-#   # To only start the dev server
-#   djrunserver only
-djrunserver()
-{
-    if [ x"$1" != x ]; then   # args were given
-        django-admin.py runserver
-    else
-        python -m smtpd -n -c DebuggingServer localhost:1025 &
-        django-admin.py runserver
-    fi
-}
+alias pyhttp='python -c "import SimpleHTTPServer; SimpleHTTPServer.test();"'
+alias pysmtp='python -m smtpd -n -c DebuggingServer localhost:1025'
+
+# }}}
+# Django helper functions {{{
 
 # For a monolithic project, just run the function from the project folder.
 # For a reusable app, run the function from the folder containing the settings
@@ -377,27 +367,11 @@ function djworkon(){
 }
 
 # }}}
-# Displays the titles and their length in a VIDEO_TS folder {{{
-
-dvdinfo()
-{
-    mplayer dvd:// -dvd-device $1 -identify -ao null -vo -null -frames 0 | grep '^ID_DVD'
-}
-
-# }}}
 # 256-colors test {{{
 
 256test()
 {
     echo -e "\e[38;5;196mred\e[38;5;46mgreen\e[38;5;21mblue\e[0m"
-}
-
-# }}}
-# TRAPUSR2 for the allsh script {{{1
-# http://sial.org/howto/shell/allsh/
-
-TRAPUSR2() {
-      [ -f ~/.sh-sourceall ] && . ~/.sh-sourceall
 }
 
 # }}}
@@ -411,22 +385,6 @@ dict (){
 
 spell (){
     echo $1 | aspell -a
-}
-
-# }}}
-# CSS Minifier {{{1
-
-cssmin (){
-    sed -e '
-s/^[ \t]*//g;         # remove leading space
-s/[ \t]*$//g;         # remove trailing space
-s/\([:{;,]\) /\1/g;   # remove space after a colon, brace, semicolon, or comma
-s/ {/{/g;             # remove space before a semicolon
-s/\/\*.*\*\///g;      # remove comments
-/^$/d                 # remove blank lines
-' < $1 | sed -e :a -e '$!N; s/\n\(.\)/\1/; ta # remove all newlines
-s/}/}\n/g;            # put each rule on a new line
-'
 }
 
 # }}}
