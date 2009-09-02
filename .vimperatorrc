@@ -4,6 +4,9 @@ set! network.http.pipelining=true
 set! network.http.proxy.pipelining=true
 set! network.http.pipelining.maxrequests=8
 set! nglayout.initialpaint.delay=0
+set! network.proxy.socks_remote_dns=true
+set! network.proxy.socks="localhost"
+set! network.proxy.socks_port=8009
 
 " shortcut mappings
 map <F1> :buffers<cr>

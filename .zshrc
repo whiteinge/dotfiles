@@ -320,9 +320,14 @@ joinpdf () {
 # Django helper functions {{{
 
 # Background the fake mail server and start the development server
+# E.g.::
+#   # To start both the mail server and dev server:
+#   djrunserver
+#   # To only start the dev server
+#   djrunserver only
 djrunserver()
 {
-    if [ $1 == 'w' ]; then
+    if [ x"$1" != x ]; then   # args were given
         django-admin.py runserver
     else
         python -m smtpd -n -c DebuggingServer localhost:1025 &
@@ -333,9 +338,18 @@ djrunserver()
 # For a monolithic project, just run the function from the project folder.
 # For a reusable app, run the function from the folder containing the settings
 # file, and pass the settings file as an argument.
+# E.g.::
+#   # Project configuration
+#   cd my_django_project
+#   djsetup
+#   django-admin.py runserver
+#   # Reusuable configuration
+#   cd dir_with_settings_file
+#   djsetup someproject_settings.py
+#   django-admin.py runserver
 djsetup()
 {
-    if [ x"$1" != x ]; then   # no args were given
+    if [ x"$1" != x ]; then   # args were given
         export PYTHONPATH=$PWD:$PYTHONPATH
         export DJANGO_SETTINGS_MODULE=$(basename $1 .py)
     else
@@ -348,7 +362,7 @@ djsetup()
 
 # Django virtualenv helpers
 VIRTUALENV_PROJECTS=$HOME/src
- 
+
 # work on virtualenv
 function djworkon(){
     cd $VIRTUALENV_PROJECTS/$1
@@ -361,7 +375,7 @@ function djworkon(){
         export DJANGO_SETTINGS_MODULE=debug_settings
     fi
 }
- 
+
 # }}}
 # Displays the titles and their length in a VIDEO_TS folder {{{
 
