@@ -1,6 +1,6 @@
 " Best Goddamn vimrc in the whole world.
 " Author: Seth House <seth@eseth.com>
-" Modified: $LastChangedDate$
+" Modified: 2009-09-04
 " For more information type :help followed by the command.
 
 set nocompatible                "cp:    turns off strct vi compatibility
@@ -239,11 +239,11 @@ let g:explStartRight=0  " new windows go to right of explorer window
 " YankList {{{1
 " Is is possbile to store the ten most recent yanks using opfunc (similar to
 " the built-in numbered registers)?
-" NOTE: work in progress
+" NOTE: work in progress, this is currently non-functional
 
-noremap <silent> gy :set opfunc=YankList<CR>g@
-vmap <silent> gy :<C-U>call YankList(visualmode(), 1)<CR>
-map <silent> gyy Y
+" noremap <silent> gy :set opfunc=YankList<CR>g@
+" vmap <silent> gy :<C-U>call YankList(visualmode(), 1)<CR>
+" map <silent> gyy Y
 
 function! YankList(type, ...)
     let sel_save = &selection
