@@ -11,6 +11,7 @@
 
 setopt                          \
         auto_cd                 \
+        auto_pushd              \
         chase_links             \
         noclobber               \
         complete_aliases        \
