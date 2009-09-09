@@ -1,14 +1,15 @@
-text/html; echo && lynx --dump %s; nametemplate=%s.html; copiousoutput
+application/acrobat; xpdf %s
 application/pdf; xpdf %s
-image/jpeg; gqview %s
-image/jpg; gqview %s
-image/gif; gqview %s
-image/png; gqview %s
-image/tiff; gqview %s
-audio/*; mplayer %s
-video/mpeg; mplayer %s
-video/*; mplayer %s
 application/postscript; gv %s
 application/x-dvi; xdvi %s
-application/pdf; xpdf %s
-application/acrobat; xpdf %s
+audio/*; mplayer %s
+image/gif; gqview %s
+image/jpeg; gqview %s
+image/jpg; gqview %s
+image/png; gqview %s
+image/tiff; gqview %s
+image/x-portable-bitmap; display %s
+image/x-xpixmap; display %s
+text/html; echo && lynx --dump %s; nametemplate=%s.html; copiousoutput
+video/*; mplayer %s
+video/mpeg; mplayer %s
