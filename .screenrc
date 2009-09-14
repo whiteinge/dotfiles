@@ -1,67 +1,39 @@
-# $Id: .screenrc 429 2008-10-17 23:33:34Z shouse $
-#
-#                               MESSAGES
+# Best Goddamn screenrc in the whole world.
+# Author: Seth House <seth@eseth.com>
+# Modified: 2009-09-10
+
+# Messages ####################################################################
 nethack on              # be careful! new screen tonight.
 sorendition "kg"        # makes screen messages stand out, black on green
-msgwait 2               # default display wait is way too long
+msgwait 2               # default message display is too long
 startup_message off     # boooring!
-version                 # echo version on startup, 'cause old versions break things
+version                 # echo version on startup, 'cause it's nice to know
 
-#                                 MISC
-autodetach on           # *sniff* I love this so much!
-defflow off             # disables (in theory) flow control ('cause it's no longer 1983)
-bind s
-vbell off               # visual bells are hard to do right
-defutf8 on              # Default to utf
 
-#                           SCROLL-BACK MODE
+# Misc ########################################################################
+autodetach on           # A.K.A. the "save your bacon" option
+altscreen on            # full-screen programs (less, Vim) should be cleared once quit
+vbell off               # visual bells are hard to do right. screen's isn't good
+defutf8 on              # allow utf characters
+
+defflow off             # try to disable flow control (buggy)
+bind s                  # free ctrl-s
+                        # Also put this in your shell startup file:
+                        # tty > /dev/null && stty -ixon -ixoff
+# escape ^Ss              # Use ctrl-s as the escape key or invoke with screen -e'^Ss'
+# FIXME: http://web.mit.edu/gnu/doc/html/screen_14.html
+
+
+
+# Scroll-back mode ############################################################
 ignorecase on           # case insensitive search in scroll-back mode
-defscrollback 5120      # default scroll-back buffer is tiny. (No. of lines.)
-bufferfile $HOME/.screen_buf
+defscrollback 9999      # default scroll-back buffer is tiny. (no. of lines.)
+bufferfile $HOME/.screen-exchange  # keep the buffer exchange file out of /tmp
 
-# set the second mark, write to the screen-exchange file, and use xsel to
-# synchronize the paste buffer with the X selection.
-# bindkey > eval "stuff ' '" writebuf "exec sh -c 'xclip -i < /tmp/screen-exchange'"
-# Other example:
-# bind b eval "writebuf" "exec sh -c 'pbcopy < /tmp/screen-exchange'"
-# bindkey -m > eval "stuff ' '" writebuf "exec sh -c 'xsel -n < /tmp/screen-exchange'"
-# Reads the current X selection into the paste buffer
-# bindkey < eval "stuff ' '" "exec sh -c 'xclip -o > /tmp/screen-exchange'" readbuf
+# FIXME: http://stackoverflow.com/questions/994563/integrate-readlines-kill-ring-and-the-x11-clipboard
 
-#                           DEFAULT WINDOWS
-# To run the same command in all windows from the screen command mode:
-# at '#' stuff 'yourcommand\012'
-# \012 is the code for a carriage return
 
-screen -t irssi
-screen -t main
-screen -t work
-select 0
-
-#                            NESTED SCREENS
-# I often run an ssh-ed screen in my main screen and like ctrl-s for the inside escape key.
-# You need to free it from legacy silliness first though. Put this in your .bashrc
-# tty > /dev/null && stty -ixon -ixoff
-# Or in your .zshrc (cleaner solution)
-# setopt no_flow_control
-#
-# Then uncomment the following line in the remote .screenrc or invoke with screen -e'^Ss'
-# escape ^Ss
-
-#                               HARDSTATUS
-# Adds a nice "tabbed" look, kinda long but gracefully pushes the status stuff off-screen if need be
-hardstatus alwayslastline "%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw %= %{mk}@ %H %{ck}%Y%{wk}-%{ck}%m%{wk}-%{ck}%d %{yk}%D %{gk}%0c %{bk}%l"
-
-# TODO: Detail every part of the hardstatus line below
-# %{wk}     - Default white on black
-
-# EOF
-
-###############
-# 256 colours #
-###############
-#
-#.. __: http://frexx.de/xterm-256-notes/
+# Enable 256 Colors  (http://frexx.de/xterm-256-notes/)  ######################
 #
 # terminfo and termcap for nice 256 color terminal
 # allow bold colors - necessary for some reason
@@ -70,3 +42,20 @@ attrcolor b ".I"
 termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 # erase background with current bg color
 defbce "on"
+
+
+# Create windows on startup ###################################################
+screen -t irssi
+screen -t main
+screen -t work
+select 0
+
+
+# Hardstatus ##################################################################
+# Adds a nice "tabbed" look, kinda long but gracefully pushes the status stuff off-screen if need be
+hardstatus alwayslastline "%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw %= %{mk}@ %H %{ck}%Y%{wk}-%{ck}%m%{wk}-%{ck}%d %{yk}%D %{gk}%0c %{bk}%l"
+
+# TODO: Detail every part of the hardstatus line below
+# %{wk}     - Default white on black
+
+# EOF
