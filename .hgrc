@@ -1,56 +1,125 @@
-[ui]
-#####################################################################
+# Best Goddamn hgrc file in the whole world.
+# Author Seth House <seth@eseth.com>
+# Modified: 2009-09-15
+#
+# Contains many commented-out examples toward the end of the file that are
+# useful to add to a repo-specific hgrc.
 
+
+[ui]
+###############################################################################
 username = Seth House <seth@eseth.com>
+# global ignore file
 ignore = ~/.hgignore
 
+
 [alias]
-#####################################################################
+###############################################################################
+# Variable-detail changelog displays  FIXME: can't expand ~ in an alias?
+ll = glog -l 5 --style /home/shouse/.hg-map-cmdline.friendly
+l = ll -q
+lll = ll -v
 
-ll = glog --limit 5 --template '{rev}:{node|short}    {tags} {parents}'\
-    '{date|age} ago   {author|user}\n  {desc|firstline|strip}\n\n'
+lc = log -l 5 --style changelog
 
-# Show status output for the current patch
+# MQ: Show status output for the current patch
 qstatus = status --rev -2:.
-
-# Output all applied patches as a single diff
+# MQ: Output all applied patches as a single diff
 qudiff = diff -r $(hg parents -r qbase --template '#rev#') -r qtip
 
+
 [merge-tools]
-#####################################################################
-
+###############################################################################
 vimdiff.executable = vimdiff
-vimdiff.premerge = True
-vimdiff.gui = False
+vimdiff.premerge = True         # run non-interactive 3-way merge tool first
+vimdiff.gui = false
 
-[web]
-#####################################################################
+inkscape.executable = inkscape
+inkscape.premerge = false
+inkscape.gui = true
 
-allow_archive = bz2 gz
-# push_ssl = false
-# allow_push = *
+
+[merge-patterns]
+###############################################################################
+**.svg = inkscape
+
 
 [extensions]
-#####################################################################
-
+###############################################################################
+# display color in the status output
 color =
+# pull only certain changesets from a clone
 transplant =
+# display trees on the command-line
 hgext.graphlog =
+# easily remove non-tracked files from a repo
 hgext.purge =
+# hq's incredibly powerful quilt-system
 hgext.mq =
+# checkin only certain changes from a file
 hgext.record =
+# pull changes onto a modified working copy
 hgext.rebase =
+# lightweight branching idiom
 hgext.bookmarks =
+# send email for certain events
+hgext.notify =
+# access git repos <http://hg-git.github.com/>
 hgext.hg-git = ~/lib/python/site-packages/hg-git
 
+
 [hooks]
-#####################################################################
-
+###############################################################################
 # Don't commit any code that contains 'pdb'
-# pretxncommit.pdb = hg export tip | (! grep 'pdb') 
+pretxncommit.pdb = hg export tip | (! grep 'pdb') 
 
-# Prevent "hg pull" if MQ patches are applied.
+# Prevent "hg pull" if MQ patches are applied (qpop -a first!)
 prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
-
-# Prevent "hg push" if MQ patches are applied.
+# Prevent "hg push" if MQ patches are applied (qpop -a first!)
 preoutgoing.mq-no-push = ! hg qtop > /dev/null 2>&1
+
+# Send an email per changeset on incoming push
+# incoming.notify = python:hgext.notify.hook
+# Send an email per push on incoming push
+# hangegroup.notify = python:hgext.notify.hook
+
+
+[web]
+###############################################################################
+allow_archive = bz2,gz          # default "download as..." formats
+# description = "The purpose of this repo is..."
+# baseurl = http://example.com/hg_repos
+# push_ssl = false                # allow push from insecure (!) connection
+# allow_push = *                  # allow a push from any user
+# allow_read = someuser           # if non-empty reqiure authentication
+
+
+# [auth]
+# someuser.username = someuser
+# someuser.password = password
+
+# [trusted]
+# users = user1,user2             # ignores repo-specific hgrc for non-trusted
+# groups = 
+
+# [reposubs]
+# People to send email notifications
+# ** = user1@example.com,user2@example.com
+
+# [email]
+# from = user@example.com
+
+# [smtp]
+# host = smtp.example.com
+# tls = true
+# username = username
+# password = p4ssw0rd
+
+# [notify]
+# test = false                    # won't send email unless false; for testing
+# config =                        # reposubs can be external file, if wanted
+# maxdiff = 0                     # no. diff lines to include in the email
+# template = Subject: {desc|firstline|strip}\n
+#     {node|short}  {tags}  {author}  {date|date}
+#     {files|tabindent}
+#     {desc|tabindent|strip}

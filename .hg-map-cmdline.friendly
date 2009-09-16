@@ -1,0 +1,39 @@
+changeset = '\
+    {rev}{tags}{parents}  {node|short}\t\t{author|user}\t{date|age} ago
+    \t{desc|firstline|strip|fill76}
+    \t{files|stringify|fill76|tabindent}\n'
+
+changeset_quiet = '\
+    {rev}{tags}{parents}  {node|short}\t\t{author|user}\t{date|age} ago
+    \t{desc|firstline|strip|fill76}\n'
+
+changeset_verbose = '\
+    {rev}{tags}{parents}  {node|short}\t{author}\t{date|isodate} ({date|age} ago)
+    \t{desc|strip|fill76}\n
+    \t{file_mods|stringify|fill76|tabindent}\
+    \t{file_adds|stringify|fill76|tabindent}\
+    \t{file_dels|stringify|fill76|tabindent}'
+
+
+start_tags = '['
+tag = '{tag},'
+last_tag = '{tag}]'
+
+start_parents = ':'
+parent = '{rev} '
+last_parent = '{rev}'
+
+file = '{file|basename}, '
+last_file = '{file|basename}'
+
+file_mod = '{file_mod}, '
+file_add = '{file_add}, '
+file_del = '{file_del}, '
+
+start_file_mods = '* '
+start_file_adds = '+ '
+start_file_dels = '- '
+
+last_file_mod = '{file_mod}\n\n'
+last_file_add = '{file_add}\n\n'
+last_file_del = '{file_del}\n\n'
