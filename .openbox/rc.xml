@@ -147,7 +147,7 @@
     <!-- Misc -->
     <keybind key="W-A-d"><action name="ToggleDockAutohide"/></keybind>
     <keybind key="W-d"><action name="ToggleShowDesktop"/></keybind>
-    <keybind key="W-x"><action name="ToggleMaximizeFull"/></keybind><keybind key="A-x"><action name="ToggleMaximizeFull"/></keybind>
+    <keybind key="W-x"><action name="ToggleMaximizeFull"/></keybind>
 
     <!-- Switch to Desktops -->
     <keybind key="W-a"><action name="DesktopLast"><dialog>no</dialog></action></keybind>
