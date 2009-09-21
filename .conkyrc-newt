@@ -58,13 +58,13 @@ $user_number users${if_up wlan0}
 
 ${color gray}wlan0
 ${color white}${wireless_essid wlan0}
-${color gray}${downspeedgraph 25,29 DDDDDD 1992d6 wlan0} ${upspeedgraph 25,29 DDDDDD 1992d6 wlan0}
+${color gray}${downspeedgraph wlan0 25,29 DDDDDD 1992d6 1280 -l} ${upspeedgraph wlan0 25,29 DDDDDD 1992d6 1280 -l}
 ${color gray}rx${color white}${downspeed wlan0}
 ${color gray}tx${color white}${upspeed wlan0}
 $endif${if_up eth0}
 
 ${color gray}eth0
-${color gray}${downspeedgraph 25,29 DDDDDD 1992d6 eth0} ${upspeedgraph 25,29 DDDDDD 1992d6 eth0}
+${color gray}${downspeedgraph eth0 25,29 DDDDDD 1992d6 12800 -l} ${upspeedgraph eth0 25,29 DDDDDD 1992d6 12800 -l}
 ${color gray}rx${color white}${downspeed eth0}
 ${color gray}tx${color white}${upspeed eth0}
 $endif
