@@ -31,16 +31,19 @@ channels = (
   { name = "#oalug"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utahpython"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utahdjango"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#utah"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utos"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#ubuntu-us-ut"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#gubug"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#utah-altlang"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#uphpu"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#utah"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#geodjango"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#django"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#jquery"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#xorg"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#archlinux"; chatnet = "freenode"; autojoin = "yes"; }
   { name = "#erlang-otp"; chatnet = "freenode"; autojoin = "yes"; }
+  { name = "##proggit"; chatnet = "freenode"; autojoin = "yes"; }
 );
 
 statusbar = {
@@ -171,7 +174,7 @@ settings = {
     windows_auto_renumber = "no";
     theme = "hv";
     autolog = "no";
-    activity_hide_targets = "#utah #uphpu #django #geodjango #slamd64 #jquery #xorg #archlinux #erlang-otp #erlang #couchdb";
+    activity_hide_targets = "#utah #uphpu #django #geodjango #slamd64 #jquery #xorg #archlinux #erlang-otp #erlang #couchdb ##proggit #mercurial";
   };
   "perl/core/scripts" = {
     screen_away_active = "yes";
@@ -235,7 +238,7 @@ windows = {
       {
         type = "CHANNEL";
         chat_type = "IRC";
-        name = "#utos-dev";
+        name = "#oalug";
         tag = "freenode";
       }
     );
@@ -245,7 +248,7 @@ windows = {
       {
         type = "CHANNEL";
         chat_type = "IRC";
-        name = "#oalug";
+        name = "#utahpython";
         tag = "freenode";
       }
     );
@@ -255,7 +258,7 @@ windows = {
       {
         type = "CHANNEL";
         chat_type = "IRC";
-        name = "#utahpython";
+        name = "#utos";
         tag = "freenode";
       }
     );
@@ -265,27 +268,7 @@ windows = {
       {
         type = "CHANNEL";
         chat_type = "IRC";
-        name = "#utahdjango";
-        tag = "freenode";
-      }
-    );
-  };
-  7 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#utah";
-        tag = "freenode";
-      }
-    );
-  };
-  8 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#utos";
+        name = "#utos-dev";
         tag = "freenode";
       }
     );
