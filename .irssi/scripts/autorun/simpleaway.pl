@@ -2,7 +2,7 @@
 # by Seth House <seth@eseth.com>
 # Based on `anotheraway.pl` by Stefan Tomanek <stefan@pico.ruhr.de>
 
-# If no keys are pressed for (default) one hour this script will set your away
+# If no keys are pressed for (default) two hours this script will set your away
 # status. The timer resets when you clear your away status. Simple.
 
 use strict;
@@ -43,7 +43,7 @@ sub reset_timer {
 }
 
 Irssi::settings_add_str($IRSSI{name}, 'simpleaway_message', 'afk');
-Irssi::settings_add_int($IRSSI{name}, 'simpleaway_timeout', 3600);
+Irssi::settings_add_int($IRSSI{name}, 'simpleaway_timeout', 7200);
 
 {
     start_timer();
