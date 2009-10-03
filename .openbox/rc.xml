@@ -195,20 +195,12 @@
         <!-- This a fudge, as there isn't a great Vim equivalent -->
         <keybind key="equal"><action name="MoveToCenter"/></keybind>
 
-        <!-- "Move the window" to grow windows -->
-        <keybind key="S-h"><action name="GrowToEdgeWest"/></keybind>
-        <keybind key="S-l"><action name="GrowToEdgeEast"/></keybind>
-        <keybind key="S-j"><action name="GrowToEdgeSouth"/></keybind>
-        <keybind key="S-k"><action name="GrowToEdgeNorth"/></keybind>
+        <!-- "Open the preview window" to put a window on all desktops and make it always visible -->
+        <keybind key="S-p"><action name="ToggleOmnipresent"/><action name="ToggleAlwaysOnTop"/></keybind>
 
         <!-- the following blocks have fairly canonical Vim equivalents -->
         <keybind key="S-bar"><action name="ToggleMaximizeHorz"/></keybind>
         <keybind key="S-underscore"><action name="ToggleMaximizeVert"/></keybind>
-
-        <keybind key="S-less"><action name="ResizeRelative"><left>2</left></action></keybind>
-        <keybind key="S-greater"><action name="ResizeRelative"><right>2</right></action></keybind>
-        <keybind key="S-plus"><action name="ResizeRelative"><top>2</top></action></keybind>
-        <keybind key="minus"><action name="ResizeRelative"><bottom>2</bottom></action></keybind>
 
         <keybind key="o"><action name="ToggleMaximizeFull"/></keybind>
         <keybind key="c"><action name="Close"/></keybind>
