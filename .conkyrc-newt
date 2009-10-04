@@ -2,7 +2,7 @@
 
 # Run flags
 background yes
-update_interval 2
+update_interval 4
 total_run_times 0
 
 # Text
