@@ -2,6 +2,7 @@
 
 <openbox_menu xmlns="http://openbox.org/3.4/menu">
 
+<menu id="randr-menu" label="randr" execute="~/.openbox/pipemenus/ob-randr.py" />
 <menu id="date-menu" label="date" execute="~/.openbox/pipemenus/date-menu.sh" />
 <menu id="proc-menu" label="kill" execute="~/.openbox/pipemenus/processes.py" />
 <menu id="batt-menu" label="batt" execute="~/.openbox/pipemenus/batt.sh" />
@@ -65,6 +66,7 @@
   <menu id="games-menu" />
   <menu id="x-menu" />
   <separator />
+  <menu id="randr-menu" />
   <menu id="date-menu" />
   <menu id="batt-menu" />
   <menu id="proc-menu" />
