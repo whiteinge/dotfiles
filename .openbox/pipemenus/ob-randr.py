@@ -12,58 +12,92 @@ try:
 except ImportError:
     from xml.etree import ElementTree as etree
 
-
 def get_output():
     """Run xrandr -q and parse the output for the bits we're interested in."""
     xrandr = subprocess.Popen(['xrandr', '-q'], stdout=subprocess.PIPE)
     output = xrandr.stdout.readlines()
 
-    current = [i.split(',')[1].strip('current ')
-            for i in output if ' current' in i]
-    outputs = [i.partition('(')[0].strip().split(' ')
-            for i in output if 'connected' in i]
+    outputs = {
+        'current': [],
+        'connected': [],
+        'disconnected': []}
 
-    return current, outputs
+    for i in output:
+        if ' current' in i:
+            # ['800 x 480']
+            mode = i.split(',')[1].replace('current ', '').strip()
+            outputs['current'].append(mode)
 
+        if ' connected' in i:
+            # [['LVDS', '800x480+0+0', ['800x480', '640x480']]
+            mode = i.replace(' connected', '').partition('(')[0].strip().split(' ')
+            mode.append([])
+
+            for j in output[output.index(i) + 1:]:
+                if j.startswith(' '):
+                    mode[-1].append(j.strip().split(' ')[0])
+                else:
+                    break
+
+            outputs['connected'].append(mode)
+
+        if ' disconnected' in i:
+            # [['VGA', '1440x900+0+0'], ['TV']]
+            mode = i.replace(' disconnected', '').partition('(')[0].strip().split(' ')
+            outputs['disconnected'].append(mode)
+
+    return outputs
 
 def get_xml():
     """Build the XML tree that OpenBox is expecting."""
-    current, outputs = get_output()
+    outputs = get_output()
 
     root = etree.Element('openbox_pipe_menu')
-    etree.SubElement(root, 'separator', label="Current: " + ', '.join(current))
+    etree.SubElement(root, 'separator', label="Current: " + ', '.join(outputs['current']))
 
     # Add all the connected outputs as interactive menus
-    for output in [i for i in outputs if 'connected' in i]:
+    for output in outputs['connected']:
         CMD = 'xrandr --output %s ' % output[0]
-
         OUT = etree.SubElement(root, 'menu',
-                label='Connected: %s (%s)' % (output[0], ' '.join(output[2:])),
+                label='Connected: %s (%s)' % (output[0], output[1]),
                 id=output[0].lower())
+
+        modes = etree.SubElement(OUT, 'menu', label='Modes', id='modes')
+        for i in output[2]:
+            etree.SubElement(modes, 'item', label=i)
+
+        etree.SubElement(OUT, 'separator')
 
         actions = (
             ('zoom_out', '--scale 1.3x1.3'),
-            ('pan', '--panning 1280x1024'),
+            ('zoom in', '--panning 1280x1024'),
+            (),
             ('left', '--rotate left'),
             ('right', '--rotate right'),
             ('invert', '--rotate invert'),
+            (),
             ('on', '--off'),
             ('off', '--on'),
+            (),
             ('reset', ' '.join([
                 '--auto', '--rotate normal', '--scale 1x1', '--panning 0x0'])))
 
-        for k,v in actions:
-            item = etree.SubElement(OUT, 'item', label=k.replace('_', ' '))
-            action = etree.SubElement(item, 'action', name='execute')
-            etree.SubElement(action, 'command').text = CMD + v
+        for action in actions:
+            if action:
+                k,v = action
+                item = etree.SubElement(OUT, 'item', label=k.replace('_', ' '))
+                action = etree.SubElement(item, 'action', name='execute')
+                etree.SubElement(action, 'command').text = CMD + v
+            else:
+                etree.SubElement(OUT, 'separator')
 
     # Add all the disconnected outputs as static list items
-    for output in [i for i in outputs if 'disconnected' in i]:
+    etree.SubElement(root, 'separator')
+    for output in outputs['disconnected']:
         etree.SubElement(root, 'item',
             label='Disconnected: %s (%s)' % (output[0], ' '.join(output[2:])))
 
     return etree.tostring(root)
-
 
 if __name__ == '__main__':
     sys.stdout.write(get_xml() + '\n')
