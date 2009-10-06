@@ -34,14 +34,14 @@ vimdiff.executable = vimdiff
 vimdiff.premerge = True         # run non-interactive 3-way merge tool first
 vimdiff.gui = false
 
-inkscape.executable = inkscape
-inkscape.premerge = false
-inkscape.gui = true
+# inkscape.executable = inkscape
+# inkscape.premerge = false
+# inkscape.gui = true
 
 
 [merge-patterns]
 ###############################################################################
-**.svg = inkscape
+# **.svg = inkscape
 
 
 [extensions]
