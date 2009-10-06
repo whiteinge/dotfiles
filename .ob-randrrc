@@ -1,0 +1,8 @@
+[Notebook]
+
+portrait: --output LVDS --primary --mode 1366x768 --output VGA-0 --mode 1440x900 --left-of LVDS --rotate left
+
+[Netbook]
+
+zoom out: --output LVDS --scale 1.3x1.3
+zoom in: --output LVDS --panning 1280x1024
