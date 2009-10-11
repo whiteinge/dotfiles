@@ -31,7 +31,8 @@ qudiff = diff -r $(hg parents -r qbase --template '#rev#') -r qtip
 [merge-tools]
 ###############################################################################
 vimdiff.executable = vimdiff
-vimdiff.premerge = True         # run non-interactive 3-way merge tool first
+# run non-interactive 3-way merge tool first
+vimdiff.premerge = True
 vimdiff.gui = false
 
 # inkscape.executable = inkscape
@@ -86,7 +87,8 @@ preoutgoing.mq-no-push = ! hg qtop > /dev/null 2>&1
 
 [web]
 ###############################################################################
-allow_archive = bz2,gz          # default "download as..." formats
+# default "download as..." formats
+allow_archive = bz2,gz
 # description = "The purpose of this repo is..."
 # baseurl = http://example.com/hg_repos
 # push_ssl = false                # allow push from insecure (!) connection
