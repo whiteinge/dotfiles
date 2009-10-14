@@ -3,34 +3,30 @@
 # Modified: 2009-10-13
 # thanks to Phil of phil's prompt: http://aperiodic.net/phil/prompt/
 
+autoload -Uz vcs_info
+autoload -U promptinit
 autoload -U colors
+
 colors
-
-# zsh hooks
-# periodic()    Executed every $PERIOD seconds, just before a prompt. {{{1
-
-# PERIOD=5
-# function periodic {
-    # PR_PET=$(pet_wander)
-    # setprompt
-# }
+zstyle ':vcs_info:(hg|git):*' get-revision  true
 
 
-# chpwd()       Executed whenever the current working directory is changed. {{{1
+# set some color shortcuts
+for COLOR in RED GREEN YELLOW WHITE BLACK CYAN; do
+    eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'         
+    eval PR_B$COLOR='%{$fg_bold[${(L)COLOR}]%}'
+done                                                 
+PR_RESET="%{${reset_color}%}";    
 
-# function chpwd {
-# }
 
-
-# precmd()      Executed before each prompt {{{1
-# (not re-executed simply because the command line is redrawn).
-
+# Executed before each prompt
 function precmd {
+    vcs_info
     setprompt
 }
 
-# preexec()     Executed after a command has been read and is to be executed. {{{1
 
+# Executed after a command has been read and is to be executed. {{{1
 function preexec {
     # if running gnu screen, set the window name to the last run command
     # FIXME any way to make this not change certain window titles (by window
@@ -41,49 +37,43 @@ function preexec {
     fi
 }
 
-# }}}
 
-# custom functions
-# setprompt()   Encapsulate building the prompt. {{{1
-
+# Encapsulate building the prompt.
 function setprompt {
     # display in red if the current dir isn not writable
-    local pr_pwd="%{$fg_bold[green]%}"$(test -w $PWD || print "%{$fg_bold[red]%}")"%~%{$reset_color%}"
+    local pr_pwd="$PR_BGREEN"$(test -w $PWD || print "$PR_BRED")"%~$PR_RESET"
 
     # show job count
-    local pr_jobs="%{$fg_bold[black]%}%j%{$reset_color%}"
+    local pr_jobs="$PR_BBLACK%j$PR_RESET"
 
     # display the hostname only if ssh-ed into another box
     local pr_user="%n"$(test -z $SSH_CLIENT || print '@%m')
 
-    # put the top line together so we can determine the width later
-    pr_top="%{$fg_bold[white]%}$pr_jobs  $pr_pwd  $pr_user%{$reset_color%}"
-
     # make the prompt red if the last command exited unsuccessfully
-    local pr_prompt="%(0?..%{$fg_bold[red]%})%#%{$reset_color%} "
+    local pr_prompt="%(0?..$PR_BRED)%#$PR_RESET "
 
-    # RANDOM will not change unless referenced in parent shell
-    echo $RANDOM &>/dev/null
-    PR_PET=$(pet_wander)
+    # display vcs information for the current dir (if any)
+    if [ -n "$vcs_info_msg_0_" ]; then
+        local pr_vcs="$PR_BBLACK$vcs_info_msg_0_$PR_RESET"
 
-    # Create the prompt
-    PROMPT="$pr_top $PR_PET"$'\n'"$pr_prompt"
-
-    # If the current directory is an hg repo, display useful info.
-    # Chances are good I only care about this info for projects stored in my
-    # $HOME/src directory.
-    if [[ -n "$(echo $PWD | grep $SRC_DIR)" ]]; then
-        local pr_hg="$(hg id 2>/dev/null)"
-
-        if [[ -n "$pr_hg" ]]; then
-            RPROMPT="%{$fg_bold[black]%}hg: $pr_hg%{$fg[white]%}"
+        if [[ $vcs_info_msg_0_ =~ .*hg.* ]]; then
+            local pr_hg_tags="$PR_BBLACK$(hg id -t 2>/dev/null)$PR_RESET"
         fi
     fi
+
+    # output the prompt with right-side padding
+    PR_TOP="$pr_user: $pr_pwd$pr_vcs$pr_hg_tags"
+
+    # make enough padding to reach the right edge
+    # RANDOM will not change unless referenced in parent shell
+    echo $RANDOM &>/dev/null
+    PR_PET=$(pet_wander ${#${(%):-$PR_TOP}})
+
+    PROMPT="$PR_TOP $PR_PET"$'\n'"$pr_jobs $pr_prompt"
 }
 
-# }}}
-# pet_wander()  A domestic animal, the _tame dog_ (_Canis familiaris_) {{{1
 
+# A domestic animal, the _tame dog_ (_Canis familiaris_)
 pet_wander () {
     # Draw enough padding to reach the end of the window;
     # pet likes to wander this space
@@ -98,8 +88,8 @@ pet_wander () {
 
     # FIXME: this doesn't do what I thought it did. how do you find the width
     # of a partial prompt in order to create padding of a desired width?
-    local width=${#${(%):-$pr_top}}
-    local padding=$(($COLUMNS - $width - 1 + 38))
+    local width=$1
+    local padding=$(($COLUMNS - $width - 1 + 24))
     local position=$[${RANDOM}%$padding]
     local left=$((padding - position))
 
@@ -112,9 +102,6 @@ pet_wander () {
     echo -ne "${(r/$position//./)}"
     echo -ne "%{$reset_color%}"
 }
-
-# }}}
-# EOF
 
 
 # function zle-keymap-select {
