@@ -362,6 +362,9 @@ au FileType java compiler javac
 autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
 autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 
+" Shortcut to invoke wordnet
+noremap  <F7> "wyiw:call WordNetOverviews(@w)<CR>
+
 " Set keywordprg for certain filetypes
 au FileType python set keywordprg=pydoc
 
