@@ -1,0 +1,133 @@
+# Best Goddamn zsh prompt in the whole world.
+# Author: Seth House <seth@eseth.com>
+# Modified: 2009-10-13
+# thanks to Phil of phil's prompt: http://aperiodic.net/phil/prompt/
+
+autoload -U colors
+colors
+
+# zsh hooks
+# periodic()    Executed every $PERIOD seconds, just before a prompt. {{{1
+
+# PERIOD=5
+# function periodic {
+    # PR_PET=$(pet_wander)
+    # setprompt
+# }
+
+
+# chpwd()       Executed whenever the current working directory is changed. {{{1
+
+# function chpwd {
+# }
+
+
+# precmd()      Executed before each prompt {{{1
+# (not re-executed simply because the command line is redrawn).
+
+function precmd {
+    setprompt
+}
+
+# preexec()     Executed after a command has been read and is to be executed. {{{1
+
+function preexec {
+    # if running gnu screen, set the window name to the last run command
+    # FIXME any way to make this not change certain window titles (by window
+    # number or if a title isn't already set?)
+    if [[ "$TERM" == "screen-bce" ]]; then
+        local CMD=${1[(wr)^(*=*|sudo|-*)]}
+        echo -ne "\ek$CMD\e\\"
+    fi
+}
+
+# }}}
+
+# custom functions
+# setprompt()   Encapsulate building the prompt. {{{1
+
+function setprompt {
+    # display in red if the current dir isn not writable
+    local pr_pwd="%{$fg_bold[green]%}"$(test -w $PWD || print "%{$fg_bold[red]%}")"%~%{$reset_color%}"
+
+    # show job count
+    local pr_jobs="%{$fg_bold[black]%}%j%{$reset_color%}"
+
+    # display the hostname only if ssh-ed into another box
+    local pr_user="%n"$(test -z $SSH_CLIENT || print '@%m')
+
+    # put the top line together so we can determine the width later
+    pr_top="%{$fg_bold[white]%}$pr_jobs  $pr_pwd  $pr_user%{$reset_color%}"
+
+    # make the prompt red if the last command exited unsuccessfully
+    local pr_prompt="%(0?..%{$fg_bold[red]%})%#%{$reset_color%} "
+
+    # RANDOM will not change unless referenced in parent shell
+    echo $RANDOM &>/dev/null
+    PR_PET=$(pet_wander)
+
+    # Create the prompt
+    PROMPT="$pr_top $PR_PET"$'\n'"$pr_prompt"
+
+    # If the current directory is an hg repo, display useful info.
+    # Chances are good I only care about this info for projects stored in my
+    # $HOME/src directory.
+    if [[ -n "$(echo $PWD | grep $SRC_DIR)" ]]; then
+        local pr_hg="$(hg id 2>/dev/null)"
+
+        if [[ -n "$pr_hg" ]]; then
+            RPROMPT="%{$fg_bold[black]%}hg: $pr_hg%{$fg[white]%}"
+        fi
+    fi
+}
+
+# }}}
+# pet_wander()  A domestic animal, the _tame dog_ (_Canis familiaris_) {{{1
+
+pet_wander () {
+    # Draw enough padding to reach the end of the window;
+    # pet likes to wander this space
+
+    local pet="d"
+
+    if [[ $[${RANDOM}%20] == 0 ]]; then
+        pet="^"
+    elif [[ $[${RANDOM}%50] == 0 ]]; then
+        pet="D"
+    fi
+
+    # FIXME: this doesn't do what I thought it did. how do you find the width
+    # of a partial prompt in order to create padding of a desired width?
+    local width=${#${(%):-$pr_top}}
+    local padding=$(($COLUMNS - $width - 1 + 38))
+    local position=$[${RANDOM}%$padding]
+    local left=$((padding - position))
+
+    local pr_pet="%{$bg_bold[white]$fg[black]%}$pet%{$reset_color%}"
+
+    echo -ne "%{$fg_bold[black]%}"
+    echo -ne "${(l/$left//./)}"
+    echo -ne "$pr_pet"
+    echo -ne "%{$fg_bold[black]%}"
+    echo -ne "${(r/$position//./)}"
+    echo -ne "%{$reset_color%}"
+}
+
+# }}}
+# EOF
+
+
+# function zle-keymap-select {
+    # VIMODE="${${KEYMAP/vicmd/ M:command}/(main|viins)/}"
+    # zle reset-prompt
+# }
+# zle -N zle-keymap-select
+#
+########## Or this one?:
+# function zle-line-init zle-keymap-select {
+    # RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+    # RPS2=$RPS1
+    # zle reset-prompt
+# }
+# zle -N zle-line-init
+# zle -N zle-keymap-select

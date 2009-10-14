@@ -1,12 +1,10 @@
 #!/bin/zsh
-#
-# Best Goddamn zshrc in the whole world (if you're obsessed with Vim).
+# Best Goddamn zshrc in the whole world.
 # Author: Seth House <seth@eseth.com>
-# Version: $LastChangedRevision: 627 $
-# Modified: $LastChangedDate: 2009-04-24 21:21:43 -0600 (Fri, 24 Apr 2009) $
-# thanks to Adam Spiers, Steve Talley
-# and to Unix Power Tools by O'Reilly
-#
+# Modified: 2009-10-11
+# thanks to Adam Spiers, Steve Talley, Aaron Toponce, and Unix Power Tools
+
+
 # {{{ setting options
 
 setopt                          \
@@ -24,6 +22,8 @@ setopt                          \
         list_types              \
         mark_dirs               \
         path_dirs               \
+        prompt_percent          \
+        prompt_subst            \
         rm_star_wait
 
 # Push a command onto a stack allowing you to run another command first
@@ -41,6 +41,9 @@ CDPATH=$CDPATH::$HOME:/usr/local
 PYTHONPATH=$HOME/lib/python/site-packages:$HOME/src:$PYTHONPATH
 PYTHONSTARTUP=$HOME/.pythonrc.py
 export PYTHONSTARTUP PYTHONPATH
+
+# Local development projects go here
+SRC_DIR=$HOME/src
 
 HISTFILE=$HOME/.zsh_history
 HISTFILESIZE=65536  # search this with `grep | sort -u`
@@ -84,37 +87,7 @@ zstyle -e ':completion:*:(ssh|sssh|scp|sshfs|ping|telnet|ftp|rsync):*' hosts 're
 # }}}
 # {{{ prompt and theme
 
-autoload -U promptinit
-promptinit
-
-prompt adam2 grey green magenta white
-
-# }}}
-# {{{ vi mode, mode display and extra vim-style keybindings
-# TODO: why is there a half-second delay when pressing ? to enter search?
-#       Update: found out has something to do with $KEYTIMEOUT and that
-#       command-mode needs to use the same keys as insert-mode
-# TODO: bug when searching through hist with n and N, when you pass the EOF the
-#       term decrements the indent of $VIMODE on the right, which will collide
-#       with the command you're typing
-# TODO: Can this be improved on with Aaron's widget technique?
-# It works in an entirely different way and doesn't seem to be compatible with
-# using zsh builtin prompts at first glance.
-# function zle-keymap-select {
-    # VIMODE="${${KEYMAP/vicmd/ M:command}/(main|viins)/}"
-    # zle reset-prompt
-# }
-# zle -N zle-keymap-select
-#
-########## Or this one?:
-# function zle-line-init zle-keymap-select {
-    # RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
-    # RPS2=$RPS1
-    # zle reset-prompt
-# }
-# zle -N zle-line-init
-# zle -N zle-keymap-select
-
+# Set vi-mode and create a few additional Vim-like mappings
 bindkey -v
 bindkey "^?" backward-delete-char
 bindkey -M vicmd "^R" redo
@@ -130,29 +103,13 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd "v" edit-command-line
 
-showmode() { # may need adjustment with non adam2 themes
-    RIGHT=$[COLUMNS-11]
-    echo -n "7[$RIGHT;G" # one line down, right side
-    echo -n "--$VIMODE--" # will be overwritten during long commands
-    echo -n "8" # returns cursor to last position (normal prompt position)
-}
-makemodal () {
-    eval "$1() { zle .'$1'; ${2:+VIMODE='$2'}; showmode }"
-    zle -N "$1"
-}
-makemodal vi-add-eol           INSERT
-makemodal vi-add-next          INSERT
-makemodal vi-change            INSERT
-makemodal vi-change-eol        INSERT
-makemodal vi-change-whole-line INSERT
-makemodal vi-insert            INSERT
-makemodal vi-insert-bol        INSERT
-makemodal vi-open-line-above   INSERT
-makemodal vi-substitute        INSERT
-makemodal vi-open-line-below   INSERT
-makemodal vi-replace           REPLACE
-makemodal vi-cmd-mode          NORMAL
-unfunction makemodal
+# autoload -U promptinit
+# promptinit
+# prompt adam2 grey green magenta white
+if [[ ! -n "$ZSHRUN" ]]; then
+    # FIXME: there must be a better way
+    source $HOME/.zsh_shouse_prompt
+fi
 
 # }}}
 # {{{ aliases
@@ -174,6 +131,9 @@ alias df='df -h'
 alias dus='du -sh'
 alias cal='cal -3 -m'
 alias info='info --vi-keys'
+
+# Useful for accessing versioned Mercurial Queues
+alias mq='hg -R $(hg root)/.hg/patches'
 
 # Selects a random file: ``ls RANDOM``
 alias -g RANDOM='$(ls | shuf | head -1)'
@@ -230,8 +190,8 @@ if [[ -n "$ZSHRUN" ]]; then
     }
     zle -N _accept_and_quit
     bindkey "^M" _accept_and_quit
-    prompt off
-    PS1="zshrun %~> "
+    PROMPT="zshrun %~> "
+    RPROMPT=""
 fi
 
 # }}}
@@ -351,12 +311,9 @@ djsetup()
     fi
 }
 
-# Django virtualenv helpers
-VIRTUALENV_PROJECTS=$HOME/src
-
 # work on virtualenv
 function djworkon(){
-    cd $VIRTUALENV_PROJECTS/$1
+    cd $SRC_DIR/$1
     unset PYTHONPATH
     source ./bin/activate
 
@@ -412,4 +369,4 @@ makepkg-likeslack() {
 }
 
 # }}}
-#
+# EOF
