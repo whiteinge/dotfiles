@@ -1,40 +1,39 @@
 " Description: VimBuddy statusline character
-" Author:      Flemming Madsen <fma@cci.dk>
-" Modified:    June 2001
-" Version:     0.9.1
+" Author:      Flemming Madsen <vim@themadsens.dk>
+" Modified:    August 2007
+" Version:     0.9.2
 "
 " Usage:       Insert %{VimBuddy()} into your 'statusline'
 "
-
 function! VimBuddy()
     " Take a copy for others to see the messages
-    if ! exists("g:vimbuddy_msg")
-        let g:vimbuddy_msg = v:statusmsg
+    if ! exists("s:vimbuddy_msg")
+        let s:vimbuddy_msg = v:statusmsg
     endif
-    if ! exists("g:vimbuddy_warn")
-        let g:vimbuddy_warn = v:warningmsg
+    if ! exists("s:vimbuddy_warn")
+        let s:vimbuddy_warn = v:warningmsg
     endif
-    if ! exists("g:vimbuddy_err")
-        let g:vimbuddy_err = v:errmsg
+    if ! exists("s:vimbuddy_err")
+        let s:vimbuddy_err = v:errmsg
     endif
-    if ! exists("g:vimbuddy_onemore")
-        let g:vimbuddy_onemore = ""
+    if ! exists("s:vimbuddy_onemore")
+        let s:vimbuddy_onemore = ""
     endif
 
-    if ( exists("g:actual_curbuf") && (g:actual_curbuf != bufnr("%")))
+    if g:actual_curbuf != bufnr("%")
         " Not my buffer, sleeping
         return "|-o"
-    elseif g:vimbuddy_err != v:errmsg
+    elseif s:vimbuddy_err != v:errmsg
         let v:errmsg = v:errmsg . " "
-        let g:vimbuddy_err = v:errmsg
+        let s:vimbuddy_err = v:errmsg
         return ":-("
-    elseif g:vimbuddy_warn != v:warningmsg
+    elseif s:vimbuddy_warn != v:warningmsg
         let v:warningmsg = v:warningmsg . " "
-        let g:vimbuddy_warn = v:warningmsg
+        let s:vimbuddy_warn = v:warningmsg
         return "(-:"
-    elseif g:vimbuddy_msg != v:statusmsg
+    elseif s:vimbuddy_msg != v:statusmsg
         let v:statusmsg = v:statusmsg . " "
-        let g:vimbuddy_msg = v:statusmsg
+        let s:vimbuddy_msg = v:statusmsg
         let test = matchstr(v:statusmsg, 'lines *$')
         let num = substitute(v:statusmsg, '^\([0-9]*\).*', '\1', '') + 0
         " How impressed should we be
@@ -45,11 +44,11 @@ function! VimBuddy()
         else
             let str = ":-/"
         endif
-		  let g:vimbuddy_onemore = str
+		  let s:vimbuddy_onemore = str
 		  return str
-	 elseif g:vimbuddy_onemore != ""
-		let str = g:vimbuddy_onemore
-		let g:vimbuddy_onemore = ""
+	 elseif s:vimbuddy_onemore != ""
+		let str = s:vimbuddy_onemore
+		let s:vimbuddy_onemore = ""
 		return str
     endif
 
@@ -62,16 +61,16 @@ function! VimBuddy()
     let num = b:lastcol - col(".")
     let b:lastcol = col(".")
     if (num == 1 || num == -1) && b:lastlineno == line(".")
-        " Let VimBuddy rotate
+        " Let VimBuddy rotate his nose
         let num = b:lastcol % 4
         if num == 0
-            let ch = '|'
-         elseif num == 1
             let ch = '/'
-        elseif num == 2
+         elseif num == 1
             let ch = '-'
-        else
+        elseif num == 2
             let ch = '\'
+        else
+            let ch = '|'
         endif
         return ":" . ch . ")"
     endif
@@ -80,4 +79,3 @@ function! VimBuddy()
     " Happiness is my favourite mood
     return ":-)"
 endfunction
-
