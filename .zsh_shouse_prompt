@@ -3,12 +3,17 @@
 # Modified: 2009-10-13
 # thanks to Phil of phil's prompt: http://aperiodic.net/phil/prompt/
 
-autoload -Uz vcs_info
-autoload -U promptinit
 autoload -U colors
+autoload -U promptinit
+autoload -Uz vcs_info
 
 colors
-zstyle ':vcs_info:(hg|git):*' get-revision  true
+# hg must be last since $HOME is under hg
+zstyle ':vcs_info:*' enable git bzr svn hg
+zstyle ':vcs_info:(hg|git):*' get-revision true
+zstyle ':vcs_info:(hg|git):*' check-for-changes true
+zstyle ':vcs_info:*' formats '(%s)[%b %m]'
+zstyle ':vcs_info:*' actionformats '(%s) [%b %i %m %a %c %u]'
 
 
 # set some color shortcuts
@@ -26,7 +31,7 @@ function precmd {
 }
 
 
-# Executed after a command has been read and is to be executed. {{{1
+# Executed after a command has been read and is to be executed.
 function preexec {
     # if running gnu screen, set the window name to the last run command
     # FIXME any way to make this not change certain window titles (by window
@@ -37,6 +42,12 @@ function preexec {
     fi
 }
 
+function hg_tags {
+    if [[ $vcs_info_msg_0_ == "hg" ]]; then
+        # echo -ne "$PR_BBLACK$(hg id -b -t 2>/dev/null)$PR_RESET"
+        echo -ne "$PR_BBLACK$vcs_info_msg_0_$PR_RESET"
+    fi
+}
 
 # Encapsulate building the prompt.
 function setprompt {
@@ -55,14 +66,10 @@ function setprompt {
     # display vcs information for the current dir (if any)
     if [ -n "$vcs_info_msg_0_" ]; then
         local pr_vcs="$PR_BBLACK$vcs_info_msg_0_$PR_RESET"
-
-        if [[ $vcs_info_msg_0_ =~ .*hg.* ]]; then
-            local pr_hg_tags="$PR_BBLACK$(hg id -t 2>/dev/null)$PR_RESET"
-        fi
     fi
 
     # output the prompt with right-side padding
-    PR_TOP="$pr_user: $pr_pwd$pr_vcs$pr_hg_tags"
+    PR_TOP="$pr_user. $pr_pwd $pr_vcs"
 
     # make enough padding to reach the right edge
     # RANDOM will not change unless referenced in parent shell
