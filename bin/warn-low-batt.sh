@@ -16,6 +16,10 @@ if [ "$(grep -o off /proc/acpi/ac_adapter/$ac_adapter_id/state)" == "off" ]; the
     battery_level=$((100*$battery_current/$battery_max))
 
     if [ $battery_level -le $critical_level ]; then
-        xmessage "Low Battery Warning! ${battery_level}% remains."
+        if [[ -n "$(notify-send --help)" ]]; then
+            notify-send "Low battery warning!" "${battery_level}% remains." -t 0
+        else
+            xmessage "Low Battery Warning! ${battery_level}% remains."
+        fi
     fi
 fi
