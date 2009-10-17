@@ -28,7 +28,7 @@ set popups=2
 
 " disable vimperator for some URLs
 " NOTE: if both settings use the .* match, the latter setting seems to override the former
-autocmd LocationChange .* :js modes.passAllKeys = /(mail|docs)\.google\.com/.test(buffer.URL)
+autocmd LocationChange .* :js modes.passAllKeys = /(mail|docs|wave)\.google\.com/.test(buffer.URL)
 autocmd LocationChange www\.google\.com\/reader :js modes.passAllKeys = /www\.google\.com\/reader/.test(buffer.URL)
 
 
