@@ -98,9 +98,6 @@ def get_xml():
     root = etree.Element('openbox_pipe_menu')
 
     actions = (
-        ('zoom out', '--scale 1.3x1.3'),
-        ('zoom in', '--panning 1280x1024'),
-        (),
         ('right', '--rotate right'),
         ('left', '--rotate left'),
         ('invert', '--rotate invert'),
@@ -108,6 +105,7 @@ def get_xml():
         ('on', '--off'),
         ('off', '--on'),
         (),
+        ('auto', '--auto'),
         ('reset', ' '.join([
             '--auto', '--rotate normal', '--scale 1x1', '--panning 0x0'])))
 
@@ -129,10 +127,10 @@ def get_xml():
             text = text.strip()
             output, mode, extra = (lambda x: (x[0], x[1], x[2:]))(text.split(' '))
 
-            node = etree.SubElement(root, 'menu', id=output,
+            node = etree.SubElement(root, 'menu', id=output, type='output',
                     label=' '.join([output, mode, ' '.join(extra)]))
             modes = etree.SubElement(node, 'menu', id='%s-modes' % output,
-                    label='modes')
+                    type='modes', label='modes')
             etree.SubElement(node, 'separator')
 
             # Grab all the available modes (I'm ignoring refresh rates for now)
