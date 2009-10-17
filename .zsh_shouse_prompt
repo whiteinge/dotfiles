@@ -68,15 +68,15 @@ function setprompt {
         local pr_vcs="$PR_BBLACK$vcs_info_msg_0_$PR_RESET"
     fi
 
-    # output the prompt with right-side padding
-    PR_TOP="$pr_user $pr_pwd $pr_vcs"
+    # FIXME: is there a way to get the width from the real variables without
+    # the color escapes? repeating the prompt twice sucks.
+    local width=$((${#${(%):-<%n> %~ }} + ${#${(%):-$vcs_info_msg_0_}} + 1))
 
-    # make enough padding to reach the right edge
     # RANDOM will not change unless referenced in parent shell
     echo $RANDOM &>/dev/null
-    PR_PET=$(pet_wander ${#${(%):-$PR_TOP}})
+    local pr_pet=$(pet_wander $width)
 
-    PROMPT="$PR_TOP $PR_PET"$'\n'"$pr_jobs $pr_prompt"
+    PROMPT="$pr_user $pr_pwd $pr_vcs $pr_pet"$'\n'"$pr_jobs $pr_prompt"
 }
 
 
