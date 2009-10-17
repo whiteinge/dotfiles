@@ -9,8 +9,24 @@
 [ui]
 ###############################################################################
 username = Seth House <seth@eseth.com>
-# global ignore file
 ignore = ~/.hgignore
+
+
+[extensions]
+###############################################################################
+color =
+extdiff =
+fetch =
+pager =
+transplant =
+hgext.bookmarks =
+hgext.graphlog =
+hgext.mq =
+hgext.notify =
+hgext.purge =
+hgext.rebase =
+hgext.record =
+hgext.hg-git = ~/lib/python/site-packages/hg-git
 
 
 [alias]
@@ -26,12 +42,12 @@ lc = log -l 5 --style changelog
 qstatus = status --rev -2:.
 # MQ: Output all applied patches as a single diff
 qudiff = diff -r $(hg parents -r qbase --template '#rev#') -r qtip
-
+# to easily work with versioned mq, put the following in your shell init file:
+# alias mq='hg -R $(hg root)/.hg/patches'
 
 [merge-tools]
 ###############################################################################
 vimdiff.executable = vimdiff
-# run non-interactive 3-way merge tool first
 vimdiff.premerge = True
 vimdiff.gui = false
 
@@ -45,28 +61,24 @@ vimdiff.gui = false
 # **.svg = inkscape
 
 
-[extensions]
+[diff]
 ###############################################################################
-# display color in the status output
-color =
-# pull only certain changesets from a clone
-transplant =
-# display trees on the command-line
-hgext.graphlog =
-# easily remove non-tracked files from a repo
-hgext.purge =
-# hq's incredibly powerful quilt-system
-hgext.mq =
-# checkin only certain changes from a file
-hgext.record =
-# pull changes onto a modified working copy
-hgext.rebase =
-# lightweight branching idiom
-hgext.bookmarks =
-# send email for certain events
-hgext.notify =
-# access git repos <http://hg-git.github.com/>
-hgext.hg-git = ~/lib/python/site-packages/hg-git
+git = 1
+nodates = 1
+
+
+[extdiff]
+###############################################################################
+# Allows a diff of diffs (useful for version-controlled MQ patches)
+cmd.interdiff = hg-interdiff
+cmd.vimdiff =
+opts.vimdiff = -f '+next' '+execute "DirDiff" argv(0) argv(1)'
+
+
+[pager]
+###############################################################################
+attend = help
+pager = LESS='FSRXimJMW' less
 
 
 [hooks]
@@ -91,9 +103,12 @@ preoutgoing.mq-no-push = ! hg qtop > /dev/null 2>&1
 allow_archive = bz2,gz
 # description = "The purpose of this repo is..."
 # baseurl = http://example.com/hg_repos
-# push_ssl = false                # allow push from insecure (!) connection
-# allow_push = *                  # allow a push from any user
-# allow_read = someuser           # if non-empty reqiure authentication
+# allow push from insecure (!) connection
+# push_ssl = false
+# allow a push from any user
+# allow_push = *
+# if non-empty reqiure authentication
+# allow_read = someuser
 
 
 # [auth]
@@ -101,7 +116,8 @@ allow_archive = bz2,gz
 # someuser.password = password
 
 # [trusted]
-# users = user1,user2             # ignores repo-specific hgrc for non-trusted
+# ignores repo-specific hgrc for non-trusted
+# users = user1,user2
 # groups = 
 
 # [reposubs]
@@ -118,9 +134,12 @@ allow_archive = bz2,gz
 # password = p4ssw0rd
 
 # [notify]
-# test = false                    # won't send email unless false; for testing
-# config =                        # reposubs can be external file, if wanted
-# maxdiff = 0                     # no. diff lines to include in the email
+# won't send email unless false; for testing
+# test = false
+# reposubs can be external file, if wanted
+# config =
+# no. diff lines to include in the email
+# maxdiff = 0
 # template = Subject: {desc|firstline|strip}\n
 #     {node|short}  {tags}  {author}  {date|date}
 #     {files|tabindent}
