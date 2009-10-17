@@ -51,14 +51,14 @@ function hg_tags {
 
 # Encapsulate building the prompt.
 function setprompt {
-    # display in red if the current dir isn not writable
-    local pr_pwd="$PR_BGREEN"$(test -w $PWD || print "$PR_BRED")"%~$PR_RESET"
+    # display in yellow if the current dir isn not writable
+    local pr_pwd="$PR_BGREEN"$(test -w $PWD || print "$PR_BYELLOW")"%~$PR_RESET"
 
     # show job count
     local pr_jobs="$PR_BBLACK%j$PR_RESET"
 
     # display the hostname only if ssh-ed into another box
-    local pr_user="%n"$(test -z $SSH_CLIENT || print '@%m')
+    local pr_user="$PR_BBLACK<$PR_RESET%n"$(test -z $SSH_CLIENT || print '@%m')"$PR_BBLACK>$PR_RESET"
 
     # make the prompt red if the last command exited unsuccessfully
     local pr_prompt="%(0?..$PR_BRED)%#$PR_RESET "
@@ -69,7 +69,7 @@ function setprompt {
     fi
 
     # output the prompt with right-side padding
-    PR_TOP="$pr_user. $pr_pwd $pr_vcs"
+    PR_TOP="$pr_user $pr_pwd $pr_vcs"
 
     # make enough padding to reach the right edge
     # RANDOM will not change unless referenced in parent shell
@@ -96,7 +96,8 @@ pet_wander () {
     # FIXME: this doesn't do what I thought it did. how do you find the width
     # of a partial prompt in order to create padding of a desired width?
     local width=$1
-    local padding=$(($COLUMNS - $width - 1 + 24))
+    # local padding=$(($COLUMNS - $width - 1 + 24))
+    local padding=$(($COLUMNS - $width - 1))
     local position=$[${RANDOM}%$padding]
     local left=$((padding - position))
 
