@@ -52,6 +52,10 @@ set pastetoggle=<F5>            "pt:    useful so auto-indenting doesn't mess up
 " Fix for legacy vi inconsistency
 map Y y$
 
+" Allow undoing ctrl-u and ctrl-w
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
+
 " Shortcut to add new blank line without entering insert mode
 noremap ,<CR> :put_<CR>
 
