@@ -71,9 +71,9 @@ function setprompt {
     # FIXME: is there a way to get the width from the real variables without
     # the color escapes? repeating the prompt twice sucks.
     if [[ -z $SSH_CLIENT ]]; then
-        local width=$((${#${(%):-<%n@%m> %~ }} + ${#${(%):-$vcs_info_msg_0_}} + 1))
-    else
         local width=$((${#${(%):-<%n> %~ }} + ${#${(%):-$vcs_info_msg_0_}} + 1))
+    else
+        local width=$((${#${(%):-<%n@%m> %~ }} + ${#${(%):-$vcs_info_msg_0_}} + 1))
     fi
 
     # RANDOM will not change unless referenced in parent shell
