@@ -26,7 +26,7 @@ hgext.notify =
 hgext.purge =
 hgext.rebase =
 hgext.record =
-hgext.hg-git = ~/lib/python/site-packages/hg-git
+hggit =
 
 
 [alias]
@@ -84,7 +84,7 @@ pager = LESS='FSRXimJMW' less
 [hooks]
 ###############################################################################
 # Don't commit any code that contains 'pdb'
-pretxncommit.pdb = hg export tip | (! grep 'pdb') 
+pretxncommit.pdb = hg export tip | (! grep 'pdb')
 
 # Prevent "hg pull" if MQ patches are applied (qpop -a first!)
 prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
