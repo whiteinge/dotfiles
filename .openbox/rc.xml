@@ -142,7 +142,7 @@
     <chainQuitKey>C-c</chainQuitKey>
 
     <!-- Toggle "pass-through" mode for otherwise bound key bindings. -->
-    <keybind key="W-z" chroot="true"><action name="BreakChroot"/></keybind>
+    <keybind key="W-A-z" chroot="true"><action name="BreakChroot"/></keybind>
 
     <!-- Misc -->
     <keybind key="W-A-d"><action name="ToggleDockAutohide"/></keybind>
@@ -151,10 +151,6 @@
 
     <!-- Switch to Desktops -->
     <keybind key="W-a"><action name="DesktopLast"><dialog>no</dialog></action></keybind>
-    <keybind key="W-F1"><action name="Desktop"><desktop>1</desktop></action></keybind>
-    <keybind key="W-F2"><action name="Desktop"><desktop>2</desktop></action></keybind>
-    <keybind key="W-F3"><action name="Desktop"><desktop>3</desktop></action></keybind>
-    <keybind key="W-F4"><action name="Desktop"><desktop>4</desktop></action></keybind>
     <keybind key="A-F1"><action name="Desktop"><desktop>1</desktop></action></keybind>
     <keybind key="A-F2"><action name="Desktop"><desktop>2</desktop></action></keybind>
     <keybind key="A-F3"><action name="Desktop"><desktop>3</desktop></action></keybind>
@@ -162,13 +158,10 @@
 
     <!-- Keybindings for window switching -->
     <keybind key="W-grave"><action name="Lower"/><action name="FocusToBottom"/><action name="Unfocus"/></keybind>
-    <keybind key="W-Tab"><action name="NextWindow"><raise>yes</raise></action></keybind>
-    <keybind key="W-S-Tab"><action name="PreviousWindow"><raise>yes</raise></action></keybind>
     <keybind key="A-Tab"><action name="NextWindow"><raise>yes</raise></action></keybind>
     <keybind key="A-S-Tab"><action name="PreviousWindow"><raise>yes</raise></action></keybind>
 
     <!-- Keybindings for running applications -->
-    <keybind key="W-space"><action name="Execute"><command>sh -c 'ZSHRUN=1 uxterm -geometry 90x5+0+0 +ls -bg white -fg black -T zshrun'</command></action></keybind>
     <keybind key="A-space"><action name="Execute"><command>sh -c 'ZSHRUN=1 uxterm -geometry 90x5+0+0 +ls -bg white -fg black -T zshrun'</command></action></keybind>
     <keybind key="W-t"><action name="Execute"><command>uxterm</command></action></keybind>
     <keybind key="W-m"><action name="Execute"><command>xmag</command></action></keybind>
