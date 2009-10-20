@@ -102,8 +102,8 @@ def get_xml():
         ('left', '--rotate left'),
         ('invert', '--rotate invert'),
         (),
-        ('on', '--off'),
-        ('off', '--on'),
+        ('on', '--on'),
+        ('off', '--off'),
         (),
         ('auto', '--auto'),
         ('reset', ' '.join([
@@ -125,7 +125,13 @@ def get_xml():
             text = i.replace(' connected', '')
             text = text.partition('(')[0]
             text = text.strip()
-            output, mode, extra = (lambda x: (x[0], x[1], x[2:]))(text.split(' '))
+
+            try:
+                output, mode, extra = (lambda x: (x[0], x[1], x[2:]))(text.split(' '))
+            except IndexError:
+                # LVDS connected (normal left inverted right x axis y axis)
+                # Display is connected but off. Is this the best place to check that?
+                output, mode, extra = text, 'off', ''
 
             node = etree.SubElement(root, 'menu', id=output, type='output',
                     label=' '.join([output, mode, ' '.join(extra)]))
