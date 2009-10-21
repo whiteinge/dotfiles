@@ -188,7 +188,12 @@
         <!-- This a fudge, as there isn't a great Vim equivalent -->
         <keybind key="equal"><action name="MoveToCenter"/></keybind>
 
-        <!-- "Open the preview window" to put a window on all desktops and make it always visible -->
+        <!-- Activate the screensaver lock (taken from GNU screen, not Vim) -->
+        <keybind key="S-x">
+            <action name="Execute"><execute>xscreensaver-command -lock</execute></action>
+        </keybind>
+
+        <!-- "Go to the preview window" to put a window on all desktops and make it always visible -->
         <keybind key="S-p"><action name="ToggleOmnipresent"/><action name="ToggleAlwaysOnTop"/></keybind>
 
         <!-- the following blocks have fairly canonical Vim equivalents -->
@@ -197,6 +202,7 @@
 
         <keybind key="o"><action name="ToggleMaximizeFull"/></keybind>
         <keybind key="c"><action name="Close"/></keybind>
+        <keybind key="q"><action name="Iconify"/></keybind>
         <keybind key="p"><action name="DesktopLast"/></keybind>
 
         <!-- "Split windows" to send them to nearby destops, "vertical splits" don't follow
