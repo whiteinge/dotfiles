@@ -1,3 +1,4 @@
 [ferro]
 
 portrait: --output LVDS --primary --mode 1366x768 --output VGA-0 --mode 1440x900 --left-of LVDS --rotate left
+work: --output LVDS --primary --mode 1366x768 --output VGA-0 --mode 1920x1080 --right-of LVDS
