@@ -59,17 +59,19 @@ $user_number users${if_up ra0}
 ${color gray}ra0
 ${color white}${wireless_essid ra0}
 ${color gray}${downspeedgraph ra0 25,29 DDDDDD 1992d6 1280 -l} ${upspeedgraph ra0 25,29 DDDDDD 1992d6 1280 -l}
-${color gray}rx${color white}${downspeed ra0}
-${color gray}tx${color white}${upspeed ra0}
+${color gray}rx ${color white}${downspeed ra0}
+${color gray}tx ${color white}${upspeed ra0}
 $endif${if_up eth0}
 
 ${color gray}eth0
 ${color gray}${downspeedgraph eth0 25,29 DDDDDD 1992d6 12800 -l} ${upspeedgraph eth0 25,29 DDDDDD 1992d6 12800 -l}
-${color gray}rx${color white}${downspeed eth0}
-${color gray}tx${color white}${upspeed eth0}
+${color gray}rx ${color white}${downspeed eth0}
+${color gray}tx ${color white}${upspeed eth0}
 $endif
 ${color gray}diskio
-${diskiograph DDDDDD 1992d6}
+${diskiograph DDDDDD 1992d6 -t}
+${color gray}$diskio
+
 ${color gray}/${color white} ${fs_used_perc /}%
 ${color gray}/var${color white} ${fs_used_perc /var}%
 ${color gray}/home${color white} ${fs_used_perc /home}%
