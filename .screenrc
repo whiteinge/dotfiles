@@ -16,6 +16,7 @@ altscreen on            # full-screen programs (less, Vim) should be cleared onc
 vbell off               # visual bells are hard to do right. screen's isn't good
 defutf8 on              # allow utf characters
 
+defnonblock 5
 defflow off             # try to disable flow control (buggy)
 bind s                  # free ctrl-s
                         # Also put this in your shell startup file:
