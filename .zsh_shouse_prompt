@@ -36,16 +36,9 @@ function preexec {
     # if running gnu screen, set the window name to the last run command
     # FIXME any way to make this not change certain window titles (by window
     # number or if a title isn't already set?)
-    if [[ "$TERM" == "screen-bce" ]]; then
+    if [[ "$TERM" =~ "screen" ]]; then
         local CMD=${1[(wr)^(*=*|sudo|-*)]}
         echo -ne "\ek$CMD\e\\"
-    fi
-}
-
-function hg_tags {
-    if [[ $vcs_info_msg_0_ == "hg" ]]; then
-        # echo -ne "$PR_BBLACK$(hg id -b -t 2>/dev/null)$PR_RESET"
-        echo -ne "$PR_BBLACK$vcs_info_msg_0_$PR_RESET"
     fi
 }
 
