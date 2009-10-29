@@ -27,14 +27,15 @@ chatnets = {
 
 channels = (
   { name = "&bitlbee"; chatnet = "bitlbee"; autojoin = "yes"; },
-  { name = "#utos-dev"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#oalug"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utahpython"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#utahdjango"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utos"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#ubuntu-us-ut"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#gubug"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utah-altlang"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#udbug"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#utos-dev"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#utahdjango"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#uphpu"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#utah"; chatnet = "freenode"; autojoin = "yes"; },
 
@@ -42,12 +43,12 @@ channels = (
   { name = "#geodjango"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#django-cms"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#jquery"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#mercurial"; chatnet = "freenode"; autojoin = "yes"; }
-  { name = "#parti"; chatnet = "freenode"; autojoin = "yes"; }
-  { name = "#archlinux"; chatnet = "freenode"; autojoin = "yes"; }
+  { name = "#mercurial"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#parti"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#archlinux"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#xorg"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#zsh"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#erlang-otp"; chatnet = "freenode"; autojoin = "yes"; }
+  { name = "#erlang-otp"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "##proggit"; chatnet = "freenode"; autojoin = "yes"; }
 );
 
@@ -197,7 +198,7 @@ hilights = (
   { text = "whiteinge"; nick = "yes"; word = "yes"; },
   { text = "whiteinge_"; nick = "yes"; word = "yes"; },
   { text = "whiteing1"; nick = "yes"; word = "yes"; },
-  { text = "\\<seth\\>"; nick = "no"; word = "yes"; regexp = "yes"; }
+  { text = "\\<seth\\>"; nick = "no"; word = "yes"; regexp = "yes"; },
   { text = "oalug"; nick = "yes"; word = "yes"; },
   {
     text = ".*";
@@ -216,7 +217,7 @@ hilights = (
     nick = "no";
     word = "no";
     channels = ( "#utahdjango" );
-  },
+  }
 );
 
 ignores = (
@@ -226,59 +227,6 @@ ignores = (
   { level = "JOINS PARTS QUITS MODE"; }
 );
 
-windows = {
-  1 = { immortal = "yes"; name = "(status)"; level = "ALL"; };
-  2 = {
-    items = (
-      {
-        name = "&bitlbee";
-        tag = "bitlbee";
-        type = "CHANNEL";
-        chat_type = "IRC";
-      }
-    );
-  };
-  3 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#oalug";
-        tag = "freenode";
-      }
-    );
-  };
-  4 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#utahpython";
-        tag = "freenode";
-      }
-    );
-  };
-  5 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#utos";
-        tag = "freenode";
-      }
-    );
-  };
-  6 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#utos-dev";
-        tag = "freenode";
-      }
-    );
-  };
-};
 logs = { };
 keyboard = (
   { key = "meta-x"; id = "command"; data = "window last"; },
@@ -290,3 +238,237 @@ aliases = {
   uis = "exec - rsync -avz main.irssi.org::irssiweb/scripts/scripts/\\*.pl ~/.irssi/scripts/autorun";
 };
 notifies = { agentc0re = { }; };
+windows = {
+  1 = { immortal = "yes"; name = "(status)"; level = "ALL"; };
+  2 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "&bitlbee";
+        tag = "bitlbee";
+      }
+    );
+  };
+  4 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#oalug";
+        tag = "freenode";
+      }
+    );
+  };
+  5 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#utahpython";
+        tag = "freenode";
+      }
+    );
+  };
+  6 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#utos";
+        tag = "freenode";
+      }
+    );
+  };
+  7 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#ubuntu-us-ut";
+        tag = "freenode";
+      }
+    );
+  };
+  11 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#utos-dev";
+        tag = "freenode";
+      }
+    );
+  };
+  12 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#utahdjango";
+        tag = "freenode";
+      }
+    );
+  };
+  13 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#gubug";
+        tag = "freenode";
+      }
+    );
+  };
+  14 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#utah-altlang";
+        tag = "freenode";
+      }
+    );
+  };
+  15 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#udbug";
+        tag = "freenode";
+      }
+    );
+  };
+  16 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#uphpu";
+        tag = "freenode";
+      }
+    );
+  };
+  17 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#utah";
+        tag = "freenode";
+      }
+    );
+  };
+  20 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#django";
+        tag = "freenode";
+      }
+    );
+  };
+  21 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#geodjango";
+        tag = "freenode";
+      }
+    );
+  };
+  22 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#django-cms";
+        tag = "freenode";
+      }
+    );
+  };
+  25 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#jquery";
+        tag = "freenode";
+      }
+    );
+  };
+  30 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#xorg";
+        tag = "freenode";
+      }
+    );
+  };
+  31 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#parti";
+        tag = "freenode";
+      }
+    );
+  };
+  35 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#mercurial";
+        tag = "freenode";
+      }
+    );
+  };
+  36 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#zsh";
+        tag = "freenode";
+      }
+    );
+  };
+  37 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#archlinux";
+        tag = "freenode";
+      }
+    );
+  };
+  40 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#erlang-otp";
+        tag = "freenode";
+      }
+    );
+  };
+  45 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "##proggit";
+        tag = "freenode";
+      }
+    );
+  };
+};
+mainwindows = { 1 = { first_line = "1"; lines = "39"; }; };
