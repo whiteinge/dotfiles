@@ -1,3 +1,11 @@
 [user]
-	email = seth@eseth.com
-	name = Seth House
+    email = seth@eseth.com
+    name = Seth House
+
+[alias]
+    st = status
+    ci = commit
+    co = checkout
+    incoming = !git-incoming
+    outgoing = !git-outgoing
+    addremove = !git-addremove
