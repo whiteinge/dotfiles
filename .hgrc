@@ -21,6 +21,7 @@ pager =
 transplant =
 hgext.bookmarks =
 hgext.graphlog =
+hgext.hgk =
 hgext.mq =
 hgext.notify =
 hgext.purge =
