@@ -162,13 +162,25 @@ SCREEN_AUTH_SOCK=$HOME/.screen/ssh-auth-sock
 # point to the new ssh-agent socket. Bonus: when the screen session is detached
 # the agent will be killed, securing your session. Simply run ssh-add every
 # time you start a new screen session or reattach.
-alias sc="exec ssh-agent sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec screen -e\"^Aa\" -S main -DRR'"
+alias sc="exec ssh-agent \
+    sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
+    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec screen -e\"^Aa\" -S main -DRR'"
 #
 # For remote Screen sessions (e.g. ssh-ed Screen inside local Screen), update
 # SCREEN_AUTH_SOCK to point at the (hopefully) existing forwarded SSH_AUTH_SOCK
 # that points to your locally running agent. (For more info see ForwardAgent in
 # the ssh_config manpage.)
-alias rsc="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec screen -e\"^Ss\" -S main -DRR'"
+alias rsc="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
+    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec screen -e\"^Ss\" -S main -DRR'"
+
+# tmux agent alias
+alias tm="exec ssh-agent \
+    sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
+    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec tmux'"
+
+# tmux agent alias
+alias rtm="sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
+    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec tmux'"
 
 # Start ssh session in a new Screen window
 sssh() { screen -t $@ ssh "$@"; }
