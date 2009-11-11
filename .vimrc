@@ -182,7 +182,8 @@ set clipboard=                  "       Disable automatic X11 clipboard crossove
 " Color {{{
 "   All coloring options are for the non-GUI Vim (see :help cterm-colors).
 
-color desert
+" color desert
+color synic
 
 " I love the new CursorLine, but terminal underlining kicks legibility in the nuts.
 " So what to do? Bold is (extremely) subtle, but it's better than nothing.
