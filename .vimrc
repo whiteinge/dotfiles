@@ -77,16 +77,19 @@ inoremap <Nul> <C-x><C-o>
 " Highlight lines that are longer than 80 chars
 " Highlight lines that are only whitespace
 " toggle with \l
-au BufWinEnter * let w:m1=matchadd('ErrorMsg', '\%>80v.\+', -1)
-au BufWinEnter * let w:m2=matchadd('ErrorMsg', '^\s\+$', -1)
 nnoremap <silent> <Leader>l
-    \ :if exists('w:m1') <Bar>
-    \   silent! call clearmatches() <Bar>
-    \   unlet w:m1 <Bar>
-    \ else <Bar>
-    \   let w:m1=matchadd('ErrorMsg', '\%>80v.\+', -1) <Bar>
-    \   let w:m2=matchadd('ErrorMsg', '^\s\+$', -1) <Bar>
-    \ endif <CR>
+      \ :if exists('w:long_line_match') <Bar>
+      \   silent! call matchdelete(w:long_line_match) <Bar>
+      \   silent! call matchdelete(w:empty_line_match) <Bar>
+      \   unlet w:long_line_match <Bar>
+      \   unlet w:empty_line_match <Bar>
+      \ elseif &textwidth > 0 <Bar>
+      \   let w:long_line_match = matchadd('ErrorMsg', '\%>'.&tw.'v.\+', -1) <Bar>
+      \ else <Bar>
+      \   let w:long_line_match = matchadd('ErrorMsg', '\%>80v.\+', -1) <Bar>
+      \   let w:empty_line_match = matchadd('ErrorMsg', '^\s\+$', -1) <Bar>
+      \ endif<CR>
+
 
 " VCS Diffs
 " Small, fast, windowed diff
