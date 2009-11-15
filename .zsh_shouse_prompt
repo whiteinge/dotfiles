@@ -37,7 +37,7 @@ function preexec {
     # FIXME any way to make this not change certain window titles (by window
     # number or if a title isn't already set?)
     if [[ "$TERM" =~ "screen" ]]; then
-        local CMD=${1[(wr)^(*=*|sudo|-*)]}
+        local CMD=${1[(wr)^(*=*|ssh|sudo|-*)]}
         echo -ne "\ek$CMD\e\\"
     fi
 }
