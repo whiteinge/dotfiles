@@ -292,7 +292,7 @@ joinpdf () {
 # }}}
 # Python development helpers {{{
 
-alias pyhttp='python -c "import SimpleHTTPServer; SimpleHTTPServer.test();"'
+alias pyhttp='python -m SimpleHTTPServer'
 alias pysmtp='python -m smtpd -n -c DebuggingServer localhost:1025'
 
 # }}}
