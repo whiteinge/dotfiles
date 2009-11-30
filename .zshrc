@@ -34,8 +34,7 @@ bindkey '^J' push-line
 
 umask 027
 
-PATH=$HOME/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11/bin:/bin:/sbin:/usr/bin:/usr/sbin:$PATH
-MANPATH=$HOME/man:/opt/local/share/man:/usr/local/man:/usr/local/share/man:/usr/X11/man:/usr/man:/usr/share/man:$MANPATH
+path+=( /sbin /usr/sbin /usr/local/sbin ); path=( ${(u)path} );
 CDPATH=$CDPATH::$HOME:/usr/local
 
 PYTHONPATH=$HOME/lib/python/site-packages:$HOME/src:$PYTHONPATH
