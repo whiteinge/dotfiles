@@ -349,16 +349,16 @@
 
 
   <applications>
-      <application name="screen">
-          <desktop>1</desktop>
-          <maximized>yes</maximized>
-          <layer>below</layer>
-      </application>
+      <!-- <application name="screen"> -->
+          <!-- <desktop>1</desktop> -->
+          <!-- <maximized>yes</maximized> -->
+          <!-- <layer>below</layer> -->
+      <!-- </application> -->
 
-      <application class="Firefox*">
-          <desktop>2</desktop>
-          <maximized>yes</maximized>
-      </application>
+      <!-- <application class="Firefox*"> -->
+          <!-- <desktop>2</desktop> -->
+          <!-- <maximized>yes</maximized> -->
+      <!-- </application> -->
 
       <application class="MPlayer">
           <desktop>all</desktop>
