@@ -419,6 +419,8 @@ let tlist_xhtml_settings = tlist_xml_settings
 let tlist_html_settings = tlist_xml_settings
 let tlist_htmldjango_settings = tlist_xml_settings
 let tlist_css_settings = 'css;s:Selectors'
+let tlist_js_settings = 'js;o:function'
+let tlist_js_settings = 'js;f:object'
 
 " Centers, left, or right-justifies text
 noremap <silent> ,c :ce <CR> << <CR>
