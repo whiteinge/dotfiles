@@ -1,0 +1,28 @@
+# http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/498182
+import os
+import sys
+# import rlcompleter early, as it contains side effects
+import rlcompleter
+# refresh the terminal
+os.system("stty sane")
+# this rc file takes single lines, so define our complete function here
+execfile(os.path.expanduser("~/.pdbrc.py"))
+# replace the Pdb class's complete method with ours
+sys._getframe(1).f_globals['Pdb'].complete = complete
+# set use_rawinput to 1 as tab completion relies on rawinput being used
+sys._getframe(1).f_locals['self'].use_rawinput = 1
+
+# Make pprint quickly available
+from pprint import pprint
+
+# Print the member variables of a thing.
+alias pi p_ %1.__dict__ %1.
+
+# Next and list, and step and list.
+alias nl n;;l
+alias sl s;;l
+
+# Always list the current line, even if you already listed it
+alias ll u;;d;;l
+
+# vim:ft=python
