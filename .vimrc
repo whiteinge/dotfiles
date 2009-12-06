@@ -375,19 +375,13 @@ au FileType java compiler javac
 autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
 autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 
-" Shortcut to invoke wordnet
-noremap  <F7> "wyiw:call WordNetOverviews(@w)<CR>
-
-" Set keywordprg for certain filetypes
-au FileType python set keywordprg=pydoc
-
-" Python :make for a small visual selection of code
+" Python :make for a visual selection
 python << EOL
 import vim
 def EvaluateCurrentRange():
     eval(compile('\n'.join(vim.current.range),'','exec'),globals())
 EOL
-" map <C-m> :py EvaluateCurrentRange()
+map <leader>p :py EvaluateCurrentRange()<cr>
 
 " Add PYTHONPATH to Vim path to enable 'gf'
 python << EOF
@@ -398,6 +392,12 @@ for p in sys.path:
     if os.path.isdir(p):
         vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
 EOF
+
+" Shortcut to invoke wordnet
+noremap  <F7> "wyiw:call WordNetOverviews(@w)<CR>
+
+" Set keywordprg for certain filetypes
+au FileType python set keywordprg=pydoc
 
 " For standards-compliant :TOhtml output
 let html_use_css=1
