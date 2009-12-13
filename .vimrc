@@ -1,6 +1,6 @@
 " Best Goddamn vimrc in the whole world.
 " Author: Seth House <seth@eseth.com>
-" Modified: 2009-09-04
+" Modified: 2009-12-13
 " For more information type :help followed by the command.
 
 set nocompatible                "cp:    turns off strct vi compatibility
@@ -11,7 +11,7 @@ set incsearch                   "is:    automatically begins searching as you ty
 set ignorecase                  "ic:    ignores case when pattern matching
 set smartcase                   "scs:   ignores ignorecase when pattern contains uppercase characters
 set hlsearch                    "hls:   highlights search results
-" Use ctrl-n to unhighlight search results in normal mode:
+" Use leader-n to unhighlight search results in normal mode:
 nmap <silent> <leader>n :silent noh<CR>
 
 " }}}
@@ -49,10 +49,13 @@ set nojoinspaces                "nojs:  prevents inserting two spaces after punc
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
 set pastetoggle=<F5>            "pt:    useful so auto-indenting doesn't mess up code when pasting
 
+set virtualedit=block           "ve:    let cursor move past the last char in <C-v> mode
+set nostartofline               "sol:   avoid moving cursor to BOL when jumping around
+
 " Fix for legacy vi inconsistency
 map Y y$
 
-" Allow undoing ctrl-u and ctrl-w
+" Allow undoing insert-mode ctrl-u and ctrl-w
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
@@ -74,6 +77,9 @@ map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
 " Maps Omnicompletion to CTRL-space since ctrl-x ctrl-o is for Emacs-style RSI
 inoremap <Nul> <C-x><C-o>
 
+" don't select first item, follow typing in autocomplete
+set completeopt=longest,menuone,preview
+
 " Highlight lines that are longer than 80 chars
 " Highlight lines that are only whitespace
 " toggle with \l
@@ -89,7 +95,6 @@ nnoremap <silent> <Leader>l
       \   let w:long_line_match = matchadd('ErrorMsg', '\%>80v.\+', -1) <Bar>
       \   let w:empty_line_match = matchadd('ErrorMsg', '^\s\+$', -1) <Bar>
       \ endif<CR>
-
 
 " VCS Diffs
 " Small, fast, windowed diff
@@ -111,6 +116,7 @@ set foldcolumn=4                "fdc:   creates a small left-hand gutter for dis
 " }}}
 " Menu completion {{{
 
+set suffixes+=.pyc,.pyo         " Don't autocomplete these filetypes
 set wildmenu                    "wmnu:  enhanced ex command completion
 set wildmode=longest:full,list:full  "wim:   helps wildmenu auto-completion
 
@@ -383,6 +389,16 @@ def EvaluateCurrentRange():
 EOL
 " map <C-m> :py EvaluateCurrentRange()
 
+" Add PYTHONPATH to Vim path to enable 'gf'
+python << EOF
+import os
+import sys
+import vim
+for p in sys.path:
+    if os.path.isdir(p):
+        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+EOF
+
 " For standards-compliant :TOhtml output
 let html_use_css=1
 let use_xhtml=1
@@ -406,14 +422,24 @@ noremap <silent> ,- :call CommentLineToEnd('-- ')<CR>+
 noremap <silent> ,* :call CommentLinePincer('/* ', ' */')<CR>+
 noremap <silent> ,< :call CommentLinePincer('<!-- ', ' -->')<CR>+
 
-" Custom settings for the taglist plugin (see ~/.ctags file)
-" /regexp/replacement/[kind−spec/][flags]
+" Taglist plugin settings
 map <F3> :TlistToggle<cr>
 let Tlist_Use_Right_Window = 1
 let Tlist_Compact_Format = 1
 let Tlist_Exit_OnlyWindow = 1
-let Tlist_GainFocus_On_ToggleOpen = 1
-let Tlist_File_Fold_Auto_Close = 1
+
+" Auto-open taglist only if the term wide enough to also fit an 80-column
+" window (plus eight for line numbers and the fold column). Otherwise, try to
+" stay out of the way.
+if &columns > 118
+    let Tlist_Auto_Open = 1
+else
+    let Tlist_GainFocus_On_ToggleOpen = 1
+    let Tlist_File_Fold_Auto_Close = 1
+endif
+
+" Custom tag generation for some filetypes (see ~/.ctags file)
+" /regexp/replacement/[kind−spec/][flags]
 let tlist_xml_settings = 'xml;i:id'
 let tlist_xhtml_settings = tlist_xml_settings
 let tlist_html_settings = tlist_xml_settings
@@ -437,11 +463,13 @@ noremap <silent> ,s :exe Scratch()<CR>
 
 " Outputs a small warning when opening a file that contains tab characters
 function! WarnTabs()
+    let save_cursor = getpos('.')
     if searchpos('\t') != [0,0]
         echohl WarningMsg |
         \ echo "Warning, this file contains tabs." |
         \ echohl None
     endif
+    call setpos('.', save_cursor)
 endfunction
 autocmd BufReadPost * call WarnTabs()
 
