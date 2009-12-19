@@ -359,8 +359,9 @@ autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
 " Turn on UniCycle for certain textual filetypes
-autocmd FileType rst UniCycleOn
 autocmd FileType mail UniCycleOn
+autocmd FileType rst UniCycleOn
+autocmd FileType rst set textwidth=79
 
 " Not sure why the cron filetype isn't catching this...
 au FileType crontab set backupcopy=yes
