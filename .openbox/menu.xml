@@ -19,6 +19,12 @@
           <command>firefox</command>
       </action>
   </item>
+  <item label="chrome">
+      <action name="Execute">
+          <startupnotify><enabled>yes</enabled></startupnotify>
+          <command>chromium-browser --enable-extension-timeline-api</command>
+      </action>
+  </item>
 
   <separator />
 
