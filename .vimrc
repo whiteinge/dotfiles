@@ -13,6 +13,8 @@ set smartcase                   "scs:   ignores ignorecase when pattern contains
 set hlsearch                    "hls:   highlights search results
 " Use leader-n to unhighlight search results in normal mode:
 nmap <silent> <leader>n :silent noh<CR>
+" Display the number of matches for the last search
+nmap <leader>c :%s:/::gn<CR>
 
 " }}}
 " Line Wrap {{{
