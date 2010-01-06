@@ -9,3 +9,8 @@
     incoming = !git-incoming
     outgoing = !git-outgoing
     addremove = !git-addremove
+
+[color]
+    diff = auto
+    status = auto
+    branch = auto
