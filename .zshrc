@@ -175,11 +175,11 @@ alias rsc="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
 # tmux agent alias
 alias tm="exec ssh-agent \
     sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
-    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec tmux'"
+    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec tmux attach'"
 
 # tmux agent alias
 alias rtm="sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
-    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec tmux'"
+    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec tmux attach'"
 
 # Start ssh session in a new Screen window
 sssh() { screen -t $@ ssh "$@"; }
