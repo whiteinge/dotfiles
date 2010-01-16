@@ -442,14 +442,17 @@ else
 endif
 
 " Custom tag generation for some filetypes (see ~/.ctags file)
-" /regexp/replacement/[kind−spec/][flags]
+" <lang>;flag1:name1;flag2:name2;flag3:name3
 let tlist_xml_settings = 'xml;i:id'
 let tlist_xhtml_settings = tlist_xml_settings
 let tlist_html_settings = tlist_xml_settings
 let tlist_htmldjango_settings = tlist_xml_settings
 let tlist_css_settings = 'css;s:Selectors'
-let tlist_js_settings = 'js;o:function'
-let tlist_js_settings = 'js;f:object'
+let tlist_js_settings = 'js;o:function;f:object'
+let tlist_tex_settings = 'tex;c:Chapters;s:Sections;l:Labels;r:Refs'
+let tlist_latex_settings = 'latex;s:Sections;l:Labels'
+let tlist_rst_settings = 'rst;s:Headings'
+let tlist_markdown_settings = 'markdown;h:Headings'
 
 " Centers, left, or right-justifies text
 noremap <silent> ,c :ce <CR> << <CR>
