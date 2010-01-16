@@ -28,6 +28,7 @@ PR_RESET="%{${reset_color}%}";
 function precmd {
     vcs_info
     setprompt
+    venv_rprompt
 }
 
 
@@ -105,6 +106,13 @@ pet_wander () {
     echo -ne "%{$reset_color%}"
 }
 
+venv_rprompt () {
+    if [[ -n $VIRTUAL_ENV ]]; then
+        RPROMPT="$PR_BBLACK venv:$(basename $VIRTUAL_ENV)$PR_RESET"
+    else
+        RPROMPT=""
+    fi
+}
 
 # function zle-keymap-select {
     # VIMODE="${${KEYMAP/vicmd/ M:command}/(main|viins)/}"
