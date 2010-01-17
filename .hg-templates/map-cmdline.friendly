@@ -1,0 +1,50 @@
+changeset = '\
+    \033[0;33m{rev}\033[0m:\033[0;33m{node|short}\033[0m \
+    {branches} \
+    {tags}{parents} \
+    \033[1;30m{author|user} {date|age}\033[0m\n\
+    \033[0m{desc|firstline|strip|fill76}
+    \033[0;36m{files|stringify|fill76|tabindent}\033[0m\n'
+
+changeset_quiet = '\
+    \033[0;33m{rev}\033[0m \
+    {branches} \
+    \033[0m{desc|firstline|strip} \
+    \033[0m{tags} \
+    \033[1;30m{author|user} {date|age}\n'
+
+changeset_verbose = '\
+    \033[0;33m{rev}\033[0m:\033[0;33m{node|short}\033[0m \
+    {branches} \
+    {tags}{parents}\n\
+    {author} {date|isodate} \033[1;30m({date|age})\033[0m\n\n\
+    {desc|strip|fill76}\n
+    \t{file_mods|stringify|fill76|tabindent}\
+    \t{file_adds|stringify|fill76|tabindent}\
+    \t{file_dels|stringify|fill76|tabindent}\n'
+
+
+start_tags = '['
+tag = '\033[0;33m{tag}\033[0m, '
+last_tag = '\033[0;33m{tag}\033[0m]'
+
+start_parents = ':'
+parent = '{rev} '
+last_parent = '{rev}'
+
+branch = '\033[0;35m{branch}\033[0m'
+
+file = '{file|basename}, '
+last_file = '{file|basename}'
+
+file_mod = '{file_mod}, '
+file_add = '{file_add}, '
+file_del = '{file_del}, '
+
+start_file_mods = '\033[0;36m* '
+start_file_adds = '\033[0;32m+ '
+start_file_dels = '\033[0;31m- '
+
+last_file_mod = '{file_mod}\033[0m\n'
+last_file_add = '{file_add}\033[0m\n'
+last_file_del = '{file_del}\033[0m\n'
