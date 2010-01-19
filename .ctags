@@ -17,12 +17,6 @@
 --regex-tex=/\\label[ \t]*\*?\{[ \t]*([^}]*)\}/\1/l,label/
 --regex-tex=/\\ref[ \t]*\*?\{[ \t]*([^}]*)\}/\1/r,ref/
 
-–langdef=latex
-–langmap=latex:.tex
-–regex-latex=/\label{([^} \t]+)[ \t]}/\1/l,label/
-–regex-latex=/^\(sub)section*?{(.)}/\2/s,section/
-–regex-latex=/\begin{(sub)section}[ \t]({(.)})/\1-\3/s,section/
-
 --langdef=xml
 --langmap=xml:.xml.html.xhtml
 --regex-xml=/<([^ \t]+)[ \t]*(id)[ \t]*=[ \t]*\"([^\"]+)/\1 \3/i,id/i
