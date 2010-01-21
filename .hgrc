@@ -81,6 +81,12 @@ attend = help
 pager = LESS='FSRXimJMW' less
 
 
+[bookmarks]
+###############################################################################
+# Only update bookmark that you are currently using, instead of all
+track.current = true
+
+
 [hooks]
 ###############################################################################
 # Don't commit any code that contains 'pdb'
