@@ -48,7 +48,7 @@ qudiff = diff -r $(hg parents -r qbase --template '#rev#') -r qtip
 [merge-tools]
 ###############################################################################
 vimdiff.executable = vimdiff
-vimdiff.premerge = True
+vimdiff.premerge = true
 vimdiff.gui = false
 
 # inkscape.executable = inkscape
