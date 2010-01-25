@@ -1,16 +1,12 @@
+# -*- coding: utf-8 -*-
 """Best goddamn .pythonrc file in the whole world.
 
 This file is executed when the Python interactive shell is started if
 $PYTHONSTARTUP is in your environment and points to this file. It's just
 regular Python commands, so do what you will. Your ~/.inputrc file can greatly
-complement this file."""
+complement this file.
 
-AUTHOR = 'Seth House'
-CONTACT = 'seth@eseth.com'
-LAST_MODIFIED = '$Date: 2009-04-09 21:33:47 -0600 (Thu, 09 Apr 2009) $'
-
-##########################################################################
-
+"""
 # Imports we need
 import sys
 import os
@@ -24,6 +20,8 @@ from code import InteractiveConsole
 # Imports we want
 import datetime
 import pdb
+
+AUTHOR = 'Seth House <seth@eseth.com>'
 
 # Color Support
 ###############
