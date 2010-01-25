@@ -8,11 +8,11 @@ autoload -U promptinit
 autoload -Uz vcs_info
 
 colors
-# hg must be last since $HOME is under hg
-zstyle ':vcs_info:*' enable git bzr svn hg
+zstyle ':vcs_info:*' enable hg git bzr svn
 zstyle ':vcs_info:(hg|git):*' get-revision true
 zstyle ':vcs_info:(hg|git):*' check-for-changes true
-zstyle ':vcs_info:*' formats '(%s)[%b %m]'
+zstyle ':vcs_info:(hg):*' hgrevformat "%r" # only show local rev num.
+zstyle ':vcs_info:*' formats '(%s)[%b %m]' # show branch, rev, & misc
 zstyle ':vcs_info:*' actionformats '(%s) [%b %i %m %a %c %u]'
 
 
