@@ -35,8 +35,8 @@ hggit =
 # Variable-detail changelog displays 
 # FIXME: can't expand ~ in an alias?
 l = log -q -l 20 --style /home/shouse/.hg-templates/map-cmdline.friendly
-ll = glog -l 10 --style /home/shouse/.hg-templates/map-cmdline.friendly
-lll = glog -v -l 5 --style /home/shouse/.hg-templates/map-cmdline.friendly
+ll = log -G -l 10 --style /home/shouse/.hg-templates/map-cmdline.friendly
+lll = log -G -v -l 5 --style /home/shouse/.hg-templates/map-cmdline.friendly
 
 # MQ: Show status output for the current patch
 qstatus = status --rev -2:.
