@@ -34,7 +34,7 @@ hggit =
 ###############################################################################
 # Variable-detail changelog displays 
 # FIXME: can't expand ~ in an alias?
-l = log -q -l 20 --style /home/shouse/.hg-templates/map-cmdline.friendly
+l = log -q -l 15 --style /home/shouse/.hg-templates/map-cmdline.friendly
 ll = log -G -l 10 --style /home/shouse/.hg-templates/map-cmdline.friendly
 lll = log -G -v -l 5 --style /home/shouse/.hg-templates/map-cmdline.friendly
 
