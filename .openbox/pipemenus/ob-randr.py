@@ -100,7 +100,8 @@ def get_xml():
     actions = (
         ('right', '--rotate right'),
         ('left', '--rotate left'),
-        ('invert', '--rotate invert'),
+        ('inverted', '--rotate inverted'),
+        ('normal', '--rotate normal'),
         (),
         ('on', '--on'),
         ('off', '--off'),
