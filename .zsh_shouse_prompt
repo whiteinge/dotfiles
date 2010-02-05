@@ -9,6 +9,7 @@ autoload -Uz vcs_info
 
 colors
 zstyle ':vcs_info:*' enable hg git bzr svn
+zstyle ':vcs_info:*' disable-patterns "$HOME(|/*)"
 zstyle ':vcs_info:(hg|git):*' get-revision true
 zstyle ':vcs_info:(hg|git):*' check-for-changes true
 zstyle ':vcs_info:(hg):*' hgrevformat "%r" # only show local rev num.
