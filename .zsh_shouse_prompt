@@ -1,7 +1,9 @@
 # Best Goddamn zsh prompt in the whole world.
 # Author: Seth House <seth@eseth.com>
-# Modified: 2009-10-13
 # thanks to Phil of phil's prompt: http://aperiodic.net/phil/prompt/
+# and Frank Terbeck <ft@bewatermyfriend.org> for the VCS_INFO work
+
+fpath=( ~/.zsh_functions $fpath )
 
 autoload -U colors
 autoload -U promptinit
@@ -9,11 +11,12 @@ autoload -Uz vcs_info
 
 colors
 zstyle ':vcs_info:*' enable hg git bzr svn
-zstyle ':vcs_info:*' disable-patterns "$HOME(|/*)"
 zstyle ':vcs_info:(hg|git):*' get-revision true
 zstyle ':vcs_info:(hg|git):*' check-for-changes true
-zstyle ':vcs_info:(hg):*' hgrevformat "%r" # only show local rev num.
-zstyle ':vcs_info:*' formats '(%s)[%b %m]' # show branch, rev, & misc
+zstyle ':vcs_info:(hg):*' unstagedstr "+"
+zstyle ':vcs_info:(hg):*' hgrevformat "%r" # only show local rev.
+zstyle ':vcs_info:(hg):*' branchformat "%b;%k:%r" # branch, bookmarks, rev.
+zstyle ':vcs_info:*' formats '(%s)[%b%u %m]' # show branch, rev, & misc
 zstyle ':vcs_info:*' actionformats '(%s) [%b %i %m %a %c %u]'
 
 
