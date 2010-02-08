@@ -15,7 +15,7 @@ zstyle ':vcs_info:(hg|git):*' get-revision true
 zstyle ':vcs_info:(hg|git):*' check-for-changes true
 zstyle ':vcs_info:(hg):*' unstagedstr "+"
 zstyle ':vcs_info:(hg):*' hgrevformat "%r" # only show local rev.
-zstyle ':vcs_info:(hg):*' branchformat "%b;%k:%r" # branch, bookmarks, rev.
+zstyle ':vcs_info:(hg):*' branchformat "%r %b:%k" # branch, bookmarks, rev.
 zstyle ':vcs_info:*' formats '(%s)[%b%u %m]' # show branch, rev, & misc
 zstyle ':vcs_info:*' actionformats '(%s) [%b %i %m %a %c %u]'
 
