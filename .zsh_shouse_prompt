@@ -13,11 +13,11 @@ colors
 zstyle ':vcs_info:*' enable hg git bzr svn
 zstyle ':vcs_info:(hg|git):*' get-revision true
 zstyle ':vcs_info:(hg|git):*' check-for-changes true
-zstyle ':vcs_info:(hg):*' unstagedstr "$PR_BGREEN+$PR_BBLACK"
-zstyle ':vcs_info:(hg):*' hgrevformat "%r" # only show local rev.
-zstyle ':vcs_info:(hg):*' branchformat "%b;%k:%r" # branch, bookmarks, rev.
-zstyle ':vcs_info:*' formats '(%s)[%b%u %m]' # show branch, rev, & misc
-zstyle ':vcs_info:*' actionformats '(%s) [%b %i %m %a %c %u]'
+zstyle ':vcs_info:hg:*' get-bookmarks true
+zstyle ':vcs_info:hg:*' unstagedstr "$PR_BGREEN+$PR_BBLACK"
+zstyle ':vcs_info:hg:*' hgrevformat "%r" # only show local rev.
+zstyle ':vcs_info:hg:*' branchformat "%b" # only show branch
+zstyle ':vcs_info:*' formats '(%s)[%i%u %b %m]' # rev, changes, branch, misc
 
 
 # set some color shortcuts
