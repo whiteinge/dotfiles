@@ -19,6 +19,7 @@ extdiff =
 fetch =
 pager =
 transplant =
+parentrevspec =
 hgext.bookmarks =
 hgext.graphlog =
 hgext.hgk =
