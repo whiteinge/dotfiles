@@ -50,6 +50,19 @@ xterm*trimSelection: true
 ! fixes too dark blue
 xterm*color4: DodgerBlue1
 xterm*color12: SteelBlue1
+! Change font-resize bindings to not require a numpad (and to use mousewheel)
+xterm.vt100.translations: #override \n\
+    Ctrl <Btn4Down>: larger-vt-font() \n\
+    Ctrl <Btn5Down>: smaller-vt-font() \n\
+    Shift Ctrl <Key>=: larger-vt-font() \n\
+    Shift Ctrl <Key>-: smaller-vt-font() \n\
+    Shift Ctrl <Key>0: set-vt-font(d)
+xterm*faceSize1:	6
+xterm*faceSize2:	8
+xterm*faceSize3:	9
+xterm*faceSize4:	10
+xterm*faceSize5:	12
+xterm*faceSize6:	16
 ! map the tab key to escape in xterm (becase we can!)
 ! xterm.vt100.translations: #override\n\
 !        <Key>Tab: string("\033")\n\
