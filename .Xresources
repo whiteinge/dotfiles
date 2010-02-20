@@ -37,7 +37,7 @@ xterm*loginShell: true
 ! Enables True-Type rendering
 xterm*renderFont: true
 xterm*faceName: Inconsolata
-xterm*faceSize: 10
+xterm*faceSize: 12
 xterm*cursorColor: red
 xterm*cursorUnderline: true
 xterm*cursorBlink: true
@@ -59,10 +59,10 @@ xterm.vt100.translations: #override \n\
     Shift Ctrl <Key>0: set-vt-font(d)
 xterm*faceSize1:	6
 xterm*faceSize2:	8
-xterm*faceSize3:	9
-xterm*faceSize4:	10
-xterm*faceSize5:	12
-xterm*faceSize6:	16
+xterm*faceSize3:	10
+xterm*faceSize4:	12
+xterm*faceSize5:	16
+xterm*faceSize6:	24
 ! map the tab key to escape in xterm (becase we can!)
 ! xterm.vt100.translations: #override\n\
 !        <Key>Tab: string("\033")\n\
