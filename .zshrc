@@ -42,7 +42,7 @@ PYTHONSTARTUP=$HOME/.pythonrc.py
 export PYTHONSTARTUP PYTHONPATH
 
 # Local development projects go here
-SRC_DIR=$HOME/src
+SRCDIR=$HOME/src
 
 HISTFILE=$HOME/.zsh_history
 HISTFILESIZE=65536  # search this with `grep | sort -u`
@@ -324,7 +324,12 @@ djsetup()
 
 # work on virtualenv
 function djworkon(){
-    cd $SRC_DIR/$1
+    [[ -d ./$1 || -d $SRCDIR/$1 ]] || return 1
+
+    cd ./$1 2>/dev/null || cd $SRCDIR/$1
+
+    [[ -f ./bin/activate ]] || echo "Error. Not a venv." 2>&1 && return 1
+
     unset PYTHONPATH
     source ./bin/activate
 
