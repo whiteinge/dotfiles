@@ -28,25 +28,23 @@ if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" get-revision ; then
     # If there's a way around that, I'd be interested.
     # Disabled by default anyway, so no harm done.
     local HGRCPATH
+    local hgflags="--debug id -i -n -b"
 
-    if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" \
-            "check-for-changes" ; then
+    # Looking for changes is disabled by default; the dirstate cache must first
+    # be refreshed before being read which is a bit slower.
+    zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" \
+        "check-for-changes" || hgflags="${hgflags} -r."
 
-        HGRCPATH="/dev/null" ${vcs_comm[cmd]} id --debug -i -n -b \
+    HGRCPATH="/dev/null" ${vcs_comm[cmd]} ${(z)hgflags} \
         | read -r hghash hglrev r_branch
 
-        # Are there uncommitted-changes?
-        if [[ $hglrev[-1] == + ]] ; then
-            hgchanges=1
-        fi
+    # Are there uncommitted-changes?
+    if [[ $hglrev[-1] == + ]] ; then
+        hgchanges=1
 
-        # Remove uncommitted-changes marker, if any
+        # Remove marker
         hglrev=${hglrev/+/}
         hghash=${hghash/+/}
-    else
-        HGRCPATH="/dev/null" ${vcs_comm[cmd]} \
-        parents --template="{node} {rev} {branches}\n" \
-        | read -r hghash hglrev r_branch
     fi
 
     if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" "get-bookmarks" \
@@ -115,14 +113,13 @@ else
     hgmqstring=''
 fi
 
-if [[ -z "${hgmqstring}" ]] && [[ -z "${hgbmstring}" ]]; then
-    hgmisc_args=( '' ) # make sure there's at least *one* misc argument
-elif [[ -z "${hgmqstring}" ]]; then
-    hgmisc_args=( "${hgmqstring}" )
-elif [[ -z "${hgbmstring}" ]]; then
-    hgmisc_args=( "${hgbmstring}" )
-else
-    hgmisc_args=( "${hgmqstring}" "${hgbmstring}" )
-fi
+hgmisc_args=()
+
+[[ -z "${hgmqstring}" ]] || hgmisc_args+="${hgmqstring}"
+[[ -z "${hgbmstring}" ]] || hgmisc_args+="${hgbmstring}"
+
+# make sure there's at least *one* misc argument
+[[ -n "${hgmisc_args}" ]] || hgmisc_args=( '' )
+
 VCS_INFO_formats '' "${hgbranch}" "${hgbase}" '' "${hgchanges}" "${hglrev}" "${hgmisc_args[@]}"
 return 0
