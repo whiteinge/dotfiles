@@ -18,6 +18,7 @@ zstyle ':vcs_info:hg:*' unstagedstr "$PR_BGREEN+$PR_BBLACK"
 zstyle ':vcs_info:hg:*' hgrevformat "%r" # only show local rev.
 zstyle ':vcs_info:hg:*' branchformat "%b" # only show branch
 zstyle ':vcs_info:*' formats '(%s)[%i%u %b %m]' # rev, changes, branch, misc
+zstyle ':vcs_info:*' actionformats '(%s|%a)[%i%u %b %m]'
 
 
 # set some color shortcuts
