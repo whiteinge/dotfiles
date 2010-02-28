@@ -79,7 +79,7 @@ opts.vimdiff = -f '+next' '+execute "DirDiff" argv(0) argv(1)'
 
 [pager]
 ###############################################################################
-attend = help, log, l, ll, lll
+attend = help, diff, qdiff, status, log, l, ll, lll
 pager = LESS='FSRXimJMW' less
 
 
