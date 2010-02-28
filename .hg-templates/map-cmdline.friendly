@@ -3,8 +3,7 @@ changeset = '\
     {branches} \
     {tags}{parents} \
     \033[1;30m{author|user} {date|age}\033[0m\n\
-    \033[0m{desc|firstline|strip|fill76}
-    \033[0;36m{files|stringify|fill76|tabindent}\033[0m\n'
+    \033[0m{desc|firstline|strip|fill76}\n'
 
 changeset_quiet = '\
     \033[0;33m{rev}\033[0m \
