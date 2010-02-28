@@ -94,9 +94,8 @@ track.current = true
 # Don't commit any code that contains 'pdb'
 pretxncommit.pdb = hg export tip | (! grep 'pdb')
 
-# Prevent "hg pull" if MQ patches are applied (qpop -a first!)
+# Prevent pulling or pushing if MQ patches are applied (qpop -a first!)
 prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
-# Prevent "hg push" if MQ patches are applied (qpop -a first!)
 preoutgoing.mq-no-push = ! hg qtop > /dev/null 2>&1
 
 # Send an email per changeset on incoming push
