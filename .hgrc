@@ -35,9 +35,9 @@ hggit =
 ###############################################################################
 # Variable-detail changelog displays 
 # FIXME: can't expand ~ in an alias?
-l = log -q -l 15 --style /home/shouse/.hg-templates/map-cmdline.friendly
-ll = log -G -l 10 --style /home/shouse/.hg-templates/map-cmdline.friendly
-lll = log -G -v -l 5 --style /home/shouse/.hg-templates/map-cmdline.friendly
+l = log -q --style /home/shouse/.hg-templates/map-cmdline.friendly
+ll = log -G --style /home/shouse/.hg-templates/map-cmdline.friendly
+lll = log -G -v --style /home/shouse/.hg-templates/map-cmdline.friendly
 
 # mq
 qlog = l -r qbase:qtip
@@ -79,7 +79,7 @@ opts.vimdiff = -f '+next' '+execute "DirDiff" argv(0) argv(1)'
 
 [pager]
 ###############################################################################
-attend = help
+attend = help, log, l, ll, lll
 pager = LESS='FSRXimJMW' less
 
 
