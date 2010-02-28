@@ -39,12 +39,12 @@ l = log -q -l 15 --style /home/shouse/.hg-templates/map-cmdline.friendly
 ll = log -G -l 10 --style /home/shouse/.hg-templates/map-cmdline.friendly
 lll = log -G -v -l 5 --style /home/shouse/.hg-templates/map-cmdline.friendly
 
-# MQ: Show status output for the current patch
+# mq
+qseries = qseries -v
+# Show status output for the current patch
 qstatus = status --rev -2:.
-# MQ: Output all applied patches as a single diff
+# Output all applied patches as a single diff
 qudiff = diff -r $(hg parents -r qbase --template '#rev#') -r qtip
-# to easily work with versioned mq, put the following in your shell init file:
-# alias mq='hg -R $(hg root)/.hg/patches'
 
 [merge-tools]
 ###############################################################################
