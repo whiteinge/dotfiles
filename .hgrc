@@ -40,7 +40,7 @@ ll = log -G --style /home/shouse/.hg-templates/map-cmdline.friendly
 lll = log -G -v --style /home/shouse/.hg-templates/map-cmdline.friendly
 
 # mq
-qlog = l -r qbase:qtip
+qlog = l -r qtip:qbase
 # Show status output for the current patch
 qstatus = status --rev -2:.
 # Output all applied patches as a single diff
