@@ -36,8 +36,8 @@ xterm*scrollBar: false
 xterm*loginShell: true
 ! Enables True-Type rendering
 xterm*renderFont: true
-xterm*faceName: Inconsolata
-xterm*faceSize: 12
+xterm*faceName: Monaco
+xterm*faceSize: 10
 xterm*cursorColor: red
 xterm*cursorUnderline: true
 xterm*cursorBlink: true
@@ -87,7 +87,7 @@ xmessage*Command.internalHeight: 3
 xmessage*Command.borderColor: gray40
 xmessage*Command.shapeStyle: Rectangle
 xmessage*Command.background: gray80
-xmessage*faceName: Inconsolata
+xmessage*faceName: Monaco
 xmessage*faceSize: 12
 xmessage*message.scrollVertical: Always
 xmessage*message.scrollHorizontal: Never
