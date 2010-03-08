@@ -62,7 +62,7 @@ EDITOR=vi
 VISUAL=vi
 PAGER='less -imJMW'
 MANPAGER='less -imJMW'
-BROWSER='firefox'
+BROWSER='chromium-browser'
 
 # Silence Wine debugging output (why isn't this a default?)
 WINEDEBUG=-all
