@@ -39,6 +39,8 @@ l = log -q --style /home/shouse/.hg-templates/map-cmdline.friendly
 ll = log -G --style /home/shouse/.hg-templates/map-cmdline.friendly
 lll = log -G -v --style /home/shouse/.hg-templates/map-cmdline.friendly
 
+dstat = diff --stat
+
 # mq
 qlog = l -r qtip:qbase
 # Show status output for the current patch
