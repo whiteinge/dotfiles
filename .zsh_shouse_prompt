@@ -20,6 +20,13 @@ zstyle ':vcs_info:hg:*' branchformat "%b" # only show branch
 zstyle ':vcs_info:*' formats '(%s)[%i%u %b %m]' # rev, changes, branch, misc
 zstyle ':vcs_info:*' actionformats '(%s|%a)[%i%u %b %m]'
 
+# Show when we're in an hg-git repo
+zstyle ':vcs_info:hg+set-message:*' hooks hggit
+function +vi-hggit() {
+    if [[ -e ${hook_com[base]}/.hg/git-mapfile ]]; then
+        hook_com[vcs]="hg-git"
+    fi
+}
 
 # set some color shortcuts
 for COLOR in RED GREEN YELLOW WHITE BLACK CYAN; do
