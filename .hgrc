@@ -42,6 +42,7 @@ lll = log -G -v --style /home/shouse/.hg-templates/map-cmdline.friendly
 dstat = diff --stat
 
 # mq
+qs = qseries -v
 qlog = l -r qtip:qbase
 # Show status output for the current patch
 qstatus = status --rev -2:.
