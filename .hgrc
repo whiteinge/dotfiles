@@ -39,6 +39,9 @@ l = log -q --style /home/shouse/.hg-templates/map-cmdline.friendly
 ll = log -G --style /home/shouse/.hg-templates/map-cmdline.friendly
 lll = log -G -v --style /home/shouse/.hg-templates/map-cmdline.friendly
 
+# Show any changesets that are above the working directory on the current branch
+ls = log -v -f -r tip:. -P . --style /home/shouse/.hg-templates/map-cmdline.friendly
+
 dstat = diff --stat
 
 # mq
