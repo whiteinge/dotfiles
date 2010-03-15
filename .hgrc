@@ -93,6 +93,9 @@ track.current = true
 
 [hooks]
 ###############################################################################
+# Show diffstat on pull
+changegroup = hg diff --stat -r $HG_NODE -r tip
+
 # Don't commit any code that contains 'pdb'
 pretxncommit.pdb = hg export tip | (! grep 'pdb')
 
