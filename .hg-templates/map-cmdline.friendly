@@ -10,7 +10,7 @@ changeset_quiet = '\
     {branches} \
     \033[0m{desc|firstline|strip} \
     \033[0m{tags} \
-    \033[1;30m{author|user}, {date|age}, {diffstat}\n'
+    \033[1;30m{author|user}, {date|age}\n'
 
 changeset_verbose = '\
     \033[0;33m{rev}\033[0m:\033[0;33m{node|short}\033[0m \
