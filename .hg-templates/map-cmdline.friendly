@@ -10,7 +10,7 @@ changeset_quiet = '\
     {branches} \
     \033[0m{desc|firstline|strip} \
     \033[0m{tags} \
-    \033[1;30m{author|user} {date|age}\n'
+    \033[1;30m{author|user}, {date|age}, {diffstat}\n'
 
 changeset_verbose = '\
     \033[0;33m{rev}\033[0m:\033[0;33m{node|short}\033[0m \
@@ -18,6 +18,7 @@ changeset_verbose = '\
     {tags}{parents}\n\
     {author} {date|isodate} \033[1;30m({date|age})\033[0m\n\n\
     {desc|strip|fill76}\n
+    \t{diffstat}\n
     \t{file_mods|stringify|fill76|tabindent}\
     \t{file_adds|stringify|fill76|tabindent}\
     \t{file_dels|stringify|fill76|tabindent}\n'
