@@ -99,7 +99,7 @@ changegroup = hg diff --stat -r $HG_NODE -r tip
 pretxncommit.pdb = hg export tip | (! grep 'pdb')
 
 # Prevent pulling if mq patches are applied (qpop -a first!)
-prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
+pre-pull.mq-no-pull = ! hg qtop > /dev/null 2>&1
 
 # Send an email per changeset on incoming push
 # incoming.notify = python:hgext.notify.hook
