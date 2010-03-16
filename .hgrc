@@ -15,8 +15,6 @@ ignore = ~/.hgignore
 [extensions]
 ###############################################################################
 color =
-extdiff =
-fetch =
 pager =
 transplant =
 parentrevspec =
@@ -52,34 +50,32 @@ qstatus = status --rev -2:.
 # Output all applied patches as a single diff
 qudiff = diff -r $(hg parents -r qbase --template '#rev#') -r qtip
 
+
+[merge-patterns]
+###############################################################################
+**.svg = inkscape
+
+
 [merge-tools]
 ###############################################################################
 vimdiff.executable = vimdiff
 vimdiff.premerge = true
 vimdiff.gui = false
+vimdiff.priority = 1
 
-# inkscape.executable = inkscape
-# inkscape.premerge = false
-# inkscape.gui = true
-
-
-[merge-patterns]
-###############################################################################
-# **.svg = inkscape
+inkscape.executable = inkscape
+inkscape.premerge = false
+inkscape.binary = true
+inkscape.gui = true
+inkscape.priority = -1
+inkscape.checkconflicts = true
+inkscape.checkchanged = true
 
 
 [diff]
 ###############################################################################
 git = 1
 nodates = 1
-
-
-[extdiff]
-###############################################################################
-# Allows a diff of diffs (useful for version-controlled MQ patches)
-cmd.interdiff = hg-interdiff
-cmd.vimdiff =
-opts.vimdiff = -f '+next' '+execute "DirDiff" argv(0) argv(1)'
 
 
 [pager]
@@ -102,9 +98,8 @@ changegroup = hg diff --stat -r $HG_NODE -r tip
 # Don't commit any code that contains 'pdb'
 pretxncommit.pdb = hg export tip | (! grep 'pdb')
 
-# Prevent pulling or pushing if MQ patches are applied (qpop -a first!)
+# Prevent pulling if mq patches are applied (qpop -a first!)
 prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
-preoutgoing.mq-no-push = ! hg qtop > /dev/null 2>&1
 
 # Send an email per changeset on incoming push
 # incoming.notify = python:hgext.notify.hook
