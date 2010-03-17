@@ -1,6 +1,6 @@
 # XScreenSaver Preferences File
 
-timeout:	0:04:00
+timeout:	0:10:00
 cycle:		0:10:00
 lock:		True
 lockTimeout:	0:05:00
