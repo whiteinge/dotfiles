@@ -68,7 +68,7 @@ noremap ,<CR> :put_<CR>
 map <F2> :reg "0123456789-*+:/<CR>
 
 "lcs:   displays tabs with :set list & displays when a line runs off-screen
-set listchars=tab:>-,trail:-,precedes:<,extends:>
+set listchars=tab:>-,trail:\ ,precedes:<,extends:>
 
 " Toggle spell-checking
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
