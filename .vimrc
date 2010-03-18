@@ -68,10 +68,7 @@ noremap ,<CR> :put_<CR>
 map <F2> :reg "0123456789-*+:/<CR>
 
 "lcs:   displays tabs with :set list & displays when a line runs off-screen
-set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
-
-" Toggle hidden characters display
-map <silent> <F6> :set nolist!<CR>:set nolist?<CR>
+set listchars=tab:>-,trail:-,precedes:<,extends:>
 
 " Toggle spell-checking
 map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
@@ -82,20 +79,17 @@ inoremap <Nul> <C-x><C-o>
 " don't select first item, follow typing in autocomplete
 set completeopt=longest,menuone,preview
 
-" Highlight lines that are longer than 80 chars
-" Highlight lines that are only whitespace
-" toggle with \l
+" Highlight problem lines: more than 80 chars, trailing spaces, only whitespace
+" Toggle with \l
 nnoremap <silent> <Leader>l
+      \ :set nolist!<CR>:set nolist?<CR>
       \ :if exists('w:long_line_match') <Bar>
       \   silent! call matchdelete(w:long_line_match) <Bar>
-      \   silent! call matchdelete(w:empty_line_match) <Bar>
       \   unlet w:long_line_match <Bar>
-      \   unlet w:empty_line_match <Bar>
       \ elseif &textwidth > 0 <Bar>
       \   let w:long_line_match = matchadd('ErrorMsg', '\%>'.&tw.'v.\+', -1) <Bar>
       \ else <Bar>
       \   let w:long_line_match = matchadd('ErrorMsg', '\%>80v.\+', -1) <Bar>
-      \   let w:empty_line_match = matchadd('ErrorMsg', '^\s\+$', -1) <Bar>
       \ endif<CR>
 
 " VCS Diffs
@@ -195,6 +189,9 @@ set clipboard=                  "       Disable automatic X11 clipboard crossove
 
 color desert
 
+" Make listchars (much) more noticable.
+hi SpecialKey ctermfg=7 ctermbg=1
+
 " I love the new CursorLine, but terminal underlining kicks legibility in the nuts.
 " So what to do? Bold is (extremely) subtle, but it's better than nothing.
 hi CursorLine cterm=bold
@@ -213,10 +210,10 @@ hi User7 ctermfg=2
 hi User8 ctermfg=3
 hi User9 cterm=reverse ctermfg=8 ctermbg=7
 
-" Darkens the status line for non-active windows. Needs testing!
+" Darkens the status line for non-active windows.
 au BufEnter * hi User9 ctermfg=7
 
-" A nice, minimalistic tabline
+" A nice, minimalistic tabline.
 hi TabLine cterm=bold,underline ctermfg=8 ctermbg=none
 hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
 hi TabLineFill cterm=bold ctermbg=none
