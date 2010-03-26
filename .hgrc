@@ -46,7 +46,7 @@ dstat = diff --stat
 qs = qseries -v
 qlog = l -r qtip:qbase
 # Show status output for the current patch
-qstatus = status --rev -2:.
+qstatus = status --rev .^1
 # Output all applied patches as a single diff
 qudiff = diff -r $(hg parents -r qbase --template '#rev#') -r qtip
 
