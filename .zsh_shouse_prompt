@@ -10,6 +10,14 @@ autoload -U promptinit
 autoload -Uz vcs_info
 
 colors
+# set some color shortcuts
+for COLOR in RED GREEN YELLOW WHITE BLACK CYAN; do
+    eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'
+    eval PR_B$COLOR='%{$fg_bold[${(L)COLOR}]%}'
+done
+PR_RESET="%{${reset_color}%}";
+
+# Set up VCS_INFO
 zstyle ':vcs_info:*' enable hg git bzr svn
 zstyle ':vcs_info:(hg|git):*' get-revision true
 zstyle ':vcs_info:(hg|git):*' check-for-changes true
@@ -27,13 +35,6 @@ function +vi-hggit() {
         hook_com[vcs]="hg-git"
     fi
 }
-
-# set some color shortcuts
-for COLOR in RED GREEN YELLOW WHITE BLACK CYAN; do
-    eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'         
-    eval PR_B$COLOR='%{$fg_bold[${(L)COLOR}]%}'
-done                                                 
-PR_RESET="%{${reset_color}%}";    
 
 
 # Executed before each prompt
