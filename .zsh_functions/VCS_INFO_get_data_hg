@@ -3,95 +3,123 @@
 ## Distributed under the same BSD-ish license as zsh itself.
 
 setopt localoptions NO_shwordsplit
-local file hgbranch hgbranch_name hgbase hghash hglrev hgmqstring \
-    r_branch hgchanges revformat bookmarks r_bmhash r_bmname hgbmstring
-local -i getbookmarks
-local -a hgbm mqpatches hgmisc_args
+
+local hgbase patchdir mergedir bmfile branchfile rebasefile dirstatefile \
+    r_csetid r_lrev r_branch i_bmhash i_bmname \
+    revformat branchformat hgbmstring hgmqstring hgactionstring hgchanges
+
+local -a hgbmarks mqpatches hgid_args hgmisc_args defrevformat defbranchformat
 local -xA hook_com
 
 hgbase=${vcs_comm[basedir]}
 rrn=${hgbase:t}
+patchdir="${hgbase}/.hg/patches/"
+mergedir="${hgbase}/.hg/merge/"
+bmfile="${hgbase}/.hg/bookmarks"
+branchfile="${hgbase}/.hg/branch"
+rebasefile="${hgbase}/.hg/rebasestate"
+dirstatefile="${hgbase}/.hg/dirstate"
+r_csetid='' # changeset id (long hash)
+r_lrev='' # local revision
 
-file="${hgbase}/.hg/branch"
-if [[ -r ${file} ]] ; then
-    hgbranch_name=$(< ${file})
-else
-    hgbranch_name="default"
-fi
-
-hghash=''
-hglrev=''
-hgbm=()
-bookmarks="${hgbase}/.hg/bookmarks"
+# Calling the 'hg' program is quite a bit too slow for prompts.
+# Disabled by default anyway, so no harm done.
 if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" get-revision ; then
-    # Calling the 'hg' program is quite a bit too slow for prompts.
-    # If there's a way around that, I'd be interested.
-    # Disabled by default anyway, so no harm done.
-    local HGRCPATH
-    local hgflags="--debug id -i -n -b"
+    # Calling hexdump is (much) faster than hg but doesn't get the local rev
+    if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" use-simple \
+            && ( VCS_INFO_check_com hexdump ) && [[ -r ${dirstatefile} ]] ; then
+        r_csetid=$(hexdump -n 20 -e '1/1 "%02x"' ${dirstatefile})
+    else
+        hgid_args=( --debug id -i -n -b )
 
-    # Looking for changes is disabled by default; the dirstate cache must first
-    # be refreshed before being read which is a bit slower.
-    zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" \
-        "check-for-changes" || hgflags="${hgflags} -r."
+        # Looking for changes is a tad bit slower since the dirstate cache must
+        # first be refreshed before being read
+        zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" \
+            "check-for-changes" || hgid_args+=( -r. )
 
-    HGRCPATH="/dev/null" ${vcs_comm[cmd]} ${(z)hgflags} \
-        | read -r hghash hglrev r_branch
-
-    # Are there uncommitted-changes?
-    if [[ $hglrev[-1] == + ]] ; then
-        hgchanges=1
-
-        # Remove marker
-        hglrev=${hglrev/+/}
-        hghash=${hghash/+/}
+        local HGRCPATH
+        HGRCPATH="/dev/null" ${vcs_comm[cmd]} ${(z)hgid_args} \
+            | read -r r_csetid r_lrev r_branch
     fi
-
-    if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" "get-bookmarks" \
-            && getbookmarks=1 || getbookmarks=0
-
-    if (( getbookmarks )) && [[ -r "${bookmarks}" ]] ; then
-        while read -r r_bmhash r_bmname ; do
-            if [[ $hghash == $r_bmhash ]] ; then
-                hgbm=( "$r_bmname" ${hgbm} )
-            fi
-        done < ${bookmarks}
-    fi
-
-    if [[ -n ${hglrev} ]] ; then
-        zstyle -s ":vcs_info:${vcs}:${usercontext}:${rrn}" hgrevformat revformat || revformat="%r:%h"
-        hook_com=( localrev "${hglrev}" "hash" "${hghash}" )
-        if VCS_INFO_hook 'set-hgrev-format' "${revformat}"; then
-            zformat -f hglrev "${revformat}" "r:${hook_com[localrev]}" "h:${hook_com[hash]}"
-        else
-            hglrev=${hook_com[rev-replace]}
-        fi
-        hook_com=()
-        if (( getbookmarks )) ; then
-            if VCS_INFO_hook 'gen-hg-bookmark-string' "${hgbm[@]}"; then
-                hgbmstring=${(j.;.)hgbm}
-            else
-                hgbmstring=${hook_com[hg-bookmark-string]}
-            fi
-            hook_com=()
-        fi
-        zstyle -s ":vcs_info:${vcs}:${usercontext}:${rrn}" branchformat hgbranch || hgbranch="%b:%r"
-        hook_com=( branch "${hgbranch_name}" revision "${hglrev}" )
-        if VCS_INFO_hook 'set-branch-format' "${hgbranch}"; then
-            zformat -f hgbranch "${hgbranch}" "b:${hook_com[branch]}" "r:${hook_com[revision]}"
-        else
-            hgbranch=${hook_com[branch-replace]}
-        fi
-        hook_com=()
-    fi
-else
-    hgbranch="${hgbranch_name}"
 fi
 
-local patchdir=${hgbase}/.hg/patches/
+# If the user doesn't opt to invoke hg we can still get the current branch
+if [[ -z ${r_branch} && -r ${branchfile} ]] ; then
+    r_branch=$(< ${branchfile})
+else
+    r_branch="default"
+fi
 
+# The working dir has uncommitted-changes if the revision ends with a +
+if [[ $r_lrev[-1] == + ]] ; then
+    hgchanges=1
+
+    r_lrev=${r_lrev%+}
+    r_csetid=${r_csetid%+}
+fi
+
+# This directory only exists during a merge
+[[ -d $mergedir ]] && hgactionstring="merging"
+
+# This file only exists during a rebase
+[[ -e $rebasefile ]] && hgactionstring="rebasing"
+
+
+### Build the current revision display
+[[ -n ${r_csetid} ]] && defrevformat+=( "%h" )
+[[ -n ${r_lrev} ]] && defrevformat+=( "%r" )
+
+zstyle -s ":vcs_info:${vcs}:${usercontext}:${rrn}" \
+    "hgrevformat" revformat || revformat=${(j/:/)defrevformat}
+
+hook_com=( localrev "${r_lrev}" "hash" "${r_csetid}" )
+
+if VCS_INFO_hook 'set-hgrev-format' "${revformat}"; then
+    zformat -f r_lrev "${revformat}" \
+        "r:${hook_com[localrev]}" "h:${hook_com[hash]}"
+else
+    r_lrev=${hook_com[rev-replace]}
+fi
+
+hook_com=()
+
+### Build the branch display
+[[ -n ${r_branch} ]] && defbranchformat+=( "%b" )
+[[ -n ${r_lrev} ]] && defbranchformat+=( "%r" )
+
+zstyle -s ":vcs_info:${vcs}:${usercontext}:${rrn}" \
+    branchformat branchformat || branchformat=${(j/:/)defbranchformat}
+
+hook_com=( branch "${r_branch}" revision "${r_lrev}" )
+
+if VCS_INFO_hook 'set-branch-format' "${branchformat}"; then
+    zformat -f branchformat "${branchformat}" \
+        "b:${hook_com[branch]}" "r:${hook_com[revision]}"
+else
+    branchformat=${hook_com[branch-replace]}
+fi
+
+hook_com=()
+
+### Look for current Bookmarks (this requires knowing the changeset id)
+if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" get-bookmarks \
+        && [[ -r "${bmfile}" ]] && [[ -n "$r_csetid" ]] ; then
+    while read -r i_bmhash i_bmname ; do
+        # Compare hash in bookmarks file with changeset id
+        [[ $r_csetid == $i_bmhash ]] && hgbmarks+=( $i_bmname )
+    done < ${bmfile}
+
+    if VCS_INFO_hook 'gen-hg-bookmark-string' "${hgbmarks[@]}"; then
+        hgbmstring=${(j:, :)hgbmarks}
+    else
+        hgbmstring=${hook_com[hg-bookmark-string]}
+    fi
+
+    hook_com=()
+fi
+
+### Look for any applied Mercurial Queue patches
 if [[ -d $patchdir ]] ; then
-    local -a mqpatches
     if [[ -e "${patchdir}/status" ]]; then
         mqpatches=( ${${(f)"$(< "${patchdir}/status")"}/(#s)[a-f0-9]##:/} )
         mqpatches=( ${(Oa)mqpatches} )
@@ -106,20 +134,20 @@ if [[ -d $patchdir ]] ; then
             hgmqstring="no patch applied"
         fi
     else
-        hgbmstring=${hook_com[hg-mqpatch-string]}
+        hgmqstring=${hook_com[hg-mqpatch-string]}
     fi
     hook_com=()
 else
     hgmqstring=''
 fi
 
-hgmisc_args=()
 
-[[ -z "${hgmqstring}" ]] || hgmisc_args+="${hgmqstring}"
-[[ -z "${hgbmstring}" ]] || hgmisc_args+="${hgbmstring}"
+### Build the misc string
+[[ -n "${hgbmstring}" ]] && hgmisc_args+=( ${hgbmstring} )
+[[ -n "${hgmqstring}" ]] && hgmisc_args+=( ${hgmqstring} )
 
 # make sure there's at least *one* misc argument
-[[ -n "${hgmisc_args}" ]] || hgmisc_args=( '' )
+[[ ${#hgmisc_args} == 0 ]] && hgmisc_args=( '' )
 
-VCS_INFO_formats '' "${hgbranch}" "${hgbase}" '' "${hgchanges}" "${hglrev}" "${hgmisc_args[@]}"
+VCS_INFO_formats "${hgactionstring}" "${branchformat}" "${hgbase}" '' "${hgchanges}" "${r_lrev}" "${hgmisc_args[@]}"
 return 0
