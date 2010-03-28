@@ -131,7 +131,7 @@ set laststatus=2                "ls:    makes the status bar always visible
 set ttyfast                     "tf:    improves redrawing for newer computers
 set viminfo='100,f1,:100,/100   "vi:    For a nice, huuuuuge viminfo file
 
-if &columns < 80
+if &columns < 88
     " If we can't fit at least 80-cols, don't display these screen hogs
     set nonumber
     set foldcolumn=0
