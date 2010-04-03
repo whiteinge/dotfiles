@@ -80,7 +80,7 @@ nodates = 1
 
 [pager]
 ###############################################################################
-attend = help, diff, qdiff, status, log, l, ll, lll, annotate
+attend =
 pager = LESS='FSRXimJMW' less
 
 
