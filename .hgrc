@@ -80,8 +80,9 @@ nodates = 1
 
 [pager]
 ###############################################################################
-attend =
 pager = LESS='FSRXimJMW' less
+attend =
+ignore = clone
 
 
 [bookmarks]
