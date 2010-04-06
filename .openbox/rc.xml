@@ -156,6 +156,11 @@
             <action name="Execute"><execute>xscreensaver-command -lock</execute></action>
         </keybind>
 
+        <!-- Invert colors on X (No Vim equivalent) -->
+        <keybind key="z">
+            <action name="Execute"><execute>xcalib -invert -alter</execute></action>
+        </keybind>
+
         <!-- the following blocks have fairly canonical Vim equivalents -->
         <keybind key="S-bar"><action name="ToggleMaximizeHorz"/></keybind>
         <keybind key="S-underscore"><action name="ToggleMaximizeVert"/></keybind>
