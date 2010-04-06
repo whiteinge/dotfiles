@@ -100,6 +100,11 @@ noremap <silent> ,sq :new +:read\ !svn\ diff\ #<CR>:exe Scratch()<CR>:set filety
 noremap <silent> ,hd :tabnew %<CR> :vnew +:read\ !hg\ cat\ #<CR>:exe Scratch()<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
 noremap <silent> ,sd :tabnew %<CR> :vnew +:read\ !svn\ cat\ #<CR>:exe Scratch()<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
 
+" diff the current buffer with what it looked like when first loaded
+" (opens in a new tabpage to avoid interruption)
+command DiffOrig tab split | vert new | set bt=nofile | r # | 0d_ |
+    \ diffthis | wincmd p | diffthis
+
 " }}}
 " Folding (spacebar toggles) {{{
 " Spacebar toggles a fold, zi toggles all folding, zM closes all folds
