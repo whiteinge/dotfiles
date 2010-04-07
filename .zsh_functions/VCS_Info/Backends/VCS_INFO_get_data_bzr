@@ -1,0 +1,33 @@
+## vim:ft=zsh
+## bazaar support by: Frank Terbeck <ft@bewatermyfriend.org>
+## Distributed under the same BSD-ish license as zsh itself.
+
+setopt localoptions noksharrays extendedglob NO_shwordsplit
+local bzrbase bzrbr
+local -a bzrinfo
+local -xA hook_com
+
+if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" "use-simple" ; then
+    bzrbase=${vcs_comm[basedir]}
+    bzrinfo[2]=${bzrbase:t}
+    if [[ -f ${bzrbase}/.bzr/branch/last-revision ]] ; then
+        bzrinfo[1]=$(< ${bzrbase}/.bzr/branch/last-revision)
+        bzrinfo[1]=${${bzrinfo[1]}%% *}
+    fi
+else
+    bzrbase=${${(M)${(f)"$( ${vcs_comm[cmd]} info )"}:# ##branch\ root:*}/*: ##/}
+    bzrinfo=( ${${${(M)${(f)"$( ${vcs_comm[cmd]} version-info )"}:#(#s)(revno|branch-nick)*}/*: /}/*\//} )
+    bzrbase="$(VCS_INFO_realpath ${bzrbase})"
+fi
+
+rrn=${bzrbase:t}
+zstyle -s ":vcs_info:${vcs}:${usercontext}:${rrn}" branchformat bzrbr || bzrbr="%b:%r"
+hook_com=( branch "${bzrinfo[2]}" revision "${bzrinfo[1]}" )
+if VCS_INFO_hook 'set-branch-format' "${bzrbr}"; then
+    zformat -f bzrbr "${bzrbr}" "b:${hook_com[branch]}" "r:${hook_com[revision]}"
+else
+    bzrbr=${hook_com[branch-replace]}
+fi
+hook_com=()
+VCS_INFO_formats '' "${bzrbr}" "${bzrbase}" '' '' "${bzrinfo[1]}" ''
+return 0
