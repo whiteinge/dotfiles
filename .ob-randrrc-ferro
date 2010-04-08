@@ -1,4 +1,4 @@
 [ferro]
 
 portrait: --output LVDS-1 --mode 1440x900 --output DP-1 --primary --mode 1920x1080 --right-of LVDS-1 --rotate right
-work: --output LVDS-1 --primary --mode 1440x900 --output DP-1 --primary --mode 1920x1080 --right-of LVDS-1 --rotate normal
+work: --output LVDS-1 --mode 1440x900 --output DP-1 --primary --mode 1920x1080 --right-of LVDS-1 --rotate normal
