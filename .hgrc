@@ -82,7 +82,7 @@ nodates = 1
 ###############################################################################
 pager = LESS='FSRXimJMW' less
 attend =
-ignore = clone
+ignore = clone push pull
 
 
 [bookmarks]
