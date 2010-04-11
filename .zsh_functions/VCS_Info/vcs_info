@@ -21,6 +21,7 @@ static_functions=(
     VCS_INFO_hook
     VCS_INFO_maxexports
     VCS_INFO_nvcsformats
+    VCS_INFO_quilt
     VCS_INFO_realpath
     VCS_INFO_reposub
     VCS_INFO_set
@@ -45,15 +46,24 @@ vcs_info () {
     [[ -r . ]] || return 0
 
     local pat
-    local -i found
+    local -i found retval
     local -a enabled disabled dps
-    local -x usercontext vcs rrn
+    local -x usercontext vcs rrn quiltmode
     local -ix maxexports
     local -ax msgs
-    local -Ax vcs_comm
+    local -Ax vcs_comm hook_com backend_misc user_data
 
-    vcs='-init-'; rrn='-all-'
+    vcs='-init-'; rrn='-all-'; quiltmode='addon'
     usercontext=${1:-default}
+
+    VCS_INFO_hook "start-up"
+    retval=$?
+    if (( retval == 1 )); then
+        return 0
+    elif (( retval == 2 )); then
+        VCS_INFO_set --nvcs
+        return 0
+    fi
 
     zstyle -a ":vcs_info:${vcs}:${usercontext}:${rrn}" "enable" enabled
     (( ${#enabled} == 0 )) && enabled=( all )
@@ -93,9 +103,19 @@ vcs_info () {
     done
 
     (( found == 0 )) && {
-        VCS_INFO_set --nvcs
+        vcs='-quilt-'; quiltmode='standalone'
+        VCS_INFO_quilt standalone || VCS_INFO_set --nvcs
         return 0
     }
+
+    VCS_INFO_hook "pre-get-data" ${vcs_comm[basedir]}
+    retval=$?
+    if (( retval == 1 )); then
+        return 0
+    elif (( retval == 2 )); then
+        VCS_INFO_set --nvcs
+        return 0
+    fi
 
     VCS_INFO_get_data_${vcs} || {
         VCS_INFO_set --nvcs
