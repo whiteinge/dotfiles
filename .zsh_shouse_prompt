@@ -1,7 +1,7 @@
 # Best Goddamn zsh prompt in the whole world.
 # Author: Seth House <seth@eseth.com>
 
-fpath=( ~/.zsh_functions $fpath )
+fpath=( ~/.zsh_functions ~/.zsh_functions/VCS_Info/**/*~*/(CVS)#(/) $fpath )
 
 autoload -U colors && colors
 autoload -U promptinit
@@ -23,6 +23,8 @@ zstyle ':vcs_info:(hg|git):*' check-for-changes true
 zstyle ':vcs_info:*' formats "(%s)[%i%u %b %m]" # rev, changes, branch, misc
 zstyle ':vcs_info:*' actionformats "(%s|%a)[%i%u %b %m]"
 
+zstyle ':vcs_info:hg:netbeans' use-simple true
+
 zstyle ':vcs_info:hg:*' get-bookmarks true
 
 zstyle ':vcs_info:hg:*' get-mq true
@@ -34,7 +36,6 @@ zstyle ':vcs_info:hg:*' unstagedstr "${c3}+${cr}"
 zstyle ':vcs_info:hg:*' hgrevformat "%r" # only show local rev.
 zstyle ':vcs_info:hg:*' branchformat "%b" # only show branch
 
-# zstyle ':vcs_info:hg:*' use-simple true
 # zstyle ':vcs_info:*+*:*' debug true
 
 zstyle ':vcs_info:hg+set-hgrev-format:*' hooks hg-storerev hg-hashfallback
@@ -87,32 +88,6 @@ function +vi-hg-branchhead() {
         if [[ ! ${branchheads[(i)${user_data[hash]}]} -le ${#branchheads} ]] ; then
             hook_com[revision]="${c4}^${cr}${hook_com[revision]}"
         fi
-    fi
-}
-
-### Selectively enable/disable use-simple for certain repositories
-# Some repos are just too big to call hg on in a prompt, but you might not want
-# to set use-simple for *all* repos. This example shows how to selectively set
-# it. For brevity, this simply looks at the name of the base directory, but you
-# could also parse the hgrc file for [paths] entries, or you could call out to
-# `du` to base it off the file size of a repo, etc.
-zstyle ':vcs_info:hg:*' hg-use-simple-for netbeans hgtest_netbeans
-zstyle ':vcs_info:hg+pre-get-data:*' hooks hg-use-simple
-
-function +vi-hg-use-simple() {
-    local basedir=${@[1]} orig_setting
-
-    zstyle -a ":vcs_info:${vcs}:${usercontext}:${rrn}" \
-        "hg-use-simple-for" use_simple_for
-
-    if [[ -n $use_simple_for && ${use_simple_for[(i)${basedir:t}]} \
-            -le ${#use_simple_for} ]] ; then
-        zstyle ':vcs_info:hg:*' use-simple true
-    else
-        zstyle -s ":vcs_info:${vcs}:${usercontext}:${rrn}" \
-            "use-simple" orig_setting || orig_setting=false
-
-        zstyle ':vcs_info:hg:*' use-simple $orig_setting
     fi
 }
 
