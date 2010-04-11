@@ -1,39 +1,37 @@
 # Best Goddamn zsh prompt in the whole world.
 # Author: Seth House <seth@eseth.com>
-# thanks to Phil of phil's prompt: http://aperiodic.net/phil/prompt/
-# and Frank Terbeck <ft@bewatermyfriend.org> for the VCS_INFO work
 
 fpath=( ~/.zsh_functions $fpath )
 
-autoload -U colors
+autoload -U colors && colors
 autoload -U promptinit
 autoload -Uz vcs_info
 
-colors
-# set some color shortcuts
-for COLOR in RED GREEN YELLOW WHITE BLACK CYAN; do
-    eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'
-    eval PR_B$COLOR='%{$fg_bold[${(L)COLOR}]%}'
-done
-PR_RESET="%{${reset_color}%}";
+local cr c1 c2 c3 c4
+cr="%{${reset_color}%}"
+c1="%{$fg[white]%}"
+c2="%{$fg_bold[black]%}"
+c3="%{$fg[green]%}"
+c4="%{$fg[red]%}"
+c5="%{$fg[yellow]%}"
 
 # Set up VCS_INFO
 zstyle ':vcs_info:*' enable hg git bzr svn
 zstyle ':vcs_info:(hg|git):*' get-revision true
 zstyle ':vcs_info:(hg|git):*' check-for-changes true
 
-zstyle ':vcs_info:*' formats "($PR_WHITE%s$PR_BBLACK)[%i$PR_WHITE%u$PR_BBLACK %b %m]" # rev, changes, branch, misc
-zstyle ':vcs_info:*' actionformats "($PR_WHITE%s$PR_BBLACK|$PR_RED%a$PR_BBLACK)[%i$PR_WHITE%u$PR_BBLACK %b %m]"
+zstyle ':vcs_info:*' formats "(%s)[%i%u %b %m]" # rev, changes, branch, misc
+zstyle ':vcs_info:*' actionformats "(%s|%a)[%i%u %b %m]"
 
 zstyle ':vcs_info:hg:*' get-bookmarks true
 
 zstyle ':vcs_info:hg:*' get-mq true
 zstyle ':vcs_info:hg:*' get-unapplied true
-zstyle ':vcs_info:hg:*' patch-format "mq:$PR_WHITE%n/%c$PR_BBLACK %g"
-zstyle ':vcs_info:hg:*' nopatch-format "mq:$PR_WHITE%n/%c$PR_BBLACK %g"
+zstyle ':vcs_info:hg:*' patch-format "mq:%n/%c %g"
+zstyle ':vcs_info:hg:*' nopatch-format "mq:%n/%c %g"
 
-zstyle ':vcs_info:hg:*' unstagedstr "$PR_BGREEN+$PR_BBLACK"
-zstyle ':vcs_info:hg:*' hgrevformat "$PR_WHITE%r$PR_BBLACK" # only show local rev.
+zstyle ':vcs_info:hg:*' unstagedstr "${c3}+${cr}"
+zstyle ':vcs_info:hg:*' hgrevformat "%r" # only show local rev.
 zstyle ':vcs_info:hg:*' branchformat "%b" # only show branch
 
 # zstyle ':vcs_info:hg:*' use-simple true
@@ -57,7 +55,7 @@ function +vi-hg-hashfallback() {
 
         parents=( ${(s:+:)hook_com[hash]} )
         parents=( ${(@r:12:)parents} )
-        hook_com[rev-replace]="$PR_WHITE${(j:+:)parents}$PR_BBLACK"
+        hook_com[rev-replace]="${(j:+:)parents}"
 
         ret=1
     fi
@@ -87,7 +85,7 @@ function +vi-hg-branchhead() {
         done < ${branchheadsfile}
 
         if [[ ! ${branchheads[(i)${user_data[hash]}]} -le ${#branchheads} ]] ; then
-            hook_com[revision]="${PR_RED}^${PR_BBLACK}${hook_com[revision]}"
+            hook_com[revision]="${c4}^${cr}${hook_com[revision]}"
         fi
     fi
 }
@@ -138,72 +136,50 @@ function preexec {
     fi
 }
 
-# Encapsulate building the prompt.
-function setprompt {
-    # display in yellow if the current dir isn not writable
-    local pr_pwd="$PR_BGREEN"$(test -w $PWD || print "$PR_BYELLOW")"%~$PR_RESET"
+function setprompt() {
+    local -a lines infoline
+    local x i pet dungeon filler i_width
 
-    # show job count
-    local pr_jobs="$PR_BBLACK%j$PR_RESET"
+    # A domestic animal, the _tame dog_ (_Canis familiaris_)
+    pet=d
 
-    # display the hostname only if ssh-ed into another box
-    local pr_user="$PR_BBLACK<$PR_RESET%n"$(test -z $SSH_CLIENT || print '@%m')"$PR_BBLACK>$PR_RESET"
+    ### First, assemble the top line
+    # Current dir; show in yellow if not writable
+    [[ -w $PWD ]] && infoline+=( ${c3} ) || infoline+=( ${c5} )
+    infoline+=( "%~${cr} " )
 
-    # make the prompt red if the last command exited unsuccessfully
-    local pr_prompt="%(0?..$PR_BRED)%#$PR_RESET "
+    # Username & host
+    infoline+=( "%n" )
+    [[ -n $SSH_CLIENT ]] && infoline+=( "@%m" )
 
-    # display vcs information for the current dir (if any)
-    if [ -n "$vcs_info_msg_0_" ]; then
-        local pr_vcs="$PR_BBLACK$vcs_info_msg_0_$PR_RESET"
-    fi
+    # Strip color to find text width & make the full-width filler
+    i_width=${(S%%)infoline//\%\{*\%\}}
+    filler="${c2}${(l:$(( $COLUMNS - ${(%)${#i_width}} - 4 ))::.:)}${cr}"
+    infoline[2]=( "${infoline[2]} ${filler} " )
 
-    # FIXME: is there a way to get the width from the real variables without
-    # the color escapes? repeating the prompt twice sucks.
-    if [[ -z $SSH_CLIENT ]]; then
-        local width=$((${#${(%):-<%n> %~ }} + ${#${(%):-$vcs_info_msg_0_}} + 1))
-    else
-        local width=$((${#${(%):-<%n@%m> %~ }} + ${#${(%):-$vcs_info_msg_0_}} + 1))
-    fi
+    ### Now, assemble all prompt lines
+    lines+=( ${(j::)infoline} )
+    [[ -n ${vcs_info_msg_0_} ]] && lines+=( ${vcs_info_msg_0_} )
+    lines+=( "${c2}%j${cr} %(0?..${c4})%#${cr} " )
 
-    # RANDOM will not change unless referenced in parent shell
-    # echo $RANDOM &>/dev/null
-    # local pr_pet=$(pet_wander $width)
+    ### Add dungeon floor to each line
+    dungeon=${(l:$(( ${#lines} * 3 ))::.:)}
+    dungeon[$[${RANDOM}%${#dungeon}]+1]=$pet
 
-    PROMPT="$pr_user $pr_pwd $pr_vcs $pr_pet"$'\n'"$pr_jobs $pr_prompt"
-}
+    for (( i=1; i < $(( ${#lines} + 1 )); i++ )) ; do
+        case $i in
+            1) x=1;; 2) x=4;; 3) x=7;; 4) x=10;;
+        esac
+        lines[$i]="${c2}${dungeon[x,$(( $x + 2 ))]} ${lines[$i]}${cr}"
+    done
 
-
-# A domestic animal, the _tame dog_ (_Canis familiaris_)
-pet_wander () {
-    # Draw enough padding to reach the end of the window;
-    # pet likes to wander this space
-
-    local pet="d"
-
-    if [[ $[${RANDOM}%20] == 0 ]]; then
-        pet="^"
-    elif [[ $[${RANDOM}%50] == 0 ]]; then
-        pet="D"
-    fi
-
-    local width=$1
-    local padding=$(($COLUMNS - $width - 1))
-    local position=$[${RANDOM}%$padding]
-    local left=$((padding - position))
-
-    local pr_pet="%{$bg_bold[white]$fg[black]%}$pet%{$reset_color%}"
-
-    echo -ne "%{$fg_bold[black]%}"
-    echo -ne "${(l/$left//./)}"
-    echo -ne "$pr_pet"
-    echo -ne "%{$fg_bold[black]%}"
-    echo -ne "${(r/$position//./)}"
-    echo -ne "%{$reset_color%}"
+    ### Finally, set the prompt
+    PROMPT=${(F)lines}
 }
 
 venv_rprompt () {
     if [[ -n $VIRTUAL_ENV ]]; then
-        RPROMPT="$PR_BBLACK venv:$(basename $VIRTUAL_ENV)$PR_RESET"
+        RPROMPT="${c1} venv:$(basename $VIRTUAL_ENV)${cr}"
     else
         RPROMPT=""
     fi
