@@ -120,6 +120,7 @@ function setprompt() {
 
     ### First, assemble the top line
     # Current dir; show in yellow if not writable
+    infoline+=( "%(1j.${c2}%j${cr} .)" )
     [[ -w $PWD ]] && infoline+=( ${c3} ) || infoline+=( ${c5} )
     infoline+=( "%~${cr} " )
 
@@ -128,14 +129,14 @@ function setprompt() {
     [[ -n $SSH_CLIENT ]] && infoline+=( "@%m" )
 
     # Strip color to find text width & make the full-width filler
-    i_width=${(S%%)infoline//\%\{*\%\}}
+    i_width=${(S%%)infoline//\%\{*\%\}} # search-and-replace color escapes
     filler="${c2}${(l:$(( $COLUMNS - ${(%)${#i_width}} - 4 ))::.:)}${cr}"
-    infoline[2]=( "${infoline[2]} ${filler} " )
+    infoline[3]=( "${infoline[3]} ${filler} " )
 
     ### Now, assemble all prompt lines
     lines+=( ${(j::)infoline} )
     [[ -n ${vcs_info_msg_0_} ]] && lines+=( ${vcs_info_msg_0_} )
-    lines+=( "${c2}%j${cr} %(0?..${c4})%#${cr} " )
+    lines+=( "%(0?..${c4})%#${cr} " )
 
     ### Add dungeon floor to each line
     dungeon=${(l:$(( ${#lines} * 3 ))::.:)}
