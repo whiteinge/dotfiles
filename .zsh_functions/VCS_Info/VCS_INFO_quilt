@@ -93,7 +93,7 @@ function VCS_INFO_quilt() {
     local -Ax hook_com
 
     context=":vcs_info:${vcs}.quilt-${mode}:${usercontext}:${rrn}"
-    zstyle -t "${context}" use-quilt || return 0
+    zstyle -t "${context}" use-quilt || return 1
 
     case ${mode} in
     (standalone)

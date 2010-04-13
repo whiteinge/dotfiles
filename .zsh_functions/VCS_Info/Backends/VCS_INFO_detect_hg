@@ -6,17 +6,13 @@ setopt localoptions NO_shwordsplit
 
 [[ $1 == '--flavours' ]] && { print -l hg-git hgsubversion hgsvn; return 0 }
 
-if VCS_INFO_check_com ${vcs_comm[cmd]} ; then
-    vcs_comm[detect_need_file]=store
-    VCS_INFO_bydir_detect '.hg'
+vcs_comm[detect_need_file]=store
+VCS_INFO_bydir_detect '.hg' || return 1
 
-    if [[ -d ${vcs_comm[basedir]}/.hg/svn ]] ; then
-        vcs_comm[overwrite_name]='hgsubversion'
-    elif [[ -d ${vcs_comm[basedir]}/.hgsvn ]] ; then
-        vcs_comm[overwrite_name]='hgsvn'
-    elif [[ -e ${vcs_comm[basedir]}/.hg/git-mapfile ]] ; then
-        vcs_comm[overwrite_name]='hg-git'
-    fi
+if [[ -d ${vcs_comm[basedir]}/.hg/svn ]] ; then
+    vcs_comm[overwrite_name]='hgsubversion'
+elif [[ -d ${vcs_comm[basedir]}/.hgsvn ]] ; then
+    vcs_comm[overwrite_name]='hgsvn'
+elif [[ -e ${vcs_comm[basedir]}/.hg/git-mapfile ]] ; then
+    vcs_comm[overwrite_name]='hg-git'
 fi
-
-return $?

@@ -41,7 +41,7 @@ if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" get-revision ; then
     if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" use-simple \
             && ( VCS_INFO_check_com hexdump ) && [[ -r ${dirstatefile} ]] ; then
         r_csetid=$(hexdump -n 20 -e '1/1 "%02x"' ${dirstatefile})
-    else
+    elif VCS_INFO_check_com ${vcs_comm[cmd]} ; then
         hgid_args=( --debug id -i -n -b )
 
         # Looking for changes is a tad bit slower since the dirstate cache must
