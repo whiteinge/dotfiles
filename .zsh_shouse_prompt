@@ -88,7 +88,7 @@ function +vi-hg-branchhead() {
         done < ${branchheadsfile}
 
         if [[ ! ${branchheads[(i)${user_data[hash]}]} -le ${#branchheads} ]] ; then
-            hook_com[revision]="${c4}^${cr}${hook_com[revision]}"
+            hook_com[revision]="${c4}^${c2}${hook_com[revision]}"
         fi
     fi
 }
@@ -137,7 +137,7 @@ function setprompt() {
     ### Now, assemble all prompt lines
     lines+=( ${(j::)infoline} )
     [[ -n ${vcs_info_msg_0_} ]] && lines+=( ${vcs_info_msg_0_} )
-    lines+=( "%(1j.${c2}%j${cr} .)%(0?..${c4})%#${cr} " )
+    lines+=( "%(1j.${c2}%j${cr} .)%(0?.${c1}.${c4})%#${cr} " )
 
     ### Add dungeon floor to each line
     dungeon=${(l:$(( ${#lines} * 3 ))::.:)}
