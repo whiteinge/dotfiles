@@ -18,30 +18,31 @@ c4="%{$fg[red]%}"
 c5="%{$fg[yellow]%}"
 
 # Set up VCS_INFO
+# zstyle ':vcs_info:hg:*:-all-' command fakehg
 zstyle ':vcs_info:*' enable hg git bzr svn
-zstyle ':vcs_info:(hg|git):*' get-revision true
-zstyle ':vcs_info:(hg|git):*' check-for-changes true
+zstyle ':vcs_info:(hg*|git):*' get-revision true
+zstyle ':vcs_info:(hg*|git):*' check-for-changes true
 
 zstyle ':vcs_info:*' formats "(%s)[%i%u %b %m]" # rev, changes, branch, misc
 zstyle ':vcs_info:*' actionformats "(%s|%a)[%i%u %b %m]"
 
-zstyle ':vcs_info:hg:netbeans' use-simple true
+zstyle ':vcs_info:hg*:netbeans' use-simple true
 
-zstyle ':vcs_info:hg:*' get-bookmarks true
+zstyle ':vcs_info:hg*:*' get-bookmarks true
 
-zstyle ':vcs_info:hg:*' get-mq true
-zstyle ':vcs_info:hg:*' get-unapplied true
-zstyle ':vcs_info:hg:*' patch-format "mq:%n/%c %g"
-zstyle ':vcs_info:hg:*' nopatch-format "mq:%n/%c %g"
+zstyle ':vcs_info:hg*:*' get-mq true
+zstyle ':vcs_info:hg*:*' get-unapplied true
+zstyle ':vcs_info:hg*:*' patch-format "mq:%n/%c %g"
+zstyle ':vcs_info:hg*:*' nopatch-format "mq:%n/%c %g"
 
-zstyle ':vcs_info:hg:*' unstagedstr "${c3}+${cr}"
-zstyle ':vcs_info:hg:*' hgrevformat "%r" # only show local rev.
-zstyle ':vcs_info:hg:*' branchformat "%b" # only show branch
+zstyle ':vcs_info:hg*:*' unstagedstr "${c3}+${cr}"
+zstyle ':vcs_info:hg*:*' hgrevformat "%r" # only show local rev.
+zstyle ':vcs_info:hg*:*' branchformat "%b" # only show branch
 
 # zstyle ':vcs_info:*+*:*' debug true
 
-zstyle ':vcs_info:hg+set-hgrev-format:*' hooks hg-storerev hg-hashfallback
-zstyle ':vcs_info:hg+set-message:*' hooks mq-vcs hg-branchhead
+zstyle ':vcs_info:hg*+set-hgrev-format:*' hooks hg-storerev hg-hashfallback
+zstyle ':vcs_info:hg*+set-message:*' hooks mq-vcs hg-branchhead
 
 ### Store the localrev and global hash for use in other hooks
 function +vi-hg-storerev() {
