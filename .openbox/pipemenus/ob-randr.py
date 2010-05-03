@@ -168,6 +168,10 @@ def get_xml():
     # Grab the user's rc menu shortcuts
     etree.SubElement(root, 'separator', label='Shortcuts')
 
+    auto = etree.SubElement(root, 'item', label='auto')
+    auto_action = etree.SubElement(auto, 'action', name='execute')
+    etree.SubElement(auto_action, 'command').text = 'xrandr --auto'
+
     for i in get_rc_menu():
         root.append(i)
 
