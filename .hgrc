@@ -43,7 +43,7 @@ ls = log -v -f -r tip:. -P . --style /home/shouse/.hg-templates/map-cmdline.frie
 dstat = diff --stat
 
 # mq
-qs = qseries -v
+qs = qseries -v -s
 qlog = l -r qtip:qbase
 # Show status output for the current patch
 qstatus = status --rev .^1
