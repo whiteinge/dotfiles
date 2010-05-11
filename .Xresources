@@ -46,23 +46,27 @@ xterm*jumpScroll: true
 xterm*multiScroll: true
 ! Matches URLs and emails and selects them on double-click
 xterm*charClass: 33:48,37-38:48,45-47:48,64:48,58:48,126:48,61:48,63:48,43:48,35:38
-xterm*trimSelection: true
 ! fixes too dark blue
 xterm*color4: DodgerBlue1
 xterm*color12: SteelBlue1
-! Change font-resize bindings to not require a numpad (and to use mousewheel)
-xterm.vt100.translations: #override \n\
-    Ctrl <Btn4Down>: larger-vt-font() \n\
-    Ctrl <Btn5Down>: smaller-vt-font() \n\
+! trim whitespace from selection before copying
+xterm*trimSelection: true
+! Hold Shift to use CLIPBOARD instead of PRIMARY to copy or paste (set-select)
+! Change font size with ctrl-+/-/= (or mousewheel).
+xterm*vt100.Translations: #override \n\
+    ~Shift <BtnDown>: set-select(toggle) \n\
     Shift Ctrl <Key>=: larger-vt-font() \n\
     Shift Ctrl <Key>-: smaller-vt-font() \n\
-    Shift Ctrl <Key>0: set-vt-font(d)
-xterm*faceSize1:	6
-xterm*faceSize2:	8
-xterm*faceSize3:	10
-xterm*faceSize4:	12
-xterm*faceSize5:	16
-xterm*faceSize6:	24
+    Shift Ctrl <Key>0: set-vt-font(d) \n\
+    Ctrl <Btn4Down>: larger-vt-font() \n\
+    Ctrl <Btn5Down>: smaller-vt-font()
+! Define the size increments used when changing font size
+xterm*faceSize1: 6
+xterm*faceSize2: 8
+xterm*faceSize3: 10
+xterm*faceSize4: 12
+xterm*faceSize5: 16
+xterm*faceSize6: 24
 ! map the tab key to escape in xterm (becase we can!)
 ! xterm.vt100.translations: #override\n\
 !        <Key>Tab: string("\033")\n\
@@ -243,3 +247,6 @@ xlogin*allowNullPasswd: false
 
 ! --- Color scheme {{{1
 ! #include ".Xresources-colors-muted"
+
+! --- Nethack {{{1
+Nethack*autofocus: true
