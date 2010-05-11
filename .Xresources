@@ -44,8 +44,6 @@ xterm*cursorBlink: true
 ! Scroll multiple lines at a time for faster redrawing
 xterm*jumpScroll: true
 xterm*multiScroll: true
-! Matches URLs and emails and selects them on double-click
-xterm*charClass: 33:48,37-38:48,45-47:48,64:48,58:48,126:48,61:48,63:48,43:48,35:38
 ! fixes too dark blue
 xterm*color4: DodgerBlue1
 xterm*color12: SteelBlue1
@@ -60,6 +58,9 @@ xterm*vt100.Translations: #override \n\
     Shift Ctrl <Key>0: set-vt-font(d) \n\
     Ctrl <Btn4Down>: larger-vt-font() \n\
     Ctrl <Btn5Down>: smaller-vt-font()
+! NOTE: the above prevents text from being selected without also holding shift.
+! Matches URLs and emails and selects them on double-click
+xterm*charClass: 33:48,37-38:48,45-47:48,64:48,58:48,126:48,61:48,63:48,43:48,35:38
 ! Define the size increments used when changing font size
 xterm*faceSize1: 6
 xterm*faceSize2: 8
@@ -248,5 +249,3 @@ xlogin*allowNullPasswd: false
 ! --- Color scheme {{{1
 ! #include ".Xresources-colors-muted"
 
-! --- Nethack {{{1
-Nethack*autofocus: true
