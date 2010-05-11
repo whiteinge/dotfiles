@@ -19,8 +19,8 @@ c5="%{$fg[yellow]%}"
 
 # Set up VCS_INFO
 zstyle ':vcs_info:*' enable hg git bzr svn
-zstyle ':vcs_info:(hg*|git):*' get-revision true
-zstyle ':vcs_info:(hg*|git):*' check-for-changes true
+zstyle ':vcs_info:(hg*|git*):*' get-revision true
+zstyle ':vcs_info:(hg*|git*):*' check-for-changes true
 
 zstyle ':vcs_info:hg*' formats "(%s)[%i%u %b %m]" # rev, changes, branch, misc
 zstyle ':vcs_info:hg*' actionformats "(%s|%a)[%i%u %b %m]"
