@@ -3,7 +3,7 @@
 
 fpath=( ~/.zsh_functions $fpath )
 [[ -d $HOME/.zsh_functions/VCS_Info ]] \
-    && fpath[1]+=( ${fpath[1]} ~/.zsh_functions/VCS_Info/**/*~*/(CVS)#(/) )
+    && fpath[1]=( ${fpath[1]} ~/.zsh_functions/VCS_Info/**/*~*/(CVS)#(/) )
 
 autoload -U colors && colors
 autoload -U promptinit
