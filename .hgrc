@@ -97,7 +97,7 @@ track.current = true
 changegroup = hg diff --stat -r $HG_NODE -r tip
 
 # Don't commit any code that contains 'pdb'
-pretxncommit.pdb = hg export tip | (! grep 'pdb')
+# pretxncommit.pdb = hg export tip | (! grep 'pdb')
 
 # Prevent pushing/pulling if mq patches are applied
 pre-pull.mq-no-pull = ! hg qtop > /dev/null 2>&1
