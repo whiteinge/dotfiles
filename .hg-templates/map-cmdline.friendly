@@ -15,13 +15,10 @@ changeset_quiet = '\
 changeset_verbose = '\
     \033[0;33m{rev}\033[0m:\033[0;33m{node|short}\033[0m \
     {branches} \
-    {tags}{parents}\n\
+    {tags}{parents}  \
+    \033[1;30m{diffstat}\033[0m\n\
     {author} {date|isodate} \033[1;30m({date|age})\033[0m\n\n\
-    {desc|strip|fill76}\n
-    \t{diffstat}\n
-    \t{file_mods|stringify|fill76|tabindent}\
-    \t{file_adds|stringify|fill76|tabindent}\
-    \t{file_dels|stringify|fill76|tabindent}\n'
+    {desc|strip|fill76}\n\n'
 
 
 start_tags = '['
