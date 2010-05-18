@@ -6,9 +6,13 @@
     st = status
     ci = commit
     co = checkout
+    di = diff
     incoming = !git-incoming
     outgoing = !git-outgoing
     addremove = !git-addremove
+
+[merge]
+    tool = vimdiff
 
 [color]
     diff = auto
