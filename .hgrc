@@ -77,6 +77,8 @@ inkscape.checkchanged = true
 git = 1
 nodates = 1
 
+[git]
+intree = 1
 
 [pager]
 ###############################################################################
