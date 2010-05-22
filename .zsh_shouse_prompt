@@ -13,7 +13,7 @@ local cr c1 c2 c3 c4
 cr="%{${reset_color}%}"
 c1="%{$fg[white]%}"
 c2="%{$fg_bold[black]%}"
-c3="%{$fg[green]%}"
+c3="%{$fg_bold[green]%}"
 c4="%{$fg[red]%}"
 c5="%{$fg[yellow]%}"
 
@@ -140,19 +140,22 @@ function setprompt() {
 
     ### Now, assemble all prompt lines
     lines+=( ${(j::)infoline} )
-    [[ -n ${vcs_info_msg_0_} ]] && lines+=( ${vcs_info_msg_0_} )
+    [[ -n ${vcs_info_msg_0_} ]] && lines+=( "${c2}${vcs_info_msg_0_}${cr}" )
     lines+=( "%(1j.${c2}%j${cr} .)%(0?.${c1}.${c4})%#${cr} " )
 
     ### Add dungeon floor to each line
-    dungeon=${(l:$(( ${#lines} * 3 ))::.:)}
-    dungeon[$[${RANDOM}%${#dungeon}]+1]=$pet
+    # Allow easy toggling of pet display
+    if zstyle -T ":pr-nethack:" show-pet ; then
+        dungeon=${(l:$(( ${#lines} * 3 ))::.:)}
+        dungeon[$[${RANDOM}%${#dungeon}]+1]=$pet
 
-    for (( i=1; i < $(( ${#lines} + 1 )); i++ )) ; do
-        case $i in
-            1) x=1;; 2) x=4;; 3) x=7;; 4) x=10;;
-        esac
-        lines[$i]="${c2}${dungeon[x,$(( $x + 2 ))]} ${lines[$i]}${cr}"
-    done
+        for (( i=1; i < $(( ${#lines} + 1 )); i++ )) ; do
+            case $i in
+                1) x=1;; 2) x=4;; 3) x=7;; 4) x=10;;
+            esac
+            lines[$i]="${c2}${dungeon[x,$(( $x + 2 ))]} ${lines[$i]}${cr}"
+        done
+    fi
 
     ### Finally, set the prompt
     PROMPT=${(F)lines}
