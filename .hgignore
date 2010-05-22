@@ -1,6 +1,7 @@
 syntax: glob
 
 .hgignore
+.git
 .svn
 *.DS_Store
 *.pyc
