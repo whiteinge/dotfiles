@@ -11,6 +11,9 @@
     outgoing = !git-outgoing
     addremove = !git-addremove
 
+[core]
+    excludesfile = /home/shouse/.gitignore
+
 [merge]
     tool = vimdiff
 
