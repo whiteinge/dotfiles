@@ -23,10 +23,10 @@ zstyle ':vcs_info:(hg*|git*):*' get-revision true
 zstyle ':vcs_info:(hg*|git*):*' check-for-changes true
 
 zstyle ':vcs_info:hg*' formats "(%s)[%i%u %b %m]" # rev, changes, branch, misc
-zstyle ':vcs_info:hg*' actionformats "(%s|%a)[%i%u %b %m]"
+zstyle ':vcs_info:hg*' actionformats "(%s|${c1}%a${c2})[%i%u %b %m]"
 
 zstyle ':vcs_info:git*' formats "(%s)[%12.12i %u %b %m]"
-zstyle ':vcs_info:git*' actionformats "(%s|%a)[%12.12i %u %b %m]"
+zstyle ':vcs_info:git*' actionformats "(%s|${c1}%a${c2})[%12.12i %u %b %m]"
 
 zstyle ':vcs_info:hg*:netbeans' use-simple true
 
