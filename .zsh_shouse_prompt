@@ -119,7 +119,7 @@ function preexec {
 
 function setprompt() {
     local -a lines infoline
-    local x i pet dungeon filler i_width
+    local x i pet dungeon filler i_width i_pad
 
     # A domestic animal, the _tame dog_ (_Canis familiaris_)
     pet=d
@@ -134,8 +134,11 @@ function setprompt() {
     [[ -n $SSH_CLIENT ]] && infoline+=( "@%m" )
 
     # Strip color to find text width & make the full-width filler
+    zstyle -T ":pr-nethack:" show-pet && i_pad=4 || i_pad=0
+
+
     i_width=${(S%%)infoline//\%\{*\%\}} # search-and-replace color escapes
-    filler="${c2}${(l:$(( $COLUMNS - ${(%)${#i_width}} - 4 ))::.:)}${cr}"
+    filler="${c2}${(l:$(( $COLUMNS - ${(%)${#i_width}} - $i_pad ))::.:)}${cr}"
     infoline[2]=( "${infoline[2]} ${filler} " )
 
     ### Now, assemble all prompt lines
