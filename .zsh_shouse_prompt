@@ -22,10 +22,10 @@ zstyle ':vcs_info:*' enable hg git bzr svn
 zstyle ':vcs_info:(hg*|git*):*' get-revision true
 zstyle ':vcs_info:(hg*|git*):*' check-for-changes true
 
-zstyle ':vcs_info:hg*' formats "(%s)[%i%u %b %m]" # rev, changes, branch, misc
+zstyle ':vcs_info:hg*' formats "(%s)[%i%u %b %m]" # rev+changes branch misc
 zstyle ':vcs_info:hg*' actionformats "(%s|${c1}%a${c2})[%i%u %b %m]"
 
-zstyle ':vcs_info:git*' formats "(%s)[%12.12i %u %b %m]"
+zstyle ':vcs_info:git*' formats "(%s)[%12.12i %u %b %m]" # hash changes branch misc
 zstyle ':vcs_info:git*' actionformats "(%s|${c1}%a${c2})[%12.12i %u %b %m]"
 
 zstyle ':vcs_info:hg*:netbeans' use-simple true
@@ -44,8 +44,8 @@ zstyle ':vcs_info:hg*:*' branchformat "%b" # only show branch
 # zstyle ':vcs_info:hg:*:-all-' command fakehg
 # zstyle ':vcs_info:*+*:*' debug true
 
-zstyle ':vcs_info:hg*+set-hgrev-format:*' hooks hg-storerev hg-hashfallback
-zstyle ':vcs_info:hg*+set-message:*' hooks mq-vcs hg-branchhead
+zstyle ':vcs_info:hg*+set-hgrev-format:*' hooks hg-hashfallback
+zstyle ':vcs_info:hg*+set-message:*' hooks mq-vcs hg-storerev hg-branchhead
 
 ### Store the localrev and global hash for use in other hooks
 function +vi-hg-storerev() {
