@@ -97,10 +97,7 @@ function VCS_INFO_quilt() {
 
     case ${mode} in
     (standalone)
-        VCS_INFO_quilt-standalone-detect || {
-            VCS_INFO_set --nvcs
-            return 1
-        }
+        VCS_INFO_quilt-standalone-detect || return 1
         ;;
     (addon)
         ;;

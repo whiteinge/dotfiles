@@ -48,11 +48,17 @@ vcs_info () {
     local pat
     local -i found retval
     local -a enabled disabled dps
-    local -x usercontext vcs rrn quiltmode
+    local -x usercontext vcs rrn quiltmode LC_MESSAGES
     local -ix maxexports
     local -ax msgs
     local -Ax vcs_comm hook_com backend_misc user_data
 
+    LC_MESSAGES=C
+    if [[ -n ${LC_ALL} ]]; then
+        local -x LANG
+        LANG=${LC_ALL}
+        local -x LC_ALL
+    fi
     vcs='-init-'; rrn='-all-'; quiltmode='addon'
     usercontext=${1:-default}
 
@@ -108,7 +114,7 @@ vcs_info () {
         return 0
     }
 
-    VCS_INFO_hook "pre-get-data" ${vcs_comm[basedir]}
+    VCS_INFO_hook "pre-get-data"
     retval=$?
     if (( retval == 1 )); then
         return 0

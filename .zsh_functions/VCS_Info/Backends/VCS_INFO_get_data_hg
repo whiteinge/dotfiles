@@ -41,7 +41,7 @@ if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" get-revision ; then
     if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" use-simple \
             && ( VCS_INFO_check_com hexdump ) && [[ -r ${dirstatefile} ]] ; then
         r_csetid=$(hexdump -n 20 -e '1/1 "%02x"' ${dirstatefile})
-    elif VCS_INFO_check_com ${vcs_comm[cmd]} ; then
+    else
         hgid_args=( --debug id -i -n -b )
 
         # Looking for changes is a tad bit slower since the dirstate cache must
@@ -58,9 +58,10 @@ fi
 # If the user doesn't opt to invoke hg we can still get the current branch
 if [[ -z ${r_branch} && -r ${branchfile} ]] ; then
     r_branch=$(< ${branchfile})
-else
-    r_branch="default"
 fi
+
+# If we still don't know the branch it's safe to assume default
+[[ -n ${r_branch} ]] || r_branch="default"
 
 # The working dir has uncommitted-changes if the revision ends with a +
 if [[ $r_lrev[-1] == + ]] ; then
@@ -131,7 +132,7 @@ if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" get-bookmarks \
 fi
 
 ### Look for any applied Mercurial Queue patches
-if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" get-mq \
+if zstyle -T ":vcs_info:${vcs}:${usercontext}:${rrn}" get-mq \
         && [[ -d $patchdir ]] ; then
     if [[ -e $mqstatusfile ]]; then
         mqpatches=( ${${(f)"$(< "${patchdir}/status")"}/(#s)[a-f0-9]##:/} )
@@ -144,7 +145,10 @@ if zstyle -t ":vcs_info:${vcs}:${usercontext}:${rrn}" get-mq \
         # patches that takes into account if mq-guards are active or not.
 
         # Collect active guards
-        [[ -r ${mqguardsfile} ]] && mqguards=( ${(f)"$(< "${mqguardsfile}")"} )
+        if [[ -r ${mqguardsfile} ]]; then
+            mqguards=( ${(f)"$(< "${mqguardsfile}")"} )
+            mqguards=( ${(oa)mqguards} )
+        fi
 
         while read -r i_patch i_patchguards ; do
             # Skip commented lines
@@ -232,5 +236,5 @@ hgmisc+=( ${hgbmstring} )
 backend_misc[patches]="${hgmqstring}"
 backend_misc[bookmarks]="${hgbmstring}"
 
-VCS_INFO_formats "${hgactionstring}" "${branchformat}" "${hgbase}" '' "${hgchanges}" "${r_lrev}" "${(j:; :)hgmisc}"
+VCS_INFO_formats "${hgactionstring}" "${branchformat}" "${hgbase}" '' "${hgchanges}" "${r_lrev}" "${(j:;:)hgmisc}"
 return 0
