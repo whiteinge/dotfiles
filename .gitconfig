@@ -7,9 +7,19 @@
     ci = commit
     co = checkout
     di = diff
+
+    l = log --pretty=format:\"%h %an, %ar: %s\"
+    ll = log --graph --pretty=format:\"%h %an, %ar: %s\"
+    lll = log -p --stat
+
+    # new commits after you fetched
+    lc = log ORIG_HEAD.. --stat --no-merges
+
     incoming = !git-incoming
     outgoing = !git-outgoing
     addremove = !git-addremove
+
+    serve = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
 
 [core]
     excludesfile = /home/shouse/.gitignore
