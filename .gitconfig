@@ -7,10 +7,11 @@
     ci = commit
     co = checkout
     di = diff
+    br = branch -v
 
-    l = log --pretty=format:\"%h %an, %ar: %s\"
-    ll = log --graph --pretty=format:\"%h %an, %ar: %s\"
-    lll = log -p --stat
+    l = log --pretty=format:\"%C(yellow)%h%Creset %s  %C(black bold)%an, %ar%Creset\"
+    ll = !git l --graph
+    lll = log --abbrev-commit -p --stat
 
     # new commits after you fetched
     lc = log ORIG_HEAD.. --stat --no-merges
