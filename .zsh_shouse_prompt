@@ -37,8 +37,8 @@ zstyle ':vcs_info:hg*:*' unstagedstr "${c3}+${c2}"
 zstyle ':vcs_info:hg*:*' hgrevformat "%r" # only show local rev.
 zstyle ':vcs_info:hg*:*' branchformat "%b" # only show branch
 
-zstyle ':vcs_info:git*' formats "(%s)[%12.12i %u %b %m]" # hash changes branch misc
-zstyle ':vcs_info:git*' actionformats "(%s|${c1}%a${c2})[%12.12i %u %b %m]"
+zstyle ':vcs_info:git*' formats "(%s)[%12.12i %c%u %b %m]" # hash changes branch misc
+zstyle ':vcs_info:git*' actionformats "(%s|${c1}%a${c2})[%12.12i %c%u %b %m]"
 
 zstyle ':vcs_info:git*:*' stagedstr "${c3}S${c2}"
 zstyle ':vcs_info:git*:*' unstagedstr "${c4}U${c2}"
