@@ -6,8 +6,8 @@
     st = status
     ci = commit
     co = checkout
-    di = diff
-    br = branch -v
+    d = diff
+    b = branch -v
 
     l = log --pretty=format:\"%C(yellow)%h%Creset %s  %C(black bold)%an, %ar%Creset\"
     ll = !git l --graph
@@ -24,9 +24,6 @@
 
 [core]
     excludesfile = /home/shouse/.gitignore
-
-[merge]
-    tool = vimdiff
 
 [color]
     diff = auto
