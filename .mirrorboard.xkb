@@ -3,150 +3,114 @@
 // Hacked together by Randall Munroe and neale
 // 2007-06-25
 // 
+// Modified to also dual-purpose the ctrl key.
+// Seth House <seth@eseth.com>
+// 2010-02-01
+// 
 
-// This is a keymapping for occasional left-handed typing.
 // Run it with 
 //   xkbcomp mirrorboard.xkb $DISPLAY
 // (optionally, 2>/dev/null -- it prints a lot of warnings)
 
-// Skip past all this text to see/edit the actual mappings.
-
-// One-handed layouts are interesting but hard to learn.  
-// I noticed, however, that with little effort I could
-// type with my left hand as if it were my right.  That is,
-// if I take my right hand away from the keyboard and tell
-// my left hand to type the word 'parking', with a little
-// effort, 'qardevg' comes out.  I'm doing the same hand
-// motions I'd do with both hands, but constraining them
-// to one hand.
-
-// I noticed that when casually switching windows with the
-// mouse to type responses on IRC, it was convenient when
-// the responses could be typed entirely with my left hand.
-// 'lol' cannot, but 'sweet' can.  I have yet to have a
-// chance to say 'we fear a few dwarf watercraft
-// stewardesses were regarded as desegregated after a great 
-// texas tweezer war', but boy is it weird to type.
-
-// So I realized that if I set a modifier key (caps lock) 
-// to switch layouts such that q was p, w was o, and so 
-// forth, I could write 'parking' with my left hand, by 
-// typing <caps+q> <a> <r> <caps+d> <caps+i> <caps+v> <g>
-
-// The nice thing about this is that I can do it without
-// learning a new layout -- once I got it working, I was
-// able to use it right away.  I find it's really handy
-// to be able to type things like 'ls' without taking my
-// right hand off the mouse (or anything else -- go ahead
-// and get the porn jokes out of your system now).  And
-// since it doesn't get in the way of normal typing,
-// there's very little cost to it.
-
-// I made a few changes besides the basic mirroring.
-// caps+tilde is backspace (you'll need this at first)
-// caps+space is return (essential), and 'a' maps to the
-// apostrophe/quote key instead of semicolon/colon.
-// There's not room to do both.
-
-// Oh, and lastly, capital letters can't really be typed
-// this way.  I put in the keysms, but they only work
-// for some of the keys.  I think this is due to physical
-// constraints -- the keyboard can't handle all three-key
-// chords.  But I find most casual short things I type
-// use only lowercase, so that's okay for me.
-
 
 xkb_keymap {
-  xkb_keycodes  { include "evdev+aliases(qwerty)" };
-  xkb_types     { include "complete"      };
-  xkb_compat    { include "complete"      };
-  xkb_symbols   {
-    include "pc+us+inet(evdev)+ctrl(nocaps)"
+    xkb_keycodes  { include "evdev+aliases(qwerty)" };
+    xkb_types     { include "complete"      };
+    xkb_compat    { include "complete"      };
+    partial modifier_keys
+    xkb_symbols   {
+        include "pc+us+inet(evdev)+ctrl(nocaps)"
 
 
-// Here's the line to make capslock into the modifier key.
-    // key <CAPS> { type[Group1] = "ONE_LEVEL", symbols[Group1] = [ ISO_Level3_Shift ] };
-    // key <LWIN> { type[Group1] = "ONE_LEVEL", symbols[Group1] = [ ISO_Level3_Shift ] };
-    // key <SPCE> { type[Group1] = "ONE_LEVEL", symbols[Group1] = [ ISO_Level3_Shift ] };
-
-    // this is the extra \ key next to the spacebar on my MSi EX620
-    // as such, this is a highly machine-specific setting
-    key <LSGT> { type[Group1] = "ONE_LEVEL", symbols[Group1] = [ ISO_Level3_Shift ] };
-
-// caps-space is return
-    key <SPCE> { [ space, space, Return ] };
-
-// If you want the keyboard to be exactly the same as your
-// old one when not using caps, swap the order here -- you
-// can decide if you want tilde or caps-tilde to be backspace.
-
-// Keeps keyboard normal, caps-tilde is backspace:
-    key <TLDE> {	[     grave,    asciitilde,	       BackSpace	]	};
-// Version I use -- tilde is backspace:
-   // key <TLDE> {	[     BackSpace,	asciitilde,	grave,	asciitilde	]	};
-
-// The important alpha mappings.  I replaced semicolon with apostrophe
-// because I type the latter much more often, and there's only room for
-// one of them on the left side of the keyboard.
-
-    key <AD01> {	[	  q,	Q,	p,	P 		]	};
-    key <AD02> {	[	  w,	W,	o,	O		]	};
-    key <AD03> {	[	  e,	E,	i,	I		]	};
-    key <AD04> {	[	  r,	R,	u,	U		]	};
-    key <AD05> {	[	  t,	T,	y,	Y		]	};
-    key <AD06> {	[	  y,	Y,	t,	T		]	};
-    key <AD07> {	[	  u,	U,	r,	R		]	};
-    key <AD08> {	[	  i,	I,	e,	E		]	};
-    key <AD09> {	[	  o,	O,	w,	W		]	};
-    key <AD10> {	[	  p,	P,	q,	Q		]	};
-    key <AD11> {	[ bracketleft,	braceleft	]	};
-    key <AD12> {	[ bracketright,	braceright	]	};
-
-    key <AC01> {	[	  a,	A,	apostrophe,	quotedbl	]	};
-    key <AC02> {	[	  s,	S,	l,	L		]	};
-    key <AC03> {	[	  d,	D,	k,	K		]	};
-    key <AC04> {	[	  f,	F,	j,	J		]	};
-    key <AC05> {	[	  g,	G,	h,	H		]	};
-    key <AC06> {	[	  h,	H, 	g,	G		]	};
-    key <AC07> {	[	  j,	J,	f,	F		]	};
-    key <AC08> {	[	  k,	K,	d,	D		]	};
-    key <AC09> {	[	  l,	L,	s,	S		]	};
-    key <AC10> {	[ semicolon,	colon		]	};
-    key <AC11> {	[ apostrophe,	quotedbl	]	};
-
-    key <AB01> {	[	  z,	Z,	period,		greater		]	};
-    key <AB02> {	[	  x,	X,	comma,		less		]	};
-    key <AB03> {	[	  c,	C,	m,	M		]	};
-    key <AB04> {	[	  v,	V,	n,	N		]	};
-    key <AB05> {	[	  b,	B,	b,	B		]	};
-    key <AB06> {	[	  n,	N,	v,	V		]	};
-    key <AB07> {	[	  m,	M,	c,	C		]	};
-    key <AB08> {	[     comma,	less		]	};
-    key <AB09> {	[    period,	greater		]	};
-    key <AB10> {	[     slash,	question	]	};
+        virtual_modifiers LControl;
+        key <LCTL> {
+            type[Group1] = "PC_CONTROL_LEVEL2",
+            virtualMods = LControl,
+            symbols[Group1] = [ LControl ]
+        };
 
 
-// +/- is not consistent, but there's not room on the keyboard to do it properly.
+        // Here's the line to make capslock into the modifier key.
+        // key <CAPS> { type[Group1] = "ONE_LEVEL", symbols[Group1] = [ ISO_Level3_Shift ] };
+        // key <LWIN> { type[Group1] = "ONE_LEVEL", symbols[Group1] = [ ISO_Level3_Shift ] };
+        // key <SPCE> { type[Group1] = "ONE_LEVEL", symbols[Group1] = [ ISO_Level3_Shift ] };
+        key <RCTL> { type[Group1] = "ONE_LEVEL", symbols[Group1] = [ ISO_Level3_Shift ] };
 
-// Some of these mappings may be nonintuitive.
-// You should adjust them if they are incompatible with your brainware.
+        // caps-space is return
+        key <SPCE> { [ space, space, Return ] };
 
-    key <AE01> {	[	  1,	exclam,		minus,		plus	]	};
+        // If you want the keyboard to be exactly the same as your
+        // old one when not using caps, swap the order here -- you
+        // can decide if you want tilde or caps-tilde to be backspace.
 
-    key <AE02> {	[	  2,	at,		0,	parenleft	]	};
-    key <AE03> {	[	  3,	numbersign,	9,	parenright	]	};
-    key <AE04> {	[	  4,	dollar,		8,	asterisk	]	};
-    key <AE05> {	[	  5,	percent,	7,	ampersand	]	};
+        // Keeps keyboard normal, caps-tilde is backspace:
+        key <TLDE> {	[     grave,    asciitilde,	       BackSpace	]	};
+        // Version I use -- tilde is backspace:
+        // key <TLDE> {	[     BackSpace,	asciitilde,	grave,	asciitilde	]	};
 
-    key <AE06> {	[	  6,	asciicircum	]	};
-    key <AE07> {	[	  7,	ampersand	]	};
-    key <AE08> {	[	  8,	asterisk	]	};
-    key <AE09> {	[	  9,	parenleft	]	};
-    key <AE10> {	[	  0,	parenright	]	};
-    key <AE11> {	[     minus,	underscore	]	};
-    key <AE12> {	[     equal,	plus		]	};
+        // The important alpha mappings.  I replaced semicolon with apostrophe
+        // because I type the latter much more often, and there's only room for
+        // one of them on the left side of the keyboard.
+
+        key <AD01> {	[	  q,	Q,	p,	P 		]	};
+        key <AD02> {	[	  w,	W,	o,	O		]	};
+        key <AD03> {	[	  e,	E,	i,	I		]	};
+        key <AD04> {	[	  r,	R,	u,	U		]	};
+        key <AD05> {	[	  t,	T,	y,	Y		]	};
+        key <AD06> {	[	  y,	Y,	t,	T		]	};
+        key <AD07> {	[	  u,	U,	r,	R		]	};
+        key <AD08> {	[	  i,	I,	e,	E		]	};
+        key <AD09> {	[	  o,	O,	w,	W		]	};
+        key <AD10> {	[	  p,	P,	q,	Q		]	};
+        key <AD11> {	[ bracketleft,	braceleft	]	};
+        key <AD12> {	[ bracketright,	braceright	]	};
+
+        key <AC01> {	[	  a,	A,	apostrophe,	quotedbl	]	};
+        key <AC02> {	[	  s,	S,	l,	L		]	};
+        key <AC03> {	[	  d,	D,	k,	K		]	};
+        key <AC04> {	[	  f,	F,	j,	J		]	};
+        key <AC05> {	[	  g,	G,	h,	H		]	};
+        key <AC06> {	[	  h,	H, 	g,	G		]	};
+        key <AC07> {	[	  j,	J,	f,	F		]	};
+        key <AC08> {	[	  k,	K,	d,	D		]	};
+        key <AC09> {	[	  l,	L,	s,	S		]	};
+        key <AC10> {	[ semicolon,	colon		]	};
+        key <AC11> {	[ apostrophe,	quotedbl	]	};
+
+        key <AB01> {	[	  z,	Z,	period,		greater		]	};
+        key <AB02> {	[	  x,	X,	comma,		less		]	};
+        key <AB03> {	[	  c,	C,	m,	M		]	};
+        key <AB04> {	[	  v,	V,	n,	N		]	};
+        key <AB05> {	[	  b,	B,	b,	B		]	};
+        key <AB06> {	[	  n,	N,	v,	V		]	};
+        key <AB07> {	[	  m,	M,	c,	C		]	};
+        key <AB08> {	[     comma,	less		]	};
+        key <AB09> {	[    period,	greater		]	};
+        key <AB10> {	[     slash,	question	]	};
 
 
-  };
-  xkb_geometry  { include "pc(pc104)"     };
+        // +/- is not consistent, but there's not room on the keyboard to do it properly.
+
+        // Some of these mappings may be nonintuitive.
+        // You should adjust them if they are incompatible with your brainware.
+
+        key <AE01> {	[	  1,	exclam,		minus,		plus	]	};
+
+        key <AE02> {	[	  2,	at,		0,	parenleft	]	};
+        key <AE03> {	[	  3,	numbersign,	9,	parenright	]	};
+        key <AE04> {	[	  4,	dollar,		8,	asterisk	]	};
+        key <AE05> {	[	  5,	percent,	7,	ampersand	]	};
+
+        key <AE06> {	[	  6,	asciicircum	]	};
+        key <AE07> {	[	  7,	ampersand	]	};
+        key <AE08> {	[	  8,	asterisk	]	};
+        key <AE09> {	[	  9,	parenleft	]	};
+        key <AE10> {	[	  0,	parenright	]	};
+        key <AE11> {	[     minus,	underscore	]	};
+        key <AE12> {	[     equal,	plus		]	};
+
+
+    };
+    xkb_geometry  { include "pc(pc104)"     };
 };
+// vim:ft=xkb
