@@ -18,7 +18,7 @@ c4="%{$fg[red]%}"
 c5="%{$fg[yellow]%}"
 
 # Set up VCS_INFO
-zstyle ':vcs_info:*' enable hg git bzr svn
+zstyle ':vcs_info:*' enable git hg bzr svn
 zstyle ':vcs_info:(hg*|git*):*' get-revision true
 zstyle ':vcs_info:(hg*|git*):*' check-for-changes true
 
