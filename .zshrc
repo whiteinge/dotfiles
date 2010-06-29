@@ -60,8 +60,9 @@ LC_COLLATE=C
 
 EDITOR=vi
 VISUAL=vi
-PAGER='less -imJMW'
-MANPAGER='less -imJMW'
+LESS='-imJMWR'
+PAGER="less $LESS"
+MANPAGER=$PAGER
 BROWSER='chromium-browser'
 
 # Silence Wine debugging output (why isn't this a default?)
