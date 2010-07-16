@@ -114,6 +114,10 @@ fi
 # }}}
 # {{{ aliases
 
+autoload -U zmv
+alias zmv='noglob zmv'
+# e.g., zmv *.JPEG *.jpg
+
 alias vi='vim'
 
 alias ls='ls -F --color'
