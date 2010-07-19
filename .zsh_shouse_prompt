@@ -48,6 +48,7 @@ zstyle ':vcs_info:git*:*' unstagedstr "${c4}U${c2}"
 
 zstyle ':vcs_info:hg*+set-hgrev-format:*' hooks hg-hashfallback
 zstyle ':vcs_info:hg*+set-message:*' hooks mq-vcs hg-storerev hg-branchhead
+zstyle ':vcs_info:git*+set-message:*' hooks git-stash git-st
 
 ### Store the localrev and global hash for use in other hooks
 function +vi-hg-storerev() {
@@ -99,8 +100,6 @@ function +vi-hg-branchhead() {
     fi
 }
 
-zstyle ':vcs_info:git*+set-message:*' hooks git-st
-
 # Show number of commits HEAD is ahead-of or behind remote HEAD.
 function +vi-git-st() {
     local ahead behind
@@ -117,6 +116,18 @@ function +vi-git-st() {
     (( $behind )) && gitstatus+=( "${c4}-${behind}${c2}" )
 
     hook_com[misc]+=${(j:/:)gitstatus}
+}
+
+# Show count of stashed changes
+function +vi-git-stash() {
+    local -a stashes
+    local stashfile=${hook_com[base]}/.git/refs/stash
+
+    [[ -r ${stashfile} ]] && stashes=( ${(f)"$(< "${stashfile}")"} )
+
+    if [[ -n ${stashes} ]] ; then
+        hook_com[misc]+="(${#stashes} stashed) "
+    fi
 }
 
 # Executed before each prompt
