@@ -48,7 +48,7 @@ zstyle ':vcs_info:git*:*' unstagedstr "${c4}U${c2}"
 
 zstyle ':vcs_info:hg*+set-hgrev-format:*' hooks hg-hashfallback
 zstyle ':vcs_info:hg*+set-message:*' hooks mq-vcs hg-storerev hg-branchhead
-zstyle ':vcs_info:git*+set-message:*' hooks git-stash git-st
+zstyle ':vcs_info:git*+set-message:*' hooks git-st git-stash
 
 ### Store the localrev and global hash for use in other hooks
 function +vi-hg-storerev() {
@@ -126,7 +126,7 @@ function +vi-git-stash() {
     [[ -r ${stashfile} ]] && stashes=( ${(f)"$(< "${stashfile}")"} )
 
     if [[ -n ${stashes} ]] ; then
-        hook_com[misc]+="(${#stashes} stashed) "
+        hook_com[misc]+=" (${#stashes} stashed)"
     fi
 }
 
