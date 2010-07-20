@@ -25,3 +25,9 @@
     diff = auto
     status = auto
     branch = auto
+
+[sendemail]
+    smtpencryption = tls
+    smtpserver = smtp.gmail.com
+    smtpuser = whiteinge@gmail.com
+    smtpserverport = 587
