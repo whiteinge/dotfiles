@@ -121,12 +121,10 @@ function +vi-git-st() {
 # Show count of stashed changes
 function +vi-git-stash() {
     local -a stashes
-    local stashfile=${hook_com[base]}/.git/refs/stash
 
-    [[ -r ${stashfile} ]] && stashes=( ${(f)"$(< "${stashfile}")"} )
-
-    if [[ -n ${stashes} ]] ; then
-        hook_com[misc]+=" (${#stashes} stashed)"
+    if [[ -s ${hook_com[base]}/.git/refs/stash ]] ; then
+        stashes=$(git stash list 2>/dev/null | wc -l)
+        hook_com[misc]+=" (${stashes} stashed)"
     fi
 }
 
