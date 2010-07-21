@@ -9,13 +9,13 @@ autoload -U colors && colors
 autoload -U promptinit
 autoload -Uz vcs_info
 
-local cr c1 c2 c3 c4
-cr="%{${reset_color}%}"
-c1="%{$fg[white]%}"
-c2="%{$fg_bold[black]%}"
-c3="%{$fg_bold[green]%}"
-c4="%{$fg[red]%}"
-c5="%{$fg[yellow]%}"
+local reset white gray green red
+reset="%{${reset_color}%}"
+white="%{$fg[white]%}"
+gray="%{$fg_bold[black]%}"
+green="%{$fg_bold[green]%}"
+red="%{$fg[red]%}"
+yellow="%{$fg[yellow]%}"
 
 # Set up VCS_INFO
 zstyle ':vcs_info:*' enable git hg bzr svn
@@ -23,7 +23,7 @@ zstyle ':vcs_info:(hg*|git*):*' get-revision true
 zstyle ':vcs_info:(hg*|git*):*' check-for-changes true
 
 zstyle ':vcs_info:hg*' formats "(%s)[%i%u %b %m]" # rev+changes branch misc
-zstyle ':vcs_info:hg*' actionformats "(%s|${c1}%a${c2})[%i%u %b %m]"
+zstyle ':vcs_info:hg*' actionformats "(%s|${white}%a${gray})[%i%u %b %m]"
 
 zstyle ':vcs_info:hg*:netbeans' use-simple true
 zstyle ':vcs_info:hg*:*' get-bookmarks true
@@ -33,15 +33,15 @@ zstyle ':vcs_info:hg*:*' get-unapplied true
 zstyle ':vcs_info:hg*:*' patch-format "mq(%g):%n/%c %p"
 zstyle ':vcs_info:hg*:*' nopatch-format "mq(%g):%n/%c %p"
 
-zstyle ':vcs_info:hg*:*' unstagedstr "${c3}+${c2}"
+zstyle ':vcs_info:hg*:*' unstagedstr "${green}+${gray}"
 zstyle ':vcs_info:hg*:*' hgrevformat "%r" # only show local rev.
 zstyle ':vcs_info:hg*:*' branchformat "%b" # only show branch
 
 zstyle ':vcs_info:git*' formats "(%s) %12.12i %c%u %b%m" # hash changes branch misc
-zstyle ':vcs_info:git*' actionformats "(%s|${c1}%a${c2}) %12.12i %c%u %b%m"
+zstyle ':vcs_info:git*' actionformats "(%s|${white}%a${gray}) %12.12i %c%u %b%m"
 
-zstyle ':vcs_info:git*:*' stagedstr "${c3}S${c2}"
-zstyle ':vcs_info:git*:*' unstagedstr "${c4}U${c2}"
+zstyle ':vcs_info:git*:*' stagedstr "${green}S${gray}"
+zstyle ':vcs_info:git*:*' unstagedstr "${red}U${gray}"
 
 # zstyle ':vcs_info:hg:*:-all-' command fakehg
 # zstyle ':vcs_info:*+*:*' debug true
@@ -95,7 +95,7 @@ function +vi-hg-branchhead() {
         done < ${branchheadsfile}
 
         if [[ ! ${branchheads[(i)${user_data[hash]}]} -le ${#branchheads} ]] ; then
-            hook_com[revision]="${c4}^${c2}${hook_com[revision]}"
+            hook_com[revision]="${red}^${gray}${hook_com[revision]}"
         fi
     fi
 }
@@ -113,12 +113,12 @@ function +vi-git-st() {
         # for git prior to 1.7
         # ahead=$(git rev-list origin/${hook_com[branch]}..HEAD | wc -l)
         ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
-        (( $ahead )) && gitstatus+=( "${c3}+${ahead}${c2}" )
+        (( $ahead )) && gitstatus+=( "${green}+${ahead}${gray}" )
 
         # for git prior to 1.7
         # behind=$(git rev-list HEAD..origin/${hook_com[branch]} | wc -l)
         behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
-        (( $behind )) && gitstatus+=( "${c4}-${behind}${c2}" )
+        (( $behind )) && gitstatus+=( "${red}-${behind}${gray}" )
 
         hook_com[branch]="${hook_com[branch]} [${remote} ${(j:/:)gitstatus}]"
     fi
@@ -162,8 +162,8 @@ function setprompt() {
 
     ### First, assemble the top line
     # Current dir; show in yellow if not writable
-    [[ -w $PWD ]] && infoline+=( ${c3} ) || infoline+=( ${c5} )
-    infoline+=( "%~${cr} " )
+    [[ -w $PWD ]] && infoline+=( ${green} ) || infoline+=( ${yellow} )
+    infoline+=( "%~${reset} " )
 
     # Username & host
     infoline+=( "%n" )
@@ -174,13 +174,13 @@ function setprompt() {
 
 
     i_width=${(S%%)infoline//\%\{*\%\}} # search-and-replace color escapes
-    filler="${c2}${(l:$(( $COLUMNS - ${(%)${#i_width}} - $i_pad ))::.:)}${cr}"
+    filler="${gray}${(l:$(( $COLUMNS - ${(%)${#i_width}} - $i_pad ))::.:)}${reset}"
     infoline[2]=( "${infoline[2]} ${filler} " )
 
     ### Now, assemble all prompt lines
     lines+=( ${(j::)infoline} )
-    [[ -n ${vcs_info_msg_0_} ]] && lines+=( "${c2}${vcs_info_msg_0_}${cr}" )
-    lines+=( "%(1j.${c2}%j${cr} .)%(0?.${c1}.${c4})%#${cr} " )
+    [[ -n ${vcs_info_msg_0_} ]] && lines+=( "${gray}${vcs_info_msg_0_}${reset}" )
+    lines+=( "%(1j.${gray}%j${reset} .)%(0?.${white}.${red})%#${reset} " )
 
     ### Add dungeon floor to each line
     # Allow easy toggling of pet display
@@ -192,7 +192,7 @@ function setprompt() {
             case $i in
                 1) x=1;; 2) x=4;; 3) x=7;; 4) x=10;;
             esac
-            lines[$i]="${c2}${dungeon[x,$(( $x + 2 ))]} ${lines[$i]}${cr}"
+            lines[$i]="${gray}${dungeon[x,$(( $x + 2 ))]} ${lines[$i]}${reset}"
         done
     fi
 
@@ -202,7 +202,7 @@ function setprompt() {
 
 venv_rprompt () {
     if [[ -n $VIRTUAL_ENV ]]; then
-        RPROMPT="${c1} venv:$(basename $VIRTUAL_ENV)${cr}"
+        RPROMPT="${white} venv:$(basename $VIRTUAL_ENV)${reset}"
     else
         RPROMPT=""
     fi
