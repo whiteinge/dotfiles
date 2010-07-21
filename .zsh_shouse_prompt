@@ -37,8 +37,8 @@ zstyle ':vcs_info:hg*:*' unstagedstr "${c3}+${c2}"
 zstyle ':vcs_info:hg*:*' hgrevformat "%r" # only show local rev.
 zstyle ':vcs_info:hg*:*' branchformat "%b" # only show branch
 
-zstyle ':vcs_info:git*' formats "(%s)[%12.12i %c%u %b %m]" # hash changes branch misc
-zstyle ':vcs_info:git*' actionformats "(%s|${c1}%a${c2})[%12.12i %c%u %b %m]"
+zstyle ':vcs_info:git*' formats "(%s) %12.12i %c%u %b%m" # hash changes branch misc
+zstyle ':vcs_info:git*' actionformats "(%s|${c1}%a${c2}) %12.12i %c%u %b%m"
 
 zstyle ':vcs_info:git*:*' stagedstr "${c3}S${c2}"
 zstyle ':vcs_info:git*:*' unstagedstr "${c4}U${c2}"
@@ -100,22 +100,28 @@ function +vi-hg-branchhead() {
     fi
 }
 
-# Show number of commits HEAD is ahead-of or behind remote HEAD.
+# Show remote ref name and number of commits ahead-of or behind
 function +vi-git-st() {
-    local ahead behind
+    local ahead behind remote
     local -a gitstatus
 
-    # for git prior to 1.7
-    # ahead=$(git rev-list origin/${hook_com[branch]}..HEAD | wc -l)
-    ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
-    (( $ahead )) && gitstatus+=( "${c3}+${ahead}${c2}" )
+    # Are we on a remote-tracking branch?
+    remote=${$(git rev-parse --verify ${hook_com[branch]}@{upstream} \
+        --symbolic-full-name 2>/dev/null)/refs\/remotes\/}
 
-    # for git prior to 1.7
-    # behind=$(git rev-list HEAD..origin/${hook_com[branch]} | wc -l)
-    behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
-    (( $behind )) && gitstatus+=( "${c4}-${behind}${c2}" )
+    if [[ -n ${remote} ]] ; then
+        # for git prior to 1.7
+        # ahead=$(git rev-list origin/${hook_com[branch]}..HEAD | wc -l)
+        ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
+        (( $ahead )) && gitstatus+=( "${c3}+${ahead}${c2}" )
 
-    hook_com[misc]+=${(j:/:)gitstatus}
+        # for git prior to 1.7
+        # behind=$(git rev-list HEAD..origin/${hook_com[branch]} | wc -l)
+        behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
+        (( $behind )) && gitstatus+=( "${c4}-${behind}${c2}" )
+
+        hook_com[branch]="${hook_com[branch]} [${remote} ${(j:/:)gitstatus}]"
+    fi
 }
 
 # Show count of stashed changes
