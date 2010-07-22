@@ -172,9 +172,10 @@ function setprompt() {
     # Strip color to find text width & make the full-width filler
     zstyle -T ":pr-nethack:" show-pet && i_pad=4 || i_pad=0
 
+    i_width=${(S)infoline//\%\{*\%\}} # search-and-replace color escapes
+    i_width=${#${(%)i_width}} # expand all escapes and count the chars
 
-    i_width=${(S%%)infoline//\%\{*\%\}} # search-and-replace color escapes
-    filler="${gray}${(l:$(( $COLUMNS - ${(%)${#i_width}} - $i_pad ))::.:)}${reset}"
+    filler="${gray}${(l:$(( $COLUMNS - $i_width - $i_pad ))::.:)}${reset}"
     infoline[2]=( "${infoline[2]} ${filler} " )
 
     ### Now, assemble all prompt lines
