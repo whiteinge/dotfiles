@@ -9,7 +9,7 @@ autoload -U colors && colors
 autoload -U promptinit
 autoload -Uz vcs_info
 
-local reset white gray green red
+local reset white gray green red yellow
 reset="%{${reset_color}%}"
 white="%{$fg[white]%}"
 gray="%{$fg_bold[black]%}"
