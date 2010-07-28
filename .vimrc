@@ -344,10 +344,43 @@ function! MyStatusLine()
     let s .= ' %9* %*' " pad the edges for better vsplit seperation
     return s
 endfunction
+
 set statusline=%!MyStatusLine()
 
 " }}}
+" MyTabLine {{{
+" Number the tabs.
 
+function! MyTabLine()
+    let s = ''
+    let t = tabpagenr()
+    let i = 1
+    while i <= tabpagenr('$')
+        let buflist = tabpagebuflist(i)
+        let winnr = tabpagewinnr(i)
+        let curwinnr = tabpagewinnr(i,'$')
+
+        let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+        let s .= '%' . i . 'T'
+        let s .= ' '  . i . ': '
+        let file = bufname(buflist[winnr - 1])
+        let file = fnamemodify(file, ':p:t')
+        if file == ''
+            let file = '[No Name]'
+        endif
+        let s .= file
+        let s .= (curwinnr > 1 ? ' (' . curwinnr .') ' : '')
+        let s .= ' '
+        let i = i + 1
+    endwhile
+    let s .= '%T%#TabLineFill#%='
+    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+    return s
+endfunction
+
+set tabline=%!MyTabLine()
+
+" }}}
 " Autocommands, plugin, and file-type-specific settings {{{
 
 " Remember last position in file
