@@ -42,6 +42,10 @@ ls = log -v -f -r tip:. -P . --style /home/shouse/.hg-templates/map-cmdline.frie
 
 dstat = diff --stat
 
+# Push only the working directory’s parent revision (and ancestors);
+# e.g. only what you're currently working on
+nudge = push --rev .
+
 # mq
 qs = qseries -v -s
 qlog = l -r qtip:qbase
