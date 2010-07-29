@@ -289,11 +289,11 @@ endfunction
 " TODO: add a check for screen width and remove the alternate buffer display
 " and args of total display for small screen widths.
 function! MyStatusLine()
-    let s = '%9* %* ' " pad the edges for better vsplit seperation
+    let s = '%9* %* ' " pad the edges for better vsplit separation
     let s .= '%3*' " User highlighting
     let s .= '%%%n '
-    if bufname('') != '' " why is this such a pain in the ass? FIXME: there's a bug in here somewhere. Test with a split with buftype=nofile
-        let s .= "%{ pathshorten(fnamemodify(expand('%F'), ':~:.')) }" " short-hand path of of the current buffer (use :ls to see more info)
+    if bufname('') != '' " why is this such a pain in the ass?
+        let s .= "%{ pathshorten(fnamemodify(expand('%F'), ':~:.')) }" " short-hand path of of the current buffer
     else
         let s .= '%f' " an empty filename doesn't make it through the above filters
     endif
@@ -304,7 +304,6 @@ function! MyStatusLine()
     let s .= '%w' " preview window
     let s .= '%*' " restore normal highlighting
     let s .= ' %<' " start truncating from here if the window gets too small
-    " FIXME: this doens't work well with multiple windows...
     if bufname('#') != '' " if there's an alternate buffer, display the name
         let s .= '%4*' " user highlighting
         let s .= '(#' . bufnr('#') . ' '
@@ -317,7 +316,7 @@ function! MyStatusLine()
     let s .= '%*' " restore normal highlighting
     let s .= ' <'
     let s .= '%8*' " User highlighting
-    let s .= '%{&fileencoding}' " fileencoding NOTE: this doesn't always display, needs more testing
+    let s .= '%{&fileencoding}' " fileencoding
     let s .= '%*,' " restore normal highlighting
     let s .= '%6*' " User highlighting
     let s .= '%{&fileformat}' " line-ending type
@@ -325,10 +324,12 @@ function! MyStatusLine()
     let s .= '>'
     let s .= '%a' " (args of total)
     let s .= '  %9*' " user highlighting
-    let s .= '%=' " seperate right- from left-aligned
+    let s .= '%=' " separate right- from left-aligned
     let s .= '%*' " restore normal highlighting
-    let s .= '%7*' " user highlighting
-    let s .= '  %{VimBuddy()} ' " Vimming will never be lonely again. TODO: check for plugin before loading
+    let s .= '%7*  ' " user highlighting
+    if exists("*VimBuddy") 
+        let s .= '%{VimBuddy()} ' " Vimming will never be lonely again.
+    endif
     let s .= '%*' " restore normal highlighting
     let s .= '%1*' " User highlighting
     let s .= '%l' " current line number
@@ -341,7 +342,7 @@ function! MyStatusLine()
     let s .= '%3*' " user highlighting
     let s .= '%P' " Percentage through file
     let s .= '%*' " restore normal highlighting
-    let s .= ' %9* %*' " pad the edges for better vsplit seperation
+    let s .= ' %9* %*' " pad the edges for better vsplit separation
     return s
 endfunction
 
@@ -355,6 +356,7 @@ function! MyTabLine()
     let s = ''
     let t = tabpagenr()
     let i = 1
+
     while i <= tabpagenr('$')
         let buflist = tabpagebuflist(i)
         let winnr = tabpagewinnr(i)
@@ -381,6 +383,7 @@ endfunction
 set tabline=%!MyTabLine()
 
 " }}}
+
 " Autocommands, plugin, and file-type-specific settings {{{
 
 " Remember last position in file
