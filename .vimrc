@@ -1,6 +1,5 @@
 " Best Goddamn vimrc in the whole world.
 " Author: Seth House <seth@eseth.com>
-" Modified: 2009-12-13
 " For more information type :help followed by the command.
 
 set nocompatible                "cp:    turns off strct vi compatibility
