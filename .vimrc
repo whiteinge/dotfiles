@@ -256,6 +256,51 @@ let g:explStartRight=0  " new windows go to right of explorer window
 
 " }}}
 
+" Commenting with opfunc {{{
+" http://vim.wikia.com/wiki/Commenting_with_opfunc
+" \c to comment or \C uncomment, then press a regular Vim movement command
+" Temporarily set comment chars with :let b:comment='#---'
+
+function! CommentMark(docomment, a, b)
+    if !exists('b:comment')
+        let b:comment = CommentStr() . ' '
+    endif
+    if a:docomment
+        exe "normal! '" . a:a . "_\<C-V>'" . a:b . 'I' . b:comment
+    else
+        exe "'".a:a.",'".a:b . 's/^\(\s*\)' . escape(b:comment,'/') . '/\1/e'
+    endif
+endfunction
+
+" Comment lines in marks set by g@ operator.
+function! DoCommentOp(type)
+    call CommentMark(1, '[', ']')
+endfunction
+
+" Uncomment lines in marks set by g@ operator.
+function! UnCommentOp(type)
+    call CommentMark(0, '[', ']')
+endfunction
+
+" Return string used to comment line for current filetype.
+function! CommentStr()
+    if &ft == 'java' || &ft == 'javascript'
+        return '//'
+    elseif &ft == 'vim'
+        return '"'
+    elseif &ft == 'rst'
+        return '..'
+    else
+        return '#'
+    endif
+endfunction
+
+nnoremap <Leader>c <Esc>:set opfunc=DoCommentOp<CR>g@
+nnoremap <Leader>C <Esc>:set opfunc=UnCommentOp<CR>g@
+vnoremap <Leader>c <Esc>:call CommentMark(1,'<','>')<CR>
+vnoremap <Leader>C <Esc>:call CommentMark(0,'<','>')<CR>
+
+" }}}
 " YankList {{{1
 " Is is possbile to store the ten most recent yanks using opfunc (similar to
 " the built-in numbered registers)?
@@ -456,15 +501,6 @@ autocmd FileChangedShell *
 " Vim Help docs: hit enter to activate links, and ctrl-[ as a back button
 au FileType help nmap <buffer> <Return> <C-]>
 au FileType help nmap <buffer> <C-[> <C-O>
-
-" Mappings for the ToggleComment Plugin
-noremap <silent> ,# :call CommentLineToEnd('# ')<CR>+
-noremap <silent> ,/ :call CommentLineToEnd('// ')<CR>+
-noremap <silent> ," :call CommentLineToEnd('" ')<CR>+
-noremap <silent> ,; :call CommentLineToEnd('; ')<CR>+
-noremap <silent> ,- :call CommentLineToEnd('-- ')<CR>+
-noremap <silent> ,* :call CommentLinePincer('/* ', ' */')<CR>+
-noremap <silent> ,< :call CommentLinePincer('<!-- ', ' -->')<CR>+
 
 " Taglist plugin settings
 map <F3> :TlistToggle<cr>
