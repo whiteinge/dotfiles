@@ -51,16 +51,30 @@ xterm*color12: SteelBlue1
 xterm*trimSelection: true
 ! Hold Shift to use CLIPBOARD instead of PRIMARY to copy or paste
 ! Change font size with ctrl-+/-/= (or mousewheel).
+! Add a few alt- shortcuts for quick access to special characters
 xterm*vt100.Translations: #override \n\
     ~Shift~Ctrl<Btn2Up>: insert-selection(PRIMARY, CUT_BUFFER0) \n\
     Shift~Ctrl<Btn2Up>: insert-selection(CLIPBOARD, CUT_BUFFER1) \n\
     ~Shift<BtnUp>: select-end(PRIMARY, CUT_BUFFER0) \n\
     Shift<BtnUp>: select-end(CLIPBOARD, CUT_BUFFER1) \n\
-    Shift Ctrl <Key>=: larger-vt-font() \n\
-    Shift Ctrl <Key>-: smaller-vt-font() \n\
-    Shift Ctrl <Key>0: set-vt-font(d) \n\
+    Shift Ctrl <Key> =: larger-vt-font() \n\
+    Shift Ctrl <Key> -: smaller-vt-font() \n\
+    Shift Ctrl <Key> 0: set-vt-font(d) \n\
     Ctrl <Btn4Down>: larger-vt-font() \n\
-    Ctrl <Btn5Down>: smaller-vt-font()
+    Ctrl <Btn5Down>: smaller-vt-font() \n\
+    Meta ~Shift <Key> bracketleft: string("‘") \n\
+    Meta ~Shift <Key> bracketright: string("’") \n\
+    Meta Shift <Key> bracketleft: string("“") \n\
+    Meta Shift <Key> bracketright: string("”") \n\
+    Meta ~Shift <Key> period: string("…") \n\
+    Meta ~Shift <Key> -: string("—") \n\
+    Meta Shift <Key> -: string("–") \n\
+    Meta ~Shift <Key> exclam: string("¡") \n\
+    Meta ~Shift <Key> question: string("¿") \n\
+    Meta ~Shift <Key> o: string("°") \n\
+    Meta ~Shift <Key> t: string("™") \n\
+    Meta ~Shift <Key> c: string("©") \n\
+    Meta ~Shift <Key> x: string("×")
 ! NOTE: the above prevents text from being selected without also holding shift.
 ! Matches URLs and emails and selects them on double-click
 xterm*charClass: 33:48,37-38:48,45-47:48,64:48,58:48,126:48,61:48,63:48,43:48,35:38
