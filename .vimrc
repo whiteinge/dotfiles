@@ -508,10 +508,9 @@ let Tlist_Compact_Format = 1
 let Tlist_Exit_OnlyWindow = 1
 let Tlist_File_Fold_Auto_Close = 1
 
-" Auto-open taglist only if the term wide enough to also fit an 80-column
-" window (plus eight for line numbers and the fold column). Otherwise, try to
-" stay out of the way.
-if &columns > 118
+" Auto-open taglist only if not in diff mode and the term wide enough to also
+" fit an 80-column window (plus eight for line numbers and the fold column).
+if &columns > 118 && ! &diff
     let Tlist_Auto_Open = 1
 else
     let Tlist_GainFocus_On_ToggleOpen = 1
