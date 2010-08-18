@@ -107,8 +107,8 @@ noremap <silent> ,sd :tabnew %<CR> :vnew +:read\ !svn\ cat\ #<CR>:exe Scratch()<
 command DiffOrig tab split | vert new | set bt=nofile | r # | 0d_ |
     \ diffthis | wincmd p | diffthis
 
-" CD to the path of the current file.
-map <leader>cd :cd %:p:h<CR>
+" Find merge conflict markers
+map <Leader>fc /\v^[<=>]{7}( .*\|$)<CR>
 
 " }}}
 " Folding (spacebar toggles) {{{
