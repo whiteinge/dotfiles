@@ -14,6 +14,8 @@
     ll = !git l --graph
     lll = log --stat --decorate
 
+    # page = !eval less -f '<(git show '${^$(git rev-list -20 @{u}..)}\)
+
     # new commits after you fetched
     lc = log ORIG_HEAD.. --stat --no-merges
 
@@ -23,7 +25,7 @@
     excludesfile = /home/shouse/.gitignore
 
 [color]
-    diff = auto
+    diff = always
     status = auto
     branch = auto
 
