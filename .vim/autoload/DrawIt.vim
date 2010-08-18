@@ -3,8 +3,8 @@
 " Maintainer:	Charles E. Campbell, Jr.
 " Authors:	Charles E. Campbell, Jr. <NdrOchipS@PcampbellAfamily.Mbiz> - NOSPAM
 "   		Sylvain Viart (molo@multimania.com)
-" Version:	10
-" Date:		Jun 12, 2008
+" Version:	11j	ASTRO-ONLY
+" Date:		Apr 08, 2010
 "
 " Quick Setup: {{{1
 "              tar -oxvf DrawIt.tar
@@ -18,7 +18,7 @@
 "             You may also use visual-block mode to select endpoints and
 "             draw lines, arrows, and ellipses.
 "
-" Copyright:    Copyright (C) 1999-2005 Charles E. Campbell, Jr. {{{1
+" Copyright:    Copyright (C) 1999-2010 Charles E. Campbell, Jr. {{{1
 "               Permission is hereby granted to use and distribute this code,
 "               with or without modifications, provided that this copyright
 "               notice is copied with it. Like anything else that's free,
@@ -41,15 +41,29 @@
 if &cp || exists("g:loaded_DrawIt")
  finish
 endif
+let g:loaded_DrawIt= "v11j"
+if v:version < 700
+ echohl WarningMsg
+ echo "***warning*** this version of DrawIt needs vim 7.0"
+ echohl Normal
+ finish
+endif
 let s:keepcpo= &cpo
 set cpo&vim
+
+if !exists("g:drawit_xstrlen")
+ if &enc == "latin1" || $LANG == "en_US.UTF-8" || !has("multi_byte")
+  let g:drawit_xstrlen= 0
+ else
+  let g:drawit_xstrlen= 1
+ endif
+endif
 
 " ---------------------------------------------------------------------
 "  Script Variables: {{{1
 if !exists("s:saveposn_count")
  let s:saveposn_count= 0
 endif
-let g:loaded_DrawIt= "v10"
 "DechoTabOn
 
 " =====================================================================
@@ -79,6 +93,16 @@ fun! DrawIt#StartDrawIt()
    let b:drawit_keep_mouse= &mouse
   endif
   setlocal mouse=a
+
+  " StartDrawIt: set up type of strlen() calculation that's needed {{{3
+  if !exists("g:drawit_xstrlen")
+   if exists("g:Align_xstrlen")
+    let g:drawit_xstrlen= g:Align_xstrlen
+   endif
+   if !exists("g:drawit_xstrlen")
+    let g:drawit_xstrlen= 1
+   endif
+  endif
 
   " StartDrawIt: set up DrawIt commands {{{3
   com! -nargs=1 -range SetBrush <line1>,<line2>call DrawIt#SetBrush(<q-args>)
@@ -111,24 +135,24 @@ fun! DrawIt#StartDrawIt()
   let b:di_erase     = 0
 
   " StartDrawIt: option recording {{{3
-  let b:di_aikeep    = &ai
-  let b:di_cinkeep   = &cin
-  let b:di_cpokeep   = &cpo
-  let b:di_etkeep    = &et
-  let b:di_fokeep    = &fo
-  let b:di_gdkeep    = &gd
-  let b:di_gokeep    = &go
-  let b:di_magickeep = &magic
-  let b:di_remapkeep = &remap
-  let b:di_repkeep   = &report
-  let b:di_sikeep    = &si
-  let b:di_stakeep   = &sta
-  let b:di_vekeep    = &ve
-  set cpo&vim
-  set nocin noai nosi nogd sta et ve=all report=10000
-  set go-=aA
-  set fo-=a
-  set remap magic
+  let b:di_aikeep    = &l:ai
+  let b:di_cinkeep   = &l:cin
+  let b:di_cpokeep   = &l:cpo
+  let b:di_etkeep    = &l:et
+  let b:di_fokeep    = &l:fo
+  let b:di_gdkeep    = &l:gd
+  let b:di_gokeep    = &l:go
+  let b:di_magickeep = &l:magic
+  let b:di_remapkeep = &l:remap
+  let b:di_repkeep   = &l:report
+  let b:di_sikeep    = &l:si
+  let b:di_stakeep   = &l:sta
+  let b:di_vekeep    = &l:ve
+  setlocal cpo&vim
+  setlocal nocin noai nosi nogd sta et ve=all report=10000
+  setlocal go-=aA
+  setlocal fo-=a
+  setlocal remap magic
 
   " StartDrawIt: save and unmap user maps {{{3
   let b:lastdir    = 1
@@ -137,148 +161,154 @@ fun! DrawIt#StartDrawIt()
   else
    let usermaplead  = "\\"
   endif
-  call SaveUserMaps("n","","><^v","DrawIt")
-  call SaveUserMaps("v",usermaplead,"abeflsy","DrawIt")
-  call SaveUserMaps("n",usermaplead,"h><v^","DrawIt")
-  call SaveUserMaps("n","","<left>","DrawIt")
-  call SaveUserMaps("n","","<right>","DrawIt")
-  call SaveUserMaps("n","","<up>","DrawIt")
-  call SaveUserMaps("n","","<down>","DrawIt")
-  call SaveUserMaps("n","","<left>","DrawIt")
-  call SaveUserMaps("n","","<s-right>","DrawIt")
-  call SaveUserMaps("n","","<s-up>","DrawIt")
-  call SaveUserMaps("n","","<s-down>","DrawIt")
-  call SaveUserMaps("n","","<space>","DrawIt")
-  call SaveUserMaps("n","","<home>","DrawIt")
-  call SaveUserMaps("n","","<end>","DrawIt")
-  call SaveUserMaps("n","","<pageup>","DrawIt")
-  call SaveUserMaps("n","","<pagedown>","DrawIt")
-  call SaveUserMaps("n","","<leftmouse>","DrawIt")
-  call SaveUserMaps("n","","<middlemouse>","DrawIt")
-  call SaveUserMaps("n","","<rightmouse>","DrawIt")
-  call SaveUserMaps("n","","<leftdrag>","DrawIt")
-  call SaveUserMaps("n","","<s-leftmouse>","DrawIt")
-  call SaveUserMaps("n","","<s-leftdrag>","DrawIt")
-  call SaveUserMaps("n","","<s-leftrelease>","DrawIt")
-  call SaveUserMaps("n","","<c-leftmouse>","DrawIt")
-  call SaveUserMaps("n","","<c-leftdrag>","DrawIt")
-  call SaveUserMaps("n","","<c-leftrelease>","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pa","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pb","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pc","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pd","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pe","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pf","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pg","DrawIt")
-  call SaveUserMaps("n",usermaplead,":ph","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pi","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pj","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pk","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pl","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pm","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pn","DrawIt")
-  call SaveUserMaps("n",usermaplead,":po","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pp","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pq","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pr","DrawIt")
-  call SaveUserMaps("n",usermaplead,":ps","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pt","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pu","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pv","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pw","DrawIt")
-  call SaveUserMaps("n",usermaplead,":px","DrawIt")
-  call SaveUserMaps("n",usermaplead,":py","DrawIt")
-  call SaveUserMaps("n",usermaplead,":pz","DrawIt")
-  call SaveUserMaps("n",usermaplead,":ra","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rb","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rc","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rd","DrawIt")
-  call SaveUserMaps("n",usermaplead,":re","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rf","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rg","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rh","DrawIt")
-  call SaveUserMaps("n",usermaplead,":ri","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rj","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rk","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rl","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rm","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rn","DrawIt")
-  call SaveUserMaps("n",usermaplead,":ro","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rp","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rq","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rr","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rs","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rt","DrawIt")
-  call SaveUserMaps("n",usermaplead,":ru","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rv","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rw","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rx","DrawIt")
-  call SaveUserMaps("n",usermaplead,":ry","DrawIt")
-  call SaveUserMaps("n",usermaplead,":rz","DrawIt")
+  call SaveUserMaps("bn","","><^v","DrawIt")
+  call SaveUserMaps("bv",usermaplead,"abceflsy","DrawIt")
+  call SaveUserMaps("bn","","<c-v>","DrawIt")
+  call SaveUserMaps("bn",usermaplead,"h><v^","DrawIt")
+  call SaveUserMaps("bn","","<left>","DrawIt")
+  call SaveUserMaps("bn","","<right>","DrawIt")
+  call SaveUserMaps("bn","","<up>","DrawIt")
+  call SaveUserMaps("bn","","<down>","DrawIt")
+  call SaveUserMaps("bn","","<left>","DrawIt")
+  call SaveUserMaps("bn","","<s-right>","DrawIt")
+  call SaveUserMaps("bn","","<s-up>","DrawIt")
+  call SaveUserMaps("bn","","<s-down>","DrawIt")
+  call SaveUserMaps("bn","","<space>","DrawIt")
+  call SaveUserMaps("bn","","<home>","DrawIt")
+  call SaveUserMaps("bn","","<end>","DrawIt")
+  call SaveUserMaps("bn","","<pageup>","DrawIt")
+  call SaveUserMaps("bn","","<pagedown>","DrawIt")
+  call SaveUserMaps("bn","","<c-leftdrag>","DrawIt")
+  call SaveUserMaps("bn","","<c-leftmouse>","DrawIt")
+  call SaveUserMaps("bn","","<c-leftrelease>","DrawIt")
+  call SaveUserMaps("bn","","<leftdrag>","DrawIt")
+  call SaveUserMaps("bn","","<leftmouse>","DrawIt")
+  call SaveUserMaps("bn","","<middlemouse>","DrawIt")
+  call SaveUserMaps("bn","","<rightmouse>","DrawIt")
+  call SaveUserMaps("bn","","<s-leftdrag>","DrawIt")
+  call SaveUserMaps("bn","","<s-leftmouse>","DrawIt")
+  call SaveUserMaps("bn","","<s-leftrelease>","DrawIt")
+  call SaveUserMaps("bv","","<c-leftmouse>","DrawIt")
+  call SaveUserMaps("bv","","<leftmouse>","DrawIt")
+  call SaveUserMaps("bv","","<middlemouse>","DrawIt")
+  call SaveUserMaps("bv","","<rightmouse>","DrawIt")
+  call SaveUserMaps("bv","","<s-leftmouse>","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pa","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pb","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pc","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pd","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pe","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pf","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pg","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":ph","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pi","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pj","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pk","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pl","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pm","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pn","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":po","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pp","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pq","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pr","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":ps","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pt","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pu","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pv","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pw","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":px","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":py","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":pz","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":ra","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rb","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rc","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rd","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":re","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rf","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rg","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rh","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":ri","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rj","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rk","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rl","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rm","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rn","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":ro","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rp","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rq","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rr","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rs","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rt","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":ru","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rv","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rw","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rx","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":ry","DrawIt")
+  call SaveUserMaps("bn",usermaplead,":rz","DrawIt")
   if exists("g:drawit_insertmode") && g:drawit_insertmode
-   call SaveUserMaps("i","","<left>","DrawIt")
-   call SaveUserMaps("i","","<right>","DrawIt")
-   call SaveUserMaps("i","","<up>","DrawIt")
-   call SaveUserMaps("i","","<down>","DrawIt")
-   call SaveUserMaps("i","","<left>","DrawIt")
-   call SaveUserMaps("i","","<s-right>","DrawIt")
-   call SaveUserMaps("i","","<s-up>","DrawIt")
-   call SaveUserMaps("i","","<s-down>","DrawIt")
-   call SaveUserMaps("i","","<home>","DrawIt")
-   call SaveUserMaps("i","","<end>","DrawIt")
-   call SaveUserMaps("i","","<pageup>","DrawIt")
-   call SaveUserMaps("i","","<pagedown>","DrawIt")
-   call SaveUserMaps("i","","<leftmouse>","DrawIt")
+   call SaveUserMaps("bi","","<left>","DrawIt")
+   call SaveUserMaps("bi","","<right>","DrawIt")
+   call SaveUserMaps("bi","","<up>","DrawIt")
+   call SaveUserMaps("bi","","<down>","DrawIt")
+   call SaveUserMaps("bi","","<left>","DrawIt")
+   call SaveUserMaps("bi","","<s-right>","DrawIt")
+   call SaveUserMaps("bi","","<s-up>","DrawIt")
+   call SaveUserMaps("bi","","<s-down>","DrawIt")
+   call SaveUserMaps("bi","","<home>","DrawIt")
+   call SaveUserMaps("bi","","<end>","DrawIt")
+   call SaveUserMaps("bi","","<pageup>","DrawIt")
+   call SaveUserMaps("bi","","<pagedown>","DrawIt")
+   call SaveUserMaps("bi","","<leftmouse>","DrawIt")
   endif
-  call SaveUserMaps("n","",":\<c-v>","DrawIt")
+  call SaveUserMaps("bn","",":\<c-v>","DrawIt")
 
   " StartDrawIt: DrawIt maps (Charles Campbell) {{{3
-  nmap <silent> <left>     :set lz<CR>:silent! call <SID>DrawLeft()<CR>:set nolz<CR>
-  nmap <silent> <right>    :set lz<CR>:silent! call <SID>DrawRight()<CR>:set nolz<CR>
-  nmap <silent> <up>       :set lz<CR>:silent! call <SID>DrawUp()<CR>:set nolz<CR>
-  nmap <silent> <down>     :set lz<CR>:silent! call <SID>DrawDown()<CR>:set nolz<CR>
-  nmap <silent> <s-left>   :set lz<CR>:silent! call <SID>MoveLeft()<CR>:set nolz<CR>
-  nmap <silent> <s-right>  :set lz<CR>:silent! call <SID>MoveRight()<CR>:set nolz<CR>
-  nmap <silent> <s-up>     :set lz<CR>:silent! call <SID>MoveUp()<CR>:set nolz<CR>
-  nmap <silent> <s-down>   :set lz<CR>:silent! call <SID>MoveDown()<CR>:set nolz<CR>
-  nmap <silent> <space>    :set lz<CR>:silent! call <SID>DrawErase()<CR>:set nolz<CR>
-  nmap <silent> >          :set lz<CR>:silent! call <SID>DrawSpace('>',1)<CR>:set nolz<CR>
-  nmap <silent> <          :set lz<CR>:silent! call <SID>DrawSpace('<',2)<CR>:set nolz<CR>
-  nmap <silent> ^          :set lz<CR>:silent! call <SID>DrawSpace('^',3)<CR>:set nolz<CR>
-  nmap <silent> v          :set lz<CR>:silent! call <SID>DrawSpace('v',4)<CR>:set nolz<CR>
-  nmap <silent> <home>     :set lz<CR>:silent! call <SID>DrawSlantUpLeft()<CR>:set nolz<CR>
-  nmap <silent> <end>      :set lz<CR>:silent! call <SID>DrawSlantDownLeft()<CR>:set nolz<CR>
-  nmap <silent> <pageup>   :set lz<CR>:silent! call <SID>DrawSlantUpRight()<CR>:set nolz<CR>
-  nmap <silent> <pagedown> :set lz<CR>:silent! call <SID>DrawSlantDownRight()<CR>:set nolz<CR>
-  nmap <silent> <Leader>>	:set lz<CR>:silent! call <SID>DrawFatRArrow()<CR>:set nolz<CR>
-  nmap <silent> <Leader><	:set lz<CR>:silent! call <SID>DrawFatLArrow()<CR>:set nolz<CR>
-  nmap <silent> <Leader>^	:set lz<CR>:silent! call <SID>DrawFatUArrow()<CR>:set nolz<CR>
-  nmap <silent> <Leader>v	:set lz<CR>:silent! call <SID>DrawFatDArrow()<CR>:set nolz<CR>
-  nmap <silent> <Leader>f  :call <SID>Flood()<cr>
+  nmap <silent> <buffer> <script> <left>     :set lz<CR>:silent! call <SID>DrawLeft()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <right>    :set lz<CR>:silent! call <SID>DrawRight()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <up>       :set lz<CR>:silent! call <SID>DrawUp()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <down>     :set lz<CR>:silent! call <SID>DrawDown()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <s-left>   :set lz<CR>:silent! call <SID>MoveLeft()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <s-right>  :set lz<CR>:silent! call <SID>MoveRight()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <s-up>     :set lz<CR>:silent! call <SID>MoveUp()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <s-down>   :set lz<CR>:silent! call <SID>MoveDown()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <space>    :set lz<CR>:silent! call <SID>DrawErase()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> >          :set lz<CR>:silent! call <SID>DrawSpace('>',1)<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <          :set lz<CR>:silent! call <SID>DrawSpace('<',2)<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> ^          :set lz<CR>:silent! call <SID>DrawSpace('^',3)<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> v          :set lz<CR>:silent! call <SID>DrawSpace('v',4)<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <home>     :set lz<CR>:silent! call <SID>DrawSlantUpLeft()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <end>      :set lz<CR>:silent! call <SID>DrawSlantDownLeft()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <pageup>   :set lz<CR>:silent! call <SID>DrawSlantUpRight()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <pagedown> :set lz<CR>:silent! call <SID>DrawSlantDownRight()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <Leader>>	:set lz<CR>:silent! call <SID>DrawFatRArrow()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <Leader><	:set lz<CR>:silent! call <SID>DrawFatLArrow()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <Leader>^	:set lz<CR>:silent! call <SID>DrawFatUArrow()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <Leader>v	:set lz<CR>:silent! call <SID>DrawFatDArrow()<CR>:set nolz<CR>
+  nmap <silent> <buffer> <script> <Leader>f  :call <SID>Flood()<cr>
 
   " StartDrawIt: Set up insertmode maps {{{3
   if exists("g:drawit_insertmode") && g:drawit_insertmode
-   imap <buffer> <silent> <left>     <Esc><left>a
-   imap <buffer> <silent> <right>    <Esc><right>a
-   imap <buffer> <silent> <up>       <Esc><up>a
-   imap <buffer> <silent> <down>     <Esc><down>a
-   imap <buffer> <silent> <left>   <Esc><left>a
-   imap <buffer> <silent> <s-right>  <Esc><s-right>a
-   imap <buffer> <silent> <s-up>     <Esc><s-up>a
-   imap <buffer> <silent> <s-down>   <Esc><s-down>a
-   imap <buffer> <silent> <home>     <Esc><home>a
-   imap <buffer> <silent> <end>      <Esc><end>a
-   imap <buffer> <silent> <pageup>   <Esc><pageup>a
-   imap <buffer> <silent> <pagedown> <Esc><pagedown>a
+   imap <silent> <buffer> <script> <left>     <Esc><left>a
+   imap <silent> <buffer> <script> <right>    <Esc><right>a
+   imap <silent> <buffer> <script> <up>       <Esc><up>a
+   imap <silent> <buffer> <script> <down>     <Esc><down>a
+   imap <silent> <buffer> <script> <left>     <Esc><left>a
+   imap <silent> <buffer> <script> <s-right>  <Esc><s-right>a
+   imap <silent> <buffer> <script> <s-up>     <Esc><s-up>a
+   imap <silent> <buffer> <script> <s-down>   <Esc><s-down>a
+   imap <silent> <buffer> <script> <home>     <Esc><home>a
+   imap <silent> <buffer> <script> <end>      <Esc><end>a
+   imap <silent> <buffer> <script> <pageup>   <Esc><pageup>a
+   imap <silent> <buffer> <script> <pagedown> <Esc><pagedown>a
   endif
 
   " StartDrawIt: set up drawing mode mappings (Sylvain Viart) {{{3
-  nnoremap <buffer> <silent> <c-v>      :call <SID>LeftStart()<CR><c-v>
-  vmap     <buffer> <silent> <Leader>a  :<c-u>call <SID>CallBox('Arrow')<CR>
-  vmap     <buffer> <silent> <Leader>b  :<c-u>call <SID>CallBox('DrawBox')<cr>
-  nmap     <buffer>          <Leader>c  :call <SID>Canvas()<cr>
-  vmap     <buffer> <silent> <Leader>l  :<c-u>call <SID>CallBox('DrawPlainLine')<CR>
-  vmap     <buffer> <silent> <Leader>s  :<c-u>call <SID>Spacer(line("'<"), line("'>"),0)<cr>
+  nnoremap <silent> <buffer> <script> <c-v>      :call <SID>LeftStart()<CR><c-v>
+  vmap     <silent> <buffer> <script> <Leader>a  :<c-u>call <SID>CallBox('Arrow')<CR>
+  vmap     <silent> <buffer> <script> <Leader>b  :<c-u>call <SID>CallBox('DrawBox')<cr>
+  nmap              <buffer> <script> <Leader>c  :call <SID>Canvas()<cr>
+  vmap     <silent> <buffer> <script> <Leader>l  :<c-u>call <SID>CallBox('DrawPlainLine')<CR>
+  vmap     <silent> <buffer> <script> <Leader>s  :<c-u>call <SID>Spacer(line("'<"), line("'>"),0)<cr>
 
   " StartDrawIt: set up drawing mode mappings (Charles Campbell) {{{3
   " \pa ... \pz : blanks are transparent
@@ -288,22 +318,22 @@ fun! DrawIt#StartDrawIt()
   let allreg= "abcdefghijklmnopqrstuvwxyz"
   while strlen(allreg) > 0
    let ireg= strpart(allreg,0,1)
-   exe "nmap <buffer> <silent> <Leader>p".ireg.'  :<c-u>set lz<cr>:silent! call <SID>PutBlock("'.ireg.'",0)<cr>:set nolz<cr>'
-   exe "nmap <buffer> <silent> <Leader>r".ireg.'  :<c-u>set lz<cr>:silent! call <SID>PutBlock("'.ireg.'",1)<cr>:set nolz<cr>'
+   exe "nmap <silent> <buffer> <Leader>p".ireg.'  :<c-u>set lz<cr>:silent! call <SID>PutBlock("'.ireg.'",0)<cr>:set nolz<cr>'
+   exe "nmap <silent> <buffer> <Leader>r".ireg.'  :<c-u>set lz<cr>:silent! call <SID>PutBlock("'.ireg.'",1)<cr>:set nolz<cr>'
    let allreg= strpart(allreg,1)
   endwhile
 
   " StartDrawIt: mouse maps  (Sylvain Viart) {{{3
   " start visual-block with leftmouse
-  nnoremap <buffer> <silent> <leftmouse>    <leftmouse>:call <SID>LeftStart()<CR><c-v>
-  vnoremap <buffer> <silent> <rightmouse>   <leftmouse>:<c-u>call <SID>RightStart(1)<cr>
-  vnoremap <buffer> <silent> <middlemouse>  <leftmouse>:<c-u>call <SID>RightStart(0)<cr>
-  vnoremap <buffer> <silent> <c-leftmouse>  <leftmouse>:<c-u>call <SID>CLeftStart()<cr>
+  nnoremap <silent> <buffer> <script> <leftmouse>    <leftmouse>:call <SID>LeftStart()<CR><c-v>
+  vnoremap <silent> <buffer> <script> <rightmouse>   <leftmouse>:<c-u>call <SID>RightStart(1)<cr>
+  vnoremap <silent> <buffer> <script> <middlemouse>  <leftmouse>:<c-u>call <SID>RightStart(0)<cr>
+  vnoremap <silent> <buffer> <script> <c-leftmouse>  <leftmouse>:<c-u>call <SID>CLeftStart()<cr>
 
   " StartDrawIt: mouse maps (Charles Campbell) {{{3
   " Draw with current brush
-  nnoremap <buffer> <silent> <s-leftmouse>  <leftmouse>:call <SID>SLeftStart()<CR><c-v>
-  nnoremap <buffer> <silent> <c-leftmouse>  <leftmouse>:call <SID>CLeftStart()<CR><c-v>
+  nnoremap <silent> <buffer> <script> <s-leftmouse>  <leftmouse>:call <SID>SLeftStart()<CR><c-v>
+  nnoremap <silent> <buffer> <script> <c-leftmouse>  <leftmouse>:call <SID>CLeftStart()<CR><c-v>
 
  " StartDrawIt: Menu support {{{3
  if has("gui_running") && has("menu") && &go =~ 'm'
@@ -362,19 +392,19 @@ fun! DrawIt#StopDrawIt()
   call RestoreUserMaps("DrawIt")
 
   " StopDrawIt: restore user's options {{{3
-  let &ai     = b:di_aikeep
-  let &cin    = b:di_cinkeep
-  let &cpo    = b:di_cpokeep
-  let &et     = b:di_etkeep
-  let &fo     = b:di_fokeep
-  let &gd     = b:di_gdkeep
-  let &go     = b:di_gokeep
-  let &magic  = b:di_magickeep
-  let &remap  = b:di_remapkeep
-  let &report = b:di_repkeep
-  let &si     = b:di_sikeep
-  let &sta    = b:di_stakeep
-  let &ve     = b:di_vekeep
+  let &l:ai     = b:di_aikeep
+  let &l:cin    = b:di_cinkeep
+  let &l:cpo    = b:di_cpokeep
+  let &l:et     = b:di_etkeep
+  let &l:fo     = b:di_fokeep
+  let &l:gd     = b:di_gdkeep
+  let &l:go     = b:di_gokeep
+  let &l:magic  = b:di_magickeep
+  let &l:remap  = b:di_remapkeep
+  let &l:report = b:di_repkeep
+  let &l:si     = b:di_sikeep
+  let &l:sta    = b:di_stakeep
+  let &l:ve     = b:di_vekeep
   unlet b:di_aikeep  
   unlet b:di_cinkeep 
   unlet b:di_cpokeep 
@@ -732,7 +762,7 @@ fun! s:ReplaceDownLeft()
   let curcol = virtcol(".")
   if curcol != virtcol("$")
    let curchar= strpart(getline("."),curcol-1,1)
-   if curchar == "\\" || curchar == "X"
+   if curchar == b:di_upleft || curchar == b:di_cross
     exe "norm! r".b:di_cross
    else
     exe "norm! r".b:di_upright
@@ -750,7 +780,7 @@ fun! s:ReplaceDownRight()
   let curcol = virtcol(".")
   if curcol != virtcol("$")
    let curchar= strpart(getline("."),curcol-1,1)
-   if curchar == "/" || curchar == "X"
+   if curchar == b:di_upright || curchar == b:di_cross
     exe "norm! r".b:di_cross
    else
     exe "norm! r".b:di_upleft
@@ -975,7 +1005,7 @@ fun! s:Flood()
   let s:fillchar= input("Enter fill character: ")
   call inputrestore()
   let s:bndry= "[".escape(s:bndry.s:fillchar,'\-]^')."]"
-  if strlen(s:fillchar) > 1
+  if s:Strlen(s:fillchar) > 1
    let s:fillchar= strpart(s:fillchar,0,1)
   endif
 
@@ -1143,34 +1173,46 @@ endfun
 "                     = 1: Blanks copy over
 "                     = 2: Erase all drawing characters
 "
+"DechoTabOn
 fun! s:PutBlock(block,replace)
-"  call Dfunc("s:PutBlock(block<".a:block."> replace=".a:replace.")")
+"  call Dfunc("s:PutBlock(block<".a:block."> replace=".a:replace.") g:drawit_xstrlen=".g:drawit_xstrlen)
   call s:SavePosn()
   exe "let block  = @".a:block
   let blocklen    = strlen(block)
   let drawit_line = line('.')
   let drawchars   = '['.escape(b:di_vert.b:di_horiz.b:di_plus.b:di_upright.b:di_upleft.b:di_cross,'\-').']'
+"  call Decho("blocklen=".blocklen." block<".string(block).">")
 
   " insure that putting a block will do so in a region containing spaces out to textwidth
-  exe "let blockrows= strlen(substitute(@".a:block.",'[^[:cntrl:]]','','g'))"
-  exe 'let blockcols= strlen(substitute(@'.a:block.",'^\\(.\\{-}\\)\\n\\_.*$','\\1',''))"
+  exe "let blockrows= s:Strlen(substitute(@".a:block.",'[^[:cntrl:]]','','g'))"
+  exe 'let blockcols= s:Strlen(substitute(@'.a:block.",'^\\(.\\{-}\\)\\n\\_.*$','\\1',''))"
   let curline= line('.')
   let curcol = virtcol('.')
 "  call Decho("blockrows=".blockrows." blockcols=".blockcols." curline=".curline." curcol=".curcol)
   call s:AutoCanvas(curline-1,curline + blockrows+1,curcol + blockcols)
 
-  let iblock      = 0
+  let iblock= 0
   while iblock < blocklen
-  	let chr= strpart(block,iblock,1)
+   " the following logic should permit 1, 2, or 4 byte glyphs (I've only tested it with 1 and 2)
+  	let chr= strpart(block,iblock,4)
+	if char2nr(chr) <= 255
+  	 let chr= strpart(block,iblock,1)
+	elseif char2nr(chr) <= 65536
+  	 let chr= strpart(block,iblock,2)
+	 let iblock= iblock + 1
+	else
+	 let iblock= iblock + 3
+	endif
+"	call Decho("iblock=".iblock." chr#".char2nr(chr)."<".string(chr).">")
 
 	if char2nr(chr) == 10
 	 " handle newline
 	 let drawit_line= drawit_line + 1
-    if b:drawit_col_{s:saveposn_count} == 0
-     exe "norm! ".drawit_line."G0"
-    else
-     exe "norm! ".drawit_line."G0".b:drawit_col_{s:saveposn_count}."l"
-    endif
+     if b:drawit_col_{s:saveposn_count} == 0
+      exe "norm! ".drawit_line."G0"
+     else
+      exe "norm! ".drawit_line."G0".b:drawit_col_{s:saveposn_count}."l"
+     endif
 
 	elseif a:replace == 2
 	 " replace all drawing characters with blanks
@@ -1209,11 +1251,11 @@ fun! s:AutoCanvas(linestart,linestop,cols)
   endif
 
   " insure that any tabs contained within the selected region are converted to blanks
-  let etkeep= &et
+  let etkeep= &l:et
   set et
 "  call Decho("exe ".a:linestart.",".a:linestop."retab")
   exe a:linestart.",".a:linestop."retab"
-  let &et= etkeep
+  let &l:et= etkeep
 
   " insure that there's whitespace to textwidth/screenwidth/a:cols
   if a:cols <= 0
@@ -1231,6 +1273,47 @@ fun! s:AutoCanvas(linestart,linestop,cols)
   endif
 
 "  call Dret("s:AutoCanvas : tw=".tw)
+endfun
+
+" ---------------------------------------------------------------------
+" s:Strlen: this function returns the length of a string, even if its {{{2
+"           using two-byte etc characters.
+"           Currently, its only used if g:Align_xstrlen is set to a
+"           nonzero value.  Solution from Nicolai Weibull, vim docs
+"           (:help strlen()), Tony Mechelynck, and my own invention.
+fun! s:Strlen(x)
+"  call Dfunc("s:Strlen(x<".a:x.">")
+  
+  if g:drawit_xstrlen == 1
+   " number of codepoints (Latin a + combining circumflex is two codepoints)
+   " (comment from TM, solution from NW)
+   let ret= strlen(substitute(a:x,'.','c','g'))
+
+  elseif g:drawit_xstrlen == 2
+   " number of spacing codepoints (Latin a + combining circumflex is one spacing 
+   " codepoint; a hard tab is one; wide and narrow CJK are one each; etc.)
+   " (comment from TM, solution from TM)
+   let ret= strlen(substitute(a:x, '.\Z', 'x', 'g')) 
+
+  elseif g:drawit_xstrlen == 3
+   " virtual length (counting, for instance, tabs as anything between 1 and 
+   " 'tabstop', wide CJK as 2 rather than 1, Arabic alif as zero when immediately 
+   " preceded by lam, one otherwise, etc.)
+   " (comment from TM, solution from me)
+   let modkeep= &l:mod
+   exe "norm! o\<esc>"
+   call setline(line("."),a:x)
+   let ret= virtcol("$") - 1
+   d
+   let &l:mod= modkeep
+
+  else
+   " at least give a decent default
+   let ret= strlen(a:x)
+  endif
+
+"  call Dret("s:Strlen ".ret)
+  return ret
 endfun
 
 " =====================================================================
@@ -1287,8 +1370,16 @@ endf
 fun! s:CallBox(func_name)
 "  call Dfunc("s:CallBox(func_name<".a:func_name.">)")
 
-  let xdep = b:xmouse_start
-  let ydep = b:ymouse_start
+  if exists("b:xmouse_start")
+   let xdep = b:xmouse_start
+  else
+   let xdep= 0
+  endif
+  if exists("b:ymouse_start")
+   let ydep = b:ymouse_start
+  else
+   let ydep= 0
+  endif
   let col0   = virtcol("'<")
   let row0   = line("'<")
   let col1   = virtcol("'>")
@@ -1321,30 +1412,34 @@ endf
 " s:DrawBox: {{{2
 fun! s:DrawBox(x0, y0, x1, y1)
 "  call Dfunc("s:DrawBox(xy0[".a:x0.",".a:y0." xy1[".a:x1.",".a:y1."])")
-   " loop each line
-   let l = a:y0
-   while l <= a:y1
-      let c = a:x0
-      while c <= a:x1
-         if l == a:y0 || l == a:y1
-            let remp = '-'
-            if c == a:x0 || c == a:x1
-               let remp = '+'
-            endif
-         else
-            let remp = '|'
-            if c != a:x0 && c != a:x1
-               let remp = '.'
-            endif
-         endif
+  " loop each line
+  let x0= (a:x1 > a:x0)? a:x0 : a:x1
+  let x1= (a:x1 > a:x0)? a:x1 : a:x0
+  let y0= (a:y1 > a:y0)? a:y0 : a:y1
+  let y1= (a:y1 > a:y0)? a:y1 : a:y0
+  let l = y0
+  while l <= y1
+   let c = x0
+   while c <= x1
+    if l == y0 || l == y1
+	 let remp = b:di_horiz
+     if c == x0 || c == x1
+	  let remp = b:di_plus
+     endif
+    else
+	 let remp = b:di_vert
+     if c != x0 && c != x1
+      let remp = '.'
+     endif
+    endif
 
-         if remp != '.'
-            call s:SetCharAt(remp, c, l)
-         endif
-         let c  = c + 1
-      endw
-      let l = l + 1
+    if remp != '.'
+     call s:SetCharAt(remp, c, l)
+    endif
+    let c  = c + 1
    endw
+   let l = l + 1
+  endw
 
 "  call Dret("s:DrawBox")
 endf
@@ -1355,9 +1450,20 @@ fun! s:SetCharAt(char, x, y)
 "  call Dfunc("s:SetCharAt(char<".a:char."> xy[".a:x.",".a:y."])")
 
   let content = getline(a:y)
-  let long    = strlen(content)
-  let deb     = strpart(content, 0, a:x - 1)
-  let fin     = strpart(content, a:x, long)
+  if g:drawit_xstrlen == 0
+   let long    = strlen(content)
+   let deb     = strpart(content, 0, a:x - 1)
+   let fin     = strpart(content, a:x, long)
+  else
+   let long    = s:Strlen(content)
+   let xm1  = a:x - 1
+   let extra= 0
+   while s:Strlen(strpart(content,0,xm1+extra)) < xm1
+	let extra= extra + 1
+   endwhile
+   let deb     = strpart(content, 0, xm1 + extra)
+   let fin     = strpart(content, xm1 + extra + 1, long)
+  endif
   call setline(a:y, deb.a:char.fin)
 
 "  call Dret("s:SetCharAt")
@@ -1411,9 +1517,9 @@ fun! s:DrawLine(x0, y0, x1, y1, horiz)
         let char = a:horiz
         if fraction >= 0
            if stepx > 0
-              let char = '\'
+			let char = b:di_upleft
            else
-              let char = '/'
+			let char = b:di_upright
            endif
            let y0 = y0 + stepy
            let fraction = fraction - dx    " same as fraction -= 2*dx
@@ -1424,16 +1530,16 @@ fun! s:DrawLine(x0, y0, x1, y1, horiz)
      endw
   else
      " move under y
-     let char = '|'
+	 let char = b:di_vert
      call s:SetCharAt(char, x0, y0)
      let fraction = dx - (dy / 2)
      while y0 != y1
-        let char = '|'
+	    let char = b:di_vert
         if fraction >= 0
            if stepy > 0 || stepx < 0
-              let char = '\'
+			let char = b:di_upleft
            else
-              let char = '/'
+			let char = b:di_upright
            endif
            let x0 = x0 + stepx
            let fraction = fraction - dy
@@ -1452,7 +1558,7 @@ endf
 fun! s:Arrow(x0, y0, x1, y1)
 "  call Dfunc("s:Arrow(xy0[".a:x0.",".a:y0."] xy1[".a:x1.",".a:y1."])")
 
-  call s:DrawLine(a:x0, a:y0, a:x1, a:y1,'-')
+  call s:DrawLine(a:x0, a:y0, a:x1, a:y1,b:di_horiz)
   let dy = a:y1 - a:y0
   let dx = a:x1 - a:x0
   if s:Abs(dx) > <SID>Abs(dy)
@@ -1506,7 +1612,7 @@ fun! s:LeftStart()
 "  call Dfunc("s:LeftStart()")
   let b:xmouse_start = virtcol('.')
   let b:ymouse_start = line('.')
-  vnoremap <silent> <leftrelease> <leftrelease>:<c-u>call <SID>LeftRelease()<cr>gv
+  vnoremap <silent> <buffer> <script> <leftrelease> <leftrelease>:<c-u>call <SID>LeftRelease()<cr>gv
 "  call Dret("s:LeftStart : [".b:ymouse_start.",".b:xmouse_start."]")
 endf!
 
@@ -1514,7 +1620,7 @@ endf!
 " s:LeftRelease: {{{2
 fun! s:LeftRelease()
 "  call Dfunc("s:LeftRelease()")
-  vunmap <leftrelease>
+  vunmap <buffer> <leftrelease>
 "  call Dret("s:LeftRelease : [".line('.').','.virtcol('.').']')
 endf
 
@@ -1525,8 +1631,8 @@ fun! s:SLeftStart()
    let b:drawit_brush= "a"
   endif
 "  call Dfunc("s:SLeftStart() brush=".b:drawit_brush.' ['.line('.').','.virtcol('.').']')
-  noremap <silent> <s-leftdrag>    <leftmouse>:<c-u>call <SID>SLeftDrag()<cr>
-  noremap <silent> <s-leftrelease> <leftmouse>:<c-u>call <SID>SLeftRelease()<cr>
+  noremap <silent> <buffer> <script> <s-leftdrag>    <leftmouse>:<c-u>call <SID>SLeftDrag()<cr>
+  noremap <silent> <buffer> <script> <s-leftrelease> <leftmouse>:<c-u>call <SID>SLeftRelease()<cr>
 "  call Dret("s:SLeftStart")
 endfun
 
@@ -1545,8 +1651,8 @@ endfun
 fun! s:SLeftRelease()
 "  call Dfunc("s:SLeftRelease() brush=".b:drawit_brush.' ['.line('.').','.virtcol('.').']')
   call s:SLeftDrag()
-  nunmap <s-leftdrag>
-  nunmap <s-leftrelease>
+  nunmap <buffer> <s-leftdrag>
+  nunmap <buffer> <s-leftrelease>
 "  call Dret("s:SLeftRelease")
 endfun
 
@@ -1577,8 +1683,8 @@ fun! s:CLeftStart()
    unlet s:cleft_oldblock
   endif
 "  call Decho("blocksize: ".s:cleft_height."x".s:cleft_width)
-  noremap <silent> <c-leftdrag>    :<c-u>call <SID>CLeftDrag()<cr>
-  noremap <silent> <c-leftrelease> <leftmouse>:<c-u>call <SID>CLeftRelease()<cr>
+  noremap <silent> <buffer> <script> <c-leftdrag>    :<c-u>call <SID>CLeftDrag()<cr>
+  noremap <silent> <buffer> <script> <c-leftrelease> <leftmouse>:<c-u>call <SID>CLeftRelease()<cr>
 "  call Dret("s:CLeftStart")
 endfun
 
@@ -1630,8 +1736,8 @@ endfun
 fun! s:CLeftRelease()
 "  call Dfunc("s:CLeftRelease()")
   call s:CLeftDrag()
-  nunmap <c-leftdrag>
-  nunmap <c-leftrelease>
+  nunmap <buffer> <c-leftdrag>
+  nunmap <buffer> <c-leftrelease>
   unlet s:cleft_oldblock s:cleft_height s:cleft_width
 "  call Dret("s:CLeftRelease")
 endfun

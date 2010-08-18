@@ -1,4 +1,4 @@
-*drawit.txt*	The DrawIt Tool				Jun 12, 2008
+*drawit.txt*	The DrawIt Tool				Jan 21, 2010
 
 Authors:  Charles E. Campbell, Jr.  <NdrchipO@ScampbellPfamily.AbizM> {{{1
           Sylvain Viart             <molo@multimania.com>
@@ -41,10 +41,11 @@ Copyright:    Copyright (C) 2004-2007 Charles E. Campbell, Jr. {{{1
  || Starting &   |                                                           ||
  || Stopping     | Explanation                                               ||
  ++--------------+-----------------------------------------------------------++
- ||  \di         | start DrawIt  |drawit-start|                              ||
- ||  \ds         | stop  DrawIt  |drawit-stop|                               ||
- ||  :DIstart    | start DrawIt  |drawit-start|                              ||
- ||  :DIstop     | stop  DrawIt  |drawit-stop|                               ||
+ ||  \di         | start DrawIt       |drawit-start|                         ||
+ ||  \ds         | stop  DrawIt       |drawit-stop|                          ||
+ ||  :DIstart    | start DrawIt       |drawit-start|                         ||
+ ||  :DIstop     | stop  DrawIt       |drawit-stop|                          ||
+ ||  :DrawIt[!]  | start/stop DrawIt  |drawit-start| |drawit-stop|           ||
  ||              |                                                           ||
  ++==============+===========================================================++
  ||   Maps       | Explanation                                               ||
@@ -114,7 +115,7 @@ Copyright:    Copyright (C) 2004-2007 Charles E. Campbell, Jr. {{{1
  ++=======================+==================================================++
  ||  Commands             | Explanation                                      ||
  ++-----------------------+--------------------------------------------------++
- ||  :SetBrush a-z        | sets brush (register) to given register          || 
+ ||  :SetBrush a-z        | sets brush (register) to given register          ||
  ||  :'<,'>SetBrush a-z   | yanks visual block to brush (register)           ||
  \============================================================================/
 
@@ -147,7 +148,7 @@ A message, "[DrawIt off]", will appear on the message line.
 USER MAP PROTECTION					*drawit-protect* {{{2
 
 Starting DrawIt causes it to set up a number of maps which facilitate drawing.
-DrawIt accomodates users with conflicting maps by saving both maps and user
+DrawIt accommodates users with conflicting maps by saving both maps and user
 options and before setting them to what DrawIt needs.  When you stop DrawIt
 (|drawit-stop|), DrawIt will restore the user's maps and options as they were
 before DrawIt was started.
@@ -289,16 +290,16 @@ DrawIt is enabled, virtualedit is also enabled (to "all").
 							*drawit-setbrush*
 BRUSHES							*drawit-brush* {{{2
 >
- :SetBrush a-z
+ :SetBrush [a-z]
 <
-	Set the current brush to the given letter (actually, its
-	a named register).  Default brush: a >
+	Set the current brush to the selected brush register:
+>
 		ex.  :SetBrush b
 
- :'<,'>SetBrush a-z
+ :'<,'>SetBrush [a-z]
 <
-	Set the current brush to the given letter, and yank the visual
-	block to that named register).  Default brush: a
+	Select text for the brush by using visual-block mode: ctrl-v, move .
+	Then set the current text into the brush register:  (default brush: a)
 >
  <leftmouse>
 <
@@ -330,14 +331,14 @@ BRUSHES							*drawit-brush* {{{2
 	Example: Draw the following >
 			\ \
 			o o
-			 * 
+			 *
 			---
 <		Then use ctrl-v, move, "ay to grab a copy into register a.
 		By default, the current brush uses register a (change brush
 		with :SetBrush [reg]).  Hold the <shift> and <leftbutton>
 		keys down and move the mouse; as you move, a copy of the
 		brush will be left behind.
-	    
+	
 
 DRAWIT MODES						*drawit-modes* {{{2
 
@@ -353,47 +354,53 @@ DRAWIT MODES						*drawit-modes* {{{2
 ==============================================================================
 4. History						*drawit-history* {{{1
 
+	11 Jan 21, 2010 * (Evan Stern) several places were using hardcoded
+			  drawing characters instead of b:di_... equivalents
 	10 Jun 12, 2008	* Fixed a bug with ctrl-leftmouse (which was leaving
 			  a space in the original selected text)
-	9 Sep 14, 2007 * Johann-Guenter Simon fixed a bug with s:DrawErase();
-	                 it called SetDrawIt() and that call hadn't been 
-			 updated to account for the new b:di_ellipse
-			 parameter.
-	8 Feb 12, 2007 * fixed a bug which prevented multi-character user
-	                 maps from being restored properly
-	  May 03, 2007 * Extended SetDrawIt() to handle b:di_ellipse, the
-	                 ellipse boundary drawing character
-		       * Changed "Holer" to "Canvas", and wrote AutoCanvas(),
-		         which allow one to use the visual-block drawing
-			 maps without creating a canvas first.
-		       * DrawIt now uses the ctrl-leftmouse to move a visual
-		         block selected region.
-		       * Floods can now be done inside an ellipse
-		       * DrawIt's maps are now all users of <buffer>
-	7 Feb 16, 2005 * now checks that "m" is in &go before attempting to
-	                 use menus
-	  Aug 17, 2005 * report option workaround
-	  Nov 01, 2005 * converted DrawIt to use autoload feature of vim 7.0
-	  Dec 28, 2005 * now uses cecutil to save/restore user maps
-	  Jan 18, 2006 * cecutil now updated to use keepjumps
-	  Jan 23, 2006 * :DIstart and :DIstop commands provided; thus users
-	                 using  "set noremap" can still use DrawIt.
-	  Jan 26, 2006 * DrawIt menu entry now keeps its place
-	  Apr 10, 2006 * Brushes were implemented
-	6 Feb 24, 2003 * The latest DrawIt now provides a fill function.
-			\f will ask for a character to fill the figure
-			surrounding the current cursor location.  Plus
-			I suggest reading :he drawit-tip for those whose
-			home/pageup/pagedown/end keys aren't all working
-			properly with DrawIt.
-	  08/18/03     : \p[a-z] and \r[a-z] implemented
-	  08/04/03     : b:..keep variables renamed to b:di_..keep variables
-	                 StopDrawIt() now insures that erase mode is off
-	  03/11/03     : included g:drawit_insertmode handling
-	  02/21/03     : included flood function
-	  12/11/02     : deletes trailing whitespace only if holer used
-	   8/27/02     : fat arrowheads included
-	               : shift-arrow keys move but don't modify
+	   Mar 24, 2009 * :DrawIt starts, :DrawIt! stops DrawIt mode.
+	   Mar 24, 2009 * I've included <script> modifiers to the maps to
+	                  cause rhs remapping only with mappings local to
+			  the script (see |:map-script|)
+	09 Sep 14, 2007 * Johann-Guenter Simon fixed a bug with s:DrawErase();
+	                  it called SetDrawIt() and that call hadn't been
+			  updated to account for the new b:di_ellipse
+			  parameter.
+	08 Feb 12, 2007 * fixed a bug which prevented multi-character user
+	                  maps from being restored properly
+	   May 03, 2007 * Extended SetDrawIt() to handle b:di_ellipse, the
+	                  ellipse boundary drawing character
+			* Changed "Holer" to "Canvas", and wrote AutoCanvas(),
+			  which allows one to use the visual-block drawing
+			  maps without creating a canvas first.
+			* DrawIt now uses the ctrl-leftmouse to move a visual
+			 block selected region.
+			* Floods can now be done inside an ellipse
+			* DrawIt's maps are now all users of <buffer>
+	 7 Feb 16, 2005 * now checks that "m" is in &go before attempting to
+			  use menus
+	  Aug 17, 2005  * report option workaround
+	  Nov 01, 2005  * converted DrawIt to use autoload feature of vim 7.0
+	  Dec 28, 2005  * now uses cecutil to save/restore user maps
+	  Jan 18, 2006  * cecutil now updated to use keepjumps
+	  Jan 23, 2006  * :DIstart and :DIstop commands provided; thus users
+			  using  "set noremap" can still use DrawIt.
+	  Jan 26, 2006  * DrawIt menu entry now keeps its place
+	  Apr 10, 2006  * Brushes were implemented
+	 6 Feb 24, 2003 * The latest DrawIt now provides a fill function.
+			  \f will ask for a character to fill the figure
+			  surrounding the current cursor location.  Plus
+			  I suggest reading :he drawit-tip for those whose
+			  home/pageup/pagedown/end keys aren't all working
+			  properly with DrawIt.
+	   08/18/03     : \p[a-z] and \r[a-z] implemented
+	   08/04/03     : b:..keep variables renamed to b:di_..keep variables
+	                  StopDrawIt() now insures that erase mode is off
+	   03/11/03     : included g:drawit_insertmode handling
+	   02/21/03     : included flood function
+	   12/11/02     : deletes trailing whitespace only if holer used
+	    8/27/02     : fat arrowheads included
+	                : shift-arrow keys move but don't modify
 
  ---------------------------------------------------------------------
 vim:tw=78:ts=8:ft=help:fdm=marker

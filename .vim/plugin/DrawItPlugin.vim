@@ -7,7 +7,7 @@
 "
 " Date:			May 20, 2008
 " Maintainer:	Charles E. Campbell, Jr.  <NdrOchipS@PcampbellAfamily.Mbiz>
-" Copyright:    Copyright (C) 1999-2005 Charles E. Campbell, Jr. {{{1
+" Copyright:    Copyright (C) 1999-2010 Charles E. Campbell, Jr. {{{1
 "               Permission is hereby granted to use and distribute this code,
 "               with or without modifications, provided that this copyright
 "               notice is copied with it. Like anything else that's free,
@@ -31,9 +31,24 @@
 if &cp || exists("g:loaded_DrawItPlugin")
  finish
 endif
-let g:loaded_DrawItPlugin = "v10"
+let g:loaded_DrawItPlugin = "v11j"
 let s:keepcpo             = &cpo
 set cpo&vim
+
+" ---------------------------------------------------------------------
+" Public Interface: {{{1
+if !hasmapto('<Plug>StartDrawIt')
+  map <unique> <Leader>di <Plug>StartDrawIt
+endif
+map <silent> <Plug>StartDrawIt  :set lz<cr>:call DrawIt#StartDrawIt()<cr>:set nolz<cr>
+com! -nargs=0 DIstart set lz|call DrawIt#StartDrawIt()|set nolz
+com! -nargs=0 -bang DrawIt set lz|if <bang>0|call DrawIt#StopDrawIt()|else|call DrawIt#StartDrawIt()|endif|set nolz
+
+if !hasmapto('<Plug>StopDrawIt')
+  map <unique> <Leader>ds <Plug>StopDrawIt
+endif
+map <silent> <Plug>StopDrawIt :set lz<cr>:call DrawIt#StopDrawIt()<cr>:set nolz<cr>
+com! -nargs=0 DIstop set lz|call DrawIt#StopDrawIt()|set nolz
 
 " ---------------------------------------------------------------------
 " DrChip Menu Support: {{{1
@@ -43,20 +58,6 @@ if has("gui_running") && has("menu") && &go =~ 'm'
  endif
  exe 'menu '.g:DrChipTopLvlMenu.'DrawIt.Start\ DrawIt<tab>\\di		<Leader>di'
 endif
-
-" ---------------------------------------------------------------------
-" Public Interface: {{{1
-if !hasmapto('<Plug>StartDrawIt')
-  map <unique> <Leader>di <Plug>StartDrawIt
-endif
-map <silent> <Plug>StartDrawIt  :set lz<cr>:call DrawIt#StartDrawIt()<cr>:set nolz<cr>
-com! -nargs=0 DIstart set lz|call DrawIt#StartDrawIt()|set nolz
-
-if !hasmapto('<Plug>StopDrawIt')
-  map <unique> <Leader>ds <Plug>StopDrawIt
-endif
-map <silent> <Plug>StopDrawIt :set lz<cr>:call DrawIt#StopDrawIt()<cr>:set nolz<cr>
-com! -nargs=0 DIstop set lz|call DrawIt#StopDrawIt()|set nolz
 
 " ---------------------------------------------------------------------
 "  Cleanup And Modelines:
