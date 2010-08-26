@@ -10,25 +10,30 @@
 #     cmd = unmerge.sh $BASE $LOCAL $REMOTE $MERGED
 #     trustExitCode = true
 
-if [[ -z $@ || $# != "4" ]] ; then
+if [[ -z $@ || $# != "5" ]] ; then
     echo -e "Usage: $0 \$BASE \$LOCAL \$REMOTE \$MERGED"
     exit 1
 fi
 
-BASE=$1
-LOCAL=$2
-REMOTE=$3
-MERGED=$4
+cmd=$1
+BASE=$2
+LOCAL=$3
+REMOTE=$4
+MERGED=$5
 
 sed -e '/<<<<<<</,/=======/d' -e '/>>>>>>>/d' $MERGED > $LOCAL
 sed -e '/=======/,/>>>>>>>/d' -e '/<<<<<<</d' $MERGED > $REMOTE
 
-vim -f -d $BASE $LOCAL $REMOTE \
+$cmd -f -d $BASE $LOCAL $REMOTE \
     -c ':diffoff' -c ':set scrollbind' -c 'wincmd l'
 
 EC=$?
 
 # Overwrite $MERGED
-[[ $EC == "0" ]] && cat $LOCAL > $MERGED
+if [[ $EC == "0" ]] ; then
+    cat $LOCAL > $MERGED
+else
+    # Delete temp files
+    rm $BASE $LOCAL $REMOTE
 
 exit $EC

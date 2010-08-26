@@ -36,8 +36,12 @@
     smtpserverport = 587
 
 [merge]
-    tool = vimdiffconflicts
+    tool = vimdiffunmerge
 
-[mergetool "vimdiffconflicts"]
-    cmd = unmerge.sh $BASE $LOCAL $REMOTE $MERGED
+[mergetool "vimdiffunmerge"]
+    cmd = unmerge.sh vim $BASE $LOCAL $REMOTE $MERGED
+    trustExitCode = true
+
+[mergetool "gvimdiffunmerge"]
+    cmd = unmerge.sh gvim $BASE $LOCAL $REMOTE $MERGED
     trustExitCode = true
