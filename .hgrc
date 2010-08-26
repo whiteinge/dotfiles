@@ -15,7 +15,7 @@ ignore = ~/.hgignore
 [extensions]
 ###############################################################################
 color =
-pager =
+# pager =
 transplant =
 parentrevspec =
 hgext.bookmarks =
