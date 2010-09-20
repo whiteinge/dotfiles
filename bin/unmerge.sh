@@ -35,5 +35,6 @@ if [[ $EC == "0" ]] ; then
 else
     # Delete temp files
     rm $BASE $LOCAL $REMOTE
+fi
 
 exit $EC
