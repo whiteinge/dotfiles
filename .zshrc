@@ -37,9 +37,8 @@ umask 027
 path+=( $HOME/bin /sbin /usr/sbin /usr/local/sbin ); path=( ${(u)path} );
 CDPATH=$CDPATH::$HOME:/usr/local
 
-PYTHONPATH=$HOME/lib/python/site-packages:$HOME/src:$PYTHONPATH
 PYTHONSTARTUP=$HOME/.pythonrc.py
-export PYTHONSTARTUP PYTHONPATH
+export PYTHONSTARTUP
 
 # Local development projects go here
 SRCDIR=$HOME/src
@@ -332,14 +331,37 @@ function djworkon(){
     cd ./$1 2>/dev/null || cd $SRCDIR/$1 2>/dev/null || return 1
     [[ -f ./bin/activate ]] || return 1
 
-    unset PYTHONPATH
     source ./bin/activate
+
+    VENV_PY_VER=$(python -c "import sys; print '.'.join(map(str, sys.version_info[:2]))")
+    VENV_SITE_PKGS="$VIRTUAL_ENV/lib/python$VENV_PY_VER/site-packages"
+    alias cdsitepackages="cd $VENV_SITE_PKGS"
+    alias cdproject="cd $VIRTUAL_ENV/project"
 
     # Set up django environ vars
     if [[ -f project/debug_settings.py ]]; then
         export PYTHONPATH=$PWD/project:$PYTHONPATH
         export DJANGO_SETTINGS_MODULE=debug_settings
     fi
+}
+
+# Quickly add system-level Python libs to the active virtualenv
+# Stolen from virtualenvwrapper
+function add2virtualenv() {
+    [[ -z $VIRTUAL_ENV || -z $VENV_SITE_PKGS ]] && return 1
+    local path_file="$VENV_SITE_PKGS/virtualenv_path_extensions.pth"
+    touch "$path_file"
+
+    for pydir in "$@" ; do
+        local absolute_path=$(python -c "import os; print os.path.abspath('$pydir')")
+        if [[ -d $absolute_path ]] ; then
+            echo "$absolute_path" >> "$path_file"
+        elif [[ -r $absolute_path ]] ; then
+            ln -s $absolute_path $VENV_SITE_PKGS/
+        else
+            echo "Could not read path: $absolute_path"
+        fi
+    done
 }
 
 # }}}
