@@ -25,7 +25,7 @@
     excludesfile = /home/shouse/.gitignore
 
 [color]
-    diff = always
+    diff = auto
     status = auto
     branch = auto
 
