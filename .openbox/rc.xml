@@ -18,7 +18,8 @@
   </focus>
 
   <placement>
-    <policy>UnderMouse</policy>
+    <monitor>Active</monitor>
+    <primaryMonitor>Active</primaryMonitor>
   </placement>
 
   <theme>
