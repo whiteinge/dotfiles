@@ -1,4 +1,7 @@
 *~
 *.pyc
-.hg/
 .*swp
+.git/
+.hg/
+.svn/
+CVS/
