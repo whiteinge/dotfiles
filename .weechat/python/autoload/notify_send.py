@@ -5,26 +5,10 @@
 # To make it work, you may need to download: python-notify (and libnotify - libgtk)
 # Requires Weechat 0.3.0
 # Released under GNU GPL v2
-#
-# 2010-02-20, Aron Griffis <agriffis@n01se.net>
-#     version 0.0.5: Add nick_separator, don't call show_notification twice on
-#     privmsg, fix spelling s/nofify/notify/, use nick as "summary" for privmsg
-#     notification, fit in 80 columns, tweak vim modeline.
-# 2010-01-24, David Rubin <davidrub+weechat@gmail.com>
-#     version 0.0.4.2 Fixed issue with self notifications when used with out "smart_notification"
-# 2010-01-19, Didier Roche <didrocks@ubuntu.com>
-#     version 0.0.4.1: add private message sender name
-# 2010-01-19, Didier Roche <didrocks@ubuntu.com>
-#     version 0.0.4: add smart notification:
-#     be notified only if you're not in the current channel/pv window (off by default)
-# 2009-06-16, kba <unixprog@gmail.com.org>:
-#     version 0.0.3: added config options for icon and urgency
-# 2009-05-02, FlashCode <flashcode@flashtux.org>:
-#     version 0.0.2.1: sync with last API changes
 
-import weechat, pynotify, string
+import weechat, os
 
-weechat.register("notify", "lavaramano", "0.0.5", "GPL", "notify: A real time notification system for weechat", "", "")
+weechat.register("notify-send", "whiteinge", "0.0.1", "GPL", "notify-send: calls notify-send cli on highlight", "", "")
 
 # script options
 settings = {
@@ -34,12 +18,6 @@ settings = {
     "icon"               : "/usr/share/pixmaps/weechat.xpm",
     "urgency"            : "normal",
     "smart_notification" : "off",
-}
-
-urgencies = {
-    "low"      : pynotify.URGENCY_LOW,
-    "critical" : pynotify.URGENCY_CRITICAL,
-    "normal"   : pynotify.URGENCY_NORMAL,
 }
 
 # Init everything
@@ -73,10 +51,6 @@ def notify_show(data, bufferp, uber_empty, tagsn, isdisplayed,
     return weechat.WEECHAT_RC_OK
 
 def show_notification(chan,message):
-    pynotify.init("wee-notifier")
-    wn = pynotify.Notification(chan, message, weechat.config_get_plugin('icon'))
-    wn.set_urgency(urgencies[weechat.config_get_plugin('urgency')] or
-            pynotify.URGENCY_NORMAL)
-    wn.show()
-
-# vim: autoindent expandtab smarttab shiftwidth=4
+    icon = weechat.config_get_plugin('icon')
+    urgency = 'normal'
+    os.system('notify-send -u %(urgency)s -i %(icon)s %(chan)s %(message)s' % locals())
