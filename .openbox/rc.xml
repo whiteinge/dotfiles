@@ -370,6 +370,10 @@
           <desktop>all</desktop>
           <layer>above</layer>
       </application>
+
+      <application class="Pidgin">
+          <desktop>all</desktop>
+      </application>
   </applications>
 
 </openbox_config>
