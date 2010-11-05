@@ -107,7 +107,7 @@ function +vi-git-st() {
 
     # Are we on a remote-tracking branch?
     remote=${$(git rev-parse --verify ${hook_com[branch]}@{upstream} \
-        --symbolic-full-name 2>/dev/null)/refs\/remotes\/}
+        --symbolic-full-name --abbrev-ref 2>/dev/null)}
 
     if [[ -n ${remote} ]] ; then
         # for git prior to 1.7
