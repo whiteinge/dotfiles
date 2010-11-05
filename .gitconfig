@@ -25,6 +25,14 @@
 
     serve = !git daemon --base-path=$(git rev-parse --show-toplevel) --export-all
 
+    ### Custom Git commands (found in ~/bin)
+    # Push only the current branch to the upstream branch
+    p = pushcurrent
+
+    # Show individual diffs for all incoming/outgoing changesets
+    in = pagediffs ..@{u}
+    out = pagediffs @{u}..
+
 [core]
     excludesfile = /home/shouse/.gitignore
 
