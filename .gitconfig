@@ -11,7 +11,7 @@
     f = fetch --all
 
     # Push only the current branch to the upstream branch (custom Git cmd)
-    pu = pushupstream
+    p = pushcurrent
 
     l = log --pretty=format:\"%C(yellow)%h %C(green)%d%Creset %s  %C(black bold)%an, %ar%Creset\"
     ll = !git l --graph
