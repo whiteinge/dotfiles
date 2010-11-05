@@ -17,8 +17,7 @@
     ll = !git l --graph
     lll = log --stat --decorate
     ls = log --oneline --topo-order
-
-    # page = !eval less -f '<(git show '${^$(git rev-list -20 @{u}..)}\)
+    rl = reflog  --date=relative 
 
     # new commits after you fetched
     lc = log ORIG_HEAD.. --stat --no-merges
