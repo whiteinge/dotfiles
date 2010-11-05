@@ -1,0 +1,11 @@
+#!/bin/zsh
+# Allow pushing only the current branch to the remote-tracked branch (if there
+# is one) without having to manually specify the remote branch and without
+# having to globally reconfigure push.current.
+
+local upstream
+
+upstream=$(git rev-parse --symbolic-full-name --abbrev-ref @{u} 2>/dev/null)
+[[ -n $upstream ]] || exit 1
+
+git push ${(s:/:)upstream}
