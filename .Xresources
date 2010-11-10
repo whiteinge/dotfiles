@@ -74,7 +74,8 @@ xterm*vt100.Translations: #override \n\
     Meta ~Shift <Key> o: string("°") \n\
     Meta ~Shift <Key> t: string("™") \n\
     Meta ~Shift <Key> c: string("©") \n\
-    Meta ~Shift <Key> x: string("×")
+    Meta ~Shift <Key> x: string("×") \n\
+    Meta ~Shift <Key> d: string("ಠ")
 ! NOTE: the above prevents text from being selected without also holding shift.
 ! Matches URLs and emails and selects them on double-click
 xterm*charClass: 33:48,37-38:48,45-47:48,64:48,58:48,126:48,61:48,63:48,43:48,35:38
