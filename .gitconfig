@@ -9,6 +9,7 @@
     d = diff
     b = branch -v
     f = fetch --all
+    re = reset --hard @{upstream}
 
     l = log --pretty=format:\"%C(yellow)%h %C(green)%d%Creset %s  %C(black bold)%an, %ar%Creset\"
     ll = !git l --graph
@@ -18,6 +19,8 @@
 
     # new commits after you fetched
     lc = log ORIG_HEAD.. --stat --no-merges
+
+    showmerge = log --stat -c -p -1
 
     serve = !git daemon --base-path=$(git rev-parse --show-toplevel) --export-all
 
