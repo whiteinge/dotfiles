@@ -9,16 +9,16 @@
     d = diff
     b = branch -v
     f = fetch --all
+    m = merge @{upstream}
     re = reset --hard @{upstream}
 
     l = log --pretty=format:\"%C(yellow)%h %C(green)%d%Creset %s  %C(black bold)%an, %ar%Creset\"
     ll = !git l --graph
     lll = log --stat --decorate
     ls = log --oneline --topo-order
-    rl = reflog  --date=relative 
 
-    # new commits after you fetched
-    lc = log ORIG_HEAD.. --stat --no-merges
+    rl = reflog  --date=relative 
+    short = rev-parse --short
 
     showmerge = log --stat -c -p -1
 
