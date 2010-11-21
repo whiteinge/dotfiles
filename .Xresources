@@ -2,7 +2,6 @@
 ! Author: Seth House <seth@eseth.com>
 ! -----------------------------------------------------------------------------
 
-
 ! --- Xft {{{1
 ! -----------------------------------------------------------------------------
 ! calculate dpi with xdpyinfo | grep resolution
@@ -24,32 +23,47 @@ Xcursor.theme: ComixCursors-Orange-Regular-Slim
 
 ! --- xterm {{{1
 ! -----------------------------------------------------------------------------
-xterm*utf8: 1
-xterm*eightBitInput: true
-! allows you to use meta keys in irssi like alt-1, alt-2, etc
-! but replaces using alt to insert utf characters, so is commented out
-! an alternative is to hit esc. then hit the desired meta key like 1 or 2
-! xterm*metaSendsEscape: true
+! -- Basic settings, colors, & visuals (also fix too-dark blue)
+xterm*loginShell: true
+xterm*scrollBar: false
 xterm*background: grey9
 xterm*foreground: white
-xterm*scrollBar: false
-xterm*loginShell: true
-! Enables True-Type rendering
-xterm*renderFont: true
-xterm*faceName: Monaco
-xterm*faceSize: 10
 xterm*cursorColor: red
 xterm*cursorUnderline: true
 xterm*cursorBlink: true
-! Scroll multiple lines at a time for faster redrawing
-xterm*jumpScroll: true
-xterm*multiScroll: true
-! fixes too dark blue
 xterm*color4: DodgerBlue1
 xterm*color12: SteelBlue1
-! trim whitespace from selection before copying
+! Use screen/tmux scrollback instead:
+xterm*saveLines: 100
+! -- Allow utf8 in/out
+xterm*utf8: 1
+xterm*eightBitInput: true
+xtere*eightBitControl: false
+xterm*eightBitOutput: true
+! Allows you to use meta keys in irssi like alt-1, alt-2, etc,
+! but replaces using alt to insert utf characters, so is commented out.
+! An alternative is to hit esc, then hit the desired meta key like 1 or 2
+! xterm*metaSendsEscape: true
+! -- Enables True-Type rendering:
+xterm*renderFont: true
+xterm*faceName: Monaco
+xterm*faceNameDoublesize: Monaco
+xterm*wideChars: true
+xterm*wideFont: Monaco
+! -- Define the size increments used when changing font size
+xterm*faceSize: 10
+xterm*faceSize1: 6
+xterm*faceSize2: 8
+xterm*faceSize3: 10
+xterm*faceSize4: 12
+xterm*faceSize5: 16
+xterm*faceSize6: 24
+! -- Scroll multiple lines at a time for faster redrawing:
+xterm*jumpScroll: true
+xterm*multiScroll: true
+! -- trim whitespace from selection before copying
 xterm*trimSelection: true
-! Hold Shift to use CLIPBOARD instead of PRIMARY to copy or paste
+! -- Hold Shift to use CLIPBOARD instead of PRIMARY to copy or paste
 ! Change font size with ctrl-+/-/= (or mousewheel).
 ! Add a few alt- shortcuts for quick access to special characters
 xterm*vt100.Translations: #override \n\
@@ -71,21 +85,14 @@ xterm*vt100.Translations: #override \n\
     Meta Shift <Key> -: string("–") \n\
     Meta ~Shift <Key> exclam: string("¡") \n\
     Meta ~Shift <Key> question: string("¿") \n\
+    Meta ~Shift <Key> 0: string("ʘ") \n\
     Meta ~Shift <Key> o: string("°") \n\
     Meta ~Shift <Key> t: string("™") \n\
     Meta ~Shift <Key> c: string("©") \n\
     Meta ~Shift <Key> x: string("×") \n\
     Meta ~Shift <Key> d: string("ಠ")
-! NOTE: the above prevents text from being selected without also holding shift.
 ! Matches URLs and emails and selects them on double-click
 xterm*charClass: 33:48,37-38:48,45-47:48,64:48,58:48,126:48,61:48,63:48,43:48,35:38
-! Define the size increments used when changing font size
-xterm*faceSize1: 6
-xterm*faceSize2: 8
-xterm*faceSize3: 10
-xterm*faceSize4: 12
-xterm*faceSize5: 16
-xterm*faceSize6: 24
 ! map the tab key to escape in xterm (becase we can!)
 ! xterm.vt100.translations: #override\n\
 !        <Key>Tab: string("\033")\n\
