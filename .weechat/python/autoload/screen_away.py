@@ -24,6 +24,8 @@
 # (this script requires WeeChat 0.3.0 or newer)
 #
 # History:
+# 2010-08-07, Filip H.F. "FiXato" Slagter <fixato@gmail.com>
+#  version 0.8: add command on attach feature
 # 2010-05-07, Jani Kesänen <jani.kesanen@gmail.com>
 #  version 0.7: add command on detach feature
 # 2010-03-07, Aron Griffis <agriffis@n01se.net>
@@ -47,7 +49,7 @@ import os
 
 SCRIPT_NAME    = "screen_away"
 SCRIPT_AUTHOR  = "xt <xt@bash.no>"
-SCRIPT_VERSION = "0.7"
+SCRIPT_VERSION = "0.8"
 SCRIPT_LICENSE = "GPL3"
 SCRIPT_DESC    = "Set away status on screen detach"
 
@@ -55,6 +57,7 @@ settings = {
         'message': 'Detached from screen',
         'interval': '5',        # How often in seconds to check screen status
         'away_suffix': '',      # What to append to your nick when you're away.
+        'command_on_attach': '', # Command to execute on attach
         'command_on_detach': '' # Command to execute on detach
 }
 
@@ -108,6 +111,8 @@ def screen_away_timer_cb(buffer, args):
                 nick = nick[:-len(suffix)]
                 w.command(server,  "/nick %s" % nick)
         AWAY = False
+        if w.config_get_plugin("command_on_attach"):
+            w.command("", w.config_get_plugin("command_on_attach"))
 
     elif not attached and not AWAY:
         w.prnt('', '%s: Screen detached. Setting away status' % SCRIPT_NAME)
