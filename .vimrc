@@ -462,15 +462,16 @@ autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stde
 autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 
 " Python :make for a visual selection
-python << EOL
+if has('python')
+    python << EOL
 import vim
 def EvaluateCurrentRange():
     eval(compile('\n'.join(vim.current.range),'','exec'),globals())
 EOL
-map <leader>p :py EvaluateCurrentRange()<cr>
+    map <leader>p :py EvaluateCurrentRange()<cr>
 
-" Add PYTHONPATH to Vim path to enable 'gf'
-python << EOF
+    " Add PYTHONPATH to Vim path to enable 'gf'
+    python << EOF
 import os
 import sys
 import vim
@@ -478,6 +479,7 @@ for p in sys.path:
     if os.path.isdir(p):
         vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
 EOF
+endif
 
 " Shortcut to invoke wordnet
 noremap  <F7> "wyiw:call WordNetOverviews(@w)<CR>
