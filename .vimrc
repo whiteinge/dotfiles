@@ -530,11 +530,6 @@ let tlist_latex_settings = 'latex;s:Sections;l:Labels'
 let tlist_rst_settings = 'rst;s:Headings'
 let tlist_markdown_settings = 'markdown;h:Headings'
 
-" Centers, left, or right-justifies text
-noremap <silent> ,c :ce <CR> << <CR>
-noremap <silent> ,l :le <CR>
-noremap <silent> ,r :ri <CR>
-
 " Makes the current buffer a scratch buffer
 function! Scratch()
     set buftype=nofile
