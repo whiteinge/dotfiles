@@ -1,10 +1,10 @@
 #!/bin/zsh
 # Given a range of commits, open the full diff of each commit as a separate
-# file in $PAGER.
+# file in Vim (for the nice syntax highlighting; otherwise use $PAGER).
 #
 # Examples:
 # Show all diffs present upstream but not locally:
-# git pagediffs @{u}..
+# git pagediffs ..@{u}
 
 # in = !echo view '<(git show '${^$(git rev-list -20 ..@{u})}\)
 
