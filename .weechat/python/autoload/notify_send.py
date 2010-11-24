@@ -6,7 +6,7 @@
 # Requires Weechat 0.3.0
 # Released under GNU GPL v2
 
-import weechat, os
+import weechat, os, re
 
 weechat.register("notify-send", "whiteinge", "0.0.1", "GPL", "notify-send: calls notify-send cli on highlight", "", "")
 
@@ -19,6 +19,9 @@ settings = {
     "urgency"            : "normal",
     "smart_notification" : "off",
 }
+
+# Strip all non-alpha chars from the strings passed to notify-send
+pattern = re.compile('[\W_]+')
 
 # Init everything
 for option, default_value in settings.items():
@@ -53,4 +56,8 @@ def notify_show(data, bufferp, uber_empty, tagsn, isdisplayed,
 def show_notification(chan,message):
     icon = weechat.config_get_plugin('icon')
     urgency = 'normal'
-    os.system('notify-send -u %(urgency)s -i %(icon)s %(chan)s %(message)s' % locals())
+
+    safe_chan = pattern.sub('', chan)
+    safe_msg =  pattern.sub('', message)
+
+    os.system('notify-send -u %(urgency)s -i %(icon)s "%(safe_chan)s" "%(safe_msg)s" &' % locals())
