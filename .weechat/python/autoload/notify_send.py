@@ -20,8 +20,8 @@ settings = {
     "smart_notification" : "off",
 }
 
-# Strip all non-alpha chars from the strings passed to notify-send
-pattern = re.compile('[\W_]+')
+# Strip all unsafe chars from the msg
+pattern = re.compile("""[\\'"]+""")
 
 # Init everything
 for option, default_value in settings.items():
