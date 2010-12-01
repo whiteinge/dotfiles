@@ -1,4 +1,4 @@
-[ferro]
+[drake]
 
-portrait: --output LVDS-1 --off --output DP-1 --mode 1920x1080 --rotate right
-dual: --output DP-1 --mode 1920x1080 --rotate right --primary --output LVDS-1 --mode 1440x900 --left-of DP-1
+portrait: --output LVDS1 --off --output HDMI2 --mode 1920x1080 --rotate right
+dual: --output HDMI2 --mode 1920x1080 --rotate right --primary --output LVDS1 --mode 1366x768 --left-of HDMI2
