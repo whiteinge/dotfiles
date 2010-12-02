@@ -54,13 +54,13 @@ ${color gray}swp ${color white}${swapperc}%
 ${color gray}temp${color white}${acpitemp}°
 $loadavg
 ${color gray}up ${color white}$uptime
-$user_number users${if_up wlan1}
+$user_number users${if_up wlan0}
 
-${color gray}wlan1
-${color white}${wireless_essid wlan1}
-${color gray}${downspeedgraph wlan1 25,29 DDDDDD 1992d6 1280} ${upspeedgraph wlan1 25,29 DDDDDD 1992d6 1280}
-${color gray}rx ${color white}${downspeed wlan1}
-${color gray}tx ${color white}${upspeed wlan1}
+${color gray}wlan0
+${color white}${wireless_essid wlan0}
+${color gray}${downspeedgraph wlan0 25,29 DDDDDD 1992d6 1280} ${upspeedgraph wlan0 25,29 DDDDDD 1992d6 1280}
+${color gray}rx ${color white}${downspeed wlan0}
+${color gray}tx ${color white}${upspeed wlan0}
 $endif${if_up eth0}
 
 ${color gray}eth0
@@ -79,5 +79,3 @@ ${color gray}/home${color white} ${fs_used_perc /home}%
 ${color gray}BAT0
 ${color white}${battery_short BAT0}
 -${battery_time BAT0}
-
-${texeci 7200 weather.py}
