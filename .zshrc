@@ -7,6 +7,11 @@
 
 # {{{ setting options
 
+autoload edit-command-line
+autoload -U compinit
+autoload -U zmv
+autoload zcalc
+
 setopt                          \
         auto_cd                 \
         auto_pushd              \
@@ -78,7 +83,6 @@ export GREP_OPTIONS
 # }}}
 # {{{ completions
 
-autoload -U compinit
 compinit -C
 zstyle ':completion:*' list-colors "$LS_COLORS"
 zstyle -e ':completion:*:(ssh|sssh|scp|sshfs|ping|telnet|ftp|rsync):*' hosts 'reply=(${=${${(M)${(f)"$(<~/.ssh/config)"}:#Host*}#Host }:#*\**})'
@@ -98,7 +102,6 @@ bindkey -M viins '^n' history-beginning-search-forward
 bindkey -M vicmd '^n' history-beginning-search-forward
 
 # Allows editing the command line with an external editor
-autoload edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd "v" edit-command-line
 
@@ -113,7 +116,6 @@ fi
 # }}}
 # {{{ aliases
 
-autoload -U zmv
 alias zmv='noglob zmv'
 # e.g., zmv *.JPEG *.jpg
 
@@ -240,15 +242,6 @@ function ... (){
             cd $dir >&/dev/null
         fi
     done
-}
-
-# }}}
-# {{{ calc()
-# Command-line calculator (has some limitations...not sure the extent)(based on zsh functionality)
-
-alias calc="noglob _calc"
-function _calc() {
-    echo $(($*))
 }
 
 # }}}
