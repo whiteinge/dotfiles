@@ -47,14 +47,8 @@ zstyle ':vcs_info:git*:*' unstagedstr "${red}U${gray}"
 # zstyle ':vcs_info:*+*:*' debug true
 
 zstyle ':vcs_info:hg*+set-hgrev-format:*' hooks hg-hashfallback
-zstyle ':vcs_info:hg*+set-message:*' hooks mq-vcs hg-storerev hg-branchhead
+zstyle ':vcs_info:hg*+set-message:*' hooks mq-vcs
 zstyle ':vcs_info:git*+set-message:*' hooks git-st git-stash
-
-### Store the localrev and global hash for use in other hooks
-function +vi-hg-storerev() {
-    user_data[localrev]=${hook_com[localrev]}
-    user_data[hash]=${hook_com[hash]}
-}
 
 ### Dynamically set hgrevformat based on if the local rev is available
 # We don't always know the local revision, e.g. if use-simple is set
@@ -76,28 +70,6 @@ function +vi-mq-vcs() {
     # if [[ -d ${hook_com[base]}/.hg/patches/.hg ]]; then
         # hook_com[hg-mqpatch-string]="mq:${hook_com[hg-mqpatch-string]}"
     # fi
-}
-
-### Show marker when the working directory is not on a branch head
-# This may indicate that running `hg up` will do something
-function +vi-hg-branchhead() {
-    local branchheadsfile i_tiphash i_branchname
-    local -a branchheads
-
-    local branchheadsfile=${hook_com[base]}/.hg/branchheads.cache
-
-    # Bail out if any mq patches are applied
-    [[ -s ${hook_com[base]}/.hg/patches/status ]] && return 0
-
-    if [[ -r ${branchheadsfile} ]] ; then
-        while read -r i_tiphash i_branchname ; do
-            branchheads+=( $i_tiphash )
-        done < ${branchheadsfile}
-
-        if [[ ! ${branchheads[(i)${user_data[hash]}]} -le ${#branchheads} ]] ; then
-            hook_com[revision]="${red}^${gray}${hook_com[revision]}"
-        fi
-    fi
 }
 
 # Show remote ref name and number of commits ahead-of or behind
