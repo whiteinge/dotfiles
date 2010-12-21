@@ -1,3 +1,5 @@
+--python-kinds=-iv
+
 --langdef=rst
 --langmap=rst:.rst
 --regex-rst=/^([-=`:.'"~^_*+#])+$/\1/s,Heading/e
