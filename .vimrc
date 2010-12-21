@@ -14,6 +14,8 @@ set hlsearch                    "hls:   highlights search results
 nmap <silent> <leader>n :silent noh<CR>
 " Display the number of matches for the last search
 nmap <leader># :%s:/::gn<CR>
+" Restore case-sensitivity for jumping to tags (set ic disables it)
+map <silent> <c-]> :set noic<cr>g<c-]><silent>:set ic<cr>
 
 " }}}
 " Line Wrap {{{
