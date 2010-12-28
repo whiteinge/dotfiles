@@ -13,7 +13,6 @@ import os
 import readline, rlcompleter
 import atexit
 import pprint
-import __builtin__
 from tempfile import mkstemp
 from code import InteractiveConsole
 
@@ -89,7 +88,12 @@ sys.ps2 = '%s... %s' % (_c['Red'], _c['Normal'])
 
 def my_displayhook(value):
     if value is not None:
-        __builtin__._ = value
+        try:
+            import __builtin__
+            __builtin__._ = value
+        except ImportError:
+            __builtins__._ = value
+
         pprint.pprint(value)
 sys.displayhook = my_displayhook
 
@@ -124,7 +128,7 @@ def SECRET_KEY():
                 for i in range(50)])
 
 # If we're working with a Django project, set up the environment
-if os.environ.has_key('DJANGO_SETTINGS_MODULE'):
+if 'DJANGO_SETTINGS_MODULE' in os.environ:
     from django.db.models.loading import get_models
     from django.test.client import Client
     from django.test.utils import setup_test_environment, teardown_test_environment
@@ -169,14 +173,14 @@ class EditableBufferInteractiveConsole(InteractiveConsole):
         InteractiveConsole.__init__(self, *args, **kwargs)
 
     def runsource(self, source, *args):
-        self.last_buffer = [ source ]
+        self.last_buffer = [ source.encode('latin-1') ]
         return InteractiveConsole.runsource(self, source, *args)
 
     def raw_input(self, *args):
         line = InteractiveConsole.raw_input(self, *args)
         if line == EDIT_CMD:
             fd, tmpfl = mkstemp('.py')
-            os.write(fd, '\n'.join(self.last_buffer))
+            os.write(fd, b'\n'.join(self.last_buffer))
             os.close(fd)
             os.system('%s %s' % (EDITOR, tmpfl))
             line = open(tmpfl).read()
