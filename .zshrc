@@ -338,6 +338,11 @@ function djworkon(){
     fi
 }
 
+# Format Django's json dumps as one-record-per-line
+function djfmtjson() {
+    sed -i'.bak' -e 's/^\[/\[\n/g' -e 's/]$/\n]/g' -e 's/}}, /}},\n/g' $1
+}
+
 # Quickly add system-level Python libs to the active virtualenv
 # Stolen from virtualenvwrapper
 function add2virtualenv() {
