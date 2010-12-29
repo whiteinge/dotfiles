@@ -8,4 +8,4 @@ local upstream
 upstream=$(git rev-parse --symbolic-full-name --abbrev-ref @{u} 2>/dev/null)
 [[ -n $upstream ]] || exit 1
 
-git push ${(s:/:)upstream}
+git push ${(s:/:)upstream} $*
