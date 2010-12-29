@@ -114,6 +114,7 @@ bindkey -M vicmd "v" edit-command-line
 if [[ ! -n "$ZSHRUN" ]]; then
     # FIXME: there must be a better way
     source $HOME/.zsh_shouse_prompt
+    source $HOME/.zsh_functions/zsh-syntax-highlighting.zsh
 fi
 
 # }}}
