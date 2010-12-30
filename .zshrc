@@ -85,7 +85,8 @@ export GREP_OPTIONS
 
 compinit -C
 zstyle ':completion:*' list-colors "$LS_COLORS"
-zstyle -e ':completion:*:(ssh|sssh|scp|sshfs|ping|telnet|ftp|rsync):*' hosts 'reply=(${=${${(M)${(f)"$(<~/.ssh/config)"}:#Host*}#Host }:#*\**})'
+zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|nc|rsync):*' hosts '
+    reply=( ${=${${(M)${(f)"$(<~/.ssh/config)"}:#Host*}#Host }:#*\**} )'
 
 # }}}
 # {{{ prompt and theme
