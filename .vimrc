@@ -503,6 +503,9 @@ autocmd FileChangedShell *
 au FileType help nmap <buffer> <Return> <C-]>
 au FileType help nmap <buffer> <C-[> <C-O>
 
+" Automatically open Git diff when editing a gitcommit
+au FileType gitcommit DiffGitCached | wincmd p
+
 " Taglist plugin settings
 map <F3> :TlistToggle<cr>
 let Tlist_Use_Right_Window = 1
