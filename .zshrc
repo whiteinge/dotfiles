@@ -84,7 +84,9 @@ export GREP_OPTIONS
 # {{{ completions
 
 compinit -C
+
 zstyle ':completion:*' list-colors "$LS_COLORS"
+
 zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|nc|rsync):*' hosts '
     reply=( ${=${${(M)${(f)"$(<~/.ssh/config)"}:#Host*}#Host }:#*\**} )'
 
@@ -125,6 +127,7 @@ alias vi='vim'
 alias ls='ls -F --color'
 alias la='ls -A'
 alias ll='ls -lh'
+alias lls='ll -Sr'
 
 alias less='less -imJMW'
 alias cls='clear' # note: ctrl-L under zsh does something similar
@@ -155,6 +158,13 @@ if [[ $(uname) == "Darwin" ]]; then
     alias lynx='lynx -cfg=$HOME/.lynx.cfg'
     alias top='top -ocpu'
 fi
+
+# scaletempo -s 2.0 mymovie.m4v
+function scaletempo() {
+    local -a args
+    zparseopts -D -E -a args -- s: -speed:
+    mplayer -af scaletempo -speed ${args[2]:=1.5} $1
+}
 
 # Integrate ssh-agent with GNU Screen:
 ######################################
@@ -187,9 +197,6 @@ alias tm="exec ssh-agent \
 # remote tmux agent alias
 alias rtm="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
     SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec tmux attach'"
-
-# Start ssh session in a new Screen window
-sssh() { screen -t $@ ssh "$@"; }
 
 # }}}
 # Miscellaneous Functions:
@@ -389,22 +396,6 @@ spell (){
 
 memtotaller() {
     /bin/ps -u $(whoami) -o pid,rss,command | awk '{sum+=$2} END {print "Total " sum / 1024 " MB"}'
-}
-
-# }}}
-# makepkg-likeslack() {{{
-# For making Arch Linux packages without writing a PKGBUILD script
-# (useful when testing a prog)
-
-makepkg-likeslack() {
-    echo "pkgname=$1\npkgver=0.0\npkgrel=0" > PKGBUILD
-    mkdir -p {src,pkg}
-    if [ x"$2" != x ]; then   # no args were given
-        tar -C src -xf $2
-    fi
-    echo "Now:"
-    echo "make install DESTDIR=../pkg"
-    echo "makepkg -R -A"
 }
 
 # }}}
