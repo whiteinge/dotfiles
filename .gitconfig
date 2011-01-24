@@ -8,14 +8,16 @@
     co = checkout
     d = diff
     b = branch -v
+    bc = branch --contains
     f = fetch --all
     m = merge @{upstream}
     re = reset --hard @{upstream}
+    w = whatchanged -m
 
     l = log --pretty=format:\"%C(yellow)%h %C(green)%d%Creset %s  %C(black bold)%an, %ar%Creset\"
     ll = !git l --graph
     lll = log --stat --decorate
-    ls = log --oneline --topo-order
+    ls = log --oneline --topo-order --decorate
 
     rl = reflog  --date=relative 
     short = rev-parse --short
