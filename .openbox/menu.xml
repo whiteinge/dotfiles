@@ -43,18 +43,24 @@
 
   <separator />
 
-  <item label="gmpc">
-    <action name="Execute"><command>gmpc</command></action>
-  </item>
   <item label="gpodder">
       <action name="Execute">
           <startupnotify><enabled>yes</enabled></startupnotify>
           <command>gpodder</command>
       </action>
   </item>
+  <item label="gmpc">
+    <action name="Execute"><command>gmpc</command></action>
+  </item>
 </menu>
 
 <menu id="games-menu" label="games">
+  <item label="minecraft">
+      <action name="Execute">
+          <command>java -jar ~/games/Minecraft.jar</command>
+          <startupnotify><enabled>yes</enabled></startupnotify>
+      </action>
+  </item>
   <item label="guild wars">
       <action name="Execute">
           <command>gw</command>
