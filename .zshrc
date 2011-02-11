@@ -201,6 +201,14 @@ alias rtm="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
 
 # }}}
 # Miscellaneous Functions:
+# error Quickly output a message and exit with a return code {{{1
+function error() {
+    EXIT=$1 ; MSG=${2:-"$NAME: Unknown Error"}
+    [[ $EXIT -eq 0 ]] && echo $MSG || echo $MSG 1>&2
+    exit $EXIT
+}
+
+# }}}
 # zshrun A lightweight, one-off application launcher {{{1
 # by Mikael Magnusson (I think)
 #
@@ -273,17 +281,19 @@ function genpass() {
 
 bookletize ()
 {
-    if which pdfinfo && which pdflatex; then
-        pagecount=$(pdfinfo $1 | awk '/^Pages/{print $2+3 - ($2+3)%4;}')
+    (( $+commands[pdfinfo] )) && (( $+commands[pdflatex] )) || { 
+        error 1 "Missing req'd pdfinfo or pdflatex"
+    }
 
-        # create single fold booklet form in the working directory
-        pdflatex -interaction=batchmode \
-        '\documentclass{book}\
-        \usepackage{pdfpages}\
-        \begin{document}\
-        \includepdf[pages=-,signature='$pagecount',landscape]{'$1'}\
-        \end{document}' 2>&1 >/dev/null
-    fi
+    pagecount=$(pdfinfo $1 | awk '/^Pages/{print $2+3 - ($2+3)%4;}')
+
+    # create single fold booklet form in the working directory
+    pdflatex -interaction=batchmode \
+    '\documentclass{book}\
+    \usepackage{pdfpages}\
+    \begin{document}\
+    \includepdf[pages=-,signature='$pagecount',landscape]{'$1'}\
+    \end{document}' 2>&1 >/dev/null
 }
 
 # }}}
