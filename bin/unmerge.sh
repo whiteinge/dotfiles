@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 # Use vimdiff to quickly go through Git merge conflicts.
 # 
 # Save your changes to the LOCAL file. MERGED will be updated if
@@ -25,7 +25,7 @@ sed -e '/<<<<<<</,/=======/d' -e '/>>>>>>>/d' $MERGED > $LOCAL
 sed -e '/=======/,/>>>>>>>/d' -e '/<<<<<<</d' $MERGED > $REMOTE
 
 $cmd -f -d $BASE $LOCAL $REMOTE \
-    -c ':diffoff' -c ':set scrollbind' -c 'wincmd l'
+    -c ':diffoff' -c ':set scrollbind' -c 'wincmd T' -c ':tabfirst'
 
 EC=$?
 
