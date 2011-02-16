@@ -513,6 +513,8 @@ let Tlist_Compact_Format = 1
 let Tlist_Exit_OnlyWindow = 1
 let Tlist_File_Fold_Auto_Close = 1
 
+au FileType rst let Tlist_Ctags_Cmd = 'rst2ctags --taglist'
+
 " Auto-open taglist only if not in diff mode and the term wide enough to also
 " fit an 80-column window (plus eight for line numbers and the fold column).
 if &columns > 118 && ! &diff
@@ -532,8 +534,8 @@ let tlist_css_settings = 'css;s:Selectors'
 let tlist_js_settings = 'js;o:function;f:object'
 let tlist_tex_settings = 'tex;c:Chapters;s:Sections;l:Labels;r:Refs'
 let tlist_latex_settings = 'latex;s:Sections;l:Labels'
-let tlist_rst_settings = 'rst;s:Headings'
 let tlist_markdown_settings = 'markdown;h:Headings'
+let tlist_rst_settings = 'rst;s:sections;i:images'
 
 " Makes the current buffer a scratch buffer
 function! Scratch()
