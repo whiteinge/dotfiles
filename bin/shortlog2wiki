@@ -1,0 +1,10 @@
+#!/usr/bin/awk -f
+# Format git shortlog output for pasting into a Trac wiki
+
+/^[a-zA-Z]/ {
+    print "\n "$0":"
+}
+
+/^ / {
+    sub(/^ +/, ""); print "    * "$0
+}

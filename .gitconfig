@@ -19,10 +19,6 @@
     lll = log --stat --decorate
     ls = log --oneline --topo-order --decorate
 
-    # Format shortlog output for wiki
-    wikilog = "!git shortlog @{u}.. | awk '/^[a-zA-Z]/ { print \" \"$0\":\" } \
-        /^ / { sub(/^ +/, \"\"); print \"    * \"$0 }'"
-
     rl = reflog  --date=relative 
     short = rev-parse --short
 
