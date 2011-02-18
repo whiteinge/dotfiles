@@ -15,7 +15,7 @@
     w = whatchanged -m
 
     l = log --pretty=format:\"%C(yellow)%h %C(green)%d%Creset %s  %C(black bold)%an, %ar%Creset\"
-    ll = !git l --graph
+    ll = "!git l --graph"
     lll = log --stat --decorate
     ls = log --oneline --topo-order --decorate
 
@@ -28,7 +28,7 @@
 
     showmerge = log --stat -c -p -1
 
-    serve = !git daemon --base-path=$(git rev-parse --show-toplevel) --export-all
+    serve = "!git daemon --base-path=$(git rev-parse --show-toplevel) --export-all"
 
     # Show all remote branches that have been merged into master
     allmerged = "!git branch -r -v --no-abbrev --merged master | \
