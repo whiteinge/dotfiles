@@ -8,6 +8,7 @@
 <menu id="batt-menu" label="batt" execute="~/.openbox/pipemenus/batt.sh" />
 <menu id="dir-menu" label="dir" execute="~/.openbox/pipemenus/dir-menu ~" />
 <menu id="mpd-menu" label="mpd" execute="~/.openbox/pipemenus/ob-mpd.py"/>
+<menu id="weather-menu" label="weather" execute="~/.openbox/pipemenus/gweather.py 84401" />
 
 <menu id="apps-menu" label="applications">
   <item label="uxterm">
@@ -86,6 +87,7 @@
   <separator />
   <menu id="randr-menu" />
   <menu id="date-menu" />
+  <menu id="weather-menu" />
   <menu id="batt-menu" />
   <menu id="proc-menu" />
   <menu id="dir-menu" />
