@@ -128,6 +128,13 @@ else: # part of connect try block
             else:
                 connect.repeat(1)
 
+        consume_state = int(status.consume)
+        def consume():
+            if consume_state:
+                connect.consume(0)
+            else:
+                connect.consume(1)
+
         def kill():
             try:
                 connect.kill()
@@ -168,6 +175,7 @@ else: # part of connect try block
         elif (argv[1]     == "next"):    next()
         elif (argv[1]     == "random"):  random()
         elif (argv[1]     == "repeat"):  repeat()
+        elif (argv[1]     == "consume"): consume()
         elif (argv[1]     == "volume"):  volume(argv[2])
         elif (argv[1]     == "client"):  client()
         elif (argv[1]     == "kill"):    kill()
@@ -219,6 +227,8 @@ else: # part of connect try block
             int(status.random) and '[On]' or '[Off]'), 'random')
         print action % ('Toggle repeat %s' % (
             int(status.repeat) and '[On]' or '[Off]'), 'repeat')
+        print action % ('Toggle consume %s' % (
+            int(status.consume) and '[On]' or '[Off]'), 'consume')
         print separator
         print action % ('Update Database','update')
         print action % ('Kill MPD','kill')
