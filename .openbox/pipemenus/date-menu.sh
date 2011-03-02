@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # date-menu.sh
 #
@@ -14,21 +14,21 @@
 # It would probably involve a very complicated mess.  Is there a way to force a
 # different font per menu?
 function calRow() {
-cal | gawk -v row=$1 '{ if (NR==row) { print $0 } }'
+  cal -h | awk -v row=$1 '{ if (NR==row) { print $0 } }'
 }
 
 # Build the menu
 cat << EOFMENU
-    <openbox_pipe_menu>
-    <separator label="`date +%A\ \ \ \ \ \ \ \ \ \ \ \ %H\:%M`" />
-    <item label="`date +%Y\ \ %B\ \ %d`" />
-    <separator />
-    <item label="`calRow 2`" />
-    <item label="`calRow 3`" />
-    <item label="`calRow 4`" />
-    <item label="`calRow 5`" />
-    <item label="`calRow 6`" />
-    <item label="`calRow 7`" />
-    <item label="`calRow 8`" />
-    </openbox_pipe_menu>
+<openbox_pipe_menu>
+  <separator label="`date +%A\ \ \ \ \ %I\:%M\ %p`" />
+  <item label="`date +%B\ %d,\ %Y`" />
+  <separator />
+  <item label="`calRow 2`" />
+  <item label="`calRow 3`" />
+  <item label="`calRow 4`" />
+  <item label="`calRow 5`" />
+  <item label="`calRow 6`" />
+  <item label="`calRow 7`" />
+  <item label="`calRow 8`" />
+</openbox_pipe_menu>
 EOFMENU
