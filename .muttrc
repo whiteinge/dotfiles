@@ -1,32 +1,15 @@
 # Local #######################################################################
-set mbox_type = Maildir
-
-
-# IMAP Settings ###############################################################
 set realname = "Seth House"
 set from = "Seth House <whiteinge@gmail.com>"
-set imap_user = "whiteinge@gmail.com"
-set folder = "imaps://imap.gmail.com:993"
-set spoolfile = "+INBOX"
-set record = "+[Gmail]/Sent Mail"
-set postponed = "+[Gmail]/Drafts"
-set trash = "+[Gmail]/Trash"
 
-set mbox = "+[Gmail]/All Mail"
-mailboxes =INBOX
-
-set header_cache = ~/.mutt/cache/headers
-set message_cachedir = ~/.mutt/cache/bodies
-set certificate_file = ~/.mutt/certificates
+set mbox_type = Maildir
+set folder = $HOME/Mail
+set spoolfile=+/INBOX
 
 
 # Reading Mail ################################################################
-set timeout = 10
-set mail_check = 5                  # check for msgs every 5 mins
 set sort = threads
 set sort_aux = last-date-received
-set imap_check_subscribed = yes
-set imap_list_subscribed = no
 set move = no                       # move read msgs to your mbox folder?
 set mark_old = no
 set charset = utf-8
@@ -50,21 +33,13 @@ set reverse_realname = no
 
 # Sending Mail ################################################################
 set smtp_url = "smtps://whiteinge\@gmail.com@smtp.gmail.com:587/"
+set ssl_force_tls = yes
 set send_charset = "utf-8"
 set copy = yes
 
 
 # Getting Around ##############################################################
 bind editor <space> noop
-macro index,pager s "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive"
-macro index,pager d "<save-message>=[Gmail]/Trash<enter><enter>" "Trash"
-macro index,pager p "<save-message>=[Gmail]/Spam<enter><enter>" "Spam"
-macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
-macro index ga "<change-folder>=[Gmail]/All Mail<enter>" "Go to all mail"
-macro index gs "<change-folder>=[Gmail]/Starred<enter>" "Go to starred messages"
-macro index gd "<change-folder>=[Gmail]/Drafts<enter>" "Go to drafts"
-macro index go "<change-folder>=[Gmail]/Sent Mail<enter>" "Go to sent mail"
-macro index gp "<change-folder>=[Gmail]/Spam<enter>" "Go to spam"
 
 
 # Color ######################################################################
