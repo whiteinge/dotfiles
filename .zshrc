@@ -164,8 +164,8 @@ if [[ $(uname) == "Darwin" ]]; then
     alias top='top -ocpu'
 fi
 
-# scaletempo -s 2.0 mymovie.m4v
-function scaletempo() {
+# mplayerx2 -s 2.0 mymovie.m4v
+function mplayerx2() {
     local -a args
     zparseopts -D -E -a args -- s: -speed:
     mplayer -af scaletempo -speed ${args[2]:=1.5} $1
