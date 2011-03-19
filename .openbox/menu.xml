@@ -50,8 +50,8 @@
           <command>gpodder</command>
       </action>
   </item>
-  <item label="gmpc">
-    <action name="Execute"><command>gmpc</command></action>
+  <item label="ario">
+    <action name="Execute"><command>ario</command></action>
   </item>
 </menu>
 
