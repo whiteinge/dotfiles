@@ -20,6 +20,7 @@ bmark -t "Wikipedia Search" -k "wiki" http://en.wikipedia.org/wiki/Special:Searc
 bmark -t "Dictionary.com Search" -k "dict" http://dictionary.reference.com/search?q=%s
 bmark -t "Thesaurus.com Search" -k "thes" http://thesaurus.reference.com/search?q=%s
 bmark -t "Nethack Search" -k "nethack" http://nethack.wikia.com/wiki/Special:Search?search=%s&go=1
+bmark -t "Swetesoc Trac" -k "soc" http://code.swetesoc.com/projects/swetesoc/ticket/%s
 
 " Regular Bookmarks
 bmark -t "Google Reader" http://www.google.com/reader/
