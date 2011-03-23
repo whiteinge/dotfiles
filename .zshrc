@@ -150,7 +150,7 @@ alias -g IN='..@{u}'
 alias -g OUT='@{u}..'
 
 # Selects a random file: ``mplayer RANDOM``
-alias -g RANDOM='$(files=(*(.)) && echo $files[$RANDOM%${#files}+1])'
+alias -g RANDOM='"$(files=(*(.)) && echo $files[$RANDOM%${#files}+1])"'
 
 # trailing space helps sudo recognize aliases
 # breaks if flags are given (e.g. sudo -u someuser vi /etc/hosts)
