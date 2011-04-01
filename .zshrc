@@ -117,6 +117,17 @@ if [[ ! -n "$ZSHRUN" ]]; then
     source $HOME/.zsh_functions/zsh-syntax-highlighting.zsh
 fi
 
+# This is a workaround for tmux. When you clear the terminal with ctrl-l
+# anything on-screen is not saved (this is compatible with xterm behavior).
+# In contrast, GNU screen will first push anything on-screen into the
+# scrollback buffer before clearing the screen which I prefer.
+function tmux-clear-screen() {
+    for line in $(seq $(( $LINES )) ) ; do echo; done
+    zle clear-screen
+}
+zle -N tmux-clear-screen
+bindkey "^L" tmux-clear-screen
+
 # }}}
 # {{{ aliases
 
