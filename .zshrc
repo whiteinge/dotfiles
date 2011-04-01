@@ -159,6 +159,7 @@ alias mq='hg -R $(hg root)/.hg/patches'
 # Useful for working with Git remotes; e.g., ``git log IN``
 alias -g IN='..@{u}'
 alias -g OUT='@{u}..'
+alias -g UP='@{u}'
 
 # Selects a random file: ``mplayer RANDOM``
 alias -g RANDOM='"$(files=(*(.)) && echo $files[$RANDOM%${#files}+1])"'
