@@ -1,9 +1,9 @@
 " Quick Search Keyward Bookmarks
 bmark -t "Google Search" -k "g" http://www.google.com/search?q=%s
 bmark -t "Google Feeling Lucky Search" -k "goto" http://www.google.com/search?q=%s&btnI=I%27m+Feeling+Lucky
-bmark -t "Gmail Search" -k "mail" http://mail.google.com/mail/?search=query&q=%s
-bmark -t "Google History Search" -k "hist" http://www.google.com/searchhistory/find?q=%s
-bmark -t "Google Bookmarks Search" -k "bm" http://www.google.com/bookmarks/find?q=%s
+bmark -t "Gmail Search" -k "mail" https://mail.google.com/mail/?search=query&q=%s
+bmark -t "Google History Search" -k "hist" https://www.google.com/searchhistory/find?q=%s
+bmark -t "Google Bookmarks Search" -k "bm" https://www.google.com/bookmarks/find?q=%s
 bmark -t "Google Code Projects Search" -k "projects" http://code.google.com/hosting/search?q=%s
 bmark -t "Google Code Source Code Search" -k "code" http://www.google.com/codesearch?q=%s
 bmark -t "Google Site Search" -k "site" javascript:location=(%22http://www.google.com/search?q=site:%22+location.hostname+%22%20%22+%22%s%22)
@@ -13,9 +13,6 @@ bmark -t "Google OS X Search" -k "osx" http://www.google.com/mac?q=%s
 bmark -t "Google Linux Search" -k "linux" http://www.google.com/linux?q=%s
 bmark -t "Netflix Search" -k "netflix" http://www.netflix.com/Search?v1=%s
 bmark -t "IMDB Search" -k "imdb" http://www.imdb.com/find?%s
-bmark -t "Slackware Packages Search" -k "slack" http://packages.slackware.it/search.php?v=current&t=1&q=%s
-bmark -t "Linux Packages Search" -k "packages" http://www.linuxpackages.net/search_view.php?by=name&name=%s&ver=
-bmark -t "SlackBuilds.org Search" -k "builds" http://slackbuilds.org/result/?sv=&search=%s
 bmark -t "Wikipedia Search" -k "wiki" http://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go
 bmark -t "Dictionary.com Search" -k "dict" http://dictionary.reference.com/search?q=%s
 bmark -t "Thesaurus.com Search" -k "thes" http://thesaurus.reference.com/search?q=%s
@@ -23,14 +20,15 @@ bmark -t "Nethack Search" -k "nethack" http://nethack.wikia.com/wiki/Special:Sea
 bmark -t "Swetesoc Trac" -k "soc" http://code.swetesoc.com/projects/swetesoc/ticket/%s
 
 " Regular Bookmarks
-bmark -t "Google Reader" http://www.google.com/reader/
-bmark -t "Google Bookmarks" http://www.google.com/bookmarks
-bmark -t "Google Pages" http://pages.google.com/
-bmark -t "Google Notebook" http://www.google.com/notebook/
-bmark -t "Google Docs" http://docs.google.com/
-bmark -t "Google Calendar" http://www.google.com/calendar
+bmark -t "Google Reader" https://www.google.com/reader/
+bmark -t "Google Bookmarks" https://www.google.com/bookmarks
+bmark -t "Google Pages" https://pages.google.com/
+bmark -t "Google Voice" https://www.google.com/voice
+bmark -t "Google Notebook" https://www.google.com/notebook/
+bmark -t "Google Docs" https://docs.google.com/
+bmark -t "Google Calendar" https://www.google.com/calendar
 bmark -t "Gmail" https://mail.google.com/
-bmark -t "Groups" http://groups.google.com/
+bmark -t "Groups" https://groups.google.com/
 
 bmark -t "Local Django Server" -k "local" http://localhost:8000/
 bmark -t "Local Django Admin" -k "admin" http://localhost:8000/admin/
@@ -58,3 +56,6 @@ bmark -t "Xray" "javascript:function%20loadScript(scriptURL)%20{%20var%20scriptE
 bmark -t "MRI" "javascript:function%20loadScript(scriptURL)%20{%20var%20scriptElem%20=%20document.createElement('SCRIPT');%20scriptElem.setAttribute('language',%20'JavaScript');%20scriptElem.setAttribute('src',%20scriptURL);%20document.body.appendChild(scriptElem);}loadScript('http://westciv.com/mri/theMRI.js');"
 bmark -t "Aardvark" "javascript:document.getElementsByTagName('head')[0].appendChild(document.createElement('script')).setAttribute('src','http://www.karmatics.com/aardvark/loader.js')"
 bmark -t "Resize Window" "javascript:var%20rto=prompt('Resize%20this%20window%20to:','1024*768');if(rto!=null){void(rtoX=parseInt(rto.match(/\d+/)));void(rtoY=parseInt(rto.match(/\d+$/)));void(window.resizeTo(rtoX,rtoY));}"
+
+bmark -t "pwm" "javascript:(function(){try{var%20p='201h0008';var%20e={};var%20h='hrG187pO70KV2RkS0';var%20w=window;var%20f=w[h];if(typeof%20f=='undefined'){w[h]=p;w['e'+h]=e;var%20s=document.createElement('script');s.type='text/javascript';s.src='http://passwordmaker.org/bml/?v=1&h='+h;document.getElementsByTagName('html')[0].appendChild(s);}else%20if(typeof%20f=='function'){f(p,e);}}catch(e){}})();"
+bmark -t "pwmalnum" "javascript:(function(){try{var%20p='201g1012';var%20e={};var%20h='hlGWk9LBGBh21IhEd';var%20w=window;var%20f=w[h];if(typeof%20f=='undefined'){w[h]=p;w['e'+h]=e;var%20s=document.createElement('script');s.type='text/javascript';s.src='http://passwordmaker.org/bml/?v=1&h='+h;document.getElementsByTagName('html')[0].appendChild(s);}else%20if(typeof%20f=='function'){f(p,e);}}catch(e){}})();"
