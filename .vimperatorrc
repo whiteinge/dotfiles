@@ -26,7 +26,7 @@ set wildmode=list:full
 set focuscontent
 
 " open popups in a new window if they requested a specific size
-set popups=2
+set popups=resized
 
 " Highlight all search results
 set hlsearch
