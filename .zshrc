@@ -122,7 +122,7 @@ fi
 # In contrast, GNU screen will first push anything on-screen into the
 # scrollback buffer before clearing the screen which I prefer.
 function tmux-clear-screen() {
-    for line in $(seq $(( $LINES )) ) ; do echo; done
+    for line in {1..$(( $LINES ))} ; do echo; done
     zle clear-screen
 }
 zle -N tmux-clear-screen
