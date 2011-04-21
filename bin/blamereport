@@ -1,0 +1,39 @@
+#!/usr/bin/awk -f
+# Extract blame statistics from Weechat logs of the following form:
+# 2011-04-19 15:26:10	 *	peno blames whiteinge 
+
+{
+    if (NR == 1) {
+        begindate = $1
+    }
+}
+
+$3 == "*" && $5 == "blames" {
+    blames += 1
+    blamers[$4] += 1
+    blamees[$6] += 1
+}
+
+END {
+    for (i in blamers) num_blamers++
+    for (i in blamees) num_blamees++
+
+    print "There has been", blames, "aspersions cast",
+        "about", num_blamees, "innocent souls",
+        "by", num_blamers, "vicious haters",
+        "since", begindate "."
+
+    print "\nTop 5 blamers:"
+
+    command = "sort -r -n -k4 | head -5"
+
+    for (person in blamers) print "\t" person, "cast blame", blamers[person],
+         "times" | command
+    close(command)
+
+    print "\nTop 5 blamees:"
+
+    for (person in blamees) print "\t" person, "was blamed", blamees[person],
+         "times" | command
+    close(command)
+}
