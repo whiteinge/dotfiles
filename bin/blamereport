@@ -1,39 +1,103 @@
 #!/usr/bin/awk -f
 # Extract blame statistics from Weechat logs of the following form:
 # 2011-04-19 15:26:10	 *	peno blames whiteinge 
+# 2010-09-25 04:32:43     <--     peno has kicked socnag (i hate you so much)
+#
+# Usage:
+#   blamereport showkicks=true showblames=true penovwhiteinge=true
 
 {
+    IGNORECASE = 1
+
     if (NR == 1) {
         begindate = $1
     }
 }
 
+# Collect peno vs. whiteinge stats
+$3 == "*" && $4 == "peno" && $6 ~ /wh[i1]t[e3][i1]ng[e3]/ {
+    action=$4 " " $5 " whiteinge"
+
+    for (i=7; i<=NF; i++) {
+        action = action " " $i
+    }
+
+    penoactions[action] += 1
+}
+
+# Collect blame stats
 $3 == "*" && $5 == "blames" {
     blames += 1
     blamers[$4] += 1
     blamees[$6] += 1
 }
 
+# Collect kick stats
+$3 == "<--" && $6 == "kicked" {
+    kicks += 1
+    kickers[$4] += 1
+    kickees[$7] += 1
+}
+
 END {
-    for (i in blamers) num_blamers++
-    for (i in blamees) num_blamees++
+    ### blames
+    if (showblames == "true") {
+        for (i in blamers) num_blamers++
+        for (i in blamees) num_blamees++
 
-    print "There has been", blames, "aspersions cast",
-        "about", num_blamees, "innocent souls",
-        "by", num_blamers, "vicious haters",
-        "since", begindate "."
+        print "\nThere has been", blames, "aspersions cast",
+            "about", num_blamees, "innocent souls",
+            "by", num_blamers, "vicious haters",
+            "since", begindate "."
 
-    print "\nTop 5 blamers:"
+        print "\nTop 5 blamers:"
 
-    command = "sort -r -n -k4 | head -5"
+        command = "sort -r -n -k4 | head -5"
 
-    for (person in blamers) print "\t" person, "cast blame", blamers[person],
-         "times" | command
-    close(command)
+        for (person in blamers) print "\t" person, "cast blame", blamers[person],
+            "times" | command
+        close(command)
 
-    print "\nTop 5 blamees:"
+        print "\nTop 5 blamees:"
 
-    for (person in blamees) print "\t" person, "was blamed", blamees[person],
-         "times" | command
-    close(command)
+        for (person in blamees) print "\t" person, "was blamed", blamees[person],
+            "times" | command
+        close(command)
+    }
+
+    ### kicks
+    if (showkicks == "true") {
+        for (i in kickers) num_kickers++
+        for (i in kickees) num_kickees++
+
+        print "\nThere has been", kicks, "forceful explusions from our fair channel",
+            "of", num_kickees, "innocent victims",
+            "by", num_kickers, "wrathful bullies",
+            "since", begindate "."
+
+        print "\nTop 5 kickers:"
+
+        command = "sort -r -n -k4 | head -5"
+
+        for (person in kickers) print "\t" person, "has kicked", kickers[person],
+            "times" | command
+        close(command)
+
+        print "\nTop 5 kickees:"
+
+        for (person in kickees) print "\t" person, "was kicked", kickees[person],
+            "times" | command
+        close(command)
+    }
+
+    ### penoactions
+    if (penovwhiteinge == "true") {
+        print "\npeno has done the following horrible things to whiteinge:"
+
+        penocommand = "sort -r -n -k4"
+
+        for (action in penoactions) print "\t" action, penoactions[action],
+            "times" | penocommand
+        close(penocommand)
+    }
 }
