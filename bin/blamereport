@@ -1,10 +1,9 @@
 #!/usr/bin/awk -f
-# Extract blame statistics from Weechat logs of the following form:
-# 2011-04-19 15:26:10	 *	peno blames whiteinge 
-# 2010-09-25 04:32:43     <--     peno has kicked socnag (i hate you so much)
+# Extract IRC statistics from Weechat logs for various things.
 #
-# Usage:
-#   blamereport showkicks=true showblames=true penovwhiteinge=true
+# Usage (include one of the following parameters):
+#   blamereport showkicks=true showblames=true penovwhiteinge=true \
+#       showchatty=true showjoinsparts=true showemotes=true
 
 {
     IGNORECASE = 1
@@ -12,6 +11,29 @@
     if (NR == 1) {
         begindate = $1
     }
+}
+
+$0 ~ /hobo knife/ {
+    knife += 1
+}
+
+# Collect chatty stats
+$3 ~ /[a-zA-Z@+_-]+/ {
+    sub(/@/, "", $3)
+    sub(/+/, "", $3)
+    chatty[$3] += 1
+}
+
+# Collect joins
+$6 == "has" && $7 == "joined" {
+    joins_parts[$4] += 1
+    joins[$4] = $1
+}
+
+# Collect parts
+$6 == "has" && $7 == "quit" {
+    joins_parts[$4] += 1
+    quits[$4] = $1
 }
 
 # Collect peno vs. whiteinge stats
@@ -32,11 +54,22 @@ $3 == "*" && $5 == "blames" {
     blamees[$6] += 1
 }
 
+# Collect emote stats
+$3 == "*" {
+    emotes[$4] += 1
+}
+
 # Collect kick stats
 $3 == "<--" && $6 == "kicked" {
     kicks += 1
     kickers[$4] += 1
     kickees[$7] += 1
+
+    reason = ""
+    for (i=8; i<=NF; i++) {
+        reason = reason " " $i
+    }
+    kick_reasons[reason] += 1
 }
 
 END {
@@ -88,6 +121,11 @@ END {
         for (person in kickees) print "\t" person, "was kicked", kickees[person],
             "times" | command
         close(command)
+
+        if (showkickreasons == "true") {
+            print "\nReasons for kicking:"
+            for (reason in kick_reasons) print "\t" reason
+        }
     }
 
     ### penoactions
@@ -99,5 +137,48 @@ END {
         for (action in penoactions) print "\t" action, penoactions[action],
             "times" | penocommand
         close(penocommand)
+    }
+
+    ### chattyness
+    if (showchatty == "true") {
+        print "\nThe five most talkative people since", begindate, "are:\n"
+
+        chattycommand = "sort -r -n -k4 | head -5"
+        for (person in chatty) print "\t" person, "spoke up", chatty[person],
+             "times" | chattycommand
+        close(chattycommand)
+    }
+
+    ### joins/parts
+    if (showjoinsparts == "true") {
+        print "\nThe five people who have joined/parted most often since",
+              begindate, "are:\n"
+
+        joinpartcommand = "sort -r -n -k3 | head -5"
+        for (person in joins_parts) print "\t" person, "joined/parted",
+             joins_parts[person], "times" | joinpartcommand
+        close(joinpartcommand)
+    }
+
+    ### emotes
+    if (showemotes == "true") {
+        print "\nThe five people who have emoted most often since",
+              begindate, "are:\n"
+
+        emotecommand = "sort -r -n -k3 | head -5"
+        for (person in emotes) print "\t" person, "emoted",
+             emotes[person], "times" | emotecommand
+        close(emotecommand)
+    }
+
+    ### hobo knife
+    if (showknife == "true") {
+        print "\nThere have been", knife, "hobo-knife wielding individuals since",
+              begindate, "\n"
+
+        # emotecommand = "sort -r -n -k3 | head -5"
+        # for (person in emotes) print "\t" person, "emoted",
+        #      emotes[person], "times" | emotecommand
+        # close(emotecommand)
     }
 }
