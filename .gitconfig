@@ -10,7 +10,6 @@
     b = branch -v
     bc = branch --contains
     f = fetch --all
-    m = merge @{upstream}
     re = reset --hard @{upstream}
     w = whatchanged -m
 
