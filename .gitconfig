@@ -20,6 +20,7 @@
 
     rl = reflog  --date=relative 
     short = rev-parse --short
+    m = merge --no-ff
 
     showmerge = log --stat -c -p -1
 
