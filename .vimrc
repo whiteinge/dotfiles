@@ -55,6 +55,8 @@ set pastetoggle=<F5>            "pt:    useful so auto-indenting doesn't mess up
 set virtualedit=block           "ve:    let cursor move past the last char in <C-v> mode
 set nostartofline               "sol:   avoid moving cursor to BOL when jumping around
 
+set cryptmethod=blowfish        "cm:    use (much) stronger blowfish encryption
+
 " Fix for legacy vi inconsistency
 map Y y$
 
