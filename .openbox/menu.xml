@@ -23,7 +23,7 @@
   <item label="chrome">
       <action name="Execute">
           <startupnotify><enabled>yes</enabled></startupnotify>
-          <command>chromium-browser --enable-extension-timeline-api</command>
+          <command>google-chrome</command>
       </action>
   </item>
 
