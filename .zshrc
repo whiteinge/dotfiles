@@ -152,6 +152,9 @@ alias df='df -h'
 alias dus='du -sh'
 alias info='info --vi-keys'
 
+# Quickly ssh through a bastian host without having to hard-code in ~/.ssh/config
+alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
+
 # Useful for accessing versioned Mercurial Queues
 alias mq='hg -R $(hg root)/.hg/patches'
 
