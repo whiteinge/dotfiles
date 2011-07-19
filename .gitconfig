@@ -45,6 +45,12 @@
     smtpuser = whiteinge@gmail.com
     smtpserverport = 587
 
+[diff]
+    tool = vimdiff
+
+[difftool "gvimdiff"]
+    cmd = gvimdiff $LOCAL $REMOTE
+
 [merge]
     tool = vimdiffunmerge
 
