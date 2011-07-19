@@ -11,12 +11,13 @@
     bc = branch --contains
     f = fetch --all
     re = reset --hard @{upstream}
+    short = rev-parse --short
+    m = merge --no-ff
 
     l = log --oneline --decorate
     ll = log --stat --decorate --abbrev-commit --date=relative
     rl = reflog  --date=relative 
-    short = rev-parse --short
-    m = merge --no-ff
+    stat = diff --stat
 
     serve = "!git daemon --base-path=$(git rev-parse --show-toplevel) --export-all"
 
