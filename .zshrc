@@ -108,13 +108,16 @@ bindkey -M vicmd '^n' history-beginning-search-forward
 zle -N edit-command-line
 bindkey -M vicmd "v" edit-command-line
 
-# autoload -U promptinit
-# promptinit
-# prompt adam2 grey green magenta white
+# Set up prompt
 if [[ ! -n "$ZSHRUN" ]]; then
-    # FIXME: there must be a better way
     source $HOME/.zsh_shouse_prompt
-    source $HOME/.zsh_functions/zsh-syntax-highlighting.zsh
+
+    # Fish shell like syntax highlighting for Zsh:
+    # git clone git://github.com/nicoulaj/zsh-syntax-highlighting.git \
+    #   $HOME/.zsh-syntax-highlighting/
+    if [[ -d $HOME/.zsh-syntax-highlighting/ ]]; then
+        source $HOME/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    fi
 fi
 
 # This is a workaround for tmux. When you clear the terminal with ctrl-l
