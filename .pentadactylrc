@@ -47,3 +47,6 @@ map <Leader>n :nohlfind<cr>
 autocmd LocationChange .* :set editor="gvim -f"
 autocmd LocationChange mail\.google\.com :set editor="gvim -f -c 'set ft=mail'"
 autocmd LocationChange groups\.google\.com :set editor="gvim -f -c 'set ft=mail'"
+
+""" Plugin settings
+set fbwhitelist=youtube.com,gameloft.com,github.com
