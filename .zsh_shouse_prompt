@@ -156,7 +156,8 @@ function setprompt() {
     lines+=( "%(1j.${gray}%j${reset} .)%(0?.${white}.${red})%#${reset} " )
 
     ### Add dungeon floor to each line
-    # Allow easy toggling of pet display
+    # Allow easy toggling of pet display:
+    # zstyle ':pr-nethack:' show-pet false
     if zstyle -T ":pr-nethack:" show-pet ; then
         dungeon=${(l:$(( ${#lines} * 3 ))::.:)}
         dungeon[$[${RANDOM}%${#dungeon}]+1]=$pet
