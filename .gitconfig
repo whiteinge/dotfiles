@@ -37,9 +37,7 @@
     excludesfile = /home/shouse/.gitignore
 
 [color]
-    diff = auto
-    status = auto
-    branch = auto
+    ui = auto
 
 [sendemail]
     smtpencryption = tls
