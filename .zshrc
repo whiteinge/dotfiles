@@ -150,7 +150,6 @@ alias dirtree="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e
 alias ps='ps -opid,uid,cpu,time,stat,command'
 alias df='df -h'
 alias dus='du -sh'
-alias cal='cal -3'
 alias info='info --vi-keys'
 
 # Useful for accessing versioned Mercurial Queues
