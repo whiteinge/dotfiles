@@ -1,0 +1,33 @@
+#!/bin/bash
+# Largely stolen from https://git.wiki.kernel.org/index.php/ExampleScripts
+# Outputs a graph containing the short SHA and any refs
+#
+# git graph-dag HEAD~10.. | dot -Tpng | display -antialias
+
+set -e
+
+if [[ -z $@ ]] ; then
+    echo -e "Usage: git graph-dag HEAD~10.. | dot -Tpng | display -antialias"
+    exit 1
+fi
+
+echo "digraph lattice {"
+
+git rev-list --pretty=format:"%H %h %d" "$@" | awk '
+!/^commit/ {
+    refs = ""
+    for (i=3; i<=NF; i++) refs = refs " " $i
+    print "n" $1, "[shape=Mrecord, style=filled, label=\"{" $2 refs "}\"]"
+}
+'
+
+git rev-list --parents "$@" |
+        while read commit parents
+        do
+                for p in $parents
+                do
+                        echo "n$commit -> n$p"
+                done
+        done
+
+echo "}"
