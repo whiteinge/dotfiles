@@ -461,28 +461,14 @@ au FileType xml,xslt compiler xmllint
 au FileType html compiler tidy
 au FileType java compiler javac
 
-" Python :make
-autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
-autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
-
-" Python :make for a visual selection
+" Add PYTHONPATH to Vim path to enable 'gf'
 if has('python')
     python << EOL
-import vim
-def EvaluateCurrentRange():
-    eval(compile('\n'.join(vim.current.range),'','exec'),globals())
-EOL
-    map <leader>p :py EvaluateCurrentRange()<cr>
-
-    " Add PYTHONPATH to Vim path to enable 'gf'
-    python << EOF
-import os
-import sys
-import vim
+import vim, os, sys
 for p in sys.path:
     if os.path.isdir(p):
         vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
-EOF
+EOL
 endif
 
 " Shortcut to invoke wordnet
@@ -490,6 +476,9 @@ noremap  <F7> "wyiw:call WordNetOverviews(@w)<CR>
 
 " Set keywordprg for certain filetypes
 au FileType python set keywordprg=pydoc
+
+" Set pyflakes to keep the clist available for regular use
+let g:pyflakes_use_quickfix = 0
 
 " For standards-compliant :TOhtml output
 let html_use_css=1
