@@ -1,12 +1,15 @@
 #!/bin/zsh
 # Given a range of commits, open the full diff of each commit as a separate
-# file in Vim (for the nice syntax highlighting; otherwise use $PAGER).
+# file in Vim (for the nice syntax highlighting).
 #
 # Examples:
-# Show all diffs present upstream but not locally:
+#
+# Show diffs for all incoming upstream changes:
 # git pagediffs ..@{u}
-
-# in = !echo view '<(git show '${^$(git rev-list -20 ..@{u})}\)
+#
+# Show diffs for all outgoing changes not yet pushed to origin (also excluding
+# merges and a specific branch):
+# git pagediffs origin/master.. --no-merges --not uninteresting_branch
 
 setopt RC_EXPAND_PARAM
 local -a revisions
