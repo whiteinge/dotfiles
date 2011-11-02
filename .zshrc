@@ -405,23 +405,32 @@ function add2virtualenv() {
 # }}}
 # Screencast helper {{{
 # Usage:
-# screencast [--size 800x600] [--window]
+# screencast [--window]
 
 function screencast() {
-    local now target
-    local -a size win geom
-    zparseopts -E -D -- s:=size -size:=size w=win -window=win
+    local now target size offset
+    local -a win wininfo
+    zparseopts -E -D -- w=win -window=win
 
     zformat -f target "%(c.root.frame)" c:${#win}
     now=$(date --rfc-3339=date)
 
-    geom=( $(xwininfo -${target} | awk '/geometry/ { split($2,geom,"+") }
-        END { print geom[1],geom[2] "," geom[3] }') )
+    wininfo=( $(xwininfo -stats -${target} | awk -F":" '
+        /Absolute.*X/ { x=$2 }
+        /Absolute.*Y/ { y=$2 }
+        /Width/ { w=$2 }
+        /Height/ { h=$2 }
+        END { print w, h, x, y }') )
+
+    size=${(j:x:)${wininfo[1,2]}}
+    offset=${(j:,:)${wininfo[3,4]}}
 
     ffmpeg -f alsa -ac 2 -i hw:0,0 \
-        -f x11grab -r 30 -s ${size[2]:=${geom[1]}} -i :0.0+${geom[2]} \
+        -f x11grab -r 30 -s ${size} -i ${DISPLAY}+${offset} \
         -acodec pcm_s16le -vcodec libx264 -vpre lossless_ultrafast \
         -threads 0 -y $HOME/screencast-${now}.avi
+
+    return $?
 }
 
 # }}}
