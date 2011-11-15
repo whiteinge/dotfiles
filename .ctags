@@ -1,9 +1,5 @@
 --python-kinds=-iv
 
---langdef=rst
---langmap=rst:.rst
---regex-rst=/^([-=`:.'"~^_*+#])+$/\1/s,Heading/e
-
 --langdef=markdown
 --langmap=markdown:.markdown
 --regex-markdown=/^#[ \t]+(.*)/\1/h,heading1/
