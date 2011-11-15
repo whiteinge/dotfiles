@@ -378,9 +378,6 @@ function! MyStatusLine()
     let s .= '%=' " separate right- from left-aligned
     let s .= '%*' " restore normal highlighting
     let s .= '%7*  ' " user highlighting
-    if exists("*VimBuddy") 
-        let s .= '%{VimBuddy()} ' " Vimming will never be lonely again.
-    endif
     let s .= '%*' " restore normal highlighting
     let s .= '%1*' " User highlighting
     let s .= '%l' " current line number
