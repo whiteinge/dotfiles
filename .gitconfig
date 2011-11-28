@@ -21,9 +21,9 @@
 
     serve = "!git daemon --base-path=$(git rev-parse --show-toplevel) --export-all"
 
-    # Show all remote branches that have been merged into master
-    allmerged = "!git branch -r -v --no-abbrev --merged master | \
-        awk '!/master|HEAD/ { print $2,$1 }'"
+    # Show all remote branches that have been merged
+    allmerged = "!git branch -r -v --no-abbrev --merged | \
+        awk '!/master*|develop*|HEAD/ { print $2,$1 }'"
 
     ### Custom Git commands (found in ~/bin)
     # Push only the current branch to the upstream branch
