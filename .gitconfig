@@ -52,14 +52,14 @@
     cmd = gvimdiff $LOCAL $REMOTE
 
 [merge]
-    tool = vimdiffunmerge
+    tool = diffconflicts
 
-[mergetool "vimdiffunmerge"]
-    cmd = unmerge.sh vim $BASE $LOCAL $REMOTE $MERGED
+[mergetool "diffconflicts"]
+    cmd = diffconflicts vim $BASE $LOCAL $REMOTE $MERGED
     trustExitCode = true
     keepBackup = false
 
-[mergetool "gvimdiffunmerge"]
-    cmd = unmerge.sh gvim $BASE $LOCAL $REMOTE $MERGED
+[mergetool "gdiffconflicts"]
+    cmd = diffconflicts gvim $BASE $LOCAL $REMOTE $MERGED
     trustExitCode = true
     keepBackup = false

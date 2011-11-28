@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Use *real* vimdiff to edit merge conflicts in Git
 #
 # Instead of editing a file with  <<<< ==== >>> conflict markers, this opens
@@ -19,8 +19,9 @@
 # Put the following in your ~/.gitconfig (you can substitute vim for gvim):
 #
 # [mergetool "vimdiffconflicts"]
-#     cmd = unmerge.sh vim $BASE $LOCAL $REMOTE $MERGED
+#     cmd = diffconflicts vim $BASE $LOCAL $REMOTE $MERGED
 #     trustExitCode = true
+#     keepBackup = false
 
 if [[ -z $@ || $# != "5" ]] ; then
     echo -e "Usage: $0 \$BASE \$LOCAL \$REMOTE \$MERGED"
