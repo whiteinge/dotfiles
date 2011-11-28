@@ -122,9 +122,9 @@
     <keybind key="W-q"><action name="Close"/></keybind>
 
     <!-- Keybindings for special/multimedia keys -->
-    <keybind key="XF86AudioRaiseVolume"><action name="Execute"><execute>amixer set Master 2+ unmute</execute></action></keybind>
-    <keybind key="XF86AudioLowerVolume"><action name="Execute"><execute>amixer set Master 2- unmute</execute></action></keybind>
-    <keybind key="XF86AudioMute"><action name="Execute"><execute>amixer set Master toggle</execute></action></keybind>
+    <keybind key="XF86AudioRaiseVolume"><action name="Execute"><execute>/home/shouse/bin/volscript up</execute></action></keybind>
+    <keybind key="XF86AudioLowerVolume"><action name="Execute"><execute>/home/shouse/bin/volscript down</execute></action></keybind>
+    <keybind key="XF86AudioMute"><action name="Execute"><execute>/home/shouse/bin/volscript mute</execute></action></keybind>
     <keybind key="XF86AudioNext"><action name="Execute"><execute>mpc next</execute></action></keybind>
     <keybind key="XF86AudioPrev"><action name="Execute"><execute>mpc prev</execute></action></keybind>
     <keybind key="XF86AudioPlay"><action name="Execute"><execute>mpc toggle</execute></action></keybind>
