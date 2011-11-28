@@ -68,6 +68,7 @@ VISUAL=vi
 LESS='-imJMWR'
 PAGER="less $LESS"
 MANPAGER=$PAGER
+GIT_PAGER=$PAGER
 BROWSER='chromium-browser'
 
 # Silence Wine debugging output (why isn't this a default?)
