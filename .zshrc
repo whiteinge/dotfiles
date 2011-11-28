@@ -47,6 +47,7 @@ export PYTHONSTARTUP
 
 # Local development projects go here
 SRCDIR=$HOME/src
+alias tworkon='SRCDIR=$HOME/tmp djworkon'
 
 HISTFILE=$HOME/.zsh_history
 HISTFILESIZE=65536  # search this with `grep | sort -u`
