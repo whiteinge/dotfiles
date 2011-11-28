@@ -54,13 +54,12 @@
 [merge]
     tool = vimdiffunmerge
 
-[mergetool]
-    keepBackup = false
-
 [mergetool "vimdiffunmerge"]
     cmd = unmerge.sh vim $BASE $LOCAL $REMOTE $MERGED
     trustExitCode = true
+    keepBackup = false
 
 [mergetool "gvimdiffunmerge"]
     cmd = unmerge.sh gvim $BASE $LOCAL $REMOTE $MERGED
     trustExitCode = true
+    keepBackup = false
