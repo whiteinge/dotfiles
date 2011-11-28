@@ -1,0 +1,104 @@
+[MASTER]
+
+profile=no
+persistent=yes
+ignore=CVS
+
+[MISCELLANEOUS]
+
+notes=FIXME,XXX,TODO
+
+[FORMAT]
+
+max-line-length=80
+max-module-lines=1000
+indent-string='    '
+
+[SIMILARITIES]
+
+min-similarity-lines=4
+ignore-comments=yes
+ignore-docstrings=yes
+
+[TYPECHECK]
+
+# Tells whether missing members accessed in mixin class should be ignored. A
+# mixin class is detected if its name ends with "mixin" (case insensitive).
+ignore-mixin-members=no
+
+# List of classes names for which member attributes should not be checked
+# (useful for classes with attributes dynamically set).
+ignored-classes=SQLObject
+
+# List of members which are set dynamically and missed by pylint inference
+# system, and so shouldn't trigger E0201 when accessed. Python regular
+# expressions are accepted.
+generated-members=REQUEST,acl_users,aq_parent
+
+[VARIABLES]
+
+init-import=yes
+dummy-variables-rgx=_|dummy
+additional-builtins=__salt__, __env__
+
+[BASIC]
+
+# Regular expression which should only match correct module names
+module-rgx=(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$
+
+# Regular expression which should only match correct module level names
+const-rgx=(([A-Z_][A-Z0-9_]*)|(__.*__))$
+
+# Regular expression which should only match correct class names
+class-rgx=[A-Z_][a-zA-Z0-9]+$
+
+# Regular expression which should only match correct function names
+function-rgx=[a-z_][a-z0-9_]{2,30}$
+
+# Regular expression which should only match correct method names
+method-rgx=[a-z_][a-z0-9_]{2,30}$
+
+# Regular expression which should only match correct instance attribute names
+attr-rgx=[a-z_][a-z0-9_]{2,30}$
+
+# Regular expression which should only match correct argument names
+argument-rgx=[a-z_][a-z0-9_]{2,30}$
+
+# Regular expression which should only match correct variable names
+variable-rgx=[a-z_][a-z0-9_]{2,30}$
+
+# Regular expression which should only match correct list comprehension /
+# generator expression variable names
+inlinevar-rgx=[A-Za-z_][A-Za-z0-9_]*$
+
+bad-functions=map,filter,apply,input
+good-names=i,j,k,ex,Run,_
+bad-names=foo,bar,baz,toto,tutu,tata
+no-docstring-rgx=__.*__
+
+[IMPORTS]
+
+deprecated-modules=regsub,string,TERMIOS,Bastion,rexec,md5
+
+[CLASSES]
+
+ignore-iface-methods=
+defining-attr-methods=__init__,__new__,setUp
+valid-classmethod-first-arg=cls
+
+[DESIGN]
+
+max-args=5
+ignored-argument-names=_.*
+max-locals=15
+max-returns=6
+max-branchs=12
+max-statements=50
+max-parents=7
+max-attributes=7
+min-public-methods=2
+max-public-methods=20
+
+[EXCEPTIONS]
+
+overgeneral-exceptions=Exception
