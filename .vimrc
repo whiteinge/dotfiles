@@ -443,6 +443,9 @@ autocmd BufReadPost *
 " Auto-set certain options as well as syntax highlighting and indentation
 filetype plugin indent on
 
+" Set filetype for Salt sls files
+au BufNewFile,BufRead *.sls set ft=sls
+
 " Set Omnicompletion for certain filetypes
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
