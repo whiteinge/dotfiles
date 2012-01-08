@@ -36,8 +36,8 @@ MERGED=$5
 
 # Remove the conflict markers for each side and put each result into the LOCAL
 # and REMOTE temporary files (since we're not using them otherwise).
-sed -e '/<<<<<<</,/=======/d' -e '/>>>>>>>/d' $MERGED > $LOCAL
-sed -e '/=======/,/>>>>>>>/d' -e '/<<<<<<</d' $MERGED > $REMOTE
+sed -e '/<<<<<<</,/^=======$/d' -e '/>>>>>>>/d' $MERGED > $LOCAL
+sed -e '/^=======$/,/>>>>>>>/d' -e '/<<<<<<</d' $MERGED > $REMOTE
 
 # Fire up vimdiff
 $cmd -f -d $BASE $LOCAL $REMOTE \
