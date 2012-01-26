@@ -115,7 +115,7 @@ function +vi-git-untracked() {
     untracked=${$(git ls-files --exclude-standard --others | head -n 1)}
 
     if [[ -n ${untracked} ]] ; then
-        hook_com[misc]+=" ${yellow}UT${reset}"
+        hook_com[unstaged]="${hook_com[unstaged]}${yellow}?${reset}"
     fi
 }
 
