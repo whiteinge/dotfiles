@@ -334,6 +334,8 @@ joinpdf () {
 alias pyhttp='python -m SimpleHTTPServer'
 # Start a echoing SMTP server
 alias pysmtp='python -m smtpd -n -c DebuggingServer localhost:1025'
+# Print an interactive Python shell session as regular Python (reads stdin)
+alias pyprintdoc='python -c "import doctest, sys; print doctest.script_from_examples(sys.stdin.read())"'
 
 # }}}
 # Django helper functions {{{
