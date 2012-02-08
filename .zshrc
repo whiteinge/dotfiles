@@ -330,7 +330,9 @@ joinpdf () {
 # }}}
 # Python development helpers {{{
 
+# Start a webserver in the current directory
 alias pyhttp='python -m SimpleHTTPServer'
+# Start a echoing SMTP server
 alias pysmtp='python -m smtpd -n -c DebuggingServer localhost:1025'
 
 # }}}
