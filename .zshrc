@@ -63,23 +63,20 @@ LANG=en_US.UTF-8
 LC_ALL=$LANG
 LC_COLLATE=C
 
-EDITOR=vi
-VISUAL=vi
+EDITOR='gvim -v'
+VISUAL='gvim -v'
+export GIT_EDITOR=$EDITOR
 LESS='-imJMWR'
 PAGER="less $LESS"
 MANPAGER=$PAGER
-GIT_PAGER=$PAGER
+export GIT_PAGER=$PAGER
 BROWSER='chromium-browser'
 
 # Silence Wine debugging output (why isn't this a default?)
 WINEDEBUG=-all
 
 # Set grep to ignore SCM directories
-if ! $(grep --exclude-dir 2> /dev/null); then
-    GREP_OPTIONS="--color --exclude-dir=.svn --exclude=\*.pyc --exclude-dir=.hg --exclude-dir=.bzr --exclude-dir=.git --exclude=tags"
-else
-    GREP_OPTIONS="--color --exclude=\*.svn\* --exclude=\*.pyc --exclude=\*.hg\* --exclude=\*.bzr\* --exclude=\*.git\* --exclude=tags"
-fi
+GREP_OPTIONS="--color --exclude-dir=.svn --exclude=\*.pyc --exclude-dir=.hg --exclude-dir=.bzr --exclude-dir=.git --exclude=tags --exclude-dir=_build"
 export GREP_OPTIONS
 
 # }}}
@@ -139,7 +136,7 @@ bindkey "^L" tmux-clear-screen
 alias zmv='noglob zmv'
 # e.g., zmv *.JPEG *.jpg
 
-alias vi='vim'
+alias vi='gvim -v'
 
 alias ls='ls -F --color'
 alias la='ls -A'
