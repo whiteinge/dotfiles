@@ -9,7 +9,7 @@
     d = diff
     b = branch -v
     bc = branch --contains
-    f = fetch --all
+    f = fetch --all --tags
     re = reset --hard @{upstream}
     short = rev-parse --short
     m = merge --no-ff
