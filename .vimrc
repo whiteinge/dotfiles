@@ -70,6 +70,8 @@ noremap ,<CR> :put_<CR>
 " A shortcut to show the numbered register contents
 map <F2> :reg "0123456789-*+:/<CR>
 
+set colorcolumn=80              "cc:    draw a visual line down the 80th column
+
 "lcs:   displays tabs with :set list & displays when a line runs off-screen
 set listchars=tab:>-,trail:\ ,precedes:<,extends:>
 
@@ -231,6 +233,8 @@ au BufEnter * hi User9 ctermfg=7
 hi TabLine cterm=bold,underline ctermfg=8 ctermbg=none
 hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
 hi TabLineFill cterm=bold ctermbg=none
+
+hi ColorColumn ctermbg=0
 
 " }}}
 " Printing {{{
