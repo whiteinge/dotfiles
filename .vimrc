@@ -100,19 +100,6 @@ nnoremap <silent> <Leader>l
       \   let w:long_line_match = matchadd('ErrorMsg', '\%>80v.\+', -1) <Bar>
       \ endif<CR>
 
-" VCS Diffs
-" Small, fast, windowed diff
-noremap <silent> ,hq :new +:read\ !hg\ diff\ #<CR>:exe Scratch()<CR>:set filetype=diff<CR>:set nofoldenable<CR>
-noremap <silent> ,sq :new +:read\ !svn\ diff\ #<CR>:exe Scratch()<CR>:set filetype=diff<CR>:set nofoldenable<CR>
-" Big, slow, fancy, tabbed vimdiff. When you're done just :tabclose the tab.
-noremap <silent> ,hd :tabnew %<CR> :vnew +:read\ !hg\ cat\ #<CR>:exe Scratch()<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
-noremap <silent> ,sd :tabnew %<CR> :vnew +:read\ !svn\ cat\ #<CR>:exe Scratch()<CR>:diffthis<CR><C-W>w :diffthis<CR>:set syntax=off<CR>
-
-" diff the current buffer with what it looked like when first loaded
-" (opens in a new tabpage to avoid interruption)
-command DiffOrig tab split | vert new | set bt=nofile | r # | 0d_ |
-    \ diffthis | wincmd p | diffthis
-
 " Find merge conflict markers
 map <Leader>fc /\v^[<=>]{7}( .*\|$)<CR>
 
