@@ -28,18 +28,18 @@ ignore-mixin-members=no
 
 # List of classes names for which member attributes should not be checked
 # (useful for classes with attributes dynamically set).
-ignored-classes=SQLObject
+ignored-classes=
 
 # List of members which are set dynamically and missed by pylint inference
 # system, and so shouldn't trigger E0201 when accessed. Python regular
 # expressions are accepted.
-generated-members=REQUEST,acl_users,aq_parent
+generated-members=
 
 [VARIABLES]
 
 init-import=yes
 dummy-variables-rgx=_|dummy
-additional-builtins=__salt__, __env__
+additional-builtins=__salt__, __grains__, __env__, __opts__
 
 [BASIC]
 
@@ -71,8 +71,8 @@ variable-rgx=[a-z_][a-z0-9_]{2,30}$
 # generator expression variable names
 inlinevar-rgx=[A-Za-z_][A-Za-z0-9_]*$
 
-bad-functions=map,filter,apply,input
-good-names=i,j,k,ex,Run,_
+bad-functions=apply,input
+good-names=i,e,j,k,ex,Run,_,logger
 bad-names=foo,bar,baz,toto,tutu,tata
 no-docstring-rgx=__.*__
 
@@ -84,11 +84,11 @@ deprecated-modules=regsub,string,TERMIOS,Bastion,rexec,md5
 
 ignore-iface-methods=
 defining-attr-methods=__init__,__new__,setUp
-valid-classmethod-first-arg=cls
+valid-classmethod-first-arg=cls,klass
 
 [DESIGN]
 
-max-args=5
+max-args=7
 ignored-argument-names=_.*
 max-locals=15
 max-returns=6
