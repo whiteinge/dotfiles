@@ -223,6 +223,9 @@ hi TabLineFill cterm=bold ctermbg=none
 
 hi ColorColumn ctermbg=0
 
+" Refresh busted syntax highlighting (this happens too often)
+noremap <F11> <Esc>:syntax sync fromstart<CR>
+
 " }}}
 " Printing {{{
 
