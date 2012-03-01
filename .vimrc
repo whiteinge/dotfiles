@@ -365,6 +365,9 @@ function! MyStatusLine()
     let s .= '%*' " restore normal highlighting
     let s .= '>'
     let s .= '%a' " (args of total)
+    let s .= '%q' " is quickfix or location list
+    let s .= '%4*' " User highlighting
+    let s .= ' %{fugitive#statusline()}'
     let s .= '  %9*' " user highlighting
     let s .= '%=' " separate right- from left-aligned
     let s .= '%*' " restore normal highlighting
