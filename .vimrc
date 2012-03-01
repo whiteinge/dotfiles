@@ -471,6 +471,11 @@ noremap  <F7> "wyiw:call WordNetOverviews(@w)<CR>
 " Set keywordprg for certain filetypes
 au FileType python set keywordprg=pydoc
 
+" Configure Python files to use pylint on :make
+" (supports error type and multiline errors)
+au FileType python set makeprg=pylint\ -E\ -r\ n\ -f\ parseable\ %:p
+au FileType python set efm=%A%f:%l:\ [%t%.%#]\ %m,%Z%p^^,%-C%.%#
+
 " Set pyflakes to keep the clist available for regular use
 let g:pyflakes_use_quickfix = 0
 
