@@ -505,36 +505,44 @@ au FileType gitcommit DiffGitCached | set nowrap | wincmd p
 " Mapping to invoke Gundo
 nnoremap <F5> :GundoToggle<CR>
 
-" Taglist plugin settings
-map <F3> :TlistToggle<cr>
-let Tlist_Use_Right_Window = 1
-let Tlist_Compact_Format = 1
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_File_Fold_Auto_Close = 1
+" Tagbar plugin settings
+autocmd VimEnter * nested :call tagbar#autoopen(1)
+map <F3> :TagbarToggle<cr>
+let g:tagbar_sort = 0
+let g:tagbar_compact = 1
+let g:tagbar_autoshowtag = 1
+let g:tagbar_width = 25
+let g:tagbar_iconchars = ['+', '-']
 
-au FileType rst let Tlist_Ctags_Cmd = 'rst2ctags --taglist'
+" ft-specific tagbar settings
+let g:tagbar_type_python = {
+    \ 'kinds' : [
+        \ 'c:classes',
+        \ 'f:functions',
+        \ 'm:class members',
+        \ 'v:variables:1',
+        \ 'i:imports:1'
+    \ ]
+\ }
 
-" Auto-open taglist only if not in diff mode and the term wide enough to also
+let g:tagbar_type_rst = {
+    \ 'ctagsbin' : 'rst2ctags',
+    \ 'ctagsargs' : '--taglist',
+    \ 'kinds' : [
+        \ 's:Sections',
+        \ 'i:Images',
+    \ ],
+\ }
+
+" Auto-open tagbar only if not in diff mode and the term wide enough to also
 " fit an 80-column window (plus eight for line numbers and the fold column).
-if &columns > 118 && ! &diff
-    let Tlist_Auto_Open = 1
+if &columns > 118
+    au FileType python,rst nested TagbarOpen
 else
-    let Tlist_GainFocus_On_ToggleOpen = 1
-    let Tlist_File_Fold_Auto_Close = 1
+    let g:tagbar_autoclose = 1
+    let g:tagbar_autofocus = 1
 endif
 
-" Custom tag generation for some filetypes (see ~/.ctags file)
-" <lang>;flag1:name1;flag2:name2;flag3:name3
-let tlist_xml_settings = 'xml;i:id'
-let tlist_xhtml_settings = tlist_xml_settings
-let tlist_html_settings = tlist_xml_settings
-let tlist_htmldjango_settings = tlist_xml_settings
-let tlist_css_settings = 'css;s:Selectors'
-let tlist_js_settings = 'js;o:function;f:object'
-let tlist_tex_settings = 'tex;c:Chapters;s:Sections;l:Labels;r:Refs'
-let tlist_latex_settings = 'latex;s:Sections;l:Labels'
-let tlist_markdown_settings = 'markdown;h:Headings'
-let tlist_rst_settings = 'rst;s:sections;i:images'
 
 " Makes the current buffer a scratch buffer
 function! Scratch()
