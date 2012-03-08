@@ -431,6 +431,9 @@ set tabline=%!MyTabLine()
 
 " Autocommands, plugin, and file-type-specific settings {{{
 
+" Load Pathogen plugins
+call pathogen#infect()
+
 " Remember last position in file
 autocmd BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
