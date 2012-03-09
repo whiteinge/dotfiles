@@ -64,8 +64,9 @@ map Y y$
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
-" Shortcut to add new blank line without entering insert mode
-noremap ,<CR> :put_<CR>
+" Add a line without changing position or leaving mode
+map <leader>o :set paste<CR>m`o<Esc>``:set nopaste<CR>
+map <leader>O :set paste<CR>m`O<Esc>``:set nopaste<CR>
 
 " A shortcut to show the numbered register contents
 map <F2> :reg "0123456789-*+:/<CR>
