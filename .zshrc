@@ -59,21 +59,21 @@ WATCH=notme         # Report any login/logout of other users
 WATCHFMT='%n %a %l from %m at %T.'
 
 # utf-8 in the terminal, will break stuff if your term isn't utf aware
-LANG=en_US.UTF-8 
-LC_ALL=$LANG
-LC_COLLATE=C
+export LANG=en_US.UTF-8 
+export LC_ALL=$LANG
+export LC_COLLATE=C
 
-EDITOR='gvim -v'
-VISUAL='gvim -v'
+export EDITOR='gvim -v'
+export VISUAL='gvim -v'
 export GIT_EDITOR=$EDITOR
-LESS='-imJMWR'
-PAGER="less $LESS"
-MANPAGER=$PAGER
+export LESS='-imJMWR'
+export PAGER="less $LESS"
+export MANPAGER=$PAGER
 export GIT_PAGER=$PAGER
-BROWSER='chromium-browser'
+export BROWSER='chromium-browser'
 
 # Silence Wine debugging output (why isn't this a default?)
-WINEDEBUG=-all
+export WINEDEBUG=-all
 
 # Set grep to ignore SCM directories
 GREP_OPTIONS="--color --exclude-dir=.svn --exclude=\*.pyc --exclude-dir=.hg --exclude-dir=.bzr --exclude-dir=.git --exclude=tags --exclude-dir=_build"
