@@ -17,4 +17,4 @@ local -a revisions
 revisions=( ${(f)$(git rev-list --reverse ${@})} )
 [[ ${#revisions} -gt 0 ]] || exit 1
 
-eval vim -R "<(git show -p --stat ${=revisions})"
+eval $EDITOR "<(git show -p --stat ${=revisions})"
