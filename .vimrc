@@ -462,13 +462,18 @@ au FileType xml,xslt compiler xmllint
 au FileType html compiler tidy
 au FileType java compiler javac
 
-" Add PYTHONPATH to Vim path to enable 'gf'
+" Add PYTHONPATH to Vim path to enable 'gf' (also works when in a virtualenv)
 if has('python')
-    python << EOL
-import vim, os, sys
-for p in sys.path:
-    if os.path.isdir(p):
-        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+py << EOL
+import vim, os, site, sys
+basedir = os.environ.get('VIRTUAL_ENV', '')
+if basedir:
+    pyver = 'python{0}'.format('.'.join(sys.version.split('.')[:2]))
+    libdir = os.path.join(basedir, 'lib', pyver, 'site-packages')
+    site.addsitedir(libdir)
+
+paths = [i.replace(' ', r'\ ') for i in sys.path if os.path.isdir(i)]
+vim.command(r'set path+={0}'.format(','.join(paths)))
 EOL
 endif
 
