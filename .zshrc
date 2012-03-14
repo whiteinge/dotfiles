@@ -363,34 +363,27 @@ djsetup()
 }
 
 # work on virtualenv
-function djworkon(){
-    cd ./$1 2>/dev/null || cd $SRCDIR/$1 2>/dev/null || return 1
-    [[ -f ./bin/activate ]] || return 1
+function workon(){
+    local vchkdirs
 
-    source ./bin/activate
+    for vchkdirs in $1/bin/activate $SRCDIR/$1/bin/activate ; do
+        if [[ -f $vchkdirs ]] ; then
+            source $vchkdirs
+            break
+        fi
+    done
 
-    VENV_PY_VER=$(python -c "import sys; print '.'.join(map(str, sys.version_info[:2]))")
-    VENV_SITE_PKGS="$VIRTUAL_ENV/lib/python$VENV_PY_VER/site-packages"
-    alias cdsitepackages="cd $VENV_SITE_PKGS"
-    alias cdproject="cd $VIRTUAL_ENV/project"
+    [[ -n $VIRTUAL_ENV ]] || error 1 "virtualenv activate script not found"
 
-    # Set up django environ vars
-    if [[ -f project/debug_settings.py ]]; then
-        export PYTHONPATH=$PWD/project:$PYTHONPATH
-        export DJANGO_SETTINGS_MODULE=debug_settings
-    fi
-}
-
-# Format Django's json dumps as one-record-per-line
-function djfmtjson() {
-    sed -i'.bak' -e 's/^\[/\[\n/g' -e 's/]$/\n]/g' -e 's/}}, /}},\n/g' $1
+    VIRTUAL_ENV_LIB="$(python -c 'from distutils import sysconfig; print sysconfig.get_python_lib()')"
+    alias cdsitepackages="cd $VIRTUAL_ENV_LIB"
 }
 
 # Quickly add system-level Python libs to the active virtualenv
 # Stolen from virtualenvwrapper
 function add2virtualenv() {
-    [[ -z $VIRTUAL_ENV || -z $VENV_SITE_PKGS ]] && return 1
-    local path_file="$VENV_SITE_PKGS/virtualenv_path_extensions.pth"
+    [[ -z $VIRTUAL_ENV || -z $VIRTUAL_ENV_LIB ]] && return 1
+    local path_file="$VIRTUAL_ENV_LIB/virtualenv_path_extensions.pth"
     touch "$path_file"
 
     for pydir in "$@" ; do
@@ -398,7 +391,7 @@ function add2virtualenv() {
         if [[ -d $absolute_path ]] ; then
             echo "$absolute_path" >> "$path_file"
         elif [[ -r $absolute_path ]] ; then
-            ln -s $absolute_path $VENV_SITE_PKGS/
+            ln -s $absolute_path $VIRTUAL_ENV_LIB/
         else
             echo "Could not read path: $absolute_path"
         fi
