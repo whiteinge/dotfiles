@@ -334,32 +334,9 @@ alias pysmtp='python -m smtpd -n -c DebuggingServer localhost:1025'
 # Print an interactive Python shell session as regular Python (reads stdin)
 alias pyprintdoc='python -c "import doctest, sys; print doctest.script_from_examples(sys.stdin.read())"'
 
-# }}}
-# Django helper functions {{{
-
-# For a monolithic project, just run the function from the project folder.
-# For a reusable app, run the function from the folder containing the settings
-# file, and pass the settings file as an argument.
-# E.g.::
-#   # Project configuration
-#   cd my_django_project
-#   djsetup
-#   django-admin.py runserver
-#   # Reusuable configuration
-#   cd dir_with_settings_file
-#   djsetup someproject_settings.py
-#   django-admin.py runserver
-djsetup()
-{
-    if [ x"$1" != x ]; then   # args were given
-        export PYTHONPATH=$PWD:$PYTHONPATH
-        export DJANGO_SETTINGS_MODULE=$(basename $1 .py)
-    else
-        cd ..
-        export PYTHONPATH=$PWD:$PYTHONPATH
-        export DJANGO_SETTINGS_MODULE=$(basename $OLDPWD).settings
-        cd $OLDPWD
-    fi
+# Format Django's json dumps as one-record-per-line
+function djfmtjson() {
+    sed -i'.bak' -e 's/^\[/\[\n/g' -e 's/]$/\n]/g' -e 's/}}, /}},\n/g' $1
 }
 
 # work on virtualenv
