@@ -225,7 +225,7 @@ alias rtm="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
 function error() {
     EXIT=$1 ; MSG=${2:-"$NAME: Unknown Error"}
     [[ $EXIT -eq 0 ]] && echo $MSG || echo $MSG 1>&2
-    exit $EXIT
+    return $EXIT
 }
 
 # }}}
