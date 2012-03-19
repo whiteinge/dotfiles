@@ -512,7 +512,6 @@ au FileType gitcommit DiffGitCached | set nowrap | wincmd p
 nnoremap <F5> :GundoToggle<CR>
 
 " Tagbar plugin settings
-autocmd VimEnter * nested :call tagbar#autoopen(1)
 map <F3> :TagbarToggle<cr>
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
@@ -543,7 +542,9 @@ let g:tagbar_type_rst = {
 " Auto-open tagbar only if not in diff mode and the term wide enough to also
 " fit an 80-column window (plus eight for line numbers and the fold column).
 if &columns > 118
-    au FileType python,rst nested TagbarOpen
+    if ! &diff
+        au VimEnter * nested :call tagbar#autoopen(1)
+    endif
 else
     let g:tagbar_autoclose = 1
     let g:tagbar_autofocus = 1
