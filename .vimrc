@@ -511,6 +511,10 @@ au FileType gitcommit DiffGitCached | set nowrap | wincmd p
 " Mapping to invoke Gundo
 nnoremap <F5> :GundoToggle<CR>
 
+" Syntastic settings
+let g:syntastic_enable_highlighting = 0
+nmap <silent> <leader>y :SyntasticCheck<cr>
+
 " Tagbar plugin settings
 map <F3> :TagbarToggle<cr>
 let g:tagbar_sort = 0
