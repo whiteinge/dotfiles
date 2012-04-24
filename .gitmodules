@@ -1,0 +1,36 @@
+[submodule ".vim/bundle/DrawIt"]
+	path = .vim/bundle/DrawIt
+	url = git://github.com/vim-scripts/DrawIt.git
+[submodule ".vim/bundle/gitv"]
+	path = .vim/bundle/gitv
+	url = git://github.com/gregsexton/gitv.git
+[submodule ".vim/bundle/Gundo"]
+	path = .vim/bundle/Gundo
+	url = git://github.com/vim-scripts/Gundo.git
+[submodule ".vim/bundle/nerdtree"]
+	path = .vim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule ".vim/bundle/salt-vim"]
+	path = .vim/bundle/salt-vim
+	url = git://github.com/saltstack/salt-vim.git
+[submodule ".vim/bundle/surround.vim"]
+	path = .vim/bundle/surround.vim
+	url = git://github.com/vim-scripts/surround.vim.git
+[submodule ".vim/bundle/syntastic"]
+	path = .vim/bundle/syntastic
+	url = git://github.com/scrooloose/syntastic.git
+[submodule ".vim/bundle/tagbar"]
+	path = .vim/bundle/tagbar
+	url = git://github.com/majutsushi/tagbar.git
+[submodule ".vim/bundle/tslime"]
+	path = .vim/bundle/tslime
+	url = http://github.com/vim-scripts/tslime.vim
+[submodule ".vim/bundle/vim-fugitive"]
+	path = .vim/bundle/vim-fugitive
+	url = git://github.com/tpope/vim-fugitive.git
+[submodule ".vim/bundle/vim-indent-object"]
+	path = .vim/bundle/vim-indent-object
+	url = git://github.com/michaeljsmith/vim-indent-object.git
+[submodule ".vim/bundle/wordlist.vim"]
+	path = .vim/bundle/wordlist.vim
+	url = git://github.com/vim-scripts/wordlist.vim.git
