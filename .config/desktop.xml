@@ -1,4 +1,5 @@
 <!-- Load this file via: gconftool-2 --load ~/src/dotfiles/.conf/desktop.xml -->
+<!-- Also run: gsettings set org.gnome.desktop.interface gtk-key-theme "Emacs" -->
 <gconfentryfile>
   <entrylist base="/desktop">
 
