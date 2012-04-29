@@ -1,5 +1,6 @@
 [general]
 accounts = Gmail
+ui = quiet
 
 [Account Gmail]
 localrepository = Local
