@@ -100,16 +100,13 @@ sys.displayhook = my_displayhook
 # Welcome message
 #################
 
-WELCOME = """%(LightBlue)s
-The Python shell is coming at 'ya, punk!
+WELCOME = """\
 %(Cyan)s
 You've got color, history, and pretty printing.
 (If your ~/.inputrc doesn't suck, you've also
 got completion and vi-mode keybindings.)
 %(Brown)s
 Type \e to get an external editor.
-%(Blue)s
-Oh yeah, it is that cool.
 %(Normal)s""" % _c
 
 atexit.register(lambda: sys.stdout.write("""%(DarkGray)s
