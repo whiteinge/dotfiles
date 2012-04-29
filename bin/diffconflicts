@@ -3,18 +3,32 @@
 #
 # Instead of editing a file with  <<<< ==== >>> conflict markers, this opens
 # each "side" of the conflict markers in a two-way vimdiff window.
+#
 # (I'm not clear why this isn't the default behavior for Git's vimdiff
-# mergetool script. What purpose does the middle pane with the conflict markers
-# serve that vimdiff can't do better on its own?)
-# 
+# mergetool script. What purpose does the 'result' window with the conflict
+# markers serve that vimdiff can't do better on its own?)
+#
+# Layout:
+#
+#   Tab1 is a two-way diff of the conflicts.
+#       +--------------------------------+
+#       |    LCONFL     |    RCONFL      |
+#       +--------------------------------+
+#   Tab2 is a three-way diff of the original files and the merge base.
+#       +--------------------------------+
+#       |  LOCAL   |   BASE   |  REMOTE  |
+#       +--------------------------------+
+#
 # Workflow:
 #
-# 1.    Save your changes to the LOCAL temporary file (in the left window).
-# 2.    The base file for the merge is available if you want to look at it in
-#       the second tabpage.
+# 1.    Save your changes to the LCONFL temporary file (the left window on the
+#       first tab; also the only file that isn't read-only).
+# 2.    The LOCAL, BASE, and REMOTE versions of the file are available in the
+#       second tabpage if you want to look at them.
 # 3.    When vimdiff exits cleanly, the file containing the conflict markers
-#       will be updated with the contents of your LOCAL file edits.
-#       NOTE: Use :cq to abort the merge and exit vimdiff with an error code.
+#       will be updated with the contents of your LCONFL file edits.
+#
+# NOTE: Use :cq to abort the merge and exit Vim with an error code.
 #
 # Put the following in your ~/.gitconfig (you can substitute vim for gvim):
 #
@@ -33,24 +47,27 @@ BASE=$2
 LOCAL=$3
 REMOTE=$4
 MERGED=$5
+LCONFL=$(dirname $5)/$$.left.tmp
+RCONFL=$(dirname $5)/$$.right.tmp
 
-# Remove the conflict markers for each side and put each result into the LOCAL
-# and REMOTE temporary files (since we're not using them otherwise).
-sed -e '/<<<<<<</,/^=======$/d' -e '/>>>>>>>/d' $MERGED > $LOCAL
-sed -e '/^=======$/,/>>>>>>>/d' -e '/<<<<<<</d' $MERGED > $REMOTE
+# Remove the conflict markers for each 'side' and put each into a temp file
+sed -e '/<<<<<<</,/^=======$/d' -e '/>>>>>>>/d' $MERGED > $LCONFL
+sed -e '/^=======$/,/>>>>>>>/d' -e '/<<<<<<</d' $MERGED > $RCONFL
 
 # Fire up vimdiff
-$cmd -f -d $BASE $LOCAL $REMOTE \
-    -c ':diffoff' -c ':set scrollbind' -c 'wincmd T' -c ':tabfirst'
+$cmd -f -R -d $LCONFL $RCONFL \
+    -c ":set noro" \
+    -c ":tabe $LOCAL" -c ":vert diffs $BASE" -c ":vert diffs $REMOTE" \
+    -c ":tabfir"
 
 EC=$?
 
 # Overwrite $MERGED only if vimdiff exits cleanly.
 if [[ $EC == "0" ]] ; then
-    cat $LOCAL > $MERGED
+    cat $LCONFL > $MERGED
 fi
 
 # Always delete the temp files
-rm $BASE $LOCAL $REMOTE
+rm $BASE $LOCAL $REMOTE $LCONFL $RCONFL
 
 exit $EC
