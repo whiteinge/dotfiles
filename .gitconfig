@@ -29,6 +29,10 @@
     allmerged = "!git branch -r -v --no-abbrev --merged | \
         awk '!/master*|develop*|HEAD/ { print $2,$1 }'"
 
+    # Show the correct SHA for merging from FETCH_HEADS
+    showfetchhead = "!awk '!/not-for-merge/ {print $1}' \
+        $(git rev-parse --git-dir)/FETCH_HEAD"
+
     ### Custom Git commands (found in ~/bin)
     # Push only the current branch to the upstream branch
     p = pushcurrent
