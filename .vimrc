@@ -240,6 +240,7 @@ set printencoding=utf-8
 
 " NERDTree is a pretty slick (partial) replacement for :Explore
 let NERDTreeIgnore=['\.pyc$']
+let NERDTreeDirArrows=0
 map <F4> :NERDTreeToggle<cr>
 
 let g:netrw_hide=1          " Use the hiding list
