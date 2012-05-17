@@ -334,6 +334,9 @@ alias pysmtp='python -m smtpd -n -c DebuggingServer localhost:1025'
 # Print an interactive Python shell session as regular Python (reads stdin)
 alias pyprintdoc='python -c "import doctest, sys; print doctest.script_from_examples(sys.stdin.read())"'
 
+alias urlencode='python -c "import urllib2, sys; print urllib2.quote(sys.stdin.read().encode(\"utf8\"))"'
+alias urldecode='python -c "import urllib2, sys; print urllib2.unquote(sys.stdin.read().encode(\"utf8\"))"'
+
 # Format Django's json dumps as one-record-per-line
 function djfmtjson() {
     sed -i'.bak' -e 's/^\[/\[\n/g' -e 's/]$/\n]/g' -e 's/}}, /}},\n/g' $1
