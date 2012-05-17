@@ -448,11 +448,21 @@ filetype plugin indent on
 " Set filetype for Salt sls files
 au BufNewFile,BufRead *.sls set ft=sls
 
-" Set Omnicompletion for certain filetypes
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+" Load omnicompletion for supported filetypes
+" fallback to generic completion based on the syntax file
+if has("autocmd") && exists("+omnifunc")
+    autocmd FileType python set omnifunc=pythoncomplete#Complete
+    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+    autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+    autocmd FileType xml set omnifunc=phpcomplete#CompleteXML
+    autocmd FileType sql set omnifunc=phpcomplete#CompleteSQL
+    autocmd Filetype *
+                \   if &omnifunc == "" |
+                \           setlocal omnifunc=syntaxcomplete#Complete |
+                \   endif
+endif
 
 " Not sure why the cron filetype isn't catching this...
 au FileType crontab set backupcopy=yes
