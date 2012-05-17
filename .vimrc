@@ -104,6 +104,9 @@ nnoremap <silent> <Leader>l
 " Find merge conflict markers
 map <Leader>fc /\v^[<=>]{7}( .*\|$)<CR>
 
+set dictionary=spell        " dict:     complete words from the spelling dict (when spell is on)
+" set thesaurus             " tsr:      complete words from a thesaurus
+
 " }}}
 " Folding (spacebar toggles) {{{
 " Spacebar toggles a fold, zi toggles all folding, zM closes all folds
