@@ -451,6 +451,9 @@ filetype plugin indent on
 " Set filetype for Salt sls files
 au BufNewFile,BufRead *.sls set ft=sls
 
+" Set filetype for Jinja files
+au BufNewFile,BufRead *.jinja* set ft=jinja
+
 " Load omnicompletion for supported filetypes
 " fallback to generic completion based on the syntax file
 if has("autocmd") && exists("+omnifunc")
