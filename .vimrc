@@ -136,7 +136,9 @@ set scrolloff=1                 "so:    places a line between the current line a
 set sidescrolloff=2             "siso:  places a couple columns between the current column and the screen edge
 set laststatus=2                "ls:    makes the status bar always visible
 set ttyfast                     "tf:    improves redrawing for newer computers
-set viminfo='100,f1,:100,/100   "vi:    For a nice, huuuuuge viminfo file
+set history=200                 "hi:    number of search patterns and ex commands to remember
+                                "       (also used by viminfo below for /, :, and @ options)
+set viminfo='200                "vi:    For a nice, huuuuuge viminfo file
 
 if &columns < 88
     " If we can't fit at least 80-cols, don't display these screen hogs
@@ -178,7 +180,7 @@ endif
 
 " When restoring a hidden buffer Vim doesn't always keep the same view (like
 " when your view shows beyond the end of the file). (Vim tip 1375)
-if v:version >= 700
+if ! &diff
     au BufLeave * let b:winview = winsaveview()
     au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
 endif
@@ -188,6 +190,32 @@ nmap ]q :cnext
 nmap [q :cprev
 nmap ]Q :clast
 nmap [Q :cfirst
+
+" Disable one diff window during a three-way diff allowing you to cut out the
+" noise of a three-way diff and focus on just the changes between two versions
+" at a time. Inspired by Steve Losh's Splice
+function! DiffToggle(window)
+    " Save the cursor position and turn on diff for all windows
+    let l:save_cursor = getpos('.')
+    windo :diffthis
+
+    " Turn off diff for the specified window (but keep scrollbind) and move
+    " the cursor to the left-most diff window
+    exe a:window . "wincmd w"
+    diffoff
+    set scrollbind
+    set cursorbind
+    exe a:window . "wincmd " . (a:window == 1 ? "l" : "h")
+
+    " Update the diff and restore the cursor position
+    diffupdate
+    call setpos('.', l:save_cursor)
+endfunction
+" Toggle diff view on the left, center, or right windows
+nmap <silent> <leader>dl :call DiffToggle(1)<cr>
+nmap <silent> <leader>dc :call DiffToggle(2)<cr>
+nmap <silent> <leader>dr :call DiffToggle(3)<cr>
+
 
 " }}}
 " X11 Integration {{{
@@ -477,12 +505,6 @@ set tabline=%!MyTabLine()
 
 " Load Pathogen plugins
 call pathogen#infect()
-
-" Remember last position in file
-autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
 
 " Auto-set certain options as well as syntax highlighting and indentation
 filetype plugin indent on
