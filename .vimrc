@@ -480,12 +480,6 @@ set tabline=%!MyTabLine()
 " Load Pathogen plugins
 call pathogen#infect()
 
-" Remember last position in file
-autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-
 " Auto-set certain options as well as syntax highlighting and indentation
 filetype plugin indent on
 
