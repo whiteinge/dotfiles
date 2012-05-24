@@ -183,6 +183,12 @@ if v:version >= 700
     au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
 endif
 
+" Shortcuts for working with quickfix/location lists
+nmap ]q :cnext
+nmap [q :cprev
+nmap ]Q :clast
+nmap [Q :cfirst
+
 " }}}
 " X11 Integration {{{
 " (I.e.: don't do any automatic integration, please :)
