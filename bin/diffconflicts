@@ -18,6 +18,14 @@
 #       +--------------------------------+
 #       |  LOCAL   |   BASE   |  REMOTE  |
 #       +--------------------------------+
+#   Tab3 is the MERGED or 'result' file that contains the conflict markers.
+#       +--------------------------------+
+#       |       <<<<<<< HEAD             |
+#       |        LCONFL                  |
+#       |       =======                  |
+#       |        RCONFL                  |
+#       |       >>>>>>> someref          |
+#       +--------------------------------+
 #
 # Workflow:
 #
@@ -58,7 +66,7 @@ sed -e '/^=======$/,/>>>>>>>/d' -e '/<<<<<<</d' $MERGED > $RCONFL
 $cmd -f -R -d $LCONFL $RCONFL \
     -c ":set noro" \
     -c ":tabe $LOCAL" -c ":vert diffs $BASE" -c ":vert diffs $REMOTE" \
-    -c ":tabfir"
+    -c ":winc t" -c ":tabe $MERGED" -c ":tabfir"
 
 EC=$?
 
