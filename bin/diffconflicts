@@ -75,7 +75,7 @@ if [[ $EC == "0" ]] ; then
     cat $LCONFL > $MERGED
 fi
 
-# Always delete the temp files
-rm $BASE $LOCAL $REMOTE $LCONFL $RCONFL
+# Always delete our temp files; Git will handle it's own temp files
+rm $LCONFL $RCONFL
 
 exit $EC
