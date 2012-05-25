@@ -186,10 +186,10 @@ if ! &diff
 endif
 
 " Shortcuts for working with quickfix/location lists
-nmap ]q :cnext
-nmap [q :cprev
-nmap ]Q :clast
-nmap [Q :cfirst
+nmap ]q :cnext<cr>
+nmap [q :cprev<cr>
+nmap ]Q :clast<cr>
+nmap [Q :cfirst<cr>
 
 " Disable one diff window during a three-way diff allowing you to cut out the
 " noise of a three-way diff and focus on just the changes between two versions
