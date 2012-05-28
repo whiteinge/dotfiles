@@ -262,6 +262,9 @@ hi TabLineFill cterm=bold ctermbg=none
 " Black ColorColumn to not catch the eye more than is necessary
 hi ColorColumn ctermbg=0
 
+" Makes current line yellow against gray line numbers
+hi LineNr cterm=bold ctermfg=0 ctermbg=none
+
 " Refresh busted syntax highlighting (this happens too often)
 noremap <F11> <Esc>:syntax sync fromstart<CR>
 
