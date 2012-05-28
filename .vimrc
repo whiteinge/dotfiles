@@ -259,6 +259,7 @@ hi TabLine cterm=bold,underline ctermfg=8 ctermbg=none
 hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
 hi TabLineFill cterm=bold ctermbg=none
 
+" Black ColorColumn to not catch the eye more than is necessary
 hi ColorColumn ctermbg=0
 
 " Refresh busted syntax highlighting (this happens too often)
