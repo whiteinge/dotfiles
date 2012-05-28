@@ -73,6 +73,9 @@ map <F2> :reg "0123456789-*+:/<CR>
 
 set colorcolumn=80              "cc:    draw a visual line down the 80th column
 
+" Toggle between line numbers and relative line numbers
+nmap <silent><F10> :exe "set " . (&relativenumber == 1 ? "" : "relative") . "number"<cr>
+
 "lcs:   displays tabs with :set list & displays when a line runs off-screen
 set listchars=tab:>-,trail:\ ,precedes:<,extends:>
 
