@@ -60,4 +60,4 @@ def show_notification(chan,message):
     safe_chan = pattern.sub('', chan)
     safe_msg =  pattern.sub('', message)
 
-    os.system('notify-send -u %(urgency)s -i %(icon)s "%(safe_chan)s" "%(safe_msg)s" &' % locals())
+    os.system('notify-send --hint=int:transient:1 -u %(urgency)s -i %(icon)s "%(safe_chan)s" "%(safe_msg)s" &' % locals())
