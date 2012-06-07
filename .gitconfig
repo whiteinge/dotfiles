@@ -41,6 +41,9 @@
     in = pagediffs ..@{u}
     out = pagediffs @{u}..
 
+    # Output the commit that git svn dcommit will attempt to commit on top of
+    svnhead = !git --no-pager log --grep=^git-svn-id: --first-parent -1
+
 [core]
     excludesfile = /home/shouse/.gitignore
 
