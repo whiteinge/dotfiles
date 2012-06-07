@@ -592,18 +592,6 @@ else
     let g:tagbar_autofocus = 1
 endif
 
-" Outputs a small warning when opening a file that contains tab characters
-function! WarnTabs()
-    let save_cursor = getpos('.')
-    if searchpos('\t') != [0,0]
-        echohl WarningMsg |
-        \ echo "Warning, this file contains tabs." |
-        \ echohl None
-    endif
-    call setpos('.', save_cursor)
-endfunction
-autocmd BufReadPost * call WarnTabs()
-
 " }}}
 
 " eof
