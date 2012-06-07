@@ -330,7 +330,7 @@ endfunction
 
 " Return string used to comment line for current filetype.
 function! CommentStr()
-    if &ft == 'java' || &ft == 'javascript'
+    if &ft == 'java' || &ft == 'javascript' || &ft == 'php'
         return '//'
     elseif &ft == 'vim'
         return '"'
