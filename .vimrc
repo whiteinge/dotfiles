@@ -3,6 +3,9 @@
 " For more information type :help followed by the command.
 
 set nocompatible                "cp:    turns off strct vi compatibility
+filetype plugin indent on
+
+call pathogen#infect()
 
 " Search {{{
 
@@ -109,6 +112,12 @@ map <Leader>fc /\v^[<=>]{7}( .*\|$)<CR>
 
 set dictionary=spell        " dict:     complete words from the spelling dict (when spell is on)
 " set thesaurus             " tsr:      complete words from a thesaurus
+
+" Use generic omnicompletion if something more specific isn't already set
+if has("autocmd") && exists("+omnifunc")
+    au Filetype *
+        \ if &omnifunc == "" | setl omnifunc=syntaxcomplete#Complete | endif
+endif
 
 " }}}
 " Folding (spacebar toggles) {{{
@@ -539,73 +548,10 @@ set tabline=%!MyTabLine()
 
 " }}}
 
-" Autocommands, plugin, and file-type-specific settings {{{
-
-" Load Pathogen plugins
-call pathogen#infect()
-
-" Auto-set certain options as well as syntax highlighting and indentation
-filetype plugin indent on
-
-" Set filetype for Salt sls files
-au BufNewFile,BufRead *.sls set ft=sls
-
-" Set filetype for Jinja files
-au BufNewFile,BufRead *.jinja* set ft=jinja
-
-" Load omnicompletion for supported filetypes
-" fallback to generic completion based on the syntax file
-if has("autocmd") && exists("+omnifunc")
-    au FileType python set omnifunc=pythoncomplete#Complete
-    au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-    au FileType html set omnifunc=htmlcomplete#CompleteTags
-    au FileType css set omnifunc=csscomplete#CompleteCSS
-    au FileType php set omnifunc=phpcomplete#CompletePHP
-    au FileType xml set omnifunc=phpcomplete#CompleteXML
-    au FileType sql set omnifunc=phpcomplete#CompleteSQL
-    au Filetype *
-                \   if &omnifunc == "" |
-                \           setlocal omnifunc=syntaxcomplete#Complete |
-                \   endif
-endif
-
-" Not sure why the cron filetype isn't catching this...
-au FileType crontab set backupcopy=yes
-
-" Enables :make to compile, or validate, certain filetypes
-" (use :cn & :cp to jump between errors)
-au FileType xml,xslt compiler xmllint
-au FileType html compiler tidy
-au FileType java compiler javac
-
-" Add PYTHONPATH to Vim path to enable 'gf' (also works when in a virtualenv)
-if has('python')
-py << EOL
-import vim, os, site, sys
-basedir = os.environ.get('VIRTUAL_ENV', '')
-if basedir:
-    pyver = 'python{0}'.format('.'.join(sys.version.split('.')[:2]))
-    libdir = os.path.join(basedir, 'lib', pyver, 'site-packages')
-    site.addsitedir(libdir)
-
-paths = [i.replace(' ', r'\ ') for i in sys.path if os.path.isdir(i)]
-vim.command(r'set path+={0}'.format(','.join(paths)))
-EOL
-endif
+" Plugin settings {{{
 
 " Shortcut to invoke wordnet
 noremap  <F7> "wyiw:call WordNetOverviews(@w)<CR>
-
-" Set keywordprg for certain filetypes
-au FileType python set keywordprg=pydoc
-
-" Configure Python files to use pylint on :make
-" (supports error type and multiline errors)
-au FileType python set makeprg=pylint\ -E\ -r\ n\ -f\ parseable\ %:p
-au FileType python set efm=%A%f:%l:\ [%t%.%#]\ %m,%Z%p^^,%-C%.%#
-
-" Set pyflakes to keep the clist available for regular use
-let g:pyflakes_use_quickfix = 0
 
 " For standards-compliant :TOhtml output
 let html_use_css=1
@@ -616,10 +562,6 @@ au FileChangedShell *
     \ echohl WarningMsg |
     \ echo "File has been changed outside of vim." |
     \ echohl None
-
-" Vim Help docs: hit enter to activate links, and ctrl-[ as a back button
-au FileType help nmap <buffer> <Return> <C-]>
-au FileType help nmap <buffer> <C-[> <C-O>
 
 " Automatically open Git diff when editing a gitcommit
 au FileType gitcommit DiffGitCached | set nowrap | wincmd p
@@ -638,45 +580,6 @@ let g:tagbar_compact = 1
 let g:tagbar_autoshowtag = 1
 let g:tagbar_width = 25
 let g:tagbar_iconchars = ['+', '-']
-
-" ft-specific tagbar settings
-let g:tagbar_type_python = {
-    \ 'kinds' : [
-        \ 'c:classes',
-        \ 'f:functions',
-        \ 'm:class members',
-        \ 'v:variables:1',
-        \ 'i:imports:1'
-    \ ]
-\ }
-
-let g:tagbar_type_rst = {
-    \ 'ctagsbin' : 'rst2ctags',
-    \ 'ctagsargs' : '--taglist',
-    \ 'kinds' : [
-        \ 's:Sections',
-        \ 'i:Images',
-    \ ],
-\ }
-
-let g:tagbar_type_mediawiki = {
-    \ 'ctagstype' : 'mediawiki',
-    \ 'kinds' : [
-        \ 'h:Headings',
-    \ ],
-\ }
-
-let g:tagbar_type_tex = {
-    \ 'ctagstype' : 'latex',
-    \ 'kinds'     : [
-        \ 's:sections',
-        \ 'g:graphics:0:0',
-        \ 'l:labels',
-        \ 'r:refs:1:0',
-        \ 'p:pagerefs:1:0'
-    \ ],
-    \ 'sort'    : 0,
-\ }
 
 " Auto-open tagbar only if not in diff mode and the term wide enough to also
 " fit an 80-column window (plus eight for line numbers and the fold column).

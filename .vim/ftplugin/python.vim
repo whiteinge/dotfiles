@@ -1,18 +1,48 @@
-" Only do this when not done yet for this buffer
-if exists("b:did_ftplugin")
-finish
+" Syntax vars
+let python_highlight_numbers = 1
+let python_highlight_builtins = 1
+let python_highlight_exceptions = 1
+let python_highlight_space_errors = 1
+
+if exists("+omnifunc")
+    setl omnifunc=pythoncomplete#Complete
 endif
-let b:did_ftplugin = 1
 
-map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
-map <buffer> gd /def <C-R><C-W><CR> 
+setl keywordprg=pydoc
+setl makeprg=pylint\ -E\ -r\ n\ -f\ parseable\ %:p
+setl efm=%A%f:%l:\ [%t%.%#]\ %m,%Z%p^^,%-C%.%#
 
+" tagbar settings
+let g:tagbar_type_python = {
+    \ 'kinds' : [
+        \ 'c:classes',
+        \ 'f:functions',
+        \ 'm:class members',
+        \ 'v:variables:1',
+        \ 'i:imports:1'
+    \ ]
+\ }
+
+" Add PYTHONPATH to Vim path to enable 'gf' (also works when in a virtualenv)
+if has('python')
+py << EOL
+import vim, os, site, sys
+basedir = os.environ.get('VIRTUAL_ENV', '')
+if basedir:
+    pyver = 'python{0}'.format('.'.join(sys.version.split('.')[:2]))
+    libdir = os.path.join(basedir, 'lib', pyver, 'site-packages')
+    site.addsitedir(libdir)
+
+paths = [i.replace(' ', r'\ ') for i in sys.path if os.path.isdir(i)]
+vim.command(r'set path+={0}'.format(','.join(paths)))
+EOL
+endif
+
+" TODO: (re-find and) note where this folding code comes from!
 set foldmethod=expr
 set foldexpr=PythonFoldExpr(v:lnum)
 set foldtext=PythonFoldText()
 
-" map <buffer> f za
-" map <buffer> F :call ToggleFold()<CR>
 let b:folded = 1
 
 function! ToggleFold()
@@ -70,15 +100,4 @@ function! PythonFoldExpr(lnum)
 
     return '='
 
-endfunction
-
-" In case folding breaks down
-function! ReFold()
-    set foldmethod=expr
-    set foldexpr=0
-    set foldnestmax=1
-    set foldmethod=expr
-    set foldexpr=PythonFoldExpr(v:lnum)
-    set foldtext=PythonFoldText()
-    echo 
 endfunction
