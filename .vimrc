@@ -302,6 +302,15 @@ let g:explStartRight=0  " new windows go to right of explorer window
 
 " }}}
 
+" Make the current buffer a scratch buffer {{{1
+
+function! Scratch()
+    setlocal buftype=nofile
+    setlocal bufhidden=delete
+    setlocal noswapfile
+endfunction
+
+" }}}
 " Commenting with opfunc {{{
 " http://vim.wikia.com/wiki/Commenting_with_opfunc
 " \c to comment or \C uncomment, then press a regular Vim movement command
@@ -655,15 +664,6 @@ else
     let g:tagbar_autoclose = 1
     let g:tagbar_autofocus = 1
 endif
-
-
-" Makes the current buffer a scratch buffer
-function! Scratch()
-    set buftype=nofile
-    set bufhidden=delete
-    set noswapfile
-endfunction
-noremap <silent> ,s :exe Scratch()<CR>
 
 " Outputs a small warning when opening a file that contains tab characters
 function! WarnTabs()
