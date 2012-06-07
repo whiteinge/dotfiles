@@ -356,6 +356,30 @@ vnoremap <Leader>c <Esc>:call CommentMark(1,'<','>')<CR>
 vnoremap <Leader>C <Esc>:call CommentMark(0,'<','>')<CR>
 
 " }}}
+" Diff two registers {{{
+" Open a diff of two registers in a new tabpage. Close the tabpage when
+" finished. If no registers are specified it diffs the most recent yank with
+" the most recent deletion.
+" Usage:
+"   :DiffRegs
+"   :DiffRegs @a @b
+
+function! DiffRegsFunc(...)
+    let l:left = a:0 == 2 ? a:1 : "@0"
+    let l:right = a:0 == 2 ? a:2 : "@1"
+
+    tabnew
+    exe 'put! ='. l:left
+    vnew
+    exe 'put! ='. l:right
+
+    windo call Scratch()
+    windo diffthis
+    winc t
+endfunction
+com -nargs=* DiffRegs call DiffRegsFunc(<f-args>)
+
+" }}}
 " Surrounding text with opfunc {{{
 
 " Adds a "surround" operator for use with text objects.
