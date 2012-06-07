@@ -38,12 +38,12 @@
 #
 # NOTE: Use :cq to abort the merge and exit Vim with an error code.
 #
-# Put the following in your ~/.gitconfig (you can substitute vim for gvim):
+# Add this mergetool to your ~/.gitconfig (you can substitute vim for gvim):
 #
-# [mergetool "vimdiffconflicts"]
-#     cmd = diffconflicts vim $BASE $LOCAL $REMOTE $MERGED
-#     trustExitCode = true
-#     keepBackup = false
+# git config --global merge.tool diffconflicts
+# git config --global mergetool.diffconflicts.cmd 'diffconflicts vim $BASE $LOCAL $REMOTE $MERGE'
+# git config --global mergetool.diffconflicts.trustExitCode true
+# git config --global mergetool.diffconflicts.keepBackup false
 
 if [[ -z $@ || $# != "5" ]] ; then
     echo -e "Usage: $0 \$BASE \$LOCAL \$REMOTE \$MERGED"
