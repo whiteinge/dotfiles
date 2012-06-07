@@ -523,14 +523,14 @@ au BufNewFile,BufRead *.jinja* set ft=jinja
 " Load omnicompletion for supported filetypes
 " fallback to generic completion based on the syntax file
 if has("autocmd") && exists("+omnifunc")
-    autocmd FileType python set omnifunc=pythoncomplete#Complete
-    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-    autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-    autocmd FileType xml set omnifunc=phpcomplete#CompleteXML
-    autocmd FileType sql set omnifunc=phpcomplete#CompleteSQL
-    autocmd Filetype *
+    au FileType python set omnifunc=pythoncomplete#Complete
+    au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+    au FileType html set omnifunc=htmlcomplete#CompleteTags
+    au FileType css set omnifunc=csscomplete#CompleteCSS
+    au FileType php set omnifunc=phpcomplete#CompletePHP
+    au FileType xml set omnifunc=phpcomplete#CompleteXML
+    au FileType sql set omnifunc=phpcomplete#CompleteSQL
+    au Filetype *
                 \   if &omnifunc == "" |
                 \           setlocal omnifunc=syntaxcomplete#Complete |
                 \   endif
@@ -579,7 +579,7 @@ let html_use_css=1
 let use_xhtml=1
 
 " Helps if you have to use another editor on the same file
-autocmd FileChangedShell *
+au FileChangedShell *
     \ echohl WarningMsg |
     \ echo "File has been changed outside of vim." |
     \ echohl None
