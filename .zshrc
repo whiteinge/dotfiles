@@ -333,6 +333,8 @@ alias pyhttp='python -m SimpleHTTPServer'
 alias pysmtp='python -m smtpd -n -c DebuggingServer localhost:1025'
 # Print an interactive Python shell session as regular Python (reads stdin)
 alias pyprintdoc='python -c "import doctest, sys; print doctest.script_from_examples(sys.stdin.read())"'
+# Validate and pretty-print JSON
+alias jsonpp='python -m json.tool'
 
 alias urlencode='python -c "import urllib2, sys; print urllib2.quote(sys.stdin.read().encode(\"utf8\"))"'
 alias urldecode='python -c "import urllib2, sys; print urllib2.unquote(sys.stdin.read().encode(\"utf8\"))"'
