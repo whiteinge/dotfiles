@@ -626,6 +626,13 @@ let g:tagbar_type_rst = {
     \ ],
 \ }
 
+let g:tagbar_type_mediawiki = {
+    \ 'ctagstype' : 'mediawiki',
+    \ 'kinds' : [
+        \ 'h:Headings',
+    \ ],
+\ }
+
 " Auto-open tagbar only if not in diff mode and the term wide enough to also
 " fit an 80-column window (plus eight for line numbers and the fold column).
 if &columns > 118
