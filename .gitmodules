@@ -34,3 +34,6 @@
 [submodule ".vim/bundle/wordlist.vim"]
 	path = .vim/bundle/wordlist.vim
 	url = git://github.com/vim-scripts/wordlist.vim.git
+[submodule ".vim/bundle/vim-powerline"]
+	path = .vim/bundle/vim-powerline
+	url = git://github.com/Lokaltog/vim-powerline.git
