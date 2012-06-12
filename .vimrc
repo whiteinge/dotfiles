@@ -53,7 +53,7 @@ set shiftround                  "sr:    rounds indent to a multiple of shiftwidt
 
 set nojoinspaces                "nojs:  prevents inserting two spaces after punctuation on a join (it's not 1990 anymore)
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
-set pastetoggle=<F5>            "pt:    useful so auto-indenting doesn't mess up code when pasting
+set pastetoggle=<F9>            "pt:    useful so auto-indenting doesn't mess up code when pasting
 
 set virtualedit=block           "ve:    let cursor move past the last char in <C-v> mode
 set nostartofline               "sol:   avoid moving cursor to BOL when jumping around
@@ -77,13 +77,13 @@ map <F2> :reg "0123456789-*+:/<CR>
 set colorcolumn=80              "cc:    draw a visual line down the 80th column
 
 " Toggle between line numbers and relative line numbers
-nmap <silent><F10> :exe "set " . (&relativenumber == 1 ? "" : "relative") . "number"<cr>
+nnoremap <silent><leader>u :exe "set " . (&relativenumber == 1 ? "" : "relative") . "number"<cr>
 
 "lcs:   displays tabs with :set list & displays when a line runs off-screen
 set listchars=tab:>-,trail:\ ,precedes:<,extends:>
 
 " Toggle spell-checking
-map <silent> <F8> :set nospell!<CR>:set nospell?<CR>
+map <silent> <F10> :set nospell!<CR>:set nospell?<CR>
 
 " Maps Omnicompletion to CTRL-space since ctrl-x ctrl-o is for Emacs-style RSI
 inoremap <Nul> <C-x><C-o>
@@ -190,6 +190,12 @@ else
     nmap <C-L> <C-W>l
 endif
 
+" Quickly jump to a tag if there's only one match, otherwise show the list
+map <F3> :tj<space>
+
+" Display a list of included files and quickly jump to one
+map <F4> [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+
 " When restoring a hidden buffer Vim doesn't always keep the same view (like
 " when your view shows beyond the end of the file). (Vim tip 1375)
 if ! &diff
@@ -278,7 +284,7 @@ hi ColorColumn ctermbg=0
 hi LineNr cterm=bold ctermfg=0 ctermbg=none
 
 " Refresh busted syntax highlighting (this happens too often)
-noremap <F11> <Esc>:syntax sync fromstart<CR>
+noremap <F12> <Esc>:syntax sync fromstart<CR>
 
 " }}}
 " Printing {{{
@@ -294,7 +300,7 @@ set printencoding=utf-8
 " NERDTree is a pretty slick (partial) replacement for :Explore
 let NERDTreeIgnore=['\.pyc$']
 let NERDTreeDirArrows=0
-map <F4> :NERDTreeToggle<cr>
+map <F6> :NERDTreeToggle<cr>
 
 let g:netrw_hide=1          " Use the hiding list
 " Hide the following file patterns (change to suit your needs):
@@ -561,7 +567,7 @@ set tabline=%!MyTabLine()
 " Plugin settings {{{
 
 " Shortcut to invoke wordnet
-noremap  <F7> "wyiw:call WordNetOverviews(@w)<CR>
+noremap  <F11> "wyiw:call WordNetOverviews(@w)<CR>
 
 " For standards-compliant :TOhtml output
 let html_use_css=1
@@ -574,14 +580,14 @@ au FileChangedShell * Warn "File has been changed outside of Vim."
 au FileType gitcommit DiffGitCached | set nowrap | wincmd p
 
 " Mapping to invoke Gundo
-nnoremap <F5> :GundoToggle<CR>
+nnoremap <F7> :GundoToggle<CR>
 
 " Syntastic settings
 let g:syntastic_enable_highlighting = 0
 nmap <silent> <leader>y :SyntasticCheck<cr>
 
 " Tagbar plugin settings
-map <F3> :TagbarToggle<cr>
+map <F5> :TagbarToggle<cr>
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 let g:tagbar_autoshowtag = 1
