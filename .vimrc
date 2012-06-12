@@ -311,6 +311,11 @@ let g:explStartRight=0  " new windows go to right of explorer window
 
 " }}}
 
+" Scripting helpers {{{1
+
+command -nargs=1 Warn echohl WarningMsg | echo <args> | echohl None
+
+" }}}
 " Make the current buffer a scratch buffer {{{1
 
 function! Scratch()
@@ -558,10 +563,7 @@ let html_use_css=1
 let use_xhtml=1
 
 " Helps if you have to use another editor on the same file
-au FileChangedShell *
-    \ echohl WarningMsg |
-    \ echo "File has been changed outside of vim." |
-    \ echohl None
+au FileChangedShell * Warn "File has been changed outside of Vim."
 
 " Automatically open Git diff when editing a gitcommit
 au FileType gitcommit DiffGitCached | set nowrap | wincmd p
