@@ -324,6 +324,11 @@ function! Scratch()
     setlocal noswapfile
 endfunction
 
+" Automatically make any file named 'scratch.ext' a scratch file
+autocmd VimEnter * if @% =~ 'scratch.' |
+            \ call Scratch() |
+            \ Warn "This file is a scratch file!"
+
 " }}}
 " Commenting with opfunc {{{
 " http://vim.wikia.com/wiki/Commenting_with_opfunc
