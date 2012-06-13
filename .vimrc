@@ -252,10 +252,6 @@ colorscheme desert
 " Make listchars (much) more noticable.
 hi SpecialKey ctermfg=7 ctermbg=1
 
-" I love the new CursorLine, but terminal underlining kicks legibility in the nuts.
-" So what to do? Bold is (extremely) subtle, but it's better than nothing.
-hi CursorLine cterm=bold
-
 " Statusline
 " I like this better than all the reverse video of the default statusline.
 hi StatusLine term=bold,reverse cterm=bold ctermfg=7 ctermbg=none
@@ -281,7 +277,8 @@ hi TabLineFill cterm=bold ctermbg=none
 " Black ColorColumn to not catch the eye more than is necessary
 hi ColorColumn ctermbg=0
 
-" Makes current line yellow against gray line numbers
+" Makes the current line stand out with bold and in the numberline
+hi CursorLine cterm=bold
 hi LineNr cterm=bold ctermfg=0 ctermbg=none
 
 " Refresh busted syntax highlighting (this happens too often)
