@@ -137,6 +137,7 @@ set wildmode=longest:full,list:full  "wim:   helps wildmenu auto-completion
 " }}}
 " Window Layout {{{
 
+set encoding=utf-8
 set number                      "nu:    numbers lines
 set showmode                    "smd:   shows current vi mode in lower left
 set cursorline                  "cul:   highlights the current line
