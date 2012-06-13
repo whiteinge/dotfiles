@@ -59,7 +59,7 @@ WATCH=notme         # Report any login/logout of other users
 WATCHFMT='%n %a %l from %m at %T.'
 
 # utf-8 in the terminal, will break stuff if your term isn't utf aware
-export LANG=en_US.UTF-8 
+export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
 
@@ -275,7 +275,7 @@ function ... (){
     while [ $maxlvl -gt 0 ]; do
         dir="../$dir"
         maxlvl=$(($maxlvl - 1));
-        if [ -d "$dir" ]; then 
+        if [ -d "$dir" ]; then
             cd $dir >&/dev/null
         fi
     done
@@ -301,7 +301,7 @@ function genpass() {
 
 bookletize ()
 {
-    (( $+commands[pdfinfo] )) && (( $+commands[pdflatex] )) || { 
+    (( $+commands[pdfinfo] )) && (( $+commands[pdflatex] )) || {
         error 1 "Missing req'd pdfinfo or pdflatex"
     }
 
