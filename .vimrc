@@ -32,7 +32,6 @@ nmap <silent> <C-P> :set nowrap!<CR>:set nowrap?<CR>
 " }}}
 " Editing {{{
 
-syntax on                       "syn:   syntax highlighting
 set showmatch                   "sm:    flashes matching brackets or parentheses
 
 set nobackup                    "bk:    does not write a persistent backup file of an edited file
@@ -246,7 +245,8 @@ set clipboard=                  "       Disable automatic X11 clipboard crossove
 " Color {{{
 "   All coloring options are for the non-GUI Vim (see :help cterm-colors).
 
-color desert
+syntax enable
+colorscheme desert
 
 " Make listchars (much) more noticable.
 hi SpecialKey ctermfg=7 ctermbg=1
