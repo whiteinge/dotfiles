@@ -136,7 +136,10 @@ bindkey "^L" tmux-clear-screen
 alias zmv='noglob zmv'
 # e.g., zmv *.JPEG *.jpg
 
+# Gvim package is often the full-featured Vim (Fedora) but I prefer CLI
 alias vi='gvim -v'
+alias vim='gvim -v'
+alias vimdiff='gvimdiff -v'
 
 alias ls='ls -F --color'
 alias la='ls -A'
