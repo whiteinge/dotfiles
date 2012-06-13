@@ -25,3 +25,6 @@ if has ("win32")
     set shellcmdflag=--login\ -c
     set shellxquote=\"
 endif
+
+
+let g:Powerline_symbols = 'fancy'

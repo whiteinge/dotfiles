@@ -524,7 +524,7 @@ function! MyStatusLine()
     return s
 endfunction
 
-set statusline=%!MyStatusLine()
+" set statusline=%!MyStatusLine()
 
 " }}}
 " MyTabLine {{{
@@ -602,6 +602,12 @@ else
     let g:tagbar_autoclose = 1
     let g:tagbar_autofocus = 1
 endif
+
+" Powerline settings
+let g:Powerline_symbols = 'unicode'
+let g:Powerline_stl_path_style = 'short'
+" Show marker if buffer contains trailing whitespace
+call Pl#Theme#InsertSegment('ws_marker', 'after', 'lineinfo')
 
 " }}}
 
