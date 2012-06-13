@@ -58,7 +58,6 @@
 
 [diff]
     tool = vimdiff
-    whitespace = red reverse
 
 [difftool "gvimdiff"]
     cmd = gvimdiff $LOCAL $REMOTE
