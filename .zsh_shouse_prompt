@@ -9,8 +9,6 @@ autoload -U colors && colors
 autoload -U promptinit
 autoload -Uz vcs_info
 
-export TERM=xterm-256color
-
 local reset white gray green red yellow
 reset="%{${reset_color}%}"
 white="%{$fg[white]%}"

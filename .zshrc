@@ -216,7 +216,7 @@ alias rsc="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
 # tmux agent alias
 alias tm="exec ssh-agent \
     sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
-    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec tmux attach'"
+    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec tmux -2 attach'"
 
 # remote tmux agent alias
 alias rtm="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
