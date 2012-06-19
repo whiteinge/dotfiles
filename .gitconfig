@@ -57,10 +57,10 @@
     smtpserverport = 587
 
 [diff]
-    tool = vimdiff
+    tool = clivimdiff
 
-[difftool "gvimdiff"]
-    cmd = gvimdiff $LOCAL $REMOTE
+[difftool "clivimdiff"]
+    cmd = gvimdiff -v $LOCAL $REMOTE
 
 [merge]
     tool = diffconflicts
