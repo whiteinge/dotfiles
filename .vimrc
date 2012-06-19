@@ -118,6 +118,15 @@ if has("autocmd") && exists("+omnifunc")
         \ if &omnifunc == "" | setl omnifunc=syntaxcomplete#Complete | endif
 endif
 
+if has("autocmd")
+    " Helps if you have to use another editor on the same file
+    au FileChangedShell * Warn "File has been changed outside of Vim."
+
+    " Automatically open Git diff when editing a gitcommit
+    au FileType gitcommit DiffGitCached | set nowrap | wincmd p
+endif
+
+
 " }}}
 " Folding (spacebar toggles) {{{
 " Spacebar toggles a fold, zi toggles all folding, zM closes all folds
@@ -570,12 +579,6 @@ noremap  <F11> "wyiw:call WordNetOverviews(@w)<CR>
 " For standards-compliant :TOhtml output
 let html_use_css=1
 let use_xhtml=1
-
-" Helps if you have to use another editor on the same file
-au FileChangedShell * Warn "File has been changed outside of Vim."
-
-" Automatically open Git diff when editing a gitcommit
-au FileType gitcommit DiffGitCached | set nowrap | wincmd p
 
 """ Gundo settings
 nnoremap <F7> :GundoToggle<CR>
