@@ -564,7 +564,7 @@ set tabline=%!MyTabLine()
 
 " Plugin settings {{{
 
-" Shortcut to invoke wordnet
+""" Wordnet settings
 noremap  <F11> "wyiw:call WordNetOverviews(@w)<CR>
 
 " For standards-compliant :TOhtml output
@@ -577,14 +577,14 @@ au FileChangedShell * Warn "File has been changed outside of Vim."
 " Automatically open Git diff when editing a gitcommit
 au FileType gitcommit DiffGitCached | set nowrap | wincmd p
 
-" Mapping to invoke Gundo
+""" Gundo settings
 nnoremap <F7> :GundoToggle<CR>
 
-" Syntastic settings
+""" Syntastic settings
 let g:syntastic_enable_highlighting = 0
 nmap <silent> <leader>y :SyntasticCheck<cr>
 
-" Tagbar plugin settings
+""" Tagbar plugin settings
 map <F5> :TagbarToggle<cr>
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
@@ -603,7 +603,7 @@ else
     let g:tagbar_autofocus = 1
 endif
 
-" Powerline settings
+""" Powerline settings
 let g:Powerline_stl_path_style = 'short'
 " If I'm running Vim via ssh, the patched font probably isn't available
 " wherever I'm connecting from, so fallback to compatible
