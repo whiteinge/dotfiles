@@ -8,6 +8,10 @@ setl matchpairs+=<:>
 setl comments=n:#,n:*,n:\:,s:{\|,m:\|,ex:\|}
 setl formatoptions+=roq
 
+if exists("+omnifunc")
+    setl omnifunc=htmlcomplete#CompleteTags
+endif
+
 " match HTML tags (taken directly from $VIM/ftplugin/html.vim)
 if exists("loaded_matchit")
     let b:match_ignorecase=0
