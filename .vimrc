@@ -13,10 +13,11 @@ set incsearch                   "is:    automatically begins searching as you ty
 set ignorecase                  "ic:    ignores case when pattern matching
 set smartcase                   "scs:   ignores ignorecase when pattern contains uppercase characters
 set hlsearch                    "hls:   highlights search results
+
 " Use leader-n to unhighlight search results in normal mode:
 nmap <silent> <leader>n :silent noh<CR>
 " Display the number of matches for the last search
-nmap <leader># :%s:/::gn<CR>
+nmap <leader># :%s:<C-R>/::gn<CR>
 " Restore case-sensitivity for jumping to tags (set ic disables it)
 map <silent> <c-]> :set noic<cr>g<c-]><silent>:set ic<cr>
 
