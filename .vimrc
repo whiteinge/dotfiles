@@ -576,10 +576,6 @@ set tabline=%!MyTabLine()
 """ Wordnet settings
 noremap  <F11> "wyiw:call WordNetOverviews(@w)<CR>
 
-" For standards-compliant :TOhtml output
-let html_use_css=1
-let use_xhtml=1
-
 """ Gundo settings
 nnoremap <F7> :GundoToggle<CR>
 
