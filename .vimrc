@@ -13,10 +13,11 @@ set incsearch                   "is:    automatically begins searching as you ty
 set ignorecase                  "ic:    ignores case when pattern matching
 set smartcase                   "scs:   ignores ignorecase when pattern contains uppercase characters
 set hlsearch                    "hls:   highlights search results
+
 " Use leader-n to unhighlight search results in normal mode:
 nmap <silent> <leader>n :silent noh<CR>
 " Display the number of matches for the last search
-nmap <leader># :%s:/::gn<CR>
+nmap <leader># :%s:<C-R>/::gn<CR>
 " Restore case-sensitivity for jumping to tags (set ic disables it)
 map <silent> <c-]> :set noic<cr>g<c-]><silent>:set ic<cr>
 
@@ -117,6 +118,15 @@ if has("autocmd") && exists("+omnifunc")
     au Filetype *
         \ if &omnifunc == "" | setl omnifunc=syntaxcomplete#Complete | endif
 endif
+
+if has("autocmd")
+    " Helps if you have to use another editor on the same file
+    au FileChangedShell * Warn "File has been changed outside of Vim."
+
+    " Automatically open Git diff when editing a gitcommit
+    au FileType gitcommit DiffGitCached | set nowrap | wincmd p
+endif
+
 
 " }}}
 " Folding (spacebar toggles) {{{
@@ -564,27 +574,17 @@ set tabline=%!MyTabLine()
 
 " Plugin settings {{{
 
-" Shortcut to invoke wordnet
+""" Wordnet settings
 noremap  <F11> "wyiw:call WordNetOverviews(@w)<CR>
 
-" For standards-compliant :TOhtml output
-let html_use_css=1
-let use_xhtml=1
-
-" Helps if you have to use another editor on the same file
-au FileChangedShell * Warn "File has been changed outside of Vim."
-
-" Automatically open Git diff when editing a gitcommit
-au FileType gitcommit DiffGitCached | set nowrap | wincmd p
-
-" Mapping to invoke Gundo
+""" Gundo settings
 nnoremap <F7> :GundoToggle<CR>
 
-" Syntastic settings
+""" Syntastic settings
 let g:syntastic_enable_highlighting = 0
 nmap <silent> <leader>y :SyntasticCheck<cr>
 
-" Tagbar plugin settings
+""" Tagbar plugin settings
 map <F5> :TagbarToggle<cr>
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
@@ -603,9 +603,11 @@ else
     let g:tagbar_autofocus = 1
 endif
 
-" Powerline settings
-let g:Powerline_symbols = 'unicode'
+""" Powerline settings
 let g:Powerline_stl_path_style = 'short'
+" If I'm running Vim via ssh, the patched font probably isn't available
+" wherever I'm connecting from, so fallback to compatible
+let g:Powerline_symbols = $SSH_CLIENT == "" ? 'unicode' : 'compatible'
 " Show marker if buffer contains trailing whitespace
 call Pl#Theme#InsertSegment('ws_marker', 'after', 'lineinfo')
 
