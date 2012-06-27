@@ -126,6 +126,10 @@ if has("autocmd")
     au FileChangedShell * Warn "File has been changed outside of Vim."
 endif
 
+" If a ftplugin has defined the b:ftskeleton variable, try to load the
+" skeleton template.
+au BufNewFile * silent! exe "0r ". b:ftskeleton
+
 
 " }}}
 " Folding (spacebar toggles) {{{
