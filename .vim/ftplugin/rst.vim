@@ -1,3 +1,5 @@
+setl textwidth=79
+
 " FIXME: how to differentiate between rst2beamer and Sphinx?
 " if !filereadable(expand(“%:p:h”).“/Makefile”)
 "     setlocal makeprg=gcc\ –Wall\ –Wextra\ –o\ %<\ %
