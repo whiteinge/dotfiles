@@ -122,9 +122,6 @@ endif
 if has("autocmd")
     " Helps if you have to use another editor on the same file
     au FileChangedShell * Warn "File has been changed outside of Vim."
-
-    " Automatically open Git diff when editing a gitcommit
-    au FileType gitcommit DiffGitCached | set nowrap | wincmd p
 endif
 
 
