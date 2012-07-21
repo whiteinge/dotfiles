@@ -312,6 +312,7 @@ set printencoding=utf-8
 let NERDTreeIgnore=['\.pyc$']
 let NERDTreeDirArrows=0
 map <F6> :NERDTreeToggle<cr>
+noremap <leader>gf :NERDTreeFind<cr>
 
 let g:netrw_hide=1          " Use the hiding list
 " Hide the following file patterns (change to suit your needs):
