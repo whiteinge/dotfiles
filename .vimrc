@@ -15,11 +15,11 @@ set smartcase                   "scs:   ignores ignorecase when pattern contains
 set hlsearch                    "hls:   highlights search results
 
 " Use leader-n to unhighlight search results in normal mode:
-nmap <silent> <leader>n :silent noh<CR>
+nmap <silent> <leader>n :silent noh<cr>
 " Display the number of matches for the last search
-nmap <leader># :%s:<C-R>/::gn<CR>
+nmap <leader># :%s:<C-R>/::gn<cr>
 " Restore case-sensitivity for jumping to tags (set ic disables it)
-map <silent> <c-]> :set noic<cr>g<c-]><silent>:set ic<cr>
+map <silent> <C-]> :set noic<cr>g<C-]><silent>:set ic<cr>
 
 " }}}
 " Line Wrap {{{
@@ -28,7 +28,7 @@ set backspace=indent,eol,start  "bs:    allows you to backspace over the listed 
 set linebreak                   "lbr:   causes vim to not wrap text in the middle of a word
 set wrap                        "wrap:  wraps lines by default
 " Toggle line wrapping in normal mode:
-nmap <silent> <C-P> :set nowrap!<CR>:set nowrap?<CR>
+nmap <silent> <C-P> :set nowrap!<cr>:set nowrap?<cr>
 
 " }}}
 " Editing {{{
@@ -57,7 +57,7 @@ set pastetoggle=<F9>            "pt:    useful so auto-indenting doesn't mess up
 
 set complete=.,w,b,u,i          "cpt:   use default insert completion minus tags (tags have own completion and are often slow)
 
-set virtualedit=block           "ve:    let cursor move past the last char in <C-v> mode
+set virtualedit=block           "ve:    let cursor move past the last char in <C-V> mode
 set nostartofline               "sol:   avoid moving cursor to BOL when jumping around
 
 set cryptmethod=blowfish        "cm:    use (much) stronger blowfish encryption
@@ -66,15 +66,15 @@ set cryptmethod=blowfish        "cm:    use (much) stronger blowfish encryption
 map Y y$
 
 " Allow undoing insert-mode ctrl-u and ctrl-w
-inoremap <c-u> <c-g>u<c-u>
-inoremap <c-w> <c-g>u<c-w>
+inoremap <C-U> <C-G>u<C-U>
+inoremap <C-W> <C-G>u<C-W>
 
 " Add a line without changing position or leaving mode
-map <leader>o :set paste<CR>m`o<Esc>``:set nopaste<CR>
-map <leader>O :set paste<CR>m`O<Esc>``:set nopaste<CR>
+map <leader>o :set paste<cr>m`o<esc>``:set nopaste<cr>
+map <leader>O :set paste<cr>m`O<esc>``:set nopaste<cr>
 
 " A shortcut to show the numbered register contents
-map <F2> :reg "0123456789-*+:/<CR>
+map <F2> :reg "0123456789-*+:/<cr>
 
 set colorcolumn=80              "cc:    draw a visual line down the 80th column
 
@@ -85,36 +85,36 @@ nnoremap <silent><leader>u :exe "set " . (&relativenumber == 1 ? "" : "relative"
 set listchars=tab:>-,trail:\ ,precedes:<,extends:>
 
 " Toggle spell-checking
-map <silent> <F10> :set nospell!<CR>:set nospell?<CR>
+map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
 
 " Maps Omnicompletion to CTRL-space since ctrl-x ctrl-o is for Emacs-style RSI
-inoremap <Nul> <C-x><C-o>
+inoremap <nul> <C-X><C-O>
 
 " don't select first item, follow typing in autocomplete
 set completeopt=longest,menuone,preview
 
 " Change directory to the path of the current file
-map <leader>cd :cd %:p:h<CR>
+map <leader>cd :cd %:p:h<cr>
 " Edit a new file starting in the same dir as the current file
-map <leader>ce :e <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>cs :sp <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>ct :tabnew <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>ce :e <C-R>=expand("%:p:h") . "/" <cr>
+map <leader>cs :sp <C-R>=expand("%:p:h") . "/" <cr>
+map <leader>ct :tabnew <C-R>=expand("%:p:h") . "/" <cr>
 
 " Highlight problem lines: more than 80 chars, trailing spaces, only whitespace
 " Toggle with \l
-nnoremap <silent> <Leader>l
-      \ :set nolist!<CR>:set nolist?<CR>
-      \ :if exists('w:long_line_match') <Bar>
-      \   silent! call matchdelete(w:long_line_match) <Bar>
-      \   unlet w:long_line_match <Bar>
-      \ elseif &textwidth > 0 <Bar>
-      \   let w:long_line_match = matchadd('ErrorMsg', '\%>'.&tw.'v.\+', -1) <Bar>
-      \ else <Bar>
-      \   let w:long_line_match = matchadd('ErrorMsg', '\%>80v.\+', -1) <Bar>
-      \ endif<CR>
+nnoremap <silent> <leader>l
+      \ :set nolist!<cr>:set nolist?<cr>
+      \ :if exists('w:long_line_match') <bar>
+      \   silent! call matchdelete(w:long_line_match) <bar>
+      \   unlet w:long_line_match <bar>
+      \ elseif &textwidth > 0 <bar>
+      \   let w:long_line_match = matchadd('ErrorMsg', '\%>'.&tw.'v.\+', -1) <bar>
+      \ else <bar>
+      \   let w:long_line_match = matchadd('ErrorMsg', '\%>80v.\+', -1) <bar>
+      \ endif<cr>
 
 " Find merge conflict markers
-map <Leader>fc /\v^[<=>]{7}( .*\|$)<CR>
+map <leader>fc /\v^[<=>]{7}( .*\|$)<cr>
 
 set dictionary=spell        " dict:     complete words from the spelling dict (when spell is on)
 " set thesaurus             " tsr:      complete words from a thesaurus
@@ -190,7 +190,7 @@ set winminwidth=0               "wmw:   the minimal column width of any non-curr
 
 " Type <F1> follwed by a buffer number or name fragment to jump to it.
 " Also replaces the annoying help button. Based on tip 821.
-map <F1> :ls<CR>:b<Space>
+map <F1> :ls<cr>:b<space>
 
 " Earlier Vims did not support tabs. Below is a vertical-tab-like cludge. Use
 " :ball or invoke Vim with -o (Vim tip 173)
@@ -211,7 +211,7 @@ endif
 map <F3> :tj<space>
 
 " Display a list of included files and quickly jump to one
-map <F4> [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+map <F4> [I:let nr = input("Which one: ")<bar>exe "normal " . nr ."[\t"<cr>
 
 " When restoring a hidden buffer Vim doesn't always keep the same view (like
 " when your view shows beyond the end of the file). (Vim tip 1375)
@@ -299,7 +299,7 @@ hi CursorLine cterm=bold
 hi LineNr cterm=bold ctermfg=0 ctermbg=none
 
 " Refresh busted syntax highlighting (this happens too often)
-noremap <F12> <Esc>:syntax sync fromstart<CR>
+noremap <F12> <esc>:syntax sync fromstart<cr>
 
 " }}}
 " Printing {{{
@@ -391,10 +391,10 @@ function! CommentStr()
     endif
 endfunction
 
-nnoremap <Leader>c <Esc>:set opfunc=DoCommentOp<CR>g@
-nnoremap <Leader>C <Esc>:set opfunc=UnCommentOp<CR>g@
-vnoremap <Leader>c <Esc>:call CommentMark(1,'<','>')<CR>
-vnoremap <Leader>C <Esc>:call CommentMark(0,'<','>')<CR>
+nnoremap <leader>c <esc>:set opfunc=DoCommentOp<cr>g@
+nnoremap <leader>C <esc>:set opfunc=UnCommentOp<cr>g@
+vnoremap <leader>c <esc>:call CommentMark(1,'<','>')<cr>
+vnoremap <leader>C <esc>:call CommentMark(0,'<','>')<cr>
 
 " }}}
 " Diff two registers {{{
@@ -430,13 +430,13 @@ com -nargs=* DiffRegs call DiffRegsFunc(<f-args>)
 "       Specify different start and end surround characters by separating them
 "       with whitespace: siw<b> </b>
 nnoremap <silent> s :set opfunc=Surround<cr>g@
-vnoremap <silent> s :<c-u>call Surround(visualmode(), 1)<cr>
+vnoremap <silent> s :<C-U>call Surround(visualmode(), 1)<cr>
 function! Surround(vt, ...)
     let s = input("Surround with: ")
     let si = split(s, " ")
     let sleft = si[-1]
     let sright = si[0]
-    if s =~ "\<esc>" || s =~ "\<c-c>"
+    if s =~ "\<esc>" || s =~ "\<C-C>"
         return
     endif
     " FIXME: if s contains a space, split and surround with left/right chars
@@ -445,7 +445,7 @@ function! Surround(vt, ...)
     if a:vt == 'line' || a:vt == 'V'
         call append(el, sleft)
         call append(sl-1, sright)
-    elseif a:vt == 'block' || a:vt == "\<c-v>"
+    elseif a:vt == 'block' || a:vt == "\<C-V>"
         exe sl.','.el 's/\%'.sc.'c\|\%'.ec.'c.\zs/\=s/g|norm!``'
     else
         exe el 's/\%'.ec.'c.\zs/\=sleft/|norm!``'
@@ -459,8 +459,8 @@ endfunction
 " the built-in numbered registers)?
 " NOTE: work in progress, this is currently non-functional
 
-" noremap <silent> gy :set opfunc=YankList<CR>g@
-" vmap <silent> gy :<C-U>call YankList(visualmode(), 1)<CR>
+" noremap <silent> gy :set opfunc=YankList<cr>g@
+" vmap <silent> gy :<C-U>call YankList(visualmode(), 1)<cr>
 " map <silent> gyy Y
 
 function! YankList(type, ...)
@@ -583,10 +583,10 @@ set tabline=%!MyTabLine()
 " Plugin settings {{{
 
 """ Wordnet settings
-noremap  <F11> "wyiw:call WordNetOverviews(@w)<CR>
+noremap  <F11> "wyiw:call WordNetOverviews(@w)<cr>
 
 """ Gundo settings
-nnoremap <F7> :GundoToggle<CR>
+nnoremap <F7> :GundoToggle<cr>
 
 """ Syntastic settings
 let g:syntastic_enable_highlighting = 0
