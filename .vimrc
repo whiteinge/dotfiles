@@ -93,8 +93,12 @@ inoremap <Nul> <C-x><C-o>
 " don't select first item, follow typing in autocomplete
 set completeopt=longest,menuone,preview
 
-" CD to the path of the current file.
+" Change directory to the path of the current file
 map <leader>cd :cd %:p:h<CR>
+" Edit a new file starting in the same dir as the current file
+map <leader>ce :e <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>cs :sp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>ct :tabnew <C-R>=expand("%:p:h") . "/" <CR>
 
 " Highlight problem lines: more than 80 chars, trailing spaces, only whitespace
 " Toggle with \l
