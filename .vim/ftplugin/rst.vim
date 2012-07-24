@@ -20,6 +20,8 @@ setl makeprg=rst2beamer.py\
     \ --output-encoding-error-handler=backslashreplace\
     \ --overlaybullets=none\
     \ --output-encoding=UTF-8\
+    \ --template=\"/home/shouse/.vim/ftplugin/rst/rst2beamer-default.tex\"\
+    \ --no-section-numbering\
     \ %\
     \ /tmp/%<.tex
 
