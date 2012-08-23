@@ -92,7 +92,7 @@ xterm*vt100.Translations: #override \n\
     Meta ~Shift <Key> x: string("×") \n\
     Meta ~Shift <Key> d: string("ಠ")
 ! Matches URLs and emails and selects them on double-click
-xterm*charClass: 33:48,37-38:48,45-47:48,64:48,58:48,126:48,61:48,63:48,43:48,35:38
+xterm*charClass: 33:48,37-38:48,45-47:48,64:48,58:48,126:48,61:48,63:48,43:48,35:48
 ! map the tab key to escape in xterm (becase we can!)
 ! xterm.vt100.translations: #override\n\
 !        <Key>Tab: string("\033")\n\
