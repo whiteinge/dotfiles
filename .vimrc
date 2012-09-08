@@ -347,51 +347,6 @@ function! Scratch()
 endfunction
 
 " }}}
-" Commenting with opfunc {{{
-" http://vim.wikia.com/wiki/Commenting_with_opfunc
-" \c to comment or \C uncomment, then press a regular Vim movement command
-" Temporarily set comment chars with :let b:comment='#---'
-
-function! CommentMark(docomment, a, b)
-    if !exists('b:comment')
-        let b:comment = CommentStr() . ' '
-    endif
-    if a:docomment
-        exe "normal! '" . a:a . "_\<C-V>'" . a:b . 'I' . b:comment
-    else
-        exe "'".a:a.",'".a:b . 's/^\(\s*\)' . escape(b:comment,'/') . '/\1/e'
-    endif
-endfunction
-
-" Comment lines in marks set by g@ operator.
-function! DoCommentOp(type)
-    call CommentMark(1, '[', ']')
-endfunction
-
-" Uncomment lines in marks set by g@ operator.
-function! UnCommentOp(type)
-    call CommentMark(0, '[', ']')
-endfunction
-
-" Return string used to comment line for current filetype.
-function! CommentStr()
-    if &ft == 'java' || &ft == 'javascript' || &ft == 'php'
-        return '//'
-    elseif &ft == 'vim'
-        return '"'
-    elseif &ft == 'rst'
-        return '..'
-    else
-        return '#'
-    endif
-endfunction
-
-nnoremap <leader>c <esc>:set opfunc=DoCommentOp<cr>g@
-nnoremap <leader>C <esc>:set opfunc=UnCommentOp<cr>g@
-vnoremap <leader>c <esc>:call CommentMark(1,'<','>')<cr>
-vnoremap <leader>C <esc>:call CommentMark(0,'<','>')<cr>
-
-" }}}
 " Diff two registers {{{
 " Open a diff of two registers in a new tabpage. Close the tabpage when
 " finished. If no registers are specified it diffs the most recent yank with
@@ -475,69 +430,6 @@ function! YankList(type, ...)
         silent exe "normal! `[v`]y"
     endif
 endfunction
-
-" }}}
-" MyStatusLine {{{
-
-" TODO: add a check for screen width and remove the alternate buffer display
-" and args of total display for small screen widths.
-function! MyStatusLine()
-    let s = '%9* %* ' " pad the edges for better vsplit separation
-    let s .= '%3*' " User highlighting
-    let s .= '%%%n '
-    if bufname('') != '' " why is this such a pain in the ass?
-        let s .= "%{ pathshorten(fnamemodify(expand('%F'), ':~:.')) }" " short-hand path of of the current buffer
-    else
-        let s .= '%f' " an empty filename doesn't make it through the above filters
-    endif
-    let s .= '%*' " restore normal highlighting
-    let s .= '%2*' " User highlighting
-    let s .= '%m' " modified
-    let s .= '%r' " read-only
-    let s .= '%w' " preview window
-    let s .= '%*' " restore normal highlighting
-    let s .= ' %<' " start truncating from here if the window gets too small
-    if bufname('#') != '' " if there's an alternate buffer, display the name
-        let s .= '%4*' " user highlighting
-        let s .= '(#' . bufnr('#') . ' '
-        let s .= fnamemodify(bufname('#'), ':t')
-        let s .= ')'
-        let s .= '%* ' " restore normal highlighting
-    endif
-    let s .= '%5*' " User highlighting
-    let s .= '%y' " file-type
-    let s .= '%*' " restore normal highlighting
-    let s .= ' <'
-    let s .= '%8*' " User highlighting
-    let s .= '%{&fileencoding}' " fileencoding
-    let s .= '%*,' " restore normal highlighting
-    let s .= '%6*' " User highlighting
-    let s .= '%{&fileformat}' " line-ending type
-    let s .= '%*' " restore normal highlighting
-    let s .= '>'
-    let s .= '%a' " (args of total)
-    let s .= '%q' " is quickfix or location list
-    let s .= '  %9*' " user highlighting
-    let s .= '%=' " separate right- from left-aligned
-    let s .= '%*' " restore normal highlighting
-    let s .= '%7*  ' " user highlighting
-    let s .= '%*' " restore normal highlighting
-    let s .= '%1*' " User highlighting
-    let s .= '%l' " current line number
-    let s .= '%*' " restore normal highlighting
-    let s .= ',%c' " column number
-    let s .= '%V' " virtual column number (doesn't count indentation)
-    let s .= ' %1*' " User highlighting
-    let s .= 'of %L' " total line numbers
-    let s .= '%* ' " restore normal highlighting
-    let s .= '%3*' " user highlighting
-    let s .= '%P' " Percentage through file
-    let s .= '%*' " restore normal highlighting
-    let s .= ' %9* %*' " pad the edges for better vsplit separation
-    return s
-endfunction
-
-" set statusline=%!MyStatusLine()
 
 " }}}
 " MyTabLine {{{
