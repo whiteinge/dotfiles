@@ -40,3 +40,6 @@
 [submodule ".vim/bundle/vimux"]
 	path = .vim/bundle/vimux
 	url = git://github.com/benmills/vimux.git
+[submodule ".vim/bundle/vim-commentary"]
+	path = .vim/bundle/vim-commentary
+	url = git://github.com/tpope/vim-commentary.git
