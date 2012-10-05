@@ -46,7 +46,7 @@
 # git config --global mergetool.diffconflicts.keepBackup false
 
 if [[ -z $@ || $# != "5" ]] ; then
-    echo -e "Usage: $0 \$BASE \$LOCAL \$REMOTE \$MERGED"
+    echo -e "Usage: $0 \$EDITOR \$BASE \$LOCAL \$REMOTE \$MERGED"
     exit 1
 fi
 
