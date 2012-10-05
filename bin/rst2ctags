@@ -11,6 +11,11 @@ import os
 import sys
 from optparse import OptionParser
 
+try:
+    import docutils
+except ImportError:
+    raise SystemExit()
+
 from docutils import nodes
 from docutils.core import publish_doctree
 
