@@ -52,6 +52,12 @@
     # Output the commit that git svn dcommit will attempt to commit on top of
     svnhead = !git --no-pager log --grep=^git-svn-id: --first-parent -1
 
+    # Open a browser to make a GitHub pull request
+    # Takes remote name and branch as args
+    preq = "!sh -c 'git remote show -n $1 | \
+        awk -F: '\\''/Push'\\\\'s+URL/ { sub(/'\\\\'.git/, x, $3); \
+        print \"https://github.com/\"$3\"/pull/new/\"br }'\\'' br=$2' -"
+
 [core]
     excludesfile = /home/shouse/.gitignore
 
