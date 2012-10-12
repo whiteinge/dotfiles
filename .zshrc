@@ -444,4 +444,33 @@ memtotaller() {
 }
 
 # }}}
+# xssh {{{1
+# Paralelize running shell commands through ssh on multiple hosts with xargs
+#
+# Usage:
+#   echo uptime | xssh host1 host2 host3
+#
+# Usage:
+#   xssh host1 host2 host3
+#   # prompts for commands; ctrl-d to finish
+#   free -m | awk '/^-/ { print $4, "MB" }'
+#   uptime
+#   ^d
+
+function xssh() {
+    local HOSTS="${argv}"
+    [[ -n "${HOSTS}" ]] || return 1
+
+    local tmpfile="/tmp/xssh.cmd.$$.$RANDOM"
+    trap 'rm -f '$tmpfile SIGINT SIGTERM EXIT
+
+    # Grab the command(s) from stdin and write to tmpfile
+    cat - > ${tmpfile}
+
+    # Execute 5 ssh processes and pipe tmpfile to the stdin of the remote sh
+    echo -n "${HOSTS[@]}" | xargs -d" " -P5 -IHOST \
+        sh -c 'ssh HOST '\''sh -s -'\'' < '${tmpfile}' | sed -e "s/^/HOST: /g"'
+}
+
+# }}}
 # EOF
