@@ -169,6 +169,9 @@ alias -g IN='..@{u}'
 alias -g OUT='@{u}..'
 alias -g UP='@{u}'
 
+# Don't prompt to save when exiting R
+alias R='R --no-save'
+
 # Selects a random file: ``mplayer RANDOM``
 alias -g RANDOM='"$(files=(*(.)) && echo $files[$RANDOM%${#files}+1])"'
 
