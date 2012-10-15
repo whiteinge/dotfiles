@@ -117,7 +117,7 @@ Sheesh, I thought he'd never leave. Who invited that guy?
 ################
 
 def SECRET_KEY():
-    "Generates a new SECRET_KEY that can be used in a project settings file." 
+    "Generates a new SECRET_KEY that can be used in a project settings file."
 
     from random import choice
     return ''.join(
@@ -158,7 +158,7 @@ Warning: DEBUG_PROPAGATE_EXCEPTIONS has been set to True.
 %(Normal)s""" % _c
 
 # Start an external editor with \e
-##################################     
+##################################
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/438813/
 
 EDITOR = os.environ.get('EDITOR', 'vi')
