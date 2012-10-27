@@ -38,7 +38,7 @@
 #
 # NOTE: Use :cq to abort the merge and exit Vim with an error code.
 #
-# Add this mergetool to your ~/.gitconfig (you can substitute vim for gvim):
+# Add this mergetool to your ~/.gitconfig (you can substitute gvim for vim):
 #
 # git config --global merge.tool diffconflicts
 # git config --global mergetool.diffconflicts.cmd 'diffconflicts vim $BASE $LOCAL $REMOTE $MERGE'
