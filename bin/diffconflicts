@@ -59,8 +59,8 @@ LCONFL=$(dirname $5)/$$.left.tmp
 RCONFL=$(dirname $5)/$$.right.tmp
 
 # Remove the conflict markers for each 'side' and put each into a temp file
-sed -e '/<<<<<<</,/^=======$/d' -e '/>>>>>>>/d' $MERGED > $LCONFL
-sed -e '/^=======$/,/>>>>>>>/d' -e '/<<<<<<</d' $MERGED > $RCONFL
+sed -e '/^<<<<<<< /,/^=======$/d' -e '/^>>>>>>> /d' $MERGED > $LCONFL
+sed -e '/^=======$/,/^>>>>>>> /d' -e '/^<<<<<<< /d' $MERGED > $RCONFL
 
 # Fire up vimdiff
 $cmd -f -R -d $LCONFL $RCONFL \
