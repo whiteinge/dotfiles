@@ -64,6 +64,9 @@ RNAME=$( awk '/^<<<<<<< / {gsub("/","."); print substr($0, 9); exit}' $MERGED )
 LCONFL=$MERGED.REMOTE.$LNAME.$$.tmp
 RCONFL=$MERGED.LOCAL.$RNAME.$$.tmp
 
+# Always delete our temp files; Git will handle it's own temp files
+trap 'rm -f '$LCONFL' '$RCONFL SIGINT SIGTERM EXIT
+
 # Remove the conflict markers for each 'side' and put each into a temp file
 sed -e '/^<<<<<<< /,/^=======$/d' -e '/^>>>>>>> /d' $MERGED > $LCONFL
 sed -e '/^=======$/,/^>>>>>>> /d' -e '/^<<<<<<< /d' $MERGED > $RCONFL
@@ -80,8 +83,5 @@ EC=$?
 if [[ $EC == "0" ]] ; then
     cat $LCONFL > $MERGED
 fi
-
-# Always delete our temp files; Git will handle it's own temp files
-rm $LCONFL $RCONFL
 
 exit $EC
