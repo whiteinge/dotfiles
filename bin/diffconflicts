@@ -55,8 +55,14 @@ BASE=$2
 LOCAL=$3
 REMOTE=$4
 MERGED=$5
-LCONFL=$(dirname $5)/$$.left.tmp
-RCONFL=$(dirname $5)/$$.right.tmp
+
+# Extract the left (remote) and the right (local) name
+LNAME=$( awk '/^>>>>>>> / {gsub("/","."); print substr($0, 9); exit}' $MERGED )
+RNAME=$( awk '/^<<<<<<< / {gsub("/","."); print substr($0, 9); exit}' $MERGED )
+
+# Temporary files for left and right side
+LCONFL=$MERGED.REMOTE.$LNAME.$$.tmp
+RCONFL=$MERGED.LOCAL.$RNAME.$$.tmp
 
 # Remove the conflict markers for each 'side' and put each into a temp file
 sed -e '/^<<<<<<< /,/^=======$/d' -e '/^>>>>>>> /d' $MERGED > $LCONFL
