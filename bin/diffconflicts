@@ -56,9 +56,10 @@ LOCAL=$3
 REMOTE=$4
 MERGED=$5
 
-# Extract the left (remote) and the right (local) name
-LNAME=$( awk '/^>>>>>>> / {gsub("/","."); print substr($0, 9); exit}' $MERGED )
-RNAME=$( awk '/^<<<<<<< / {gsub("/","."); print substr($0, 9); exit}' $MERGED )
+# Extract the left (remote) and the right (local) name, if possible
+# If NF is not 2, this may be a rebase or the local/remotes name is not available
+LNAME=$( awk '/^<<<<<<< / { sub("/", ".", $2); if (NF == 2) print $2; exit }' $MERGED )
+RNAME=$( awk '/^>>>>>>> / { sub("/", ".", $2); if (NF == 2) print $2; exit }' $MERGED )
 
 # Temporary files for left and right side
 LCONFL=$MERGED.REMOTE.$LNAME.$$.tmp
