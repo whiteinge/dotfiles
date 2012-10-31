@@ -46,3 +46,6 @@
 [submodule ".zsh-syntax-highlighting"]
 	path = .zsh-syntax-highlighting
 	url = git://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule ".vim/bundle/vim-tmux"]
+	path = .vim/bundle/vim-tmux
+	url = git://github.com/peterhoeg/vim-tmux.git
