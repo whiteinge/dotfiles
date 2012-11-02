@@ -5,15 +5,16 @@
 ! --- Xft {{{1
 ! -----------------------------------------------------------------------------
 ! calculate dpi with xdpyinfo | grep resolution
-Xft*dpi: 90
+Xft*dpi: 96
 Xft*antialias: true
 Xft*hinting: true
-! font-dependant. also try hintslight, hintsfull, hintsmedium, or hintsnone.
-Xft*hintstyle: hintfull
+! font-dependant. also try hintslight, hintfull, hintmedium, or hintnone.
+Xft*hintstyle: hintslight
 ! set to vrgb for subpixel hinting on LCDs, or none on CRTs
-Xft*rgba: none
+Xft*rgba: rgb
 ! Choices: lcdnone, lcddefault, lcdlight, lcdlegacy
-Xft.lcdfilter: lcddefault
+!Xft.lcdfilter: lcddefault
+!Xft.embolden: true
 
 
 ! --- Xcursor {{{1
