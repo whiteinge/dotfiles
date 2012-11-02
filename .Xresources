@@ -46,10 +46,10 @@ xterm*eightBitOutput: true
 ! xterm*metaSendsEscape: true
 ! -- Enables True-Type rendering:
 xterm*renderFont: true
-xterm*faceName: Monaco
-xterm*faceNameDoublesize: Monaco
+xterm*faceName: DejaVuSansMono
+xterm*faceNameDoublesize: DejaVuSansMono
 xterm*wideChars: true
-xterm*wideFont: Monaco
+xterm*wideFont: DejaVuSansMono
 ! -- Define the size increments used when changing font size
 xterm*faceSize: 10
 xterm*faceSize1: 6
@@ -117,7 +117,7 @@ xmessage*Command.internalHeight: 3
 xmessage*Command.borderColor: gray40
 xmessage*Command.shapeStyle: Rectangle
 xmessage*Command.background: gray80
-xmessage*faceName: Monaco
+xmessage*faceName: DejaVuSansMono
 xmessage*faceSize: 12
 xmessage*message.scrollVertical: Always
 xmessage*message.scrollHorizontal: Never
