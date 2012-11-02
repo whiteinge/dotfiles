@@ -34,10 +34,11 @@ xterm*cursorUnderline: true
 xterm*cursorBlink: true
 xterm*color4: DodgerBlue1
 xterm*color12: SteelBlue1
+xterm*dynamicColors: true
 ! Use screen/tmux scrollback instead:
 xterm*saveLines: 100
 ! -- Allow utf8 in/out
-xterm*utf8: 1
+xterm*utf8: 2
 xterm*eightBitInput: true
 xtere*eightBitControl: false
 xterm*eightBitOutput: true
