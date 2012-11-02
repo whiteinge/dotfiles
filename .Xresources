@@ -56,9 +56,9 @@ xterm*wideFont: DejaVuSansMono
 xterm*faceSize: 10
 xterm*faceSize1: 6
 xterm*faceSize2: 8
-xterm*faceSize3: 10
-xterm*faceSize4: 12
-xterm*faceSize5: 16
+xterm*faceSize3: 12
+xterm*faceSize4: 16
+xterm*faceSize5: 20
 xterm*faceSize6: 24
 ! -- Scroll multiple lines at a time for faster redrawing:
 xterm*jumpScroll: true
