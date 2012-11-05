@@ -26,6 +26,8 @@ static_functions=(
     VCS_INFO_reposub
     VCS_INFO_set
 
+    vcs_info_hookadd
+    vcs_info_hookdel
     vcs_info_lastmsg
     vcs_info_printsys
     vcs_info_setsys
@@ -35,6 +37,7 @@ for func in ${static_functions} ; do
     autoload -Uz ${func}
 done
 
+[[ -n ${(Mk)parameters:#vcs_info_msg_<->_} ]] && unset ${parameters[(I)vcs_info_msg_<->_]}
 VCS_INFO_set --nvcs '-preinit-'
 vcs_info_setsys
 
@@ -67,6 +70,9 @@ vcs_info () {
     if (( retval == 1 )); then
         return 0
     elif (( retval == 2 )); then
+        # This needs `max-exports' set. We're still setting it again later
+        # for more specific contexts.
+        VCS_INFO_maxexports
         VCS_INFO_set --nvcs
         return 0
     fi
@@ -75,7 +81,7 @@ vcs_info () {
     (( ${#enabled} == 0 )) && enabled=( all )
 
     if [[ -n ${(M)enabled:#(#i)none} ]] ; then
-        [[ -n ${vcs_info_msg_0_} ]] && VCS_INFO_set --clear
+        [[ -n ${vcs_info_msg_0_} ]] && VCS_INFO_set --nvcs
         return 0
     fi
 
@@ -88,7 +94,7 @@ vcs_info () {
 
     for pat in ${dps} ; do
         if [[ ${PWD} == ${~pat} ]] ; then
-            [[ -n ${vcs_info_msg_0_} ]] && VCS_INFO_set --clear
+            [[ -n ${vcs_info_msg_0_} ]] && VCS_INFO_set --nvcs
             return 0
         fi
     done
