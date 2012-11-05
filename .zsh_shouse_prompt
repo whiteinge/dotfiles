@@ -22,55 +22,14 @@ zstyle ':vcs_info:*' enable git hg bzr svn
 zstyle ':vcs_info:(hg*|git*):*' get-revision true
 zstyle ':vcs_info:(hg*|git*):*' check-for-changes true
 
-zstyle ':vcs_info:hg*' formats "(%s)[%i%u %b %m]" # rev+changes branch misc
-zstyle ':vcs_info:hg*' actionformats "(%s|${white}%a${gray})[%i%u %b %m]"
-
-zstyle ':vcs_info:hg*:netbeans' use-simple true
-zstyle ':vcs_info:hg*:*' get-bookmarks true
-zstyle ':vcs_info:hg*:*' get-mq true
-
-zstyle ':vcs_info:hg*:*' get-unapplied true
-zstyle ':vcs_info:hg*:*' patch-format "mq(%g):%n/%c %p"
-zstyle ':vcs_info:hg*:*' nopatch-format "mq(%g):%n/%c %p"
-
-zstyle ':vcs_info:hg*:*' unstagedstr "${green}+${gray}"
-zstyle ':vcs_info:hg*:*' hgrevformat "%r" # only show local rev.
+zstyle ':vcs_info:(hg*|git*)' formats "(%s) %12.12i %c%u %b%m" # hash changes branch misc
+zstyle ':vcs_info:(hg*|git*)' actionformats "(%s|${white}%a${gray}) %12.12i %c%u %b%m"
 zstyle ':vcs_info:hg*:*' branchformat "%b" # only show branch
 
-zstyle ':vcs_info:git*' formats "(%s) %12.12i %c%u %b%m" # hash changes branch misc
-zstyle ':vcs_info:git*' actionformats "(%s|${white}%a${gray}) %12.12i %c%u %b%m"
+zstyle ':vcs_info:(hg*|git*):*' stagedstr "${green}S${gray}"
+zstyle ':vcs_info:(hg*|git*):*' unstagedstr "${red}U${gray}"
 
-zstyle ':vcs_info:git*:*' stagedstr "${green}S${gray}"
-zstyle ':vcs_info:git*:*' unstagedstr "${red}U${gray}"
-
-# zstyle ':vcs_info:hg:*:-all-' command fakehg
-# zstyle ':vcs_info:*+*:*' debug true
-
-zstyle ':vcs_info:hg*+set-hgrev-format:*' hooks hg-hashfallback
-zstyle ':vcs_info:hg*+set-message:*' hooks mq-vcs
 zstyle ':vcs_info:git*+set-message:*' hooks git-st git-stash git-untracked
-
-### Dynamically set hgrevformat based on if the local rev is available
-# We don't always know the local revision, e.g. if use-simple is set
-# Truncate long hash to 12-chars but also allow for multiple parents
-function +vi-hg-hashfallback() {
-    if [[ -z ${hook_com[localrev]} ]] ; then
-        local -a parents
-
-        parents=( ${(s:+:)hook_com[hash]} )
-        parents=( ${(@r:12:)parents} )
-        hook_com[rev-replace]="${(j:+:)parents}"
-
-        ret=1
-    fi
-}
-
-### Show when mq itself is under version control
-function +vi-mq-vcs() {
-    # if [[ -d ${hook_com[base]}/.hg/patches/.hg ]]; then
-        # hook_com[hg-mqpatch-string]="mq:${hook_com[hg-mqpatch-string]}"
-    # fi
-}
 
 # Show remote ref name and number of commits ahead-of or behind
 function +vi-git-st() {
@@ -105,7 +64,6 @@ function +vi-git-stash() {
         hook_com[misc]+=" (${stashes} stashed)"
     fi
 }
-
 
 # Indicate if there are any untracked files present
 function +vi-git-untracked() {
