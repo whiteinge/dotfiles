@@ -128,6 +128,21 @@ function +pr-mode-full() {
     pr_llines=( ${lines[@]} )
 }
 
+# Show the single-line prompt:
+# zstyle ':pr-nethack:' mode compact
+#
+# ~/src/dotfiles %                        (git) d2a3f82f U? +1/-2
+function +pr-mode-compact() {
+    zstyle ':pr_nethack:*' pwd "%1~" # only last segment of cwd
+    zstyle ':vcs_info:(hg*|git*)' formats "(%s) %8.8i %c%u %m" # no branch
+
+    pr_llines=( "${pr_com[pwd]} ${pr_com[prompt]}" )
+
+    [[ -n ${pr_com[vcs]} ]] && pr_rlines=(
+        ${pr_com[vcs]}
+    )
+}
+
 # Show the cwd in green if writable, yellow otherwise
 function +pr-pwd() {
     local -a v_pwd i_pwd
