@@ -107,7 +107,7 @@ function +pr-mode-full() {
     # Assemble all prompt lines
     lines=(
         ${(j: :)infoline}
-        "%(1j.${gray}%j${reset} .)%(0?.${white}.${red})%#${reset}"
+        ${pr_com[prompt]}
     )
     [[ -n ${pr_com[vcs]} ]] && lines[1]=(
         ${lines[1]}
