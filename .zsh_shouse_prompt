@@ -135,6 +135,7 @@ function +pr-mode-full() {
 function +pr-mode-compact() {
     zstyle ':pr_nethack:*' pwd "%1~" # only last segment of cwd
     zstyle ':vcs_info:(hg*|git*)' formats "(%s) %8.8i %c%u %m" # no branch
+    zstyle ':vcs_info:git*+set-message:*' hooks git-st git-st-compact git-untracked
 
     pr_llines=( "${pr_com[pwd]} ${pr_com[prompt]}" )
 
@@ -229,8 +230,15 @@ function +vi-git-st() {
         behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
         (( $behind )) && gitstatus+=( "${red}-${behind}${gray}" )
 
+        user_data[gitstatus]=${gitstatus}
         hook_com[branch]="${hook_com[branch]} [${remote} ${(j:/:)gitstatus}]"
     fi
+}
+
+# Show the above/behind upstream counts more tersely for the compact display
+function +vi-git-st-compact() {
+    [[ -n ${user_data[gitstatus]} ]] \
+        && hook_com[misc]="@{u}${(j:/:)user_data[gitstatus]}"
 }
 
 # Show count of stashed changes
