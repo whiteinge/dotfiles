@@ -55,7 +55,7 @@ set nojoinspaces                "nojs:  prevents inserting two spaces after punc
 set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
 set pastetoggle=<F9>            "pt:    useful so auto-indenting doesn't mess up code when pasting
 
-set complete=.,w,b,u,i          "cpt:   use default insert completion minus tags (tags have own completion and are often slow)
+set complete=.,w,b,u            "cpt:   default insert completion minus tags and included files
 
 set virtualedit=block           "ve:    let cursor move past the last char in <C-V> mode
 set nostartofline               "sol:   avoid moving cursor to BOL when jumping around
