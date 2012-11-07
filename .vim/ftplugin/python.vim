@@ -32,6 +32,8 @@ if basedir:
     pyver = 'python{0}'.format('.'.join(sys.version.split('.')[:2]))
     libdir = os.path.join(basedir, 'lib', pyver, 'site-packages')
     site.addsitedir(libdir)
+    # newly added dirs (e.g. virtualenv) should take precedence
+    sys.path.reverse()
 
 paths = [i.replace(' ', r'\ ') for i in sys.path if os.path.isdir(i)]
 vim.command(r'set path+={0}'.format(','.join(paths)))
