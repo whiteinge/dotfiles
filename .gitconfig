@@ -8,7 +8,7 @@
     co = checkout
     d = diff
     dc = diff --cached
-    b = branch -v
+    b = branch -vv
     bc = branch --contains
     f = fetch --all --tags
     re = reset --hard @{upstream}
