@@ -11,6 +11,7 @@
     b = branch -vv
     bc = branch --contains
     f = fetch --all --tags
+    r = rebase
     re = reset --hard @{upstream}
     short = rev-parse --short
     m = merge --no-ff
