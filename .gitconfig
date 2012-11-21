@@ -16,6 +16,7 @@
     m = merge --no-ff
 
     # Perform a merge in-memory and output if any conflicts are found (dry-run)
+    # Takes the name of a branch / ref to merge
     mergetest = "!sh -c 'git merge-tree `git merge-base $1 HEAD` $1 HEAD \
         | awk '\\''/^@@/ { print \"Conflicts found\"; exit 1 }'\\''' -"
 
