@@ -15,6 +15,10 @@
     short = rev-parse --short
     m = merge --no-ff
 
+    # Perform a merge in-memory and output if any conflicts are found (dry-run)
+    mergetest = "!sh -c 'git merge-tree `git merge-base $1 HEAD` $1 HEAD \
+        | awk '\\''/^@@/ { print \"Conflicts found\"; exit 1 }'\\''' -"
+
     l = log --oneline --decorate
     ll = log --stat --decorate --abbrev-commit --date=relative
     lll = "!sh -c 'git log -p --no-color $@ \
