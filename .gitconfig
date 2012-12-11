@@ -31,6 +31,9 @@
 
     serve = "!git daemon --base-path=$(git rev-parse --show-toplevel) --export-all"
 
+    # Open all modified files in EDITOR
+    editm = "!$EDITOR $(git ls-files -m)"
+
     # Show all remote branches that have been merged
     allmerged = "!git branch -r -v --no-abbrev --merged | \
         awk '!/master*|develop*|HEAD/ { print $2,$1 }'"
