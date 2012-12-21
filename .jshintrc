@@ -1,0 +1,29 @@
+// Enforcing options
+{ "bitwise": true
+, "curly": true
+, "eqeqeq": true
+, "forin": true
+, "immed": true
+, "latedef": true
+, "maxcomplexity": 4
+, "maxdepth": 3
+, "maxlen": 80
+, "newcap": true
+, "noarg": true
+, "plusplus": true
+, "regexp": true
+, "trailing": true
+, "undef": true
+, "unused": true
+
+// Environment options
+, "browser": true
+, "es5": true
+, "predef":
+    [ "define"
+    , "requirejs"
+    ]
+
+// don't use; sets "white" to true and many other side effects from jslint
+// , "indent": 4
+}
