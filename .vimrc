@@ -43,7 +43,6 @@ set path=.,**
 
 set cindent                     "cin:   enables the second-most configurable indentation (see :help C-indenting).
 set cinoptions=l1,c4,(s,U1,w1,m1,j1,J1
-set cinwords=if,elif,else,for,while,try,except,finally,def,class
 
 set expandtab                   "et:    uses spaces instead of tab characters
 set smarttab                    "sta:   helps with backspacing because of expandtab

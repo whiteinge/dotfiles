@@ -4,6 +4,8 @@ let python_highlight_builtins = 1
 let python_highlight_exceptions = 1
 let python_highlight_space_errors = 1
 
+set cinwords=if,elif,else,for,while,try,except,finally,def,class
+
 if exists("+omnifunc")
     setl omnifunc=pythoncomplete#Complete
 endif
