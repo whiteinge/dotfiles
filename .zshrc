@@ -23,7 +23,7 @@ setopt                          \
         hist_ignore_space       \
         ignore_eof              \
         share_history           \
-        no_flow_control         \
+        noflowcontrol           \
         list_types              \
         mark_dirs               \
         path_dirs               \
