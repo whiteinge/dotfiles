@@ -480,6 +480,10 @@ nnoremap <F7> :GundoToggle<cr>
 let g:syntastic_enable_highlighting = 0
 nmap <silent> <leader>y :SyntasticCheck<cr>
 
+""" Fugitive settings
+" Open current buffer in a new tab and show Fugitive diff
+nmap <silent> <leader>dd :tab split \| Gdiff \| wincmd h<cr>
+
 """ Tagbar plugin settings
 map <F5> :TagbarToggle<cr>
 let g:tagbar_sort = 0
