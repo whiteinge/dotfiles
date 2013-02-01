@@ -315,7 +315,6 @@ set printencoding=utf-8
 
 " NERDTree is a pretty slick (partial) replacement for :Explore
 let NERDTreeIgnore=['\.pyc$']
-let NERDTreeDirArrows=0
 map <F6> :NERDTreeToggle<cr>
 noremap <leader>gf :NERDTreeFind<cr>
 
