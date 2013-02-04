@@ -476,9 +476,13 @@ noremap  <F11> "wyiw:call WordNetOverviews(@w)<cr>
 nnoremap <F7> :GundoToggle<cr>
 
 """ Syntastic settings
-let g:syntastic_check_on_open=1
 let g:syntastic_enable_highlighting = 0
 nmap <silent> <leader>y :SyntasticCheck<cr>
+
+if ! &diff
+    let g:syntastic_check_on_open=1
+endif
+
 
 """ Fugitive settings
 " Open current buffer in a new tab and show Fugitive diff
