@@ -16,6 +16,9 @@
 , "undef": true
 , "unused": true
 
+// Relaxing options
+, "lastsemic": true
+
 // Environment options
 , "browser": true
 , "es5": true
