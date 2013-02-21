@@ -38,6 +38,9 @@ set showmatch                   "sm:    flashes matching brackets or parentheses
 set nobackup                    "bk:    does not write a persistent backup file of an edited file
 set writebackup                 "wb:    does keep a backup file while editing a file
 
+set undofile                    "udf:   persist the undo tree to a file; dir below will not be auto-created
+set undodir=$HOME/.vim/undodir,.
+
 " Searches the current directory as well as subdirectories with commands like :find, :grep, etc.
 set path=.,**
 
