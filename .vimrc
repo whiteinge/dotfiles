@@ -300,7 +300,7 @@ hi CursorLine cterm=bold
 hi LineNr cterm=bold ctermfg=0 ctermbg=none
 
 " Refresh busted syntax highlighting (this happens too often)
-noremap <F12> <esc>:syntax sync fromstart<cr>
+map <F12> :syntax sync fromstart<cr>
 
 " }}}
 " Printing {{{
