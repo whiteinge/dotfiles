@@ -270,23 +270,6 @@ colorscheme desert
 " Make listchars (much) more noticable.
 hi SpecialKey ctermfg=7 ctermbg=1
 
-" Statusline
-" I like this better than all the reverse video of the default statusline.
-hi StatusLine term=bold,reverse cterm=bold ctermfg=7 ctermbg=none
-hi StatusLineNC term=reverse cterm=bold ctermfg=8
-hi User1 ctermfg=4
-hi User2 ctermfg=1
-hi User3 ctermfg=5
-hi User4 cterm=bold ctermfg=8
-hi User5 ctermfg=6
-hi User6 ctermfg=2
-hi User7 ctermfg=2
-hi User8 ctermfg=3
-hi User9 cterm=reverse ctermfg=8 ctermbg=7
-
-" Darkens the status line for non-active windows.
-au BufEnter * hi User9 ctermfg=7
-
 " A nice, minimalistic tabline.
 hi TabLine cterm=bold,underline ctermfg=8 ctermbg=none
 hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
