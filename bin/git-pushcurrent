@@ -3,9 +3,13 @@
 # is one) without having to manually specify the remote branch and without
 # having to globally reconfigure push.current.
 
-local upstream
+local upstream branch
+local -a split
 
 upstream=$(git rev-parse --symbolic-full-name --abbrev-ref @{u} 2>/dev/null)
 [[ -n $upstream ]] || exit 1
 
-git push ${(s:/:)upstream} $*
+branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD 2>/dev/null)
+split=( ${(s:/:)upstream} )
+
+git push ${split[1]} ${branch}:${split[2]} $*
