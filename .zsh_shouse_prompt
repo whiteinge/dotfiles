@@ -296,14 +296,3 @@ function precmd {
     PROMPT="${(F)pr_llines} "
     RPROMPT="${(F)pr_rlines}"
 }
-
-# Executed after a command has been read and is to be executed.
-function preexec {
-    # if running gnu screen, set the window name to the last run command
-    # FIXME any way to make this not change certain window titles (by window
-    # number or if a title isn't already set?)
-    if [[ "$TERM" =~ "screen" ]]; then
-        local CMD=${1[(wr)^(*=*|ssh|sudo|-*)]}
-        echo -ne "\ek$CMD\e\\"
-    fi
-}
