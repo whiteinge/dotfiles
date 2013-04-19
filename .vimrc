@@ -69,6 +69,10 @@ set cryptmethod=blowfish        "cm:    use (much) stronger blowfish encryption
 " Fix for legacy vi inconsistency
 map Y y$
 
+" Allow using the repeat operator with a visual selection (!)
+" http://stackoverflow.com/a/8064607/127816
+vnoremap . :normal .<cr>
+
 " Allow undoing insert-mode ctrl-u and ctrl-w
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
