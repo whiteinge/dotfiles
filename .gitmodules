@@ -1,6 +1,3 @@
-[submodule ".vim/bundle/DrawIt"]
-	path = .vim/bundle/DrawIt
-	url = git://github.com/vim-scripts/DrawIt.git
 [submodule ".vim/bundle/gitv"]
 	path = .vim/bundle/gitv
 	url = git://github.com/gregsexton/gitv.git
@@ -22,33 +19,18 @@
 [submodule ".vim/bundle/tagbar"]
 	path = .vim/bundle/tagbar
 	url = git://github.com/majutsushi/tagbar.git
-[submodule ".vim/bundle/tslime"]
-	path = .vim/bundle/tslime
-	url = http://github.com/vim-scripts/tslime.vim
 [submodule ".vim/bundle/vim-fugitive"]
 	path = .vim/bundle/vim-fugitive
 	url = git://github.com/tpope/vim-fugitive.git
-[submodule ".vim/bundle/vim-indent-object"]
-	path = .vim/bundle/vim-indent-object
-	url = git://github.com/michaeljsmith/vim-indent-object.git
-[submodule ".vim/bundle/wordlist.vim"]
-	path = .vim/bundle/wordlist.vim
-	url = git://github.com/vim-scripts/wordlist.vim.git
 [submodule ".vim/bundle/vim-powerline"]
 	path = .vim/bundle/vim-powerline
 	url = git://github.com/Lokaltog/vim-powerline.git
-[submodule ".vim/bundle/vimux"]
-	path = .vim/bundle/vimux
-	url = git://github.com/benmills/vimux.git
 [submodule ".vim/bundle/vim-commentary"]
 	path = .vim/bundle/vim-commentary
 	url = git://github.com/tpope/vim-commentary.git
 [submodule ".zsh-syntax-highlighting"]
 	path = .zsh-syntax-highlighting
 	url = git://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule ".vim/bundle/vim-tmux"]
-	path = .vim/bundle/vim-tmux
-	url = git://github.com/peterhoeg/vim-tmux.git
 [submodule ".vim/bundle/vim-dispatch"]
 	path = .vim/bundle/vim-dispatch
 	url = git://github.com/tpope/vim-dispatch.git
