@@ -265,8 +265,8 @@ function +vi-git-untracked() {
 
 # execute the above prompt functions ##########################################
 
-# Executed before each prompt
-function precmd {
+# To be added to the precmd_* array so it is executed before each prompt
+function precmd_prompt {
     local func debug
     local -a mode
 
