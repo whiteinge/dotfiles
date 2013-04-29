@@ -76,9 +76,22 @@ export BROWSER='chromium-browser'
 # Silence Wine debugging output (why isn't this a default?)
 export WINEDEBUG=-all
 
-# Set grep to ignore SCM directories
-GREP_OPTIONS="--color --exclude-dir=.svn --exclude=\*.pyc --exclude-dir=.hg --exclude-dir=.bzr --exclude-dir=.git --exclude=tags --exclude-dir=_build"
-export GREP_OPTIONS
+# A function to construct GREP_OPTIONS dynamically by reading a file named
+# .grepoptions in both the user's home directory and the current directory (for
+# project-level grep options and ignores)
+function grep_options() {
+    local -a opts
+    local proj_opts=${PWD}/.grepoptions
+
+    opts=( ${(f)"$(< "${HOME}/.grepoptions")"} )
+
+    if [[ -r ${proj_opts} ]] ; then
+        opts+=( ${(f)"$(< "${proj_opts}")"} )
+    fi
+
+    GREP_OPTIONS="${(j: :)opts} ${@}"
+    export GREP_OPTIONS
+}
 
 # }}}
 # {{{ completions
@@ -479,6 +492,6 @@ function xssh() {
 # }}}
 
 # Run precmd functions
-precmd_functions=( precmd_prompt )
+precmd_functions=( precmd_prompt grep_options )
 
 # EOF
