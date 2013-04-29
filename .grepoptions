@@ -1,0 +1,7 @@
+--color
+--exclude-dir=.svn
+--exclude-dir=.hg
+--exclude-dir=.bzr
+--exclude-dir=.git
+--exclude=\*.pyc
+--exclude=tags
