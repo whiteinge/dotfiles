@@ -271,26 +271,26 @@ set clipboard=                  "       Disable automatic X11 clipboard crossove
 " Color {{{
 "   All coloring options are for the non-GUI Vim (see :help cterm-colors).
 
-syntax enable
-colorscheme desert
-
 " Make listchars (much) more noticable.
-hi SpecialKey ctermfg=7 ctermbg=1
+au ColorScheme * hi SpecialKey ctermfg=7 ctermbg=1
 
 " A nice, minimalistic tabline.
-hi TabLine cterm=bold,underline ctermfg=8 ctermbg=none
-hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
-hi TabLineFill cterm=bold ctermbg=none
+au ColorScheme * hi TabLine cterm=bold,underline ctermfg=8 ctermbg=none
+au ColorScheme * hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
+au ColorScheme * hi TabLineFill cterm=bold ctermbg=none
 
 " Black ColorColumn to not catch the eye more than is necessary
-hi ColorColumn ctermbg=0
+au ColorScheme * hi ColorColumn ctermbg=0
 
 " Makes the current line stand out with bold and in the numberline
-hi CursorLine cterm=bold
-hi LineNr cterm=bold ctermfg=0 ctermbg=none
+au ColorScheme * hi CursorLine cterm=bold
+au ColorScheme * hi LineNr cterm=bold ctermfg=0 ctermbg=none
 
 " Refresh busted syntax highlighting (this happens too often)
 map <F12> :syntax sync fromstart<cr>
+
+syntax enable
+colorscheme desert
 
 " }}}
 " Printing {{{
