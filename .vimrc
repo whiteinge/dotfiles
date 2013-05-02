@@ -286,6 +286,9 @@ au ColorScheme * hi ColorColumn ctermbg=0
 au ColorScheme * hi CursorLine cterm=bold
 au ColorScheme * hi LineNr cterm=bold ctermfg=0 ctermbg=none
 
+" Match the Sign column to the number column
+au ColorScheme * hi SignColumn cterm=bold ctermfg=0 ctermbg=none
+
 " Refresh busted syntax highlighting (this happens too often)
 map <F12> :syntax sync fromstart<cr>
 
