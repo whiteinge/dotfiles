@@ -5,17 +5,8 @@ setl textwidth=79
 "     setlocal makeprg=gcc\ –Wall\ –Wextra\ –o\ %<\ %
 " endif
 
-" \usecolortheme{wolverine}
-" \usecolortheme{seahorse}
-" \usecolortheme{seagull}
-" \usecolortheme{dolphin}
-
-" \ --theme=AnnArbor\
-" \ --theme=Warsaw\
-" \ --theme=Warsaw\
-
 setl makeprg=rst2beamer.py\
-    \ --theme=CambridgeUS\
+    \ --theme=default\
     \ --codeblocks-use-pygments\
     \ --output-encoding-error-handler=backslashreplace\
     \ --overlaybullets=none\
