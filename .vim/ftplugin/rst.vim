@@ -29,4 +29,6 @@ let g:tagbar_type_rst = {
 " More easily make headings in rST
 noremap <Leader>h <Esc>:norm yypVr
 
-let b:ftskeleton="~/.vim/ftplugin/rst/skeleton/rst2beamer.rst"
+if bufname('%') == 'presentation.rst'
+    let b:ftskeleton="~/.vim/ftplugin/rst/skeleton/rst2beamer.rst"
+endif
