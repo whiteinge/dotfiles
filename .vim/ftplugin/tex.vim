@@ -1,3 +1,9 @@
+let g:tex_fold_enabled=1
+set fdm=syntax
+set fdl=1
+
+let g:tex_comment_nospell=1
+
 " tagbar settings
 let g:tagbar_type_tex = {
     \ 'ctagstype' : 'latex',
