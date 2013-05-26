@@ -6,8 +6,6 @@
 :Author: Seth House <seth@eseth.com>
 :Date: %DATE%
 
-.. include:: ../beamerdefs.txt
-
 .. Checklist:
 ..
     [ ] When is the presentation?
@@ -38,16 +36,28 @@
     * Summary. Short!
     * Action steps. Specific actions; specific time-frame.
 
-First Section
-=============
+.. include:: /home/shouse/src/presentations/beamerdefs.txt
+
+|logo<|
+
+.. image:: logo.pdf
+    :height: 0.5 cm
+    :align: right
+
+|>|
+
+-------------
+First section
+-------------
+
+First Subsection
+================
+
+First frame
+-----------
 
 .. container:: r2b-note
 
     Pow! Zing!
 
-First section
-
-First slide
------------
-
-First slide
+First frame
