@@ -27,7 +27,7 @@
     llll = "!sh -c 'git lll $@ \
         | gvim - -R -v -c \"set ft=git\" -c \"set fdm=syntax\"' -"
 
-    rl = reflog  --date=relative
+    rl = reflog --date=relative
     stat = diff --stat
 
     serve = "!git daemon --base-path=$(git rev-parse --show-toplevel) --export-all"
