@@ -171,6 +171,7 @@ alias ps='ps -opid,uid,cpu,time,stat,command'
 alias df='df -h'
 alias dus='du -sh'
 alias info='info --vi-keys'
+alias clip='xclip -selection clipboard'
 
 # Quickly ssh through a bastian host without having to hard-code in ~/.ssh/config
 alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
