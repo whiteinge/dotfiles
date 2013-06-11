@@ -85,11 +85,11 @@ function grep_options() {
 
     opts=( ${(f)"$(< "${HOME}/.grepoptions")"} )
 
-    if [[ -r ${proj_opts} ]] ; then
-        opts+=( ${(f)"$(< "${proj_opts}")"} )
+    if [[ -r ${proj_opts} ]] && [[ $PWD != $HOME ]] ; then
+        opts+=( ${${(f)"$(< "${proj_opts}")"}:#[#]*} )
     fi
 
-    GREP_OPTIONS="${(j: :)opts} ${@}"
+    GREP_OPTIONS="${(j: :)opts}"
     export GREP_OPTIONS
 }
 
