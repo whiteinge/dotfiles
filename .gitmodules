@@ -37,3 +37,6 @@
 [submodule ".vim/bundle/vim-gitgutter"]
 	path = .vim/bundle/vim-gitgutter
 	url = git://github.com/airblade/vim-gitgutter.git
+[submodule ".vim/bundle/tern"]
+	path = .vim/bundle/tern
+	url = git@github.com:marijnh/tern_for_vim.git
