@@ -172,6 +172,8 @@ alias df='df -h'
 alias dus='du -sh'
 alias info='info --vi-keys'
 alias clip='xclip -selection clipboard'
+alias rs='rsync -avhz --progress --append-verify'
+compdef rs=rsync
 
 # Quickly ssh through a bastian host without having to hard-code in ~/.ssh/config
 alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
