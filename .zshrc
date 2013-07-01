@@ -259,7 +259,9 @@ function error() {
 # sh -c 'ZSHRUN=1 uxterm -geometry 100x4+0+0 +ls'
 
 if [[ -n "$ZSHRUN" ]]; then
+    unsetopt ignore_eof
     unset ZSHRUN
+
     function _accept_and_quit() {
         zsh -c "${BUFFER}" &|
         exit
