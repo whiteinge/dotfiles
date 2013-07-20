@@ -157,6 +157,30 @@ normal environment call `teardown_test_environment()`.
 Warning: DEBUG_PROPAGATE_EXCEPTIONS has been set to True.
 %(Normal)s""" % _c
 
+
+# Salt Helpers
+##############
+if 'SALT_MASTER_CONFIG' in os.environ:
+    try:
+        import salt.client
+        import salt.config
+        import salt.loader
+        import salt.runner
+    except ImportError:
+        pass
+
+    # Create the Salt __opts__ variable
+    __opts__ = salt.config.client_config(os.environ['SALT_MASTER_CONFIG'])
+
+    # Populate grains if it hasn't been done already
+    if not 'grains' in __opts__ or not __opts__['grains']:
+        __opts__['grains'] = salt.loader.grains(__opts__)
+
+    # Instantiate LocalClient and RunnerClient
+    SLC = salt.client.LocalClient()
+    SRUN = salt.runner.Runner(__opts__)
+
+
 # Start an external editor with \e
 ##################################
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/438813/
