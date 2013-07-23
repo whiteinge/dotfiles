@@ -40,3 +40,9 @@
 [submodule ".vim/bundle/tern"]
 	path = .vim/bundle/tern
 	url = git@github.com:marijnh/tern_for_vim.git
+[submodule ".vim/bundle/vim-textobj-user"]
+	path = .vim/bundle/vim-textobj-user
+	url = git@github.com:kana/vim-textobj-user.git
+[submodule ".vim/bundle/vim-textobj-indent"]
+	path = .vim/bundle/vim-textobj-indent
+	url = git@github.com:kana/vim-textobj-indent.git
