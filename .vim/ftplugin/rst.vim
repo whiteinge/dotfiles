@@ -5,17 +5,6 @@ setl textwidth=79
 "     setlocal makeprg=gcc\ –Wall\ –Wextra\ –o\ %<\ %
 " endif
 
-setl makeprg=rst2beamer.py\
-    \ --theme=default\
-    \ --codeblocks-use-pygments\
-    \ --output-encoding-error-handler=backslashreplace\
-    \ --overlaybullets=none\
-    \ --output-encoding=UTF-8\
-    \ --template=\"/home/shouse/.vim/ftplugin/rst/rst2beamer-default.tex\"\
-    \ --no-section-numbering\
-    \ %\
-    \ /tmp/%<.tex
-
 " tagbar settings
 let g:tagbar_type_rst = {
     \ 'ctagsbin' : 'rst2ctags',
