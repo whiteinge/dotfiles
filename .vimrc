@@ -505,13 +505,15 @@ else
     let g:tagbar_autofocus = 1
 endif
 
-""" Powerline settings
-let g:Powerline_stl_path_style = 'short'
-" If I'm running Vim via ssh, the patched font probably isn't available
-" wherever I'm connecting from, so fallback to compatible
-let g:Powerline_symbols = $SSH_CLIENT == "" ? 'unicode' : 'compatible'
-" Show marker if buffer contains trailing whitespace
-call Pl#Theme#InsertSegment('ws_marker', 'after', 'lineinfo')
+""" Airline settings
+" let g:airline_powerline_fonts = 1
+let g:airline_detect_whitespace=2
+let g:airline_whitespace_symbol = 'Ξ'
+let g:airline_linecolumn_prefix = '␊ '
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '◀'
+" Add the alternate buffer name next to the current file name
+let g:airline_section_c = "%f%m %{bufname('#') != '' ? '('. expand('#:t') .')' : ''}"
 
 " }}}
 
