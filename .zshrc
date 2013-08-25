@@ -192,14 +192,6 @@ alias -g RANDOM='"$(files=(*(.)) && echo $files[$RANDOM%${#files}+1])"'
 # breaks if flags are given (e.g. sudo -u someuser vi /etc/hosts)
 alias sudo='command sudo '
 
-# OS X versions
-if [[ $(uname) == "Darwin" ]]; then
-    alias ls='ls -FG'
-    unalias locate
-    alias lynx='lynx -cfg=$HOME/.lynx.cfg'
-    alias top='top -ocpu'
-fi
-
 # mplayerx2 -s 2.0 mymovie.m4v
 function mplayerx2() {
     local -a args
