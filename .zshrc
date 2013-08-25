@@ -477,9 +477,10 @@ function xssh() {
     # Grab the command(s) from stdin and write to tmpfile
     cat - > ${tmpfile}
 
-    # Execute 5 ssh processes and pipe tmpfile to the stdin of the remote shell
+    # Execute up to 5 ssh processes at a time and pipe tmpfile to the stdin of
+    # the remote shell
     echo -n "${HOSTS[@]}" | xargs -d" " -P5 -IHOST \
-        sh -c 'ssh HOST < '${tmpfile}' | sed -e "s/^/HOST: /g"'
+        sh -c 'ssh -T HOST < '${tmpfile}' | sed -e "s/^/HOST: /g"'
 }
 
 # }}}
