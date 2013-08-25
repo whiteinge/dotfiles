@@ -39,7 +39,7 @@ generated-members=
 
 init-import=yes
 dummy-variables-rgx=_|dummy
-additional-builtins=__salt__, __grains__, __env__, __opts__
+additional-builtins=__salt__, __grains__, __pillar__, __env__, __opts__
 
 [BASIC]
 
