@@ -142,6 +142,9 @@ endif
 " skeleton template.
 au BufNewFile * silent! exe "0r ". b:ftskeleton
 
+" Insert timestamps by calling out to date; override format by filetype
+let b:dateformat=''
+nmap <silent> <leader>dts :exe ':r !date '. escape(b:dateformat, '%')<cr>
 
 " }}}
 " Folding (spacebar toggles) {{{

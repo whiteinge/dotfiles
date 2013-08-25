@@ -1,0 +1,1 @@
+let b:dateformat='-R'
