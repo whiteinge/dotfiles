@@ -36,6 +36,10 @@ def notify_show(data, bufferp, uber_empty, tagsn, isdisplayed,
         ishilight, prefix, message):
     """Sends highlighted message to be printed on notification"""
 
+    # FIXME: un-hardcode this
+    if ('nick_*status' in tagsn) or ('nick_whiteinge' in tagsn):
+        return weechat.WEECHAT_RC_OK
+
     if (weechat.config_get_plugin('smart_notification') == "on" and
             bufferp == weechat.current_buffer()):
         pass
