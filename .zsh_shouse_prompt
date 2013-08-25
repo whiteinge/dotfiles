@@ -144,6 +144,13 @@ function +pr-mode-compact() {
     )
 }
 
+# Show just the prompt
+# zstyle ':pr-nethack:' mode bare
+#
+# %
+function +pr-mode-bare() {
+}
+
 # Show the cwd in green if writable, yellow otherwise
 function +pr-pwd() {
     local -a v_pwd i_pwd
