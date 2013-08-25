@@ -84,7 +84,7 @@ function pr_run_hooks() {
 # ... (git) d2a3f82fe9c5 U? master [origin/master ]
 # ..d 3 %
 function +pr-mode-full() {
-    local -a lines infoline debug pet
+    local -a lines pline infoline debug pet
     local i i_width i_pad filler dungeon
 
     zstyle -g pet ":pr_nethack:*" pet
@@ -104,13 +104,16 @@ function +pr-mode-full() {
     filler="${gray}${(l:$(( $COLUMNS - $i_width - $i_pad ))::.:)}${reset}"
     infoline[-1]=( ${filler} ${infoline[-1]} )
 
+    [[ -n ${pr_com[jobs]} ]] && pline+=( ${pr_com[jobs]} )
+    pline+=( ${pr_com[prompt]} )
+
     # Assemble all prompt lines
     lines=(
-        ${(j: :)infoline}
-        ${pr_com[prompt]}
+        "${(j: :)infoline}"
+        "${(j: :)pline}"
     )
     [[ -n ${pr_com[vcs]} ]] && lines[1]=(
-        ${lines[1]}
+        "${lines[1]}"
         "${gray}${pr_com[vcs]}${reset}"
     )
 
@@ -137,7 +140,7 @@ function +pr-mode-compact() {
     zstyle ':vcs_info:(hg*|git*)' formats "(%s) %8.8i %c%u %m" # no branch
     zstyle ':vcs_info:git*+set-message:*' hooks git-st git-st-compact git-untracked
 
-    pr_llines=( "${pr_com[pwd]} ${pr_com[prompt]}" )
+    pr_llines=( "${pr_com[pwd]} ${pr_com[jobs]} ${pr_com[prompt]}" )
 
     [[ -n ${pr_com[vcs]} ]] && pr_rlines=(
         ${pr_com[vcs]}
@@ -203,9 +206,11 @@ function +pr-venv() {
 
 # Show number of background jobs, or hide if none
 function +pr-jobs() {
-    local -a v_jobs
-    v_jobs=( "%(1j.${gray}%j${reset}.)" )
-    pr_com[jobs]=${(j::)v_jobs}
+    local v_jobs="%j"
+    local n_jobs=${(%)v_jobs}
+
+    [[ n_jobs -gt 0 ]] && pr_com[jobs]="${gray}${n_jobs}${reset}"
+    return 0
 }
 
 # Show the shell prompt, red if the last exit code was non-zero
