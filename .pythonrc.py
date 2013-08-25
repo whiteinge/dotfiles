@@ -168,17 +168,17 @@ if 'SALT_MASTER_CONFIG' in os.environ:
         import salt.runner
     except ImportError:
         pass
+    else:
+        # Create the Salt __opts__ variable
+        __opts__ = salt.config.client_config(os.environ['SALT_MASTER_CONFIG'])
 
-    # Create the Salt __opts__ variable
-    __opts__ = salt.config.client_config(os.environ['SALT_MASTER_CONFIG'])
+        # Populate grains if it hasn't been done already
+        if not 'grains' in __opts__ or not __opts__['grains']:
+            __opts__['grains'] = salt.loader.grains(__opts__)
 
-    # Populate grains if it hasn't been done already
-    if not 'grains' in __opts__ or not __opts__['grains']:
-        __opts__['grains'] = salt.loader.grains(__opts__)
-
-    # Instantiate LocalClient and RunnerClient
-    SLC = salt.client.LocalClient()
-    SRUN = salt.runner.Runner(__opts__)
+        # Instantiate LocalClient and RunnerClient
+        SLC = salt.client.LocalClient()
+        SRUN = salt.runner.Runner(__opts__)
 
 
 # Start an external editor with \e
