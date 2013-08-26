@@ -263,6 +263,32 @@ if [[ -n "$ZSHRUN" ]]; then
 fi
 
 # }}}
+# gext A wrapper to grep files with a given file extension {{{1
+# Also guesses case-insensitivity and performs many searches in parallel.
+
+gext() {
+    local spath ext string help icase
+
+    spath="$1"
+    string="$2"
+    ext="$3"
+    help="Usage: gext ./somepath sometext [someext]
+    Search will be case-sensitive if the search text contains capital letters."
+
+    [[ -n "${spath}" ]] && [[ -n "${string}" ]] || { echo ${help}; return 1 }
+
+    # Check for capital letters in the search pattern
+    echo "${string}" | grep -qE '[A-Z]+'
+    [[ $? -ne 0 ]] && icase="-i"
+
+    if [[ -n "${ext}" ]]; then
+        find "${spath}" -name "*.${ext}" -print0 | xargs -0 -P8 grep ${icase} -H "${string}"
+    else
+        find "${spath}" -type f -print0 | xargs -0 -P8 grep ${icase} -H "${string}"
+    fi
+}
+
+# }}}
 # ..(), ...() for quickly changing $CWD {{{1
 # http://www.shell-fu.org/lister.php?id=769
 
