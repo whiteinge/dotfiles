@@ -267,25 +267,39 @@ fi
 # Also guesses case-insensitivity and performs many searches in parallel.
 
 gext() {
-    local spath ext string help icase
+    local spath search ext prune help icase extsearch findcmd xargscmd grepcmd
 
     spath="$1"
-    string="$2"
+    search="$2"
     ext="$3"
+
+    prune="\
+        -path \*/.svn \
+        -o -path \*/.git \
+        -o -path \*/.hg \
+        -o -path \*/.bzr \
+        -o -name \*.pyc \
+        -o -name \*.pyo"
+
     help="Usage: gext ./somepath sometext [someext]
     Search will be case-sensitive if the search text contains capital letters."
 
-    [[ -n "${spath}" ]] && [[ -n "${string}" ]] || { echo ${help}; return 1 }
+    # Output help if missing path or search
+    [[ -n "${spath}" ]] && [[ -n "${search}" ]] || { echo ${help}; return 1 }
 
     # Check for capital letters in the search pattern
-    echo "${string}" | grep -qE '[A-Z]+'
+    echo "${search}" | grep -qE '[A-Z]+'
     [[ $? -ne 0 ]] && icase="-i"
 
-    if [[ -n "${ext}" ]]; then
-        find "${spath}" -name "*.${ext}" -print0 | xargs -0 -P8 grep ${icase} -H "${string}"
-    else
-        find "${spath}" -type f -print0 | xargs -0 -P8 grep ${icase} -H "${string}"
-    fi
+    # Build a find search if user passed a file extension to search
+    [[ -n "${ext}" ]] && extsearch="-name \"*.${ext}\""
+
+    # Assemble the commands to perform the search
+    findcmd="find \"${spath}\" \( ${prune} \) -prune -o -type f ${extsearch} -print0"
+    xargscmd="xargs -0 -P8"
+    grepcmd="grep ${icase} -nH -e \"${search}\""
+
+    eval "${findcmd} | ${xargscmd} ${grepcmd}"
 }
 
 # }}}
