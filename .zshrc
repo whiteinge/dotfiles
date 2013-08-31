@@ -168,7 +168,7 @@ alias df='df -h'
 alias dus='du -sh'
 alias info='info --vi-keys'
 alias clip='xclip -selection clipboard'
-alias rs='rsync -avhz --progress --append-verify'
+alias rs='rsync -avhz --progress'
 compdef rs=rsync
 
 # Quickly ssh through a bastian host without having to hard-code in ~/.ssh/config
