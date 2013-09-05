@@ -494,6 +494,9 @@ endif
 """ Fugitive settings
 " Open current buffer in a new tab and show Fugitive diff
 nmap <silent> <leader>dd :tab split \| Gdiff \| wincmd h<cr>
+nmap <silent> <leader>ds :tab split \| Gstatus \| wincmd o<cr>
+" FIXME: only works when there are changes to commit. how to workaround or detect?
+nmap <silent> <leader>dc :tab split \| Gcommit \| wincmd o<cr>
 
 """ Tagbar plugin settings
 map <F5> :TagbarToggle<cr>
