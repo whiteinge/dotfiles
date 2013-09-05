@@ -265,7 +265,7 @@ function! DiffToggle(window)
 endfunction
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call DiffToggle(1)<cr>
-nmap <silent> <leader>dc :call DiffToggle(2)<cr>
+nmap <silent> <leader>dm :call DiffToggle(2)<cr>
 nmap <silent> <leader>dr :call DiffToggle(3)<cr>
 
 
