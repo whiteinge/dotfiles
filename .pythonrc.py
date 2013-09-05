@@ -162,24 +162,50 @@ Warning: DEBUG_PROPAGATE_EXCEPTIONS has been set to True.
 ##############
 if 'SALT_MASTER_CONFIG' in os.environ:
     try:
-        import salt.client
         import salt.config
-        import salt.loader
+        import salt.client
         import salt.runner
     except ImportError:
         pass
     else:
-        # Create the Salt __opts__ variable
         __opts__ = salt.config.client_config(os.environ['SALT_MASTER_CONFIG'])
-
-        # Populate grains if it hasn't been done already
-        if not 'grains' in __opts__ or not __opts__['grains']:
-            __opts__['grains'] = salt.loader.grains(__opts__)
 
         # Instantiate LocalClient and RunnerClient
         SLC = salt.client.LocalClient()
         SRUN = salt.runner.Runner(__opts__)
 
+if 'SALT_MINION_CONFIG' in os.environ:
+    try:
+        import salt.config
+        import salt.loader
+        import jinja2
+        import yaml
+    except ImportError:
+        pass
+    else:
+        # Create the Salt __opts__ variable
+        __opts__ = salt.config.client_config(os.environ['SALT_MINION_CONFIG'])
+
+        # Populate grains if it hasn't been done already
+        if not 'grains' in __opts__ or not __opts__['grains']:
+            __opts__['grains'] = salt.loader.grains(__opts__)
+
+        # Populate template variables
+        __salt__ = salt.loader.minion_mods(__opts__)
+        __grains__ = __opts__['grains']
+        __pillar__ = salt.pillar.get_pillar(
+            __opts__,
+            __grains__,
+            __opts__['id'],
+            __opts__.get('environment'),
+        ).compile_pillar()
+
+        JINJA = lambda x, **y: jinja2.Template(x).render(
+                grains=__grains__,
+                salt=__salt__,
+                opts=__opts__,
+                pillar=__pillar__,
+                **y)
 
 # Start an external editor with \e
 ##################################
