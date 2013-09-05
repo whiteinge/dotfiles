@@ -138,6 +138,12 @@ if has("autocmd")
     au FileChangedShell * Warn "File has been changed outside of Vim."
 endif
 
+" Restore last cursor position in file
+autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
 " If a ftplugin has defined the b:ftskeleton variable, try to load the
 " skeleton template.
 au BufNewFile * silent! exe "0r ". b:ftskeleton
