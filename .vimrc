@@ -87,7 +87,7 @@ map <F2> :reg "0123456789-*+:/<cr>
 set colorcolumn=80              "cc:    draw a visual line down the 80th column
 
 " Toggle between line numbers and relative line numbers
-nnoremap <silent><leader>u :exe "set " . (&relativenumber == 1 ? "" : "relative") . "number"<cr>
+nnoremap <silent><leader>u :exe "set " . (&relativenumber == 1 ? "norelativenumber" : "relativenumber")<cr>
 
 "lcs:   displays tabs with :set list & displays when a line runs off-screen
 set listchars=tab:>-,trail:\ ,precedes:<,extends:>
@@ -173,6 +173,7 @@ set wildmode=longest:full,list:full  "wim:   helps wildmenu auto-completion
 
 set encoding=utf-8
 set relativenumber              "rnu:   show line numbers relative to the current line; <leader>u to toggle
+set number                      "nu:    show the actual line number for the current line in relativenumber
 set showmode                    "smd:   shows current vi mode in lower left
 set cursorline                  "cul:   highlights the current line
 set showcmd                     "sc:    shows typed commands
