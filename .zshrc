@@ -157,6 +157,8 @@ alias la='ls -A'
 alias ll='ls -lh'
 alias lls='ll -Sr'
 
+alias vifast='vim -N -u NONE' # skip loading the ~/.vimrc
+
 alias less='less -imJMW'
 alias cls='clear' # note: ctrl-L under zsh does something similar
 alias locate='locate -i'
