@@ -299,7 +299,7 @@ gext() {
     # Assemble the commands to perform the search
     findcmd="find \"${spath}\" \( ${prune} \) -prune -o -type f ${extsearch} -print0"
     xargscmd="xargs -0 -P8"
-    grepcmd="grep ${icase} -nH -e \"${search}\""
+    grepcmd="grep ${icase} -nH -E -e \"${search}\""
 
     eval "${findcmd} | ${xargscmd} ${grepcmd}"
 }
