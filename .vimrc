@@ -287,6 +287,10 @@ au ColorScheme * hi SignColumn cterm=bold ctermfg=0 ctermbg=none
 " Refresh busted syntax highlighting (this happens too often)
 map <F12> :syntax sync fromstart<cr>
 
+" Shorten the timeout when looking for a paren match to highlight
+let g:matchparen_insert_timeout=5
+set synmaxcol=500               "smc:	Stop syntax highlighting on very long lines
+
 syntax enable
 colorscheme desert
 
