@@ -210,21 +210,6 @@ set winminwidth=0               "wmw:   the minimal column width of any non-curr
 " Also replaces the annoying help button. Based on tip 821.
 map <F1> :ls<cr>:b<space>
 
-" Earlier Vims did not support tabs. Below is a vertical-tab-like cludge. Use
-" :ball or invoke Vim with -o (Vim tip 173)
-if version < 700
-    " ctrl-j,k will move up or down between split windows and maximize the
-    " current window
-    nmap <C-J> <C-W>j<C-W>_
-    nmap <C-K> <C-W>k<C-W>_
-else
-    " same thing without the maximization to easily move between split windows
-    nmap <C-J> <C-W>j
-    nmap <C-K> <C-W>k
-    nmap <C-H> <C-W>h
-    nmap <C-L> <C-W>l
-endif
-
 " Quickly jump to a tag if there's only one match, otherwise show the list
 map <F3> :tj<space>
 
