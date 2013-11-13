@@ -1,9 +1,11 @@
 setl textwidth=79
 
-" FIXME: how to differentiate between rst2beamer and Sphinx?
-" if !filereadable(expand(“%:p:h”).“/Makefile”)
-"     setlocal makeprg=gcc\ –Wall\ –Wextra\ –o\ %<\ %
-" endif
+" Decided whether to build Beamer presentation or build Sphinx documentation
+if bufname('%') == 'presentation.rst'
+    setlocal makeprg=../beamer.py\ %\ /tmp/presentation.pdf
+else
+    setl makeprg=make\ html\ SPHINXOPTS=\"-q\"\ SPHINXBUILD=$HOME/tmp/venvs/sphinx/bin/sphinx-build
+endif
 
 " tagbar settings
 let g:tagbar_type_rst = {
