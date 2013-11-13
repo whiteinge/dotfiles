@@ -336,7 +336,9 @@ function! Scratch()
     setlocal buftype=nofile
     setlocal bufhidden=delete
     setlocal noswapfile
+    Warn "This file is now a scratch file!"
 endfunction
+nmap <silent> <leader>S :call Scratch()<cr>
 
 " }}}
 " Diff two registers {{{
