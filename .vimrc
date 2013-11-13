@@ -363,39 +363,6 @@ endfunction
 com -nargs=* DiffRegs call DiffRegsFunc(<f-args>)
 
 " }}}
-" Surrounding text with opfunc {{{
-
-" Adds a "surround" operator for use with text objects.
-" http://stackoverflow.com/a/8998136
-" Usage:
-"       Surround a sentence with quotes with:  sis"
-"       Specify different start and end surround characters by separating them
-"       with whitespace: siw<b> </b>
-nnoremap <silent> s :set opfunc=Surround<cr>g@
-vnoremap <silent> s :<C-U>call Surround(visualmode(), 1)<cr>
-function! Surround(vt, ...)
-    let s = input("Surround with: ")
-    let si = split(s, " ")
-    let sleft = si[-1]
-    let sright = si[0]
-    if s =~ "\<esc>" || s =~ "\<C-C>"
-        return
-    endif
-    " FIXME: if s contains a space, split and surround with left/right chars
-    let [sl, sc] = getpos(a:0 ? "'<" : "'[")[1:2]
-    let [el, ec] = getpos(a:0 ? "'>" : "']")[1:2]
-    if a:vt == 'line' || a:vt == 'V'
-        call append(el, sleft)
-        call append(sl-1, sright)
-    elseif a:vt == 'block' || a:vt == "\<C-V>"
-        exe sl.','.el 's/\%'.sc.'c\|\%'.ec.'c.\zs/\=s/g|norm!``'
-    else
-        exe el 's/\%'.ec.'c.\zs/\=sleft/|norm!``'
-        exe sl 's/\%'.sc.'c/\=sright/|norm!``'
-    endif
-endfunction
-
-" }}}
 " YankList {{{1
 " Is is possbile to store the ten most recent yanks using opfunc (similar to
 " the built-in numbered registers)?
