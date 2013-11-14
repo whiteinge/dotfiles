@@ -427,7 +427,20 @@ endfunction
 set tabline=%!MyTabLine()
 
 " }}}
+" Break any comma-seperated vals out on separate lines {{{
 
+function! SplitItems(type, ...)
+    normal! `[v`]x
+    let @@ = substitute(@@, ',\s*', '\n', 'g')
+    set paste
+    exe "normal! i\<cr>\<esc>"
+    pu! "
+    set nopaste
+endfunction
+nnoremap <leader>s :set opfunc=SplitItems<cr>g@
+vmap <silent> <leader>s :<C-U>call SplitItems(visualmode(), 1)<cr>
+
+" }}}
 " Plugin settings {{{
 
 """ Wordnet settings
