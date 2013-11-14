@@ -499,6 +499,9 @@ let g:airline_right_sep = '▚'
 " Add the alternate buffer name next to the current file name
 let g:airline_section_c = "%f%m %{bufname('#') != '' ? '('. expand('#:t') .')' : ''}"
 
+" Dispatch mappings
+nmap <silent> <leader>b :Make!<cr>
+
 " }}}
 
 " eof
