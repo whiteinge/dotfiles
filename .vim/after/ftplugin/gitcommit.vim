@@ -4,4 +4,8 @@ let s:buflist = map(filter(range(0, bufnr('$')), 'bufwinnr(v:val)>=0'), 'bufname
 
 if match(s:buflist, 'fugitive:*') == -1
     DiffGitCached | set nowrap | wincmd p
+
+    " Close the preview window when the commit message buffer is unloaded
+    " (Useful when committing from a long-running session via fugitive.)
+    au BufUnload <buffer> pclose
 endif
