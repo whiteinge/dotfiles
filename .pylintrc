@@ -72,7 +72,7 @@ variable-rgx=[a-z_][a-z0-9_]{2,30}$
 inlinevar-rgx=[A-Za-z_][A-Za-z0-9_]*$
 
 bad-functions=apply,input
-good-names=i,e,j,k,v,ex,Run,_,logger
+good-names=i,e,j,k,v,f,ex,Run,_,logger
 bad-names=foo,bar,baz,toto,tutu,tata
 no-docstring-rgx=__.*__
 
