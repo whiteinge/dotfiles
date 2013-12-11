@@ -10,7 +10,7 @@
     dc = diff --cached
     b = branch -vv
     bc = branch --contains
-    f = fetch --all --tags
+    f = fetch --all
     r = rebase
     re = reset --hard @{upstream}
     short = rev-parse --short
