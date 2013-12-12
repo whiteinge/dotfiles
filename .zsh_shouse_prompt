@@ -152,6 +152,7 @@ function +pr-mode-compact() {
 #
 # %
 function +pr-mode-bare() {
+    pr_llines=( "${pr_com[jobs]} ${pr_com[prompt]}" )
 }
 
 # Show the cwd in green if writable, yellow otherwise
