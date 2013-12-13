@@ -4,6 +4,11 @@ let python_highlight_builtins = 1
 let python_highlight_exceptions = 1
 let python_highlight_space_errors = 1
 
+" Set Syntastic to permissive for large Python files
+if line('$') > 999
+    SyntasticToggleMode
+endif
+
 set cinwords=if,elif,else,for,while,try,except,finally,def,class
 
 if exists("+omnifunc")
