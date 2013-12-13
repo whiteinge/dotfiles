@@ -443,6 +443,11 @@ vmap <silent> <leader>s :<C-U>call SplitItems(visualmode(), 1)<cr>
 " }}}
 " Plugin settings {{{
 
+""" Run matchit without installing
+if filereadable($VIMRUNTIME . "/macros/matchit.vim")
+    so $VIMRUNTIME/macros/matchit.vim
+endif
+
 """ Wordnet settings
 noremap  <F11> "wyiw:call WordNetOverviews(@w)<cr>
 
