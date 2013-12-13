@@ -86,7 +86,7 @@
         remote.$1.fetch \"+refs/pull/*/head:refs/remotes/$1/pr/*\"' -"
 
 [core]
-    excludesfile = /home/shouse/.gitignore
+    excludesfile = ~/.gitignore
 
 [color]
     ui = auto
