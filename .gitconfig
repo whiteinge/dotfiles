@@ -91,6 +91,9 @@
 [color]
     ui = auto
 
+[init]
+    templatedir = ~/.git_template
+
 [sendemail]
     smtpencryption = tls
     smtpserver = smtp.gmail.com
