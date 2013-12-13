@@ -149,7 +149,7 @@ autocmd BufReadPost *
 au BufNewFile * silent! exe "0r ". b:ftskeleton
 
 " Insert timestamps by calling out to date; override format by filetype
-let b:dateformat=''
+let b:dateformat = ''
 nmap <silent> <leader>dts :exe ':r !date '. escape(b:dateformat, '%')<cr>
 
 " }}}
@@ -288,7 +288,7 @@ au ColorScheme * hi SignColumn cterm=bold ctermfg=0 ctermbg=none
 map <F12> :syntax sync fromstart<cr>
 
 " Shorten the timeout when looking for a paren match to highlight
-let g:matchparen_insert_timeout=5
+let g:matchparen_insert_timeout = 5
 set synmaxcol=500               "smc:	Stop syntax highlighting on very long lines
 
 syntax enable
@@ -306,19 +306,19 @@ set printencoding=utf-8
 " :Explore mode {{{
 
 " NERDTree is a pretty slick (partial) replacement for :Explore
-let NERDTreeIgnore=['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$']
 map <F6> :NERDTreeToggle<cr>
 noremap <leader>gf :NERDTreeFind<cr>
 
-let g:netrw_hide=1          " Use the hiding list
+let g:netrw_hide = 1          " Use the hiding list
 " Hide the following file patterns (change to suit your needs):
 " (I don't know what the fuck \~$ is, but file hiding seems to break without it appearing first in the list...)
-let g:netrw_list_hide='^\..*,\.pyc$'
+let g:netrw_list_hide = '^\..*,\.pyc$'
 
 " Commands for :Explore (verify these!)
-let g:explVertical=1    " open vertical split winow
-let g:explSplitRight=1  " Put new window to the right of the explorer
-let g:explStartRight=0  " new windows go to right of explorer window
+let g:explVertical = 1    " open vertical split winow
+let g:explSplitRight = 1  " Put new window to the right of the explorer
+let g:explStartRight = 0  " new windows go to right of explorer window
 
 " Tree view. Adaptable?
 " ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
@@ -452,15 +452,15 @@ nnoremap <F7> :GundoToggle<cr>
 """ Syntastic settings
 let g:syntastic_enable_highlighting = 0
 let g:syntastic_check_on_wq = 0
-let g:syntastic_error_symbol='E'
-let g:syntastic_style_error_symbol='S'
-let g:syntastic_warning_symbol='W'
-let g:syntastic_style_warning_symbol='S'
-let g:syntastic_always_populate_loc_list=1
+let g:syntastic_error_symbol = 'E'
+let g:syntastic_style_error_symbol = 'S'
+let g:syntastic_warning_symbol = 'W'
+let g:syntastic_style_warning_symbol = 'S'
+let g:syntastic_always_populate_loc_list = 1
 nmap <silent> <leader>y :SyntasticCheck<cr>
 
 if ! &diff
-    let g:syntastic_check_on_open=1
+    let g:syntastic_check_on_open = 1
 endif
 
 
@@ -492,7 +492,7 @@ endif
 
 """ Airline settings
 " let g:airline_powerline_fonts = 1
-let g:airline_detect_whitespace=2
+let g:airline_detect_whitespace = 2
 let g:airline_whitespace_symbol = 'Ξ'
 let g:airline_linecolumn_prefix = '␊ '
 let g:airline_left_sep = '▞'
