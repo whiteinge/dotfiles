@@ -1,4 +1,0 @@
-[newt]
-
-zoom out: --output LVDS1 --scale 1.6x1.6 --panning 0x0
-zoom in: --output LVDS1 --scale 1x1 --panning 1280x720

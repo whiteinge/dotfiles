@@ -6,6 +6,3 @@ syntax: glob
 *.DS_Store
 *.pyc
 *.swp
-Session.vim
-development.wsgi
-development.sqlite3
