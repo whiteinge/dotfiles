@@ -1,5 +1,0 @@
-[drake]
-
-laptop: --output HDMI2 --off --output LVDS1 --auto
-dual: --output HDMI2 --mode 1920x1080 --rotate right --primary --output LVDS1 --mode 1366x768 --left-of HDMI2
-portrait: --output LVDS1 --off --output HDMI2 --mode 1920x1080 --rotate right
