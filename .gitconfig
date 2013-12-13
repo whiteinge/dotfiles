@@ -31,6 +31,9 @@
     rl = reflog --date=relative
     stat = diff --stat
 
+    # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
+    ctags = !.git/hooks/ctags
+
     serve = "!git daemon --base-path=$(git rev-parse --show-toplevel) --export-all"
 
     # Open all modified files in EDITOR
