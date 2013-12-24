@@ -37,8 +37,11 @@
     # Open all modified files in EDITOR
     editm = "!$EDITOR $(git ls-files -m)"
 
-    # Alias to make an archive with a prefix set to the name of the repo
-    tar = "!git archive --prefix=$(basename $(git rev-parse --show-toplevel))/"
+    # Alias to make an archive with a prefix set to the name of the repo.
+    # git tar <ref> (defaults HEAD)
+    tar = "!bash -c 'REF=${1:-HEAD}; \
+        BASE=$(basename $(git rev-parse --show-toplevel)); \
+        git archive --prefix=${BASE}/ -o ${BASE}-$(git describe ${REF}).tar.gz ${REF}' -"
 
     # Show the correct SHA for merging from FETCH_HEADS
     showfetchhead = "!awk '!/not-for-merge/ {print $1}' \
