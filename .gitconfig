@@ -3,20 +3,22 @@
     name = Seth House
 
 [alias]
-    st = status -s -b
+    b = branch -vv
+    bc = branch --contains
+    cdate = show --format="%ci"
     ci = commit
     co = checkout
     d = diff
     dc = diff --cached
-    b = branch -vv
-    bc = branch --contains
     f = fetch --all
+    m = merge --no-ff
     r = rebase
     re = reset --hard @{upstream}
     short = rev-parse --short
-    m = merge --no-ff
+    st = status -s -b
     up = merge --ff-only @{upstream}
-    cdate = show --format="%ci"
+    rl = reflog --date=relative
+    stat = diff --stat
 
     # Perform a merge in-memory and output if any conflicts are found (dry-run)
     # Takes the name of a branch / ref to merge
@@ -28,9 +30,6 @@
     lll = log -p --stat --decorate --abbrev-commit --date=relative
     llll = "!sh -c 'git lll $@ \
         | gvim - -R -v -c \"set ft=git\" -c \"set fdm=syntax\"' -"
-
-    rl = reflog --date=relative
-    stat = diff --stat
 
     # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
     ctags = !.git/hooks/ctags
