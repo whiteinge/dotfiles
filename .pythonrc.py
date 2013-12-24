@@ -168,11 +168,12 @@ if 'SALT_MASTER_CONFIG' in os.environ:
     except ImportError:
         pass
     else:
-        __opts__ = salt.config.client_config(os.environ['SALT_MASTER_CONFIG'])
+        __opts_master__ = salt.config.master_config(
+                os.environ['SALT_MASTER_CONFIG'])
 
         # Instantiate LocalClient and RunnerClient
-        SLC = salt.client.LocalClient()
-        SRUN = salt.runner.Runner(__opts__)
+        SLC = salt.client.LocalClient(__opts_master__)
+        SRUN = salt.runner.Runner(__opts_master__)
 
 if 'SALT_MINION_CONFIG' in os.environ:
     try:
