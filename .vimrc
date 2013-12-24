@@ -253,6 +253,7 @@ endfunction
 nmap <silent> <leader>dl :call DiffToggle(1)<cr>
 nmap <silent> <leader>dm :call DiffToggle(2)<cr>
 nmap <silent> <leader>dr :call DiffToggle(3)<cr>
+nmap <silent> <leader>du :diffupdate<cr>
 
 
 " }}}
