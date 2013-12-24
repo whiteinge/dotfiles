@@ -34,17 +34,11 @@
     # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
     ctags = !.git/hooks/ctags
 
-    serve = "!git daemon --base-path=$(git rev-parse --show-toplevel) --export-all"
-
     # Open all modified files in EDITOR
     editm = "!$EDITOR $(git ls-files -m)"
 
     # Alias to make an archive with a prefix set to the name of the repo
     tar = "!git archive --prefix=$(basename $(git rev-parse --show-toplevel))/"
-
-    # Show all remote branches that have been merged
-    allmerged = "!git branch -r -v --no-abbrev --merged | \
-        awk '!/master*|develop*|HEAD/ { print $2,$1 }'"
 
     # Show the correct SHA for merging from FETCH_HEADS
     showfetchhead = "!awk '!/not-for-merge/ {print $1}' \
@@ -65,9 +59,6 @@
     # Show individual diffs for all incoming/outgoing changesets
     in = pagediffs ..@{u}
     out = pagediffs @{u}..
-
-    # Output the commit that git svn dcommit will attempt to commit on top of
-    svnhead = !git --no-pager log --grep=^git-svn-id: --first-parent -1
 
     # Output URL to make a GitHub pull request
     # git preq remotename branchname
