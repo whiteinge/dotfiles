@@ -60,12 +60,6 @@
     in = pagediffs ..@{u}
     out = pagediffs @{u}..
 
-    # Output URL to make a GitHub pull request
-    # git preq remotename branchname
-    preq = "!sh -c 'git remote show -n $1 | \
-        awk -F: '\\''/Push'\\\\'s+URL/ { sub(/'\\\\'.git/, x, $3); \
-        print \"https://github.com/\"$3\"/pull/new/\"br }'\\'' br=$2' -"
-
     # Output git command to pull a remote branch from a pull request
     # git mpreq remotename ghuser:branch
     mpreq = "!sh -c 'git remote show -n $1 | \
