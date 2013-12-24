@@ -60,13 +60,6 @@
     in = pagediffs ..@{u}
     out = pagediffs @{u}..
 
-    # Output git command to pull a remote branch from a pull request
-    # git mpreq remotename ghuser:branch
-    mpreq = "!sh -c 'git remote show -n $1 | \
-        awk -F/ '\\''/Push'\\\\'s+URL/ { \
-        sub(/'\\\\'.git/, x, $2); split(fk, f, \":\"); \
-        print \"git pull https://github.com/\"f[1]\"/\"$2, f[2] }'\\'' fk=$2' -"
-
     # Configure local clone to also make local refs for all GitHub pull
     # requests for the specified remote
     # Usage: git addrefspr upstream; git fetch upstream; git show upstream/pr/13
