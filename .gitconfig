@@ -5,7 +5,7 @@
 [alias]
     b = branch -vv
     bc = branch --contains
-    cdate = show --format="%ci"
+    cdate = "!git --no-pager log -1 --format='%ci'"
     ci = commit
     co = checkout
     d = diff
