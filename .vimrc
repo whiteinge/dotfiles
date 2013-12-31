@@ -306,11 +306,6 @@ set printencoding=utf-8
 " }}}
 " :Explore mode {{{
 
-" NERDTree is a pretty slick (partial) replacement for :Explore
-let NERDTreeIgnore = ['\.pyc$']
-map <F6> :NERDTreeToggle<cr>
-noremap <leader>gf :NERDTreeFind<cr>
-
 let g:netrw_hide = 1          " Use the hiding list
 " Hide the following file patterns (change to suit your needs):
 " (I don't know what the fuck \~$ is, but file hiding seems to break without it appearing first in the list...)

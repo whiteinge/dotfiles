@@ -4,9 +4,6 @@
 [submodule ".vim/bundle/Gundo"]
 	path = .vim/bundle/Gundo
 	url = git://github.com/vim-scripts/Gundo.git
-[submodule ".vim/bundle/nerdtree"]
-	path = .vim/bundle/nerdtree
-	url = https://github.com/scrooloose/nerdtree.git
 [submodule ".vim/bundle/salt-vim"]
 	path = .vim/bundle/salt-vim
 	url = git://github.com/saltstack/salt-vim.git
@@ -46,3 +43,6 @@
 [submodule ".vim/bundle/tern_for_vim"]
 	path = .vim/bundle/tern_for_vim
 	url = git@github.com:marijnh/tern_for_vim.git
+[submodule ".vim/bundle/vim-vinegar"]
+	path = .vim/bundle/vim-vinegar
+	url = git://github.com/tpope/vim-vinegar.git
