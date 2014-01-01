@@ -400,42 +400,6 @@ function djfmtjson() {
     sed -i'.bak' -e 's/^\[/\[\n/g' -e 's/]$/\n]/g' -e 's/}}, /}},\n/g' $1
 }
 
-# work on virtualenv
-function workon(){
-    local vchkdirs
-
-    for vchkdirs in $1/bin/activate $SRCDIR/$1/bin/activate ; do
-        if [[ -f $vchkdirs ]] ; then
-            source $vchkdirs
-            break
-        fi
-    done
-
-    [[ -n $VIRTUAL_ENV ]] || error 1 "virtualenv activate script not found"
-
-    VIRTUAL_ENV_LIB="$(python -c 'from distutils import sysconfig; print sysconfig.get_python_lib()')"
-    alias cdsitepackages="cd $VIRTUAL_ENV_LIB"
-}
-
-# Quickly add system-level Python libs to the active virtualenv
-# Stolen from virtualenvwrapper
-function add2virtualenv() {
-    [[ -z $VIRTUAL_ENV || -z $VIRTUAL_ENV_LIB ]] && return 1
-    local path_file="$VIRTUAL_ENV_LIB/virtualenv_path_extensions.pth"
-    touch "$path_file"
-
-    for pydir in "$@" ; do
-        local absolute_path=$(python -c "import os; print os.path.abspath('$pydir')")
-        if [[ -d $absolute_path ]] ; then
-            echo "$absolute_path" >> "$path_file"
-        elif [[ -r $absolute_path ]] ; then
-            ln -s $absolute_path $VIRTUAL_ENV_LIB/
-        else
-            echo "Could not read path: $absolute_path"
-        fi
-    done
-}
-
 # }}}
 # Screencast helper {{{
 # Usage:
