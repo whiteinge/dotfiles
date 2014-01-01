@@ -504,6 +504,7 @@ function xssh() {
     echo -n "${HOSTS[@]}" | xargs -d" " -P5 -IHOST \
         sh -c 'ssh -T HOST < '${tmpfile}' | sed -e "s/^/HOST: /g"'
 }
+compdef xssh=ssh
 
 # }}}
 
