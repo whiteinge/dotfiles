@@ -467,6 +467,22 @@ function screencast() {
     return $?
 }
 
+# Extract a clip from a larger video file
+# Usage:
+#   extract_clip somevid.mp4 [hh:mm:ss start time] [hh:mm:ss end time]
+function extract_clip() {
+    local start_seconds end_seconds duration
+
+    echo ${2} ${3} | awk 'BEGIN {FS=":"; ORS=" "; RS=" "}
+            { sec = $1 * 3600; sec += $2 * 60; sec += $3; print sec }' |\
+        read start_seconds end_seconds
+    duration=$(( end_seconds - start_seconds ))
+
+    ffmpeg -ss ${2} -t ${duration} -i ${1} -acodec copy -vcodec copy extracted_clip-${1}
+
+    return $?
+}
+
 # }}}
 # 256-colors test {{{
 
