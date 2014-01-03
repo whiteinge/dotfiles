@@ -69,9 +69,14 @@ set cryptmethod=blowfish        "cm:    use (much) stronger blowfish encryption
 " Fix for legacy vi inconsistency
 map Y y$
 
-" Allow using the repeat operator with a visual selection (!)
-" http://stackoverflow.com/a/8064607/127816
-vnoremap . :normal .<cr>
+" Use the repeat operator with a visual selection
+" This is useful for performing an edit on a single line, then highlighting a
+" visual block on a number of lines to repeat the edit
+vnoremap <leader>. :normal .<cr>
+" Repeat a macro on a visual selection of lines
+" Same as above but with a macro; complete the command by chosing the register
+" containing the macro.
+vnoremap <leader>@ :normal @
 
 " Allow undoing insert-mode ctrl-u and ctrl-w
 inoremap <C-U> <C-G>u<C-U>
