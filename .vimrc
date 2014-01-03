@@ -428,18 +428,56 @@ endfunction
 set tabline=%!MyTabLine()
 
 " }}}
-" Break any comma-seperated vals out on separate lines {{{
+" Break out any vals with a consistent delimiter on to separate lines {{{
+"
+" Useful for reordering function parameters or list items or delimited text
+" since Vim makes it easy to reorder lines. Once ordered, lines can be
+" re-joined with the sister-function below.
+"
+" E.g., given the text:
+"
+"   def foo(bar, baz, qux, quux):
+"       pass
+"
+" Use a text-object to select everything within the parenthesis:
+" <leader>si(
+" Choose ", " as the delimiter (the default), which results in:
+"
+"     def foo(
+"   bar
+"   baz
+"   qux
+"   quux
+"   ):
+"       pass
+"
+" Reorder the items as necessary then join using:
+" <leader>ji(
+" Choose ", " as the delimeter to join with (the default).
+"
+" FIXME: currently joining does not include the text-object chars
+" TODO: visual selection support; some text objects are not multi-line (",')
 
 function! SplitItems(type, ...)
+    let c = input("Split on what chars? ", ", ")
     normal! `[v`]x
-    let @@ = substitute(@@, ',\s*', '\n', 'g')
+    let @@ = substitute(@@, c, '\n', 'g')
     set paste
     exe "normal! i\<cr>\<esc>"
     pu! "
     set nopaste
 endfunction
 nnoremap <leader>s :set opfunc=SplitItems<cr>g@
-vmap <silent> <leader>s :<C-U>call SplitItems(visualmode(), 1)<cr>
+
+function! JoinItems(type, ...)
+    let c = input("Join with what chars? ", ", ")
+    normal! `[v']d
+    let @@ = substitute(@@, '\n', c, 'g')
+    set paste
+    exe "normal! P\<esc>"
+    set nopaste
+endfunction
+nnoremap <leader>j :set opfunc=JoinItems<cr>g@
 
 " }}}
 " Plugin settings {{{
