@@ -157,6 +157,7 @@ alias la='ls -A'
 alias ll='ls -lh'
 alias lls='ll -Sr'
 
+alias vi='vim'
 alias vifast='vim -N -u NONE' # skip loading the ~/.vimrc
 
 alias less='less -imJMW'
