@@ -1,5 +1,4 @@
 #!/bin/sh
-# $Xorg: xinitrc.cpp,v 1.3 2000/08/17 19:54:30 cpqbld Exp $
 
 xcape=$HOME/bin/xcape/xcape
 userresources=$HOME/.Xresources
@@ -31,12 +30,11 @@ fi
 
 # xkbcomp $HOME/.mirrorboard.xkb $DISPLAY 2>/dev/null &
 
-mpd &
-uxterm &
-xscreensaver -no-splash &
+# mpd &
+# uxterm &
+# xscreensaver -no-splash &
 # Stop mpd playback when xscreensaver activates
-xscreensaver-command -watch \
-    | while read a; do echo $a | grep '^LOCK' && mpc stop; done &
+# xscreensaver-command -watch \
+#     | while read a; do echo $a | grep '^LOCK' && mpc stop; done &
 
-# xcompmgr -c -t-5 -l-5 -r4.2 -o.55 &
-exec openbox-session
+# exec openbox-session
