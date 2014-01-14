@@ -46,3 +46,6 @@
 [submodule ".vim/bundle/vim-signify"]
 	path = .vim/bundle/vim-signify
 	url = https://github.com/mhinz/vim-signify.git
+[submodule "bin/xcape"]
+	path = bin/xcape
+	url = https://github.com/alols/xcape.git
