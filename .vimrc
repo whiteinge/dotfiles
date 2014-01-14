@@ -507,6 +507,11 @@ if ! &diff
     let g:syntastic_check_on_open = 1
 endif
 
+""" signify settings
+let g:signify_vcs_list = ['git']
+hi SignifySignAdd    ctermfg=2
+hi SignifySignDelete ctermfg=1
+hi SignifySignChange ctermfg=3
 
 """ Fugitive settings
 " Open current buffer in a new tab and show Fugitive diff
