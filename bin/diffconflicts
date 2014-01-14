@@ -73,33 +73,37 @@ if [[ -z $@ || $# != "5" ]] ; then
 fi
 
 cmd=$1
-BASE=$2
-LOCAL=$3
-REMOTE=$4
-MERGED=$5
+BASE="$2"
+LOCAL="$3"
+REMOTE="$4"
+MERGED="$5"
+printf -v QBASE '%q' "${BASE}"
+printf -v QLOCAL '%q' "${LOCAL}"
+printf -v QREMOTE '%q' "${REMOTE}"
+printf -v QMERGED '%q' "${MERGED}"
 
 # Temporary files for left and right side
-LCONFL=$MERGED.REMOTE.$$.tmp
-RCONFL=$MERGED.LOCAL.$$.tmp
+LCONFL="${MERGED}.REMOTE.$$.tmp"
+RCONFL="${MERGED}.LOCAL.$$.tmp"
 
 # Always delete our temp files; Git will handle it's own temp files
-trap 'rm -f '$LCONFL' '$RCONFL SIGINT SIGTERM EXIT
+trap 'rm -f "'"${LCONFL}"'" "'"${RCONFL}"'"' SIGINT SIGTERM EXIT
 
 # Remove the conflict markers for each 'side' and put each into a temp file
-sed -e '/^<<<<<<< /,/^=======$/d' -e '/^>>>>>>> /d' $MERGED > $LCONFL
-sed -e '/^=======$/,/^>>>>>>> /d' -e '/^<<<<<<< /d' $MERGED > $RCONFL
+sed -e '/^<<<<<<< /,/^=======$/d' -e '/^>>>>>>> /d' "${MERGED}" > "${LCONFL}"
+sed -e '/^=======$/,/^>>>>>>> /d' -e '/^<<<<<<< /d' "${MERGED}" > "${RCONFL}"
 
 # Fire up vimdiff
-$cmd -f -R -d $LCONFL $RCONFL \
+$cmd -f -R -d "${LCONFL}" "${RCONFL}" \
     -c ":set noro" \
-    -c ":tabe $LOCAL" -c ":vert diffs $BASE" -c ":vert diffs $REMOTE" \
-    -c ":winc t" -c ":tabe $MERGED" -c ":tabfir"
+    -c ":tabe $QLOCAL" -c ":vert diffs $QBASE" -c ":vert diffs $QREMOTE" \
+    -c ":winc t" -c ":tabe $QMERGED" -c ":tabfir"
 
 EC=$?
 
 # Overwrite $MERGED only if vimdiff exits cleanly.
 if [[ $EC == "0" ]] ; then
-    cat $LCONFL > $MERGED
+    cat "${LCONFL}" > "${MERGED}"
 fi
 
 exit $EC
