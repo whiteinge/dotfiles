@@ -1,6 +1,7 @@
 #!/bin/sh
 # $Xorg: xinitrc.cpp,v 1.3 2000/08/17 19:54:30 cpqbld Exp $
 
+xcape=$HOME/bin/xcape/xcape
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
@@ -22,6 +23,10 @@ fi
 
 if [ -f $usermodmap ]; then
     /usr/bin/xmodmap $usermodmap
+fi
+
+if [ -x $xcape ]; then
+    $xcape
 fi
 
 # xkbcomp $HOME/.mirrorboard.xkb $DISPLAY 2>/dev/null &
