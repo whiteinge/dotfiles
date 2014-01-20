@@ -306,36 +306,28 @@ gext() {
 }
 
 # }}}
-# ..(), ...() for quickly changing $CWD {{{1
-# http://www.shell-fu.org/lister.php?id=769
+# ..() Switch to parent directory by matching on partial name {{{1
+# Usage:
+# cd /usr/share/doc/zsh
+# .. s      # cd's to /usr/share
 
-# Go up n levels:
-# .. 3
-function .. (){
-    local arg=${1:-1};
-    local dir=""
-    while [ $arg -gt 0 ]; do
-        dir="../$dir"
-        arg=$(($arg - 1));
-    done
-    cd $dir >&/dev/null
-}
+function .. () {
+    (( $# == 0 )) && { cd .. && return }
 
-# Go up to a named dir
-# ... usr
-function ... (){
-    if [ -z "$1" ]; then
-        return
+    local match_idx
+    local -a parents matching_parents new_path
+    parents=( ${(s:/:)PWD} )
+    matching_parents=( ${(M)${parents[1,-2]}:#"${1}"*} )
+
+    if (( ${#matching_parents} )); then
+        match_idx=${parents[(i)${matching_parents[-1]}]}
+        new_path=( ${parents[1,${match_idx}]} )
+
+        cd "/${(j:/:)new_path}"
+        return $?
     fi
-    local maxlvl=16
-    local dir=$1
-    while [ $maxlvl -gt 0 ]; do
-        dir="../$dir"
-        maxlvl=$(($maxlvl - 1));
-        if [ -d "$dir" ]; then
-            cd $dir >&/dev/null
-        fi
-    done
+
+    return 1
 }
 
 # }}}
