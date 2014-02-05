@@ -64,8 +64,8 @@ export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
 
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='gvim -v'
+export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 export LESS='-imJMWR'
 export PAGER="less $LESS"
@@ -151,14 +151,13 @@ bindkey "^L" tmux-clear-screen
 alias zmv='noglob zmv'
 # e.g., zmv *.JPEG *.jpg
 
-# Gvim package is often the full-featured Vim (Fedora) but I prefer CLI
 alias ls='ls -F --color'
 alias la='ls -A'
 alias ll='ls -lh'
 alias lls='ll -Sr'
 
-alias vi='vim'
-alias vifast='vim -N -u NONE' # skip loading the ~/.vimrc
+alias v=$EDITOR
+alias vv=$EDITOR' -N -u NONE' # fast Vim that doesn't load a vimrc or plugins
 
 alias less='less -imJMW'
 alias cls='clear' # note: ctrl-L under zsh does something similar
