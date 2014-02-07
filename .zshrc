@@ -156,7 +156,7 @@ alias la='ls -A'
 alias ll='ls -lh'
 alias lls='ll -Sr'
 
-alias v=$EDITOR
+alias vi=$EDITOR
 alias vv=$EDITOR' -N -u NONE' # fast Vim that doesn't load a vimrc or plugins
 
 alias less='less -imJMW'
