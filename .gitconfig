@@ -43,6 +43,9 @@
         BASE=$(basename $(git rev-parse --show-toplevel)); \
         git archive --prefix=${BASE}/ -o ${BASE}-$(git describe ${REF}).tar.gz ${REF}' -"
 
+    # Fetch all remotes in parallel using processes
+    fetchall = "!git remote | xargs -I@ -P10 git fetch @"
+
     # Show the correct SHA for merging from FETCH_HEADS
     showfetchhead = "!awk '!/not-for-merge/ {print $1}' \
         $(git rev-parse --git-dir)/FETCH_HEAD"
