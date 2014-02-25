@@ -25,7 +25,7 @@
     mergetest = "!sh -c 'git merge-tree `git merge-base $1 HEAD` $1 HEAD \
         | awk '\\''/^@@/ { print \"Conflicts found\"; exit 1 }'\\''' -"
 
-    l = log --oneline --decorate
+    l = log --format=format:'%C(auto)%h%d%C(reset) %s %C(bold blue)(%an, %ar)%C(reset)'
     ll = log --stat --decorate --abbrev-commit --date=relative
     lll = log -p --stat --decorate --abbrev-commit --date=relative
     llll = "!sh -c 'git lll $@ \
