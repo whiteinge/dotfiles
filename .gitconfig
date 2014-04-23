@@ -10,13 +10,13 @@
     co = checkout
     d = diff
     dc = diff --cached
-    f = fetch --all
+    f = "!sh -c 'git fetch ${1:-\"--all\"}' -"
     m = merge --no-ff
-    r = rebase
-    re = reset --hard @{upstream}
+    r = "!sh -c 'git rebase -i ${1:-\"@{u}\"}' -"
+    re = "!sh -c 'git reset --hard ${1:-\"@{u}\"}' -"
     short = rev-parse --short
     st = status -s -b
-    up = merge --ff-only @{upstream}
+    up = "!sh -c 'git merge --ff-only ${1:-\"@{u}\"}' -"
     rl = reflog --date=relative
     stat = diff --stat
 
