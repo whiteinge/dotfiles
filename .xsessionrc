@@ -25,6 +25,7 @@ if [ -f $usermodmap ]; then
 fi
 
 if [ -x $xcape ]; then
+    pkill xcape
     $xcape
 fi
 
