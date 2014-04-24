@@ -26,31 +26,3 @@ OPTIONS=autodig
 
 # Safe Options
 OPTIONS=safe_pet, pickup_burden:Burdened, !autopickup
-
-#
-# MenuColors is a 3rd-party patch, ymmv
-#
-OPTIONS=menucolors
-MENUCOLOR=" cursed"=red&bold
-MENUCOLOR=" unholy"=red
-MENUCOLOR=" blessed"=cyan&bold
-MENUCOLOR=" holy"=green&bold
-MENUCOLOR="gold piece"=yellow
-MENUCOLOR="Amulet of Yendor named"=magenta
-
-#
-# Menu navigations keys:
-#
-# menu_invert_all:@
-# menu_select_all:.
-# menu_deselect_all:-
-# menu_select_page:,
-# menu_deselect_page:\
-# menu_invert_page:~
-#
-# menu_first_page:^
-# menu_last_page:~
-# menu_next_page:>
-# menu_previous_page:<
-#
-# menu_search::
