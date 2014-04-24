@@ -42,10 +42,6 @@ xterm*utf8: 2
 xterm*eightBitInput: true
 xtere*eightBitControl: false
 xterm*eightBitOutput: true
-! Allows you to use meta keys in irssi like alt-1, alt-2, etc,
-! but replaces using alt to insert utf characters, so is commented out.
-! An alternative is to hit esc, then hit the desired meta key like 1 or 2
-! xterm*metaSendsEscape: true
 ! -- Enables True-Type rendering:
 xterm*renderFont: true
 xterm*faceName: DejaVuSansMono
