@@ -72,6 +72,7 @@ export PAGER="less $LESS"
 export MANPAGER=$PAGER
 export GIT_PAGER=$PAGER
 export BROWSER='chromium-browser'
+export CVSIGNORE='*.swp *.orig *.rej'
 
 # Silence Wine debugging output (why isn't this a default?)
 export WINEDEBUG=-all
@@ -170,7 +171,7 @@ alias df='df -h'
 alias dus='du -sh'
 alias info='info --vi-keys'
 alias clip='xclip -selection clipboard'
-alias rs='rsync -avhz --progress'
+alias rs='rsync -avhzC --progress'
 compdef rs=rsync
 
 # Quickly ssh through a bastian host without having to hard-code in ~/.ssh/config
