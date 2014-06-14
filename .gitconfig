@@ -11,6 +11,7 @@
     co = checkout
     d = diff
     dc = diff --cached
+    i = ghissues
     m = merge --no-ff
     rl = reflog --date=relative
     short = rev-parse --short
