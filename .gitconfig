@@ -24,6 +24,9 @@
     # Interactive rebase against upstream HEAD or ref: git r; git r HEAD~10
     r = "!sh -c 'git rebase -i ${1:-\"@{u}\"}' -"
 
+    # Rebase against upstream HEAD or ref: git r; git r HEAD~10
+    rup = "!sh -c 'git rebase ${1:-\"@{u}\"}' -"
+
     # Reset HEAD and the index to upstream or ref: git re; git re HEAD~1
     rs = "!sh -c 'git reset --soft --keep ${1:-\"@{u}\"}' -"
 
