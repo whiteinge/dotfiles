@@ -500,6 +500,53 @@ function xssh() {
 compdef xssh=ssh
 
 # }}}
+# countdown & timer {{{1
+# (Ab)use prompt escapes to get the time without spawning a subshell. :)
+
+function countdown() {
+    local now remaining
+    local epoch='%D{%s}'
+    local target=$(( ${(%)epoch} + $1 ))
+
+    while true; do
+        now=${(%)epoch}
+        remaining=$(( target - now ))
+
+        if (( $remaining > 0 )) ; then
+            printf '\rT-minus: %s' "${remaining}"
+            sleep 0.5
+        else
+            printf '\a\n'
+            break
+        fi
+    done
+}
+
+alias tea-timer="countdown 120 && notify-send 'Tea!' 'Tea is done.'"
+
+function _timer_elapsed() {
+    local epoch='%D{%s}'
+    local start=$1
+    local end=${(%)epoch}
+
+    printf '\nElapsed time: %s seconds\n' "$(( end - start ))"
+}
+
+function timer() {
+    local dts='%D{%H:%M:%S}'
+    local epoch='%D{%s}'
+    local start=${(%)epoch}
+
+    trap '_timer_elapsed '"${start}"'; return;' INT
+
+    printf 'Starting timer at %s\n' "${(%)dts}"
+    while true; do 
+        printf '\r%s' "${(%)dts}"
+        sleep 0.5
+    done
+}
+
+# }}}
 
 # Run precmd functions
 precmd_functions=( precmd_prompt grep_options )
