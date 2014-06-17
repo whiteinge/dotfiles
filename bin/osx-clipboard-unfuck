@@ -1,0 +1,7 @@
+#!/usr/local/bin/zsh
+# Check if the workaround to the OSX + tmux clipboard DEBACLE is installed.
+if (( $+commands[reattach-to-user-namespace] )); then
+    reattach-to-user-namespace $@
+else
+    exec "$@"
+fi

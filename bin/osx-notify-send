@@ -1,0 +1,16 @@
+#!/usr/local/bin/zsh
+# A notify-send-like wrapper to OSX's notify applescript thingie so I don't
+# need a ton of OS-specific conditionals littering my dotfiles in order to work
+# on OSX. This wrapper is NOT comprehensive and generally only covers the
+# functionality actually used in my dotfiles.
+#
+# notify-send --hint=int:transient:1 -u %(urgency)s -i %(icon)s "%(safe_chan)s" "%(safe_msg)s"
+
+local opts
+# Consume and ignore all the notify-send flags.
+zparseopts -E -D -a opts -- -hint: u: i:
+
+title="${1}"
+msg="${2}"
+
+osascript -e 'display notification "'"${msg}"'" with title "'"${title}"'"'
