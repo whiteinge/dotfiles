@@ -71,7 +71,7 @@ export LESS='-imJMWR'
 export PAGER="less $LESS"
 export MANPAGER=$PAGER
 export GIT_PAGER=$PAGER
-export BROWSER='chromium-browser'
+export BROWSER='google-chrome'
 export CVSIGNORE='*.swp *.orig *.rej'
 
 # Silence Wine debugging output (why isn't this a default?)
