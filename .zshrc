@@ -165,7 +165,7 @@ alias cls='clear' # note: ctrl-L under zsh does something similar
 alias locate='locate -i'
 alias lynx='lynx -cfg=$HOME/.lynx.cfg -lss=$HOME/.lynx.lss'
 alias ducks='du -cks * | sort -rn | head -15'
-alias dirtree="ls -R | grep \":$\" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
+alias tree="tree -FC --charset=ascii"
 alias psf='ps -opid,uid,cpu,time,stat,command'
 alias df='df -h'
 alias dus='du -sh'
