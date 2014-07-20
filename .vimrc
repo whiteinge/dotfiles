@@ -40,6 +40,7 @@ set writebackup                 "wb:    does keep a backup file while editing a 
 
 set undofile                    "udf:   persist the undo tree to a file; dir below will not be auto-created
 set undodir=$HOME/.vim/undodir,.
+set directory=$HOME/.vim/swapdir,.
 
 " Searches the current directory as well as subdirectories with commands like :find, :grep, etc.
 set path=.,**
