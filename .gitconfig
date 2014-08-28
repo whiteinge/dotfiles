@@ -13,6 +13,7 @@
     dc = diff --cached
     i = ghissues
     m = merge --no-ff
+    mt = mergetool
     rl = reflog --date=relative
     short = rev-parse --short
     st = status -s -b
