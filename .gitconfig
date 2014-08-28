@@ -74,6 +74,20 @@
         <(git ls-remote --heads ${1:-upstream}) \
         | awk '\\''{ if ($2 != $3) print $1 }'\\''' -"
 
+    # Find the merge-base of an old branch merge.
+    # This is useful for rebasing an old pull request onto a new branch.
+    # The output from this command is used as the <upstream> argument to
+    # ``git rebase --onto <newbase> <upstream> <branch>``
+    # where <branch> is the current branch.
+    #
+    # Specify the branch the pull request was originally merged into.
+    #
+    # Usage: git preqbase upstream/develop
+    #
+    preqbase = "!sh -c 'parent1=$(git rev-list --merges --parents $1 \
+        | awk -v head=\"$(git rev-parse HEAD)\" '\\''$3 == head { print $2 }'\\'');\
+        git merge-base \"$parent1\" HEAD' -"
+
     ### Custom Git commands (found in ~/bin)
     # Push only the current branch to the upstream branch
     p = pushcurrent
