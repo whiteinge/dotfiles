@@ -90,8 +90,8 @@ RCONFL="${MERGED}.LOCAL.$$.tmp"
 trap 'rm -f "'"${LCONFL}"'" "'"${RCONFL}"'"' SIGINT SIGTERM EXIT
 
 # Remove the conflict markers for each 'side' and put each into a temp file
-sed -e '/^<<<<<<< /,/^=======$/d' -e '/^>>>>>>> /d' "${MERGED}" > "${LCONFL}"
-sed -e '/^=======$/,/^>>>>>>> /d' -e '/^<<<<<<< /d' "${MERGED}" > "${RCONFL}"
+sed -r -e '/^<<<<<<< /,/^=======\r?$/d' -e '/^>>>>>>> /d' "${MERGED}" > "${LCONFL}"
+sed -r -e '/^=======\r?$/,/^>>>>>>> /d' -e '/^<<<<<<< /d' "${MERGED}" > "${RCONFL}"
 
 # Fire up vimdiff
 $cmd -f -R -d "${LCONFL}" "${RCONFL}" \
