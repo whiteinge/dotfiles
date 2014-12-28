@@ -321,18 +321,17 @@ let g:netrw_liststyle = 3
 
 " Scripting helpers {{{1
 
-command -nargs=1 Warn echohl WarningMsg | echo <args> | echohl None
+command! -nargs=1 Warn echohl WarningMsg | echo <args> | echohl None
 
 " }}}
 " Make the current buffer a scratch buffer {{{1
 
 function! Scratch()
-    setlocal buftype=nofile
-    setlocal bufhidden=delete
-    setlocal noswapfile
+	setlocal buftype=nofile bufhidden=delete nobuflisted
     Warn "This file is now a scratch file!"
 endfunction
 nmap <silent> <leader>S :call Scratch()<cr>
+command! -nargs=* Scratch call Scratch(<f-args>)
 
 " }}}
 " Diff two registers {{{
