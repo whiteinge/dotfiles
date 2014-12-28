@@ -61,7 +61,7 @@ set nojoinspaces                " Prevents inserting two spaces after punctuatio
 set lazyredraw                  " Will not redraw the screen while running macros (goes faster)
 set pastetoggle=<F9>            " Useful so auto-indenting doesn't mess up code when pasting
 
-set complete=.,w,b,u            "cpt:   default insert completion minus tags and included files
+set complete-=t,i               " Remove tags and included files from default insert completion
 
 set virtualedit=block           " Let cursor move past the last char in <C-V> mode
 set nostartofline               " Avoid moving cursor to BOL when jumping around
