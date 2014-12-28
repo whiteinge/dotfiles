@@ -7,77 +7,81 @@ call pathogen#infect()
 
 " Search {{{
 
-set incsearch                   "is:    automatically begins searching as you type
-set ignorecase                  "ic:    ignores case when pattern matching
-set smartcase                   "scs:   ignores ignorecase when pattern contains uppercase characters
-set hlsearch                    "hls:   highlights search results
+set incsearch                   " Automatically begins searching as you type
+set ignorecase                  " Ignores case when pattern matching
+set smartcase                   " Ignores ignorecase when pattern contains uppercase characters
+set hlsearch                    " Highlights search results
 
 " Use leader-n to unhighlight search results in normal mode:
 nmap <silent> <leader>n :silent noh<cr>
+
 " Display the number of matches for the last search
 nmap <leader># :%s:<C-R>/::gn<cr>
+
 " Restore case-sensitivity for jumping to tags (set ic disables it)
 map <silent> <C-]> :set noic<cr>g<C-]><silent>:set ic<cr>
 
 " }}}
 " Line Wrap {{{
 
-set backspace=indent,eol,start  "bs:    allows you to backspace over the listed character types
-set linebreak                   "lbr:   causes vim to not wrap text in the middle of a word
-set wrap                        "wrap:  wraps lines by default
+set backspace=indent,eol,start  " Allows you to backspace over the listed character types
+set linebreak                   " Causes vim to not wrap text in the middle of a word
+set wrap                        " Wraps lines by default
+
 " Toggle line wrapping in normal mode:
 nmap <silent> <C-P> :set nowrap!<cr>:set nowrap?<cr>
 
 " }}}
 " Editing {{{
 
-set showmatch                   "sm:    flashes matching brackets or parentheses
+set showmatch                   " Flashes matching brackets or parentheses
 
-set nobackup                    "bk:    does not write a persistent backup file of an edited file
-set writebackup                 "wb:    does keep a backup file while editing a file
+set nobackup                    " Does not write a persistent backup file of an edited file
+set writebackup                 " Does keep a backup file while editing a file
 
-set undofile                    "udf:   persist the undo tree to a file; dir below will not be auto-created
+set undofile                    " Persist the undo tree to a file; dir below will not be auto-created
 set undodir=$HOME/.vim/undodir,.
 set directory=$HOME/.vim/swapdir,.
 
 " Searches the current directory as well as subdirectories with commands like :find, :grep, etc.
 set path=.,**
 
-set cindent                     "cin:   enables the second-most configurable indentation (see :help C-indenting).
+set cindent                     " Enables the second-most configurable indentation (see :help C-indenting).
 set cinoptions=l1,c4,(s,U1,w1,m1,j1,J1
 
-set formatoptions+=j            "fo:    remove comment leader when joining lines
+set formatoptions+=j            " Remove comment leader when joining lines
 
-set expandtab                   "et:    uses spaces instead of tab characters
-set smarttab                    "sta:   helps with backspacing because of expandtab
-set softtabstop=4               "ts:    number of spaces that a tab counts for
-set shiftwidth=4                "sw:    number of spaces to use for autoindent
-set shiftround                  "sr:    rounds indent to a multiple of shiftwidth
+set expandtab                   " Uses spaces instead of tab characters
+set smarttab                    " Helps with backspacing because of expandtab
+set softtabstop=4               " Number of spaces that a tab counts for
+set shiftwidth=4                " Number of spaces to use for autoindent
+set shiftround                  " Rounds indent to a multiple of shiftwidth
 
-set nojoinspaces                "nojs:  prevents inserting two spaces after punctuation on a join (it's not 1990 anymore)
-set lazyredraw                  "lz:    will not redraw the screen while running macros (goes faster)
-set pastetoggle=<F9>            "pt:    useful so auto-indenting doesn't mess up code when pasting
+set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (it's not 1990 anymore)
+set lazyredraw                  " Will not redraw the screen while running macros (goes faster)
+set pastetoggle=<F9>            " Useful so auto-indenting doesn't mess up code when pasting
 
 set complete=.,w,b,u            "cpt:   default insert completion minus tags and included files
 
-set virtualedit=block           "ve:    let cursor move past the last char in <C-V> mode
-set nostartofline               "sol:   avoid moving cursor to BOL when jumping around
+set virtualedit=block           " Let cursor move past the last char in <C-V> mode
+set nostartofline               " Avoid moving cursor to BOL when jumping around
 
-set cryptmethod=blowfish        "cm:    use (much) stronger blowfish encryption
+set cryptmethod=blowfish        " Use (much) stronger blowfish encryption
 
 " Fix for legacy vi inconsistency
 map Y y$
 
 " Use the repeat operator with a visual selection
 " This is useful for performing an edit on a single line, then highlighting a
-" visual block on a number of lines to repeat the edit
+" visual block on a number of lines to repeat the edit.
 vnoremap <leader>. :normal .<cr>
+
 " Repeat a macro on a visual selection of lines
 " Same as above but with a macro; complete the command by chosing the register
 " containing the macro.
 vnoremap <leader>@ :normal @
 
-" Allow undoing insert-mode ctrl-u and ctrl-w
+" Allow undoing individual insert-mode changes with ctrl-u and ctrl-w
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 
@@ -88,32 +92,16 @@ map <leader>O :set paste<cr>m`O<esc>``:set nopaste<cr>
 " A shortcut to show the numbered register contents
 map <F2> :reg "0123456789-*+:/<cr>
 
-set colorcolumn=80              "cc:    draw a visual line down the 80th column
+set colorcolumn=80              " Draw a visual line down the 80th column
 
 " Toggle between line numbers and relative line numbers
-nnoremap <silent><leader>u :exe "set " . (&relativenumber == 1 ? "norelativenumber" : "relativenumber")<cr>
+nnoremap <silent><leader>u :exe "set " . (&rnu == 1 ? "nornu" : "rnu")<cr>
 
-"lcs:   displays tabs with :set list & displays when a line runs off-screen
+" Displays tabs with :set list & displays when a line runs off-screen
 set listchars=tab:>-,trail:\ ,precedes:<,extends:>
 
-" Toggle spell-checking
-map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
-
-" Maps Omnicompletion to CTRL-space since ctrl-x ctrl-o is for Emacs-style RSI
-inoremap <nul> <C-X><C-O>
-
-" don't select first item, follow typing in autocomplete
-set completeopt=longest,menuone,preview
-
-" Change directory to the path of the current file
-map <leader>cd :cd %:p:h<cr>
-" Edit a new file starting in the same dir as the current file
-map <leader>ce :e <C-R>=expand("%:p:h") . "/" <cr>
-map <leader>cs :sp <C-R>=expand("%:p:h") . "/" <cr>
-map <leader>ct :tabnew <C-R>=expand("%:p:h") . "/" <cr>
-
-" Highlight problem lines: more than 80 chars, trailing spaces, only whitespace
-" Toggle with \l
+" Show listchars; highlight lines more than 80 chars, trailing spaces, only
+" whitespace. Toggle with \l
 nnoremap <silent> <leader>l
       \ :set nolist!<cr>:set nolist?<cr>
       \ :if exists('w:long_line_match') <bar>
@@ -125,11 +113,27 @@ nnoremap <silent> <leader>l
       \   let w:long_line_match = matchadd('ErrorMsg', '\%>80v.\+', -1) <bar>
       \ endif<cr>
 
+" Toggle spell-checking
+map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
+
+" Maps Omnicompletion to CTRL-space.
+inoremap <nul> <C-X><C-O>
+
+" Don't select first autocomplete item, follow typing.
+set completeopt=longest,menuone,preview
+
+" Change directory to the path of the current file
+map <leader>cd :cd %:p:h<cr>
+
+" Edit a new file starting in the same dir as the current file
+map <leader>ce :e <C-R>=expand("%:p:h") . "/" <cr>
+map <leader>cs :sp <C-R>=expand("%:p:h") . "/" <cr>
+map <leader>ct :tabnew <C-R>=expand("%:p:h") . "/" <cr>
+
 " Find merge conflict markers
 map <leader>fc /\v^[<=>]{7}( .*\|$)<cr>
 
-set dictionary=spell        " dict:     complete words from the spelling dict (when spell is on)
-" set thesaurus             " tsr:      complete words from a thesaurus
+set dictionary=spell        " Complete words from the spelling dict.
 
 " Use generic omnicompletion if something more specific isn't already set
 if has("autocmd") && exists("+omnifunc")
@@ -200,9 +204,9 @@ endif
 " }}}
 " Multi-buffer/window/tab editing {{{
 
-set switchbuf=usetab            "swb:   Jumps to first tab or window that contains specified buffer instead of duplicating an open window
-set showtabline=1               "stal:  Display the tabbar if there are multiple tabs. Use :tab ball or invoke Vim with -p
-set hidden                      "hid:   allows opening a new buffer in place of an existing one without first saving the existing one
+set switchbuf=usetab            " Jumps to first tab or window that contains specified buffer instead of duplicating an open window
+set showtabline=1               " Display the tabbar if there are multiple tabs. Use :tab ball or invoke Vim with -p
+set hidden                      " Allows opening a new buffer in place of an existing one without first saving the existing one
 
 " Type <F1> follwed by a buffer number or name fragment to jump to it.
 " Also replaces the annoying help button. Based on tip 821.
@@ -258,8 +262,8 @@ nmap <silent> <leader>du :diffupdate<cr>
 " X11 Integration {{{
 " (I.e.: don't do any automatic integration, please :)
 
-set mouse=                      "       Disable mouse control for console Vim (very annoying)
-set clipboard=                  "       Disable automatic X11 clipboard crossover
+set mouse=                      " Disable mouse control for console Vim (very annoying)
+set clipboard=                  " Disable automatic X11 clipboard crossover
 
 " }}}
 " Color {{{
@@ -288,7 +292,7 @@ map <F12> :syntax sync fromstart<cr>
 
 " Shorten the timeout when looking for a paren match to highlight
 let g:matchparen_insert_timeout = 5
-set synmaxcol=500               "smc:	Stop syntax highlighting on very long lines
+set synmaxcol=500               " Stop syntax highlighting on very long lines
 
 syntax enable
 colorscheme desert
@@ -352,7 +356,7 @@ function! DiffRegsFunc(...)
     windo diffthis
     winc t
 endfunction
-com -nargs=* DiffRegs call DiffRegsFunc(<f-args>)
+command! -nargs=* DiffRegs call DiffRegsFunc(<f-args>)
 
 " }}}
 " YankList {{{1
@@ -417,7 +421,7 @@ endfunction
 set tabline=%!MyTabLine()
 
 " }}}
-" Break out any vals with a consistent delimiter on to separate lines {{{
+" SplitItems Break out vals with a consistent delimiter on to separate lines {{{
 "
 " Useful for reordering function parameters or list items or delimited text
 " since Vim makes it easy to reorder lines. Once ordered, lines can be
@@ -471,10 +475,8 @@ nnoremap <leader>j :set opfunc=JoinItems<cr>g@
 " }}}
 " Plugin settings {{{
 
-""" Run matchit without installing
-if filereadable($VIMRUNTIME . "/macros/matchit.vim")
-    so $VIMRUNTIME/macros/matchit.vim
-endif
+""" Enable builtin matchit plugin
+runtime macros/matchit.vim
 
 """ Wordnet settings
 noremap  <F11> "wyiw:call WordNetOverviews(@w)<cr>
