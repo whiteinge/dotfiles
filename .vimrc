@@ -2,9 +2,7 @@
 " Author: Seth House <seth@eseth.com>
 " For more information type :help followed by the command.
 
-set nocompatible                "cp:    turns off strct vi compatibility
 filetype plugin indent on
-
 call pathogen#infect()
 
 " Search {{{
