@@ -505,7 +505,7 @@ hi SignifySignChange ctermfg=3
 
 """ Fugitive settings
 " Open current buffer in a new tab and show Fugitive diff
-nmap <silent> <leader>dd :tab split \| Gdiff \| wincmd h<cr>
+nmap <silent> <leader>dd :tab split \| Gdiff <cr>
 nmap <silent> <leader>dc :Gcommit<cr>
 nmap <silent> <leader>da :Gcommit --amend --reuse-message=HEAD<cr>
 
