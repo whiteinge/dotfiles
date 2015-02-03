@@ -24,6 +24,10 @@ local -a pr_llines pr_rlines
 # zstyle ':vcs_info:*+*:*' debug true
 # zstyle ':pr_nethack:*' debug true
 
+alias pr_full="zstyle ':pr_nethack:' mode full"
+alias pr_compact="zstyle ':pr_nethack:' mode compact"
+alias pr_bare="zstyle ':pr_nethack:' mode bare"
+
 # Set default mode when zsh is first loaded (not every time prompt is drawn)
 # Modes: full, compact, bare
 if [[ $LINES -lt 5 ]] ; then
@@ -84,7 +88,7 @@ function pr_run_hooks() {
 }
 
 # Show the full two/three-line nethack prompt
-# zstyle ':pr-nethack:' mode full
+# zstyle ':pr_nethack:' mode full
 #
 # ... ~/src/dotfiles v(dotfiles) .... shouse@ripley
 # ... (git) d2a3f82fe9c5 U? master [origin/master ]
@@ -138,7 +142,7 @@ function +pr-mode-full() {
 }
 
 # Show the single-line prompt:
-# zstyle ':pr-nethack:' mode compact
+# zstyle ':pr_nethack:' mode compact
 #
 # ~/src/dotfiles %                        (git) d2a3f82f U? +1/-2
 function +pr-mode-compact() {
@@ -154,7 +158,7 @@ function +pr-mode-compact() {
 }
 
 # Show just the prompt
-# zstyle ':pr-nethack:' mode bare
+# zstyle ':pr_nethack:' mode bare
 #
 # %
 function +pr-mode-bare() {
