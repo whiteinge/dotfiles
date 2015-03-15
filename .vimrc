@@ -505,9 +505,9 @@ hi SignifySignChange ctermfg=3
 
 """ Fugitive settings
 " Open current buffer in a new tab and show Fugitive diff
-nmap <silent> <leader>dd :tab split \| Gdiff <cr>
-nmap <silent> <leader>dc :Gcommit<cr>
-nmap <silent> <leader>da :Gcommit --amend --reuse-message=HEAD<cr>
+nmap <silent> <leader>cc :tab split \| Gdiff <cr>
+nmap <silent> <leader>ci :Gcommit<cr>
+nmap <silent> <leader>ca :Gcommit --amend --reuse-message=HEAD<cr>
 
 """ Tagbar plugin settings
 map <F5> :TagbarToggle<cr>

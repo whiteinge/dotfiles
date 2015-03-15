@@ -6,8 +6,9 @@
     b = branch -vv
     bc = branch --contains
     cdate = "!git --no-pager log -1 --format='%ci'"
-    ci = commit --amend
+    ca = commit --amend --no-edit
     ci = commit
+    cp = commit --patch
     co = checkout
     d = diff
     dc = diff --cached
