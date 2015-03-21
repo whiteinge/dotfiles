@@ -541,6 +541,11 @@ let g:airline_section_c = "%f%m %{bufname('#') != '' ? '('. expand('#:t') .')' :
 " Dispatch mappings
 nmap <silent> <leader>b :Make!<cr>
 
+""" vim-diff-enhanced settings
+" Toggle between different diff algorithms
+nmap <silent> <leader>dp :CustomDiff patience<cr>
+nmap <silent> <leader>dh :CustomDiff histogram<cr>
+
 " }}}
 
 " eof
