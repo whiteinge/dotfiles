@@ -16,6 +16,7 @@
 
 // Relaxing options
 , "lastsemic": true
+, "newcap": false
 
 // Environment options
 , "browser": true
