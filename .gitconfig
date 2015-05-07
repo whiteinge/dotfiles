@@ -98,6 +98,12 @@
     in = pagediffs ..@{u}
     out = pagediffs @{u}..
 
+    # Fetch a GitHub pull request as a local branch.
+    # Usage: git preq <preq> <branch> [remote]
+    # Usage: git preq 1234 mylocalbranch
+    preq = "!sh -c 'git fetch \"${3:-upstream}\" \
+        pull/\"${1:?Missing preq}\"/head:\"${2:?Missing branch name}\"' -"
+
     # Configure local clone to also make local refs for all GitHub pull
     # requests for the specified remote
     # Usage: git addrefspr upstream; git fetch upstream; git show upstream/pr/13
