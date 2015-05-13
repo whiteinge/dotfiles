@@ -20,7 +20,7 @@
 
 // Environment options
 , "browser": true
-, "es5": true
+, "esnext": true
 , "node": true
 , "predef":
     [ "define"
