@@ -55,3 +55,6 @@
 [submodule ".vim/bundle/vim-diff-enhanced"]
 	path = .vim/bundle/vim-diff-enhanced
 	url = https://github.com/chrisbra/vim-diff-enhanced.git
+[submodule ".vim/bundle/vim-unimpaired"]
+	path = .vim/bundle/vim-unimpaired
+	url = https://github.com/tpope/vim-unimpaired.git
