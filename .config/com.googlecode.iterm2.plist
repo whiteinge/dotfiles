@@ -506,7 +506,7 @@
 	<key>MaxVertically</key>
 	<false/>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/Downloads</string>
+	<string>~/src/dotfiles/.config</string>
 	<key>NSQuotedKeystrokeBinding</key>
 	<string></string>
 	<key>NSRepeatCountBinding</key>
@@ -530,36 +530,16 @@
 	<array/>
 	<key>NSTableView Sort Ordering KeyBingingTable</key>
 	<array/>
-	<key>NSToolbar Configuration Terminal Toolbar</key>
-	<dict>
-		<key>TB Display Mode</key>
-		<integer>1</integer>
-		<key>TB Icon Size Mode</key>
-		<integer>1</integer>
-		<key>TB Is Shown</key>
-		<integer>0</integer>
-		<key>TB Size Mode</key>
-		<integer>1</integer>
-	</dict>
-	<key>NSToolbar Configuration com.apple.NSColorPanel</key>
-	<dict>
-		<key>TB Is Shown</key>
-		<integer>1</integer>
-	</dict>
 	<key>NSWindow Frame Preferences</key>
-	<string>173 260 924 485 0 0 1366 745 </string>
+	<string>269 110 924 485 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 294 570 451 0 0 1366 768 </string>
+	<string>0 0 1440 2560 0 0 1440 2537 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>173 52 570 451 0 0 1366 746 </string>
+	<string>14 294 570 451 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>190 21 574 483 0 0 1366 746 </string>
+	<string>643 294 570 451 0 0 1366 745 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>211 273 574 473 0 0 1366 746 </string>
-	<key>NSWindow Frame iTerm Window 4</key>
-	<string>232 295 570 451 0 0 1366 746 </string>
-	<key>NSWindow Frame iTerm Window 5</key>
-	<string>253 295 570 451 0 0 1366 746 </string>
+	<string>211 294 570 451 0 0 1366 745 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -2816,8 +2796,6 @@
 	<integer>8</integer>
 	<key>RightOption</key>
 	<integer>3</integer>
-	<key>SUAutomaticallyUpdate</key>
-	<true/>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
@@ -2825,9 +2803,9 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-04-18T04:59:13Z</date>
+	<date>2015-04-29T00:48:38Z</date>
 	<key>SUSkippedVersion</key>
-	<string>2.0.0.20150412</string>
+	<string>2.1</string>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -2870,7 +2848,7 @@
 	<key>WebKitDefaultFontSize</key>
 	<integer>11</integer>
 	<key>WebKitStandardFont</key>
-	<string>Lucida Grande</string>
+	<string>.Helvetica Neue DeskInterface</string>
 	<key>WindowNumber</key>
 	<true/>
 	<key>WindowStyle</key>
@@ -2882,6 +2860,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>2.0.0.20141103</string>
+	<string>2.0.0.20150412</string>
 </dict>
 </plist>
