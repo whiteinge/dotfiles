@@ -1,5 +1,5 @@
-let javaScript_fold=1
-setl foldmethod=syntax
+setl foldnestmax=1
+setl foldmethod=indent
 
 if exists("+omnifunc")
     setl omnifunc=javascriptcomplete#CompleteJS
