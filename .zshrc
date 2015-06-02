@@ -80,6 +80,7 @@ export WINEDEBUG=-all
 # A function to construct GREP_OPTIONS dynamically by reading a file named
 # .grepoptions in both the user's home directory and the current directory (for
 # project-level grep options and ignores)
+# Grep has deprecated this envvar. Use GREP_OPTIONS2 instead to avoid warning.
 function grep_options() {
     local -a opts
     local proj_opts=${PWD}/.grepoptions
@@ -90,8 +91,8 @@ function grep_options() {
         opts+=( ${${(f)"$(< "${proj_opts}")"}:#[#]*} )
     fi
 
-    GREP_OPTIONS="${(j: :)opts}"
-    export GREP_OPTIONS
+    GREP_OPTIONS2="${(j: :)opts}"
+    export GREP_OPTIONS2
 }
 
 # }}}
@@ -300,7 +301,7 @@ gext() {
     # Assemble the commands to perform the search
     findcmd="find \"${spath}\" \( ${prune} \) -prune -o -type f ${extsearch} -print0"
     xargscmd="xargs -0 -P8"
-    grepcmd="grep ${icase} -nH -E -e \"${search}\""
+    grepcmd="grep ${(j: :)GREP_OPTIONS2} ${icase} -nH -E -e \"${search}\""
 
     eval "${findcmd} | ${xargscmd} ${grepcmd}"
 }
