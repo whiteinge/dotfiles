@@ -267,26 +267,31 @@ if [[ -n "$ZSHRUN" ]]; then
 fi
 
 # }}}
-# gext A wrapper to grep files with a given file extension {{{1
+# gext A wrapper to grep files with a given file name match {{{1
 # Also guesses case-insensitivity and performs many searches in parallel.
 
 gext() {
-    local spath search ext prune help icase extsearch findcmd xargscmd grepcmd
+    local -a prune
+    local spath search ext help icase extsearch findcmd xargscmd grepcmd
 
     spath="$1"
     search="$2"
     ext="$3"
 
-    prune="\
-        -path \*/.svn \
-        -o -path \*/.git \
-        -o -path \*/.hg \
-        -o -path \*/.bzr \
-        -o -name \*.pyc \
-        -o -name \*.pyo"
+    # Assemble an array of files/paths to prune from the find results by
+    # co-opting the various excludes from GREP_OPTIONS. (<3 Zsh <3)
+    prune=( ${(s: :)GREP_OPTIONS2} )
+    prune=( ${(M)prune:#--exclude*} )
+    prune=( ${(S)prune//--exclude-dir=/-path \\*/} )
+    prune=( ${(S)prune//--exclude=/-name } )
 
-    help="Usage: gext ./somepath sometext [someext]
-    Search will be case-sensitive if the search text contains capital letters."
+    help="Usage: gext ./somepath sometext [file-name-pattern]
+    Search will be case-sensitive if the search text contains capital letters.
+    
+    gext . thing
+    gext . thing '*.py'
+    gext . thing 'specific-file.*'
+    "
 
     # Output help if missing path or search
     [[ -n "${spath}" ]] && [[ -n "${search}" ]] || { echo ${help}; return 1 }
@@ -296,10 +301,10 @@ gext() {
     [[ $? -ne 0 ]] && icase="-i"
 
     # Build a find search if user passed a file extension to search
-    [[ -n "${ext}" ]] && extsearch="-name \"*.${ext}\""
+    [[ -n "${ext}" ]] && extsearch="-name \"${ext}\""
 
     # Assemble the commands to perform the search
-    findcmd="find \"${spath}\" \( ${prune} \) -prune -o -type f ${extsearch} -print0"
+    findcmd="find \"${spath}\" \( ${(j: -o :)prune} \) -prune -o -type f ${extsearch} -print0"
     xargscmd="xargs -0 -P8"
     grepcmd="grep ${(j: :)GREP_OPTIONS2} ${icase} -nH -E -e \"${search}\""
 
