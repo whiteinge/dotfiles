@@ -4,4 +4,11 @@
 --exclude-dir=.bzr
 --exclude-dir=.git
 --exclude=\*.pyc
+--exclude=\*.pyo
+--exclude=\*.min.js
+--exclude=\*.bundle.js
 --exclude=tags
+--exclude-dir=node_modules
+--exclude-dir=dist
+--exclude-dir=_build
+--exclude-dir=build
