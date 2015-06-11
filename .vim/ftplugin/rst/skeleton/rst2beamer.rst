@@ -56,8 +56,10 @@ First Subsection
 First frame
 -----------
 
-.. container:: r2b-note
+.. container:: note
 
     Pow! Zing!
 
-First frame
+.. container:: frame
+
+    First frame
