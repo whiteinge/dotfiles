@@ -6,3 +6,5 @@ setl foldnestmax=1
 if exists("+omnifunc")
     setl omnifunc=javascriptcomplete#CompleteJS
 endif
+
+let g:syntastic_javascript_checkers = ['eslint', 'jshint', 'jslint']
