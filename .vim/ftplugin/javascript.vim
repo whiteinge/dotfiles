@@ -7,4 +7,5 @@ if exists("+omnifunc")
     setl omnifunc=javascriptcomplete#CompleteJS
 endif
 
-let g:syntastic_javascript_checkers = ['eslint', 'jshint', 'jslint']
+let g:syntastic_javascript_checkers = ['eslint', 'flow']
+let g:syntastic_aggregate_errors = 1
