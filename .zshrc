@@ -172,6 +172,8 @@ alias df='df -h'
 alias dus='du -sh'
 alias info='info --vi-keys'
 alias clip='xclip -selection clipboard'
+alias ocaml='rlwrap ocaml'
+alias node='env NODE_NO_READLINE=1 rlwrap node'
 alias rs='rsync -avhzC --progress'
 compdef rs=rsync
 
