@@ -188,6 +188,9 @@ alias -g IN='..@{u}'
 alias -g OUT='@{u}..'
 alias -g UP='@{u}'
 
+# Useful for running ``git fetch -a`` on several repos.
+alias fetchall='find . -type d -name .git -print0 | xargs -r -0 -I@ git --git-dir=@ fetch -a'
+
 # Don't prompt to save when exiting R
 alias R='R --no-save'
 
