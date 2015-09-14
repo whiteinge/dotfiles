@@ -277,7 +277,7 @@ fi
 
 gext() {
     local -a prune
-    local spath search ext help icase extsearch findcmd xargscmd grepcmd
+    local spath search ext help is_icase extsearch findcmd xargscmd grepcmd
 
     spath="$1"
     search="$2"
@@ -287,12 +287,13 @@ gext() {
     # co-opting the various excludes from GREP_OPTIONS. (<3 Zsh <3)
     prune=( ${(s: :)GREP_OPTIONS2} )
     prune=( ${(M)prune:#--exclude*} )
-    prune=( ${(S)prune//--exclude-dir=/-path \\*/} )
+    prune=( ${(S)prune//--exclude-dir=/-path \*/} )
     prune=( ${(S)prune//--exclude=/-name } )
+    prune="${(j: -o :)prune}"
 
     help="Usage: gext ./somepath sometext [file-name-pattern]
     Search will be case-sensitive if the search text contains capital letters.
-    
+
     gext . thing
     gext . thing '*.py'
     gext . thing 'specific-file.*'
@@ -303,17 +304,16 @@ gext() {
 
     # Check for capital letters in the search pattern
     echo "${search}" | grep -qE '[A-Z]+'
-    [[ $? -ne 0 ]] && icase="-i"
+    [[ $? -ne 0 ]] && is_icase=1
 
-    # Build a find search if user passed a file extension to search
-    [[ -n "${ext}" ]] && extsearch="-name \"${ext}\""
-
-    # Assemble the commands to perform the search
-    findcmd="find \"${spath}\" \( ${(j: -o :)prune} \) -prune -o \( -type f -o -type l ${extsearch} \) -print0"
-    xargscmd="xargs -0 -P8"
-    grepcmd="grep ${(j: :)GREP_OPTIONS2} ${icase} -nH -E -e \"${search}\""
-
-    eval "${findcmd} | ${xargscmd} ${grepcmd}"
+    find "${spath}" \
+        '(' ${(s: :)prune} ')' -prune \
+        -o '(' -type f -o -type l ')' ${ext:+-name} ${ext:+$ext} \
+        -print0 \
+    | xargs -0 -P8 \
+        grep ${(s: :)GREP_OPTIONS2} \
+        ${is_icase:+-i} \
+        -nH -E -e "${search}"
 }
 
 # }}}
