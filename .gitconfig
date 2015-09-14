@@ -7,6 +7,7 @@
     bc = branch --contains
     cdate = "!git --no-pager log -1 --format='%ci'"
     ca = commit --amend --no-edit
+    cm = commit --amend -o
     ci = commit
     cp = commit --patch
     co = checkout
