@@ -22,7 +22,7 @@
     stat = diff --stat
 
     # Fetch all or one remote: git f; git f upstream
-    f = "!sh -c 'git fetch ${1:-\"--all\"}' -"
+    f = "!sh -c 'git fetch --tags ${1:-\"--all\"}' -"
 
     # Interactive rebase against upstream HEAD or ref: git r; git r HEAD~10
     r = "!sh -c 'git rebase -i ${1:-\"@{u}\"}' -"
