@@ -304,7 +304,7 @@ gext() {
     [[ -n "${ext}" ]] && extsearch="-name \"${ext}\""
 
     # Assemble the commands to perform the search
-    findcmd="find \"${spath}\" \( ${(j: -o :)prune} \) -prune -o -type f ${extsearch} -print0"
+    findcmd="find \"${spath}\" \( ${(j: -o :)prune} \) -prune -o \( -type f -o -type l ${extsearch} \) -print0"
     xargscmd="xargs -0 -P8"
     grepcmd="grep ${(j: :)GREP_OPTIONS2} ${icase} -nH -E -e \"${search}\""
 
