@@ -21,6 +21,7 @@
     short = rev-parse --short
     st = status -s -b
     stat = diff --stat
+    untracked = ls-files --others --exclude-standard
 
     # Fetch all or one remote: git f; git f upstream
     f = "!sh -c 'git fetch --tags ${1:-\"--all\"}' -"
