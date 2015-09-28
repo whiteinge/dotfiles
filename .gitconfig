@@ -13,6 +13,7 @@
     co = checkout
     d = diff
     dc = diff --cached
+    dh = "!git diff --color | diff-highlight | less -r"
     i = ghissues
     m = merge --no-ff
     mt = mergetool
