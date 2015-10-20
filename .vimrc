@@ -528,16 +528,6 @@ else
     let g:tagbar_autofocus = 1
 endif
 
-""" Airline settings
-" let g:airline_powerline_fonts = 1
-let g:airline_detect_whitespace = 2
-let g:airline_whitespace_symbol = 'Ξ'
-let g:airline_linecolumn_prefix = '␊ '
-let g:airline_left_sep = '▞'
-let g:airline_right_sep = '▚'
-" Add the alternate buffer name next to the current file name
-let g:airline_section_c = "%f%m %{bufname('#') != '' ? '('. expand('#:t') .')' : ''}"
-
 " Dispatch mappings
 nmap <silent> <leader>b :Make!<cr>
 

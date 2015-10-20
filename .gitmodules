@@ -34,9 +34,6 @@
 [submodule ".vim/bundle/vim-textobj-indent"]
 	path = .vim/bundle/vim-textobj-indent
 	url = git@github.com:kana/vim-textobj-indent.git
-[submodule ".vim/bundle/vim-airline"]
-	path = .vim/bundle/vim-airline
-	url = https://github.com/bling/vim-airline.git
 [submodule ".vim/bundle/tern_for_vim"]
 	path = .vim/bundle/tern_for_vim
 	url = git@github.com:marijnh/tern_for_vim.git
@@ -64,3 +61,6 @@
 [submodule ".vim/bundle/vim-json"]
 	path = .vim/bundle/vim-json
 	url = https://github.com/elzr/vim-json.git
+[submodule ".vim/bundle/vim-flagship"]
+	path = .vim/bundle/vim-flagship
+	url = https://github.com/tpope/vim-flagship.git
