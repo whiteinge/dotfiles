@@ -1,6 +1,3 @@
-[submodule ".vim/bundle/gitv"]
-	path = .vim/bundle/gitv
-	url = git://github.com/gregsexton/gitv.git
 [submodule ".vim/bundle/Gundo"]
 	path = .vim/bundle/Gundo
 	url = git://github.com/vim-scripts/Gundo.git
@@ -28,36 +25,18 @@
 [submodule ".vim/bundle/vim-dispatch"]
 	path = .vim/bundle/vim-dispatch
 	url = git://github.com/tpope/vim-dispatch.git
-[submodule ".vim/bundle/vim-textobj-user"]
-	path = .vim/bundle/vim-textobj-user
-	url = git@github.com:kana/vim-textobj-user.git
-[submodule ".vim/bundle/vim-textobj-indent"]
-	path = .vim/bundle/vim-textobj-indent
-	url = git@github.com:kana/vim-textobj-indent.git
-[submodule ".vim/bundle/tern_for_vim"]
-	path = .vim/bundle/tern_for_vim
-	url = git@github.com:marijnh/tern_for_vim.git
 [submodule ".vim/bundle/vim-signify"]
 	path = .vim/bundle/vim-signify
 	url = https://github.com/mhinz/vim-signify.git
 [submodule "bin/xcape"]
 	path = bin/xcape
 	url = https://github.com/alols/xcape.git
-[submodule ".vim/bundle/vim-golang"]
-	path = .vim/bundle/vim-golang
-	url = https://github.com/jnwhiteh/vim-golang.git
 [submodule ".vim/bundle/vim-diff-enhanced"]
 	path = .vim/bundle/vim-diff-enhanced
 	url = https://github.com/chrisbra/vim-diff-enhanced.git
 [submodule ".vim/bundle/vim-unimpaired"]
 	path = .vim/bundle/vim-unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
-[submodule ".vim/bundle/vim-javascript"]
-	path = .vim/bundle/vim-javascript
-	url = https://github.com/pangloss/vim-javascript.git
-[submodule ".vim/bundle/vim-json"]
-	path = .vim/bundle/vim-json
-	url = https://github.com/elzr/vim-json.git
 [submodule ".vim/bundle/vim-flagship"]
 	path = .vim/bundle/vim-flagship
 	url = https://github.com/tpope/vim-flagship.git
