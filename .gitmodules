@@ -37,9 +37,6 @@
 [submodule ".vim/bundle/tern_for_vim"]
 	path = .vim/bundle/tern_for_vim
 	url = git@github.com:marijnh/tern_for_vim.git
-[submodule ".vim/bundle/vim-vinegar"]
-	path = .vim/bundle/vim-vinegar
-	url = git://github.com/tpope/vim-vinegar.git
 [submodule ".vim/bundle/vim-signify"]
 	path = .vim/bundle/vim-signify
 	url = https://github.com/mhinz/vim-signify.git
@@ -64,3 +61,6 @@
 [submodule ".vim/bundle/vim-flagship"]
 	path = .vim/bundle/vim-flagship
 	url = https://github.com/tpope/vim-flagship.git
+[submodule ".vim/bundle/vim-filebeagle"]
+	path = .vim/bundle/vim-filebeagle
+	url = https://github.com/jeetsukumaran/vim-filebeagle.git

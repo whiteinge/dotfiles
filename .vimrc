@@ -306,18 +306,6 @@ set printfont=Monaco:h8         " face-type (not size) ignored in PostScript out
 set printencoding=utf-8
 
 " }}}
-" :Explore mode {{{
-
-" Hide the following file patterns.
-let g:netrw_hide = 1
-let g:netrw_list_hide = '^\..*,\.pyc$'
-
-" Default to thin, vertical Explore windows that output tree view.
-let g:netrw_preview = 1
-let g:netrw_winsize = 30
-let g:netrw_liststyle = 3
-
-" }}}
 
 " Scripting helpers {{{1
 
