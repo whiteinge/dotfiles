@@ -31,9 +31,9 @@ alias pr_bare="zstyle ':pr_nethack:' mode bare"
 # Set default mode when zsh is first loaded (not every time prompt is drawn)
 # Modes: full, compact, bare
 if [[ $LINES -lt 5 ]] ; then
-    zstyle ":pr_nethack:" mode compact
+    zstyle ":pr_nethack:" mode bare
 else
-    zstyle ":pr_nethack:" mode full
+    zstyle ":pr_nethack:" mode compact
 fi
 zstyle ':pr_nethack:*' hooks pwd usr vcs venv jobs prompt
 zstyle ':pr_nethack:*' pet "d" # A domestic animal, the _tame dog_ (_Canis familiaris_)
