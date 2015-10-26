@@ -53,8 +53,6 @@ zstyle ':vcs_info:hg*:*' branchformat "%b" # only show branch
 zstyle ':vcs_info:(hg*|git*):*' stagedstr "${green}S${gray}"
 zstyle ':vcs_info:(hg*|git*):*' unstagedstr "${red}U${gray}"
 
-zstyle ':vcs_info:git*+set-message:*' hooks git-st git-stash git-untracked
-
 # prompt functions ############################################################
 
 # Run all the prompt hook functions
@@ -97,6 +95,7 @@ function +pr-mode-full() {
     local -a lines pline infoline debug pet
     local i i_width i_pad filler dungeon
 
+    zstyle ':vcs_info:git*+set-message:*' hooks git-st git-up git-stash git-untracked
     zstyle -g pet ":pr_nethack:*" pet
     zstyle -t ":pr_nethack:*" debug && debug=1 || debug=0
 
@@ -144,10 +143,9 @@ function +pr-mode-full() {
 # Show the single-line prompt:
 # zstyle ':pr_nethack:' mode compact
 #
-# ~/src/dotfiles %                        (git) d2a3f82f U? +1/-2
+# ~/src/dotfiles %                        d2a3f82f U? master +1/-2
 function +pr-mode-compact() {
     zstyle ':pr_nethack:*' pwd "%1~" # only last segment of cwd
-    zstyle ':vcs_info:(hg*|git*)' formats "(%s) %8.8i %c%u %m" # no branch
     zstyle ':vcs_info:git*+set-message:*' hooks git-st git-st-compact git-untracked
 
     pr_llines=( "${pr_com[pwd]} ${pr_com[jobs]} ${pr_com[prompt]}" )
@@ -254,6 +252,18 @@ function +vi-git-st() {
         (( $behind )) && gitstatus+=( "${red}-${behind}${gray}" )
 
         user_data[gitstatus]=${gitstatus}
+    fi
+}
+
+# Show the upstream-tracking branch after the local branch.
+function +vi-git-up() {
+    local remote
+
+    # Are we on a remote-tracking branch?
+    remote=${$(git rev-parse --verify ${hook_com[branch]}@{upstream} \
+        --symbolic-full-name --abbrev-ref 2>/dev/null)}
+
+    if [[ -n ${remote} ]] ; then
         hook_com[branch]="${hook_com[branch]} [${remote} ${(j:/:)gitstatus}]"
     fi
 }
@@ -261,7 +271,7 @@ function +vi-git-st() {
 # Show the above/behind upstream counts more tersely for the compact display
 function +vi-git-st-compact() {
     [[ -n ${user_data[gitstatus]} ]] \
-        && hook_com[misc]="@{u}${(j:/:)user_data[gitstatus]}"
+        && hook_com[misc]="${(j:/:)user_data[gitstatus]}"
 }
 
 # Show count of stashed changes
