@@ -38,7 +38,7 @@
 --regex-latex=/\\pageref[[:space:]]*\{([^}]+)\}/\1/p,pageref/
 
 --regex-JavaScript=/^[ \t]*(export)?[ \t]*function[ \t]+([a-zA-Z0-9_]+)/\2/f,functions/
---regex-JavaScript=/^[ \t]*export[ \t]+(var|const)[ \t]+([a-zA-Z0-9_]+)/\2/v,variables/
+--regex-JavaScript=/^[ \t]*export[ \t]+(var|const|type)[ \t]+([a-zA-Z0-9_]+)/\2/v,variables/
 --regex-JavaScript=/^[ \t]*var[ \t]+([a-zA-Z0-9_]+)[ \t]*=[ \t]*function[ \t]*\(\)/\1/v,varlambdas/
 
 --exclude=.git
