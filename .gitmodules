@@ -25,9 +25,6 @@
 [submodule ".vim/bundle/vim-dispatch"]
 	path = .vim/bundle/vim-dispatch
 	url = git://github.com/tpope/vim-dispatch.git
-[submodule ".vim/bundle/vim-signify"]
-	path = .vim/bundle/vim-signify
-	url = https://github.com/mhinz/vim-signify.git
 [submodule "bin/xcape"]
 	path = bin/xcape
 	url = https://github.com/alols/xcape.git
@@ -43,3 +40,6 @@
 [submodule ".vim/bundle/vim-filebeagle"]
 	path = .vim/bundle/vim-filebeagle
 	url = https://github.com/jeetsukumaran/vim-filebeagle.git
+[submodule ".vim/bundle/quickfixsigns_vim"]
+	path = .vim/bundle/quickfixsigns_vim
+	url = https://github.com/tomtom/quickfixsigns_vim.git
