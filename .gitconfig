@@ -46,6 +46,12 @@
     mergetest = "!sh -c 'git merge-tree `git merge-base $1 HEAD` $1 HEAD \
         | awk '\\''/^@@/ { print \"Conflicts found\"; exit 1 }'\\''' -"
 
+    # Delete all remote refs that have been merged into the current branch.
+    # Usage: git deleteremote <remote-name>
+    deleteremote = "!sh -c 'git branch -r --merged \
+        | awk -F/ '\\''/^ *${1}/ && !/master/ { print \"refs/heads/\" $2 }'\\'' \
+        | xargs -p git push ${1} --delete' -"
+
     l = log --format=format:'%C(auto)%h%d%C(reset) %s %C(bold blue)(%an, %ar)%C(reset)'
     ll = log --stat --decorate --abbrev-commit --date=relative
     lll = log -p --stat --decorate --abbrev-commit --date=relative
