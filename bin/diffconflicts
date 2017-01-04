@@ -30,9 +30,12 @@
 #
 #   git mergetool --tool diffconflicts
 #
-# This tool will open three tabs in Vim that each provide a different way to
+# This tool can open three tabs in Vim that each provide a different way to
 # view the conflicts. You can resolve the conflicts in the first tab and save
 # and exit the file. This will also mark the conflict as resolved in Git.
+# Only the first tab is opened by default so Vim loads more quickly and also
+# because the other tabs are only occasionally useful for tough merges. To open
+# Tab2 and Tab3 use the mapping <leader>D.
 #
 #   Tab1 is a two-way diff of just the conflicts. Resolve the conflicts here
 #   and save the file.
@@ -101,9 +104,8 @@ $GNU_SED -r -e '/^=======\r?$/,/^>>>>>>> /d' -e '/^<<<<<<< /d' "${MERGED}" > "${
 
 # Fire up vimdiff
 $cmd -f -R -d "${LCONFL}" "${RCONFL}" \
-    -c ":set noro" \
-    -c ":tabe $QLOCAL" -c ":vert diffs $QBASE" -c ":vert diffs $QREMOTE" \
-    -c ":winc t" -c ":tabe $QMERGED" -c ":tabfir"
+     -c ":set noro" \
+     -c ":nmap <leader>D :tabe $QLOCAL<CR>:vert diffs $QBASE<CR>:vert diffs $QREMOTE<CR>:winct<CR>:tabe $QMERGED<CR>:tabfir"
 
 EC=$?
 
