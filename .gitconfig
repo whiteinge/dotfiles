@@ -117,7 +117,7 @@
     # requests for the specified remote
     # Usage: git addrefspr upstream; git fetch upstream; git show upstream/pr/13
     addrefspr = "!sh -c 'git config --add \
-        remote.$1.fetch \"+refs/pull/*/head:refs/remotes/$1/pr/*\"' -"
+        remote.${1:?Missing remote}.fetch \"+refs/pull/*/head:refs/remotes/$1/pr/*\"' -"
 
 [core]
     excludesfile = ~/.gitignore
