@@ -535,7 +535,7 @@ function xssh() {
     [[ -n "${HOSTS}" ]] || return 1
 
     local tmpfile="/tmp/xssh.cmd.$$.$RANDOM"
-    trap 'rm -f '$tmpfile SIGINT SIGTERM EXIT
+    trap 'rm -f '$tmpfile'; return;' EXIT
 
     # Grab the command(s) from stdin and write to tmpfile
     cat - > ${tmpfile}
