@@ -505,7 +505,15 @@ spell (){
 # Output total memory currently in use by you {{{1
 
 memtotaller() {
-    /bin/ps -u $(whoami) -o pid,rss,command | awk '{sum+=$2} END {print "Total " sum / 1024 " MB"}'
+    /bin/ps -u $(whoami) -o pid,rss,command |\
+        awk '{sum+=$2} END {print "Total " sum / 1024 " MB"}'
+}
+
+# Output total memory in use by all children processes
+memchildren() {
+    ps -h -o pid --ppid $1 |\
+        xargs printf "/proc/%s/smaps\n" |\
+        xargs awk '/^Pss/ { total += $2 } END { print "Total " total / 1024 " KB" }'
 }
 
 # }}}
