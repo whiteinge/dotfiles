@@ -463,6 +463,7 @@ let g:syntastic_error_symbol = 'E'
 let g:syntastic_style_error_symbol = 'S'
 let g:syntastic_warning_symbol = 'W'
 let g:syntastic_style_warning_symbol = 'S'
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_always_populate_loc_list = 1
 nmap <silent> <leader>y :SyntasticCheck<cr>
 
@@ -489,17 +490,6 @@ let g:tagbar_compact = 1
 let g:tagbar_autoshowtag = 1
 let g:tagbar_width = 25
 let g:tagbar_iconchars = ['+', '-']
-
-" Auto-open tagbar only if not in diff mode and the term wide enough to also
-" fit an 80-column window (plus eight for line numbers and the fold column).
-if &columns > 118
-    if ! &diff
-        au VimEnter * nested :call tagbar#autoopen(1)
-    endif
-else
-    let g:tagbar_autoclose = 1
-    let g:tagbar_autofocus = 1
-endif
 
 " Flagship settings
 let g:flagship_skip = 'fugitive#statusline'
