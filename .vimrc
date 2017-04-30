@@ -18,9 +18,6 @@ nmap <silent> <leader>n :silent noh<cr>
 " Display the number of matches for the last search
 nmap <leader># :%s///gn<cr>
 
-" Restore case-sensitivity for jumping to tags (set ic disables it)
-map <silent> <C-]> :set noic<cr>g<C-]><silent>:set ic<cr>
-
 " }}}
 " Line Wrap {{{
 
