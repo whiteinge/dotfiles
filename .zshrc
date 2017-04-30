@@ -124,6 +124,10 @@ bindkey -M vicmd '^n' history-beginning-search-forward
 zle -N edit-command-line
 bindkey -M vicmd "v" edit-command-line
 
+# Restore bash/emacs defaults.
+bindkey '^U' backward-kill-line
+bindkey '^Y' yank
+
 # Set up prompt
 if [[ ! -n "$ZSHRUN" ]]; then
     source $HOME/.zsh_shouse_prompt
