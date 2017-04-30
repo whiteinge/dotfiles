@@ -595,6 +595,26 @@ function timer() {
 }
 
 # }}}
+# ztail {{{1
+# Run a command then open two tmux panes to tail stdout and stderr separately.
+
+function ztail() {
+    unsetopt noclobber
+
+    trap '
+        excode=$?; trap - EXIT;
+        rm -f /tmp/ztail.{out,err}
+        return
+    ' INT TERM EXIT QUIT
+
+    touch /tmp/ztail.out /tmp/ztail.err
+    tmux splitw 'less +F /tmp/ztail.out'
+    tmux splitw -v 'less +F /tmp/ztail.err'
+
+    "$@" 1>/tmp/ztail.out 2>/tmp/ztail.err
+}
+
+# }}}
 
 # Run precmd functions
 precmd_functions=( precmd_prompt grep_options )
