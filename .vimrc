@@ -37,6 +37,7 @@ set nobackup                    " Does not write a persistent backup file of an 
 set writebackup                 " Does keep a backup file while editing a file
 
 set undofile                    " Persist the undo tree to a file; dir below will not be auto-created
+set backupdir=$HOME/.vim/backupdir,.
 set undodir=$HOME/.vim/undodir,.
 set directory=$HOME/.vim/swapdir,.
 
