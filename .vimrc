@@ -204,6 +204,10 @@ if &columns < 88
     set foldcolumn=0
 endif
 
+" Slight variant of standard status line with 'ruler' set that shows file infos.
+" FIXME: document each option for readability? add alternate buffer function, and whitespace function, for use with flagship?
+set statusline=%<%f\ %h%m%r%w\ %y\ %{&fileencoding},%{&fileformat}\ %q%=\ %-14.(%l,%c%V%)\ %P
+
 " }}}
 " Multi-buffer/window/tab editing {{{
 
