@@ -159,6 +159,9 @@ au BufNewFile * silent! exe "0r ". b:ftskeleton
 let b:dateformat = ''
 nmap <silent> <leader>dts :exe ':r !date '. escape(b:dateformat, '%')<cr>
 
+" Mapping to write a file using sudo
+cnoremap sudow w !sudo tee % >/dev/null
+
 " }}}
 " Folding (spacebar toggles) {{{
 " Spacebar toggles a fold, zi toggles all folding, zM closes all folds
