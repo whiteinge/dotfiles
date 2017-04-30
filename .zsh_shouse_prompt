@@ -146,7 +146,7 @@ function +pr-mode-full() {
 # ~/src/dotfiles %                        d2a3f82f U? master +1/-2
 function +pr-mode-compact() {
     zstyle ':pr_nethack:*' pwd "%1~" # only last segment of cwd
-    zstyle ':vcs_info:git*+set-message:*' hooks git-st git-st-compact git-untracked
+    zstyle ':vcs_info:git*+set-message:*' hooks git-st git-st-compact git-untracked git-stash-compact
 
     pr_llines=( "${pr_com[pwd]} ${pr_com[jobs]} ${pr_com[prompt]}" )
 
@@ -281,6 +281,16 @@ function +vi-git-stash() {
     if [[ -s $(git rev-parse --git-dir)/refs/stash ]] ; then
         stashes=$(git stash list 2>/dev/null | wc -l)
         hook_com[misc]+=" (${stashes} stashed)"
+    fi
+}
+
+# Show count of stashed changes
+function +vi-git-stash-compact() {
+    local -a stashes
+
+    if [[ -s $(git rev-parse --git-dir)/refs/stash ]] ; then
+        stashes=$(git stash list 2>/dev/null | wc -l)
+        hook_com[misc]+=" s# ${stashes}"
     fi
 }
 
