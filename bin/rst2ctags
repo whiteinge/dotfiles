@@ -13,13 +13,16 @@ import sys
 import os
 import subprocess
 
-from docutils import nodes
-from docutils.core import Publisher
-from docutils.io import FileInput, NullOutput
-from docutils.frontend import OptionParser
-from docutils.readers import standalone
-from docutils.parsers import rst
-from docutils.writers import UnfilteredWriter
+try:
+    from docutils import nodes
+    from docutils.core import Publisher
+    from docutils.io import FileInput, NullOutput
+    from docutils.frontend import OptionParser
+    from docutils.readers import standalone
+    from docutils.parsers import rst
+    from docutils.writers import UnfilteredWriter
+except ImportError:
+    raise SystemExit()
 
 
 class CTagsWriter(UnfilteredWriter):
@@ -86,7 +89,7 @@ class CTagsWriter(UnfilteredWriter):
             # if *something* goes wrong, just ignore the node
             pass
         else:
-            if tagtype:
+            if tagtype and tagline:
                 tagfield = '%s\tline:%d' % (tagtype, tagline)
                 # tag data structure: ([field, ...], (metainfo, ...))
                 self.tags.append(([tagid, tagfile, tagaddress, tagfield],
