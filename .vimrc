@@ -295,7 +295,13 @@ let g:matchparen_insert_timeout = 5
 set synmaxcol=500               " Stop syntax highlighting on very long lines
 
 syntax enable
-colorscheme desert
+if $PRESENTATION_MODE != ""
+    colorscheme zellner
+    set background=light
+else
+    colorscheme desert
+    set background=dark
+endif
 
 " }}}
 " Printing {{{
