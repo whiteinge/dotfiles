@@ -16,7 +16,7 @@ set hlsearch                    " Highlights search results
 nmap <silent> <leader>n :silent noh<cr>
 
 " Display the number of matches for the last search
-nmap <leader># :%s:<C-R>/::gn<cr>
+nmap <leader># :%s///gn<cr>
 
 " Restore case-sensitivity for jumping to tags (set ic disables it)
 map <silent> <C-]> :set noic<cr>g<C-]><silent>:set ic<cr>
@@ -92,8 +92,6 @@ map <leader>O :set paste<cr>m`O<esc>``:set nopaste<cr>
 " A shortcut to show the numbered register contents
 map <F2> :reg "0123456789-*+:/<cr>
 
-set colorcolumn=80              " Draw a visual line down the 80th column
-
 " Toggle between line numbers and relative line numbers
 nnoremap <silent><leader>u :exe "set " . (&rnu == 1 ? "nornu" : "rnu")<cr>
 
@@ -128,6 +126,7 @@ map <leader>cd :cd %:p:h<cr>
 " Edit a new file starting in the same dir as the current file
 map <leader>ce :e <C-R>=expand("%:p:h") . "/" <cr>
 map <leader>cs :sp <C-R>=expand("%:p:h") . "/" <cr>
+map <leader>cv :vs <C-R>=expand("%:p:h") . "/" <cr>
 map <leader>ct :tabnew <C-R>=expand("%:p:h") . "/" <cr>
 
 " Find merge conflict markers
@@ -175,6 +174,7 @@ set foldcolumn=4                "fdc:   creates a small left-hand gutter for dis
 set suffixes+=.pyc,.pyo         " Don't autocomplete these filetypes
 set wildmenu                    "wmnu:  enhanced ex command completion
 set wildmode=longest:full,list:full  "wim:   helps wildmenu auto-completion
+set wildignore+=*/node_modules/**
 
 " }}}
 " Window Layout {{{
@@ -214,9 +214,6 @@ map <F1> :ls<cr>:b<space>
 
 " Quickly jump to a tag if there's only one match, otherwise show the list
 map <F3> :tj<space>
-
-" Display a list of included files and quickly jump to one
-map <F4> [I:let nr = input("Which one: ")<bar>exe "normal " . nr ."[\t"<cr>
 
 " When restoring a hidden buffer Vim doesn't always keep the same view (like
 " when your view shows beyond the end of the file). (Vim tip 1375)
@@ -272,13 +269,13 @@ set clipboard=                  " Disable automatic X11 clipboard crossover
 " Make listchars (much) more noticable.
 au ColorScheme * hi SpecialKey ctermfg=7 ctermbg=1
 
+" Grey-out the statusbar non-current windows.
+hi StatusLineNC term=reverse cterm=bold ctermbg=8
+
 " A nice, minimalistic tabline.
 au ColorScheme * hi TabLine cterm=bold,underline ctermfg=8 ctermbg=none
 au ColorScheme * hi TabLineSel cterm=bold ctermfg=0 ctermbg=7
 au ColorScheme * hi TabLineFill cterm=bold ctermbg=none
-
-" Black ColorColumn to not catch the eye more than is necessary
-au ColorScheme * hi ColorColumn ctermbg=0
 
 " Makes the current line stand out with bold and in the numberline
 au ColorScheme * hi CursorLine cterm=bold
@@ -286,9 +283,6 @@ au ColorScheme * hi LineNr cterm=bold ctermfg=0 ctermbg=none
 
 " Match the Sign column to the number column
 au ColorScheme * hi SignColumn cterm=bold ctermfg=0 ctermbg=none
-
-" Refresh busted syntax highlighting (this happens too often)
-map <F12> :syntax sync fromstart<cr>
 
 " Shorten the timeout when looking for a paren match to highlight
 let g:matchparen_insert_timeout = 5
