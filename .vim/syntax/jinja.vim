@@ -12,30 +12,12 @@
 "
 "     2008 May 9:     Added support for Jinja2 changes (new keyword rules)
 
-" .vimrc variable to disable html highlighting
-if !exists('g:jinja_syntax_html')
-   let g:jinja_syntax_html=1
-endif
-
 " For version 5.x: Clear all syntax items
 " For version 6.x: Quit when a syntax file was already loaded
-if !exists("main_syntax")
-  if version < 600
-    syntax clear
-  elseif exists("b:current_syntax")
+if version < 600
+  syntax clear
+elseif exists("b:current_syntax")
   finish
-endif
-  let main_syntax = 'jinja'
-endif
-
-" Pull in the HTML syntax.
-if g:jinja_syntax_html
-  if version < 600
-    so <sfile>:p:h/html.vim
-  else
-    runtime! syntax/html.vim
-    unlet b:current_syntax
-  endif
 endif
 
 syntax case match
@@ -50,7 +32,7 @@ syn keyword jinjaStatement containedin=jinjaTagBlock contained block skipwhite n
 
 " Variable Names
 syn match jinjaVariable containedin=jinjaVarBlock,jinjaTagBlock,jinjaNested contained skipwhite /[a-zA-Z_][a-zA-Z0-9_]*/
-syn keyword jinjaSpecial containedin=jinjaVarBlock,jinjaTagBlock,jinjaNested contained false true none False True None loop super caller varargs kwargs
+syn keyword jinjaSpecial containedin=jinjaVarBlock,jinjaTagBlock,jinjaNested contained false true none loop super caller varargs kwargs
 
 " Filters
 syn match jinjaOperator "|" containedin=jinjaVarBlock,jinjaTagBlock,jinjaNested contained nextgroup=jinjaFilter
@@ -129,7 +111,3 @@ if version >= 508 || !exists("did_jinja_syn_inits")
 endif
 
 let b:current_syntax = "jinja"
-
-if main_syntax == 'jinja'
-  unlet main_syntax
-endif
