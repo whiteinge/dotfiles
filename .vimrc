@@ -508,6 +508,9 @@ nmap <silent> <leader>dh :CustomDiff histogram<cr>
 " See .md files as markdown instead of modula-2.
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
+""" Disable concealing for vim-json
+let g:vim_json_syntax_conceal = 0
+
 " }}}
 
 " eof
