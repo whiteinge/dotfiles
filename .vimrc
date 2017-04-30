@@ -303,6 +303,18 @@ else
     set background=dark
 endif
 
+" Don't distinguish between delete, add, and change using bright colors. The
+" type of change is obvious -- add and delete appear opposite filler markers,
+" and changed lines have the changed portion highlighted.
+au VimEnter,ColorScheme * hi DiffAdd ctermbg=0
+au VimEnter,ColorScheme * hi DiffDelete ctermbg=0
+au VimEnter,ColorScheme * hi DiffChange ctermbg=0
+" There are two ways to guarantee legibility: force a single foreground color
+" against a non-contrasting background color; use reverse foreground colors.
+" The drawback of using reverse is there is no consistent color to highlight
+" the changes, but reverse is still fairly easy to spot.
+au VimEnter,ColorScheme * hi DiffText cterm=reverse ctermbg=none
+
 " }}}
 " Printing {{{
 
