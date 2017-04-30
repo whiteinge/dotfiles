@@ -393,40 +393,6 @@ function! YankList(type, ...)
 endfunction
 
 " }}}
-" MyTabLine {{{
-" Number the tabs.
-
-function! MyTabLine()
-    let s = ''
-    let t = tabpagenr()
-    let i = 1
-
-    while i <= tabpagenr('$')
-        let buflist = tabpagebuflist(i)
-        let winnr = tabpagewinnr(i)
-        let curwinnr = tabpagewinnr(i,'$')
-
-        let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
-        let s .= '%' . i . 'T'
-        let s .= ' '  . i . ': '
-        let file = bufname(buflist[winnr - 1])
-        let file = fnamemodify(file, ':p:t')
-        if file == ''
-            let file = '[No Name]'
-        endif
-        let s .= file
-        let s .= (curwinnr > 1 ? ' (' . curwinnr .') ' : '')
-        let s .= ' '
-        let i = i + 1
-    endwhile
-    let s .= '%T%#TabLineFill#%='
-    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
-    return s
-endfunction
-
-set tabline=%!MyTabLine()
-
-" }}}
 " SplitItems Break out vals with a consistent delimiter on to separate lines {{{
 "
 " Useful for reordering function parameters or list items or delimited text
@@ -534,6 +500,12 @@ else
     let g:tagbar_autoclose = 1
     let g:tagbar_autofocus = 1
 endif
+
+" Flagship settings
+let g:flagship_skip = 'fugitive#statusline'
+autocmd User Flags call Hoist("window", "SyntasticStatuslineFlag")
+let g:tablabel =
+    \ "%N%{flagship#tabmodified()} %{flagship#tabcwds('shorten',',')}"
 
 " Dispatch mappings
 nmap <silent> <leader>b :Make!<cr>
