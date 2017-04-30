@@ -65,7 +65,7 @@ export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
 
-export EDITOR='gvim -v'
+export EDITOR='vim'
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 export LESS='-imJMWR'
