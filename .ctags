@@ -1,10 +1,10 @@
 --python-kinds=-iv
 
 --langdef=markdown
---langmap=markdown:.markdown
---regex-markdown=/^#[ \t]+(.*)/\1/h,heading1/
---regex-markdown=/^##[ \t]+(.*)/2-\1/h,heading2/
---regex-markdown=/^###[ \t]+(.*)/3-\1/h,heading3/
+--langmap=markdown:.md
+--regex-markdown=/^(#+)[ \t]+([^#]*)/\1 \2/h,header,Markdown Headers/
+--regex-markdown=/\[([^\[]+)\]\(([^\)]+)\)/\1/l,link,Markdown Links/
+--regex-markdown=/!\[\]\(.*[\/ ](.*\.[a-z]{3})\)/\1/i,image,Markdown Image/
 
 --langdef=mediawiki
 --langmap=mediawiki:.wiki
