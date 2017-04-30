@@ -21,6 +21,7 @@ setopt                          \
         complete_aliases        \
         extended_glob           \
         hist_ignore_all_dups    \
+        hist_save_no_dups       \
         hist_ignore_space       \
         ignore_eof              \
         share_history           \
