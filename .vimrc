@@ -505,6 +505,9 @@ nmap <silent> <leader>b :Make!<cr>
 nmap <silent> <leader>dp :CustomDiff patience<cr>
 nmap <silent> <leader>dh :CustomDiff histogram<cr>
 
+" See .md files as markdown instead of modula-2.
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
 " }}}
 
 " eof
