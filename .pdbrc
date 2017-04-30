@@ -13,10 +13,14 @@ sys._getframe(1).f_globals['Pdb'].complete = complete
 sys._getframe(1).f_locals['self'].use_rawinput = 1
 
 # Make pprint quickly available
-from pprint import pprint
+from pprint import pprint as __pprint
+alias pp __pprint(%1)
 
 # Print the member variables of a thing.
 alias pi p_ %1.__dict__ %1.
+
+# Print the instance variables of self.
+alias ps pi self
 
 # Next and list, and step and list.
 alias nl n;;l
