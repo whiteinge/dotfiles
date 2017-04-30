@@ -350,6 +350,15 @@ function .. () {
 # {{{ genpass()
 # Generates a tough password of a given length
 
+function genmac() {
+    # Generate a locally-assigned (starts with 02) mac address from a salt.
+    # http://serverfault.com/a/299563
+
+    local salt=${1:-$FQDN}
+    echo $salt | md5sum |\
+        sed 's/^\(..\)\(..\)\(..\)\(..\)\(..\).*$/02:\1:\2:\3:\4:\5/'
+}
+
 function genpass() {
     if [ ! "$1" ]; then
         echo "Usage: $0 20"
