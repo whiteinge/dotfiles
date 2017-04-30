@@ -365,7 +365,22 @@ function genpass() {
         echo "For a random, 20-character password."
         return 1
     fi
-    dd if=/dev/urandom count=1 2>/dev/null | tr -cd 'A-Za-z0-9!@#$%^&*()_+' | cut -c-$1
+
+    # Use pwgen if installed.
+    if (( $+commands[pwgen] )); then
+        echo $(pwgen -y $1)
+    else
+        dd if=/dev/urandom count=1 2>/dev/null |\
+            tr -cd 'A-Za-z0-9!@#$%^&*()_+' | cut -c-$1
+    fi
+}
+
+function genunixpass() {
+    # Generate a valid /etc/shadow password
+
+    local pass="${1:-saltdev}"
+    echo "pass: ${pass}"
+    echo $(python -c "import crypt; print crypt.crypt('"$pass"', '\$6\$SALTsalt')")
 }
 
 # }}}
