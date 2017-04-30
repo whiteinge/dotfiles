@@ -202,7 +202,7 @@ if &columns < 88
 endif
 
 " Slight variant of standard status line with 'ruler' set that shows file infos.
-set statusline=%<%f\ %h%m%r%w\ %y\ %{&fileencoding},%{&fileformat}\ %q%=\ %-14.(%l,%c%V%)\ %P
+set statusline=%<%f\ %h%m%r%w\ %y\ %{&fileencoding},%{&fileformat}\ \ %{ALEGetStatusLine()}\ %q%=\ %-14.(%l,%c%V%)\ %P
 
 " }}}
 " Multi-buffer/window/tab editing {{{
@@ -452,17 +452,13 @@ noremap  <F11> "wyiw:call WordNetOverviews(@w)<cr>
 """ Gundo settings
 nnoremap <F7> :GundoToggle<cr>
 
-""" Syntastic settings
-let g:syntastic_enable_highlighting = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_error_symbol = 'E'
-let g:syntastic_style_error_symbol = 'S'
-let g:syntastic_warning_symbol = 'W'
-let g:syntastic_style_warning_symbol = 'S'
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_always_populate_loc_list = 1
-nmap <silent> <leader>y :SyntasticCheck<cr>
+""" ale settings
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = 'EE'
+let g:ale_sign_warning = 'WW'
+let g:ale_statusline_format = ['E%d', 'W%d', 'Ok']
+
+nmap <silent> <leader>y :call ale#Lint()<cr>
 
 """ signify settings
 let g:signify_vcs_list = ['git']
@@ -486,7 +482,6 @@ let g:tagbar_iconchars = ['+', '-']
 
 " Flagship settings
 let g:flagship_skip = 'fugitive#statusline'
-autocmd User Flags call Hoist("window", "SyntasticStatuslineFlag")
 let g:tablabel =
     \ "%N%{flagship#tabmodified()} %{flagship#tabcwds('shorten',',')}"
 

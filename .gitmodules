@@ -7,9 +7,6 @@
 [submodule ".vim/bundle/surround.vim"]
 	path = .vim/pack/foo/start/surround.vim
 	url = git://github.com/vim-scripts/surround.vim.git
-[submodule ".vim/bundle/syntastic"]
-	path = .vim/pack/foo/start/syntastic
-	url = git://github.com/scrooloose/syntastic.git
 [submodule ".vim/bundle/tagbar"]
 	path = .vim/pack/foo/start/tagbar
 	url = git://github.com/majutsushi/tagbar.git
@@ -46,3 +43,6 @@
 [submodule ".vim/bundle/typescript-vim"]
 	path = .vim/pack/foo/start/typescript-vim
 	url = https://github.com/leafgarland/typescript-vim.git
+[submodule ".vim/pack/foo/start/ale"]
+	path = .vim/pack/foo/start/ale
+	url = https://github.com/w0rp/ale.git
