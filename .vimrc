@@ -3,7 +3,6 @@
 " For more information type :help followed by the command.
 
 filetype plugin indent on
-call pathogen#infect()
 
 " Search {{{
 

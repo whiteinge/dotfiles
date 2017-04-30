@@ -1,48 +1,48 @@
 [submodule ".vim/bundle/Gundo"]
-	path = .vim/bundle/Gundo
+	path = .vim/pack/foo/start/Gundo
 	url = git://github.com/vim-scripts/Gundo.git
 [submodule ".vim/bundle/salt-vim"]
-	path = .vim/bundle/salt-vim
+	path = .vim/pack/foo/start/salt-vim
 	url = git://github.com/saltstack/salt-vim.git
 [submodule ".vim/bundle/surround.vim"]
-	path = .vim/bundle/surround.vim
+	path = .vim/pack/foo/start/surround.vim
 	url = git://github.com/vim-scripts/surround.vim.git
 [submodule ".vim/bundle/syntastic"]
-	path = .vim/bundle/syntastic
+	path = .vim/pack/foo/start/syntastic
 	url = git://github.com/scrooloose/syntastic.git
 [submodule ".vim/bundle/tagbar"]
-	path = .vim/bundle/tagbar
+	path = .vim/pack/foo/start/tagbar
 	url = git://github.com/majutsushi/tagbar.git
 [submodule ".vim/bundle/vim-fugitive"]
-	path = .vim/bundle/vim-fugitive
+	path = .vim/pack/foo/start/vim-fugitive
 	url = git://github.com/tpope/vim-fugitive.git
 [submodule ".vim/bundle/vim-commentary"]
-	path = .vim/bundle/vim-commentary
+	path = .vim/pack/foo/start/vim-commentary
 	url = git://github.com/tpope/vim-commentary.git
 [submodule ".zsh-syntax-highlighting"]
 	path = .zsh-syntax-highlighting
 	url = git://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule ".vim/bundle/vim-dispatch"]
-	path = .vim/bundle/vim-dispatch
+	path = .vim/pack/foo/start/vim-dispatch
 	url = git://github.com/tpope/vim-dispatch.git
 [submodule "bin/xcape"]
 	path = bin/xcape
 	url = https://github.com/alols/xcape.git
 [submodule ".vim/bundle/vim-diff-enhanced"]
-	path = .vim/bundle/vim-diff-enhanced
+	path = .vim/pack/foo/start/vim-diff-enhanced
 	url = https://github.com/chrisbra/vim-diff-enhanced.git
 [submodule ".vim/bundle/vim-unimpaired"]
-	path = .vim/bundle/vim-unimpaired
+	path = .vim/pack/foo/start/vim-unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
 [submodule ".vim/bundle/vim-flagship"]
-	path = .vim/bundle/vim-flagship
+	path = .vim/pack/foo/start/vim-flagship
 	url = https://github.com/tpope/vim-flagship.git
 [submodule ".vim/bundle/vim-filebeagle"]
-	path = .vim/bundle/vim-filebeagle
+	path = .vim/pack/foo/start/vim-filebeagle
 	url = https://github.com/jeetsukumaran/vim-filebeagle.git
 [submodule ".vim/bundle/quickfixsigns_vim"]
-	path = .vim/bundle/quickfixsigns_vim
+	path = .vim/pack/foo/start/quickfixsigns_vim
 	url = https://github.com/tomtom/quickfixsigns_vim.git
 [submodule ".vim/bundle/typescript-vim"]
-	path = .vim/bundle/typescript-vim
+	path = .vim/pack/foo/start/typescript-vim
 	url = https://github.com/leafgarland/typescript-vim.git
