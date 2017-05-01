@@ -114,6 +114,9 @@ map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
 " Maps Omnicompletion to CTRL-space.
 inoremap <nul> <C-X><C-O>
 
+" Maps file completion to CTRL-F.
+inoremap <C-F> <C-X><C-F>
+
 " Don't select first autocomplete item, follow typing.
 set completeopt=longest,menuone,preview
 
