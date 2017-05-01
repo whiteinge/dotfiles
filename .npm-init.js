@@ -1,20 +1,24 @@
 const parseBool = str => ['y', 'yes'].includes(str.toLowerCase());
-const set = (name, def, cb) =>
-    yes ? def : prompt(name, package[name] || def, cb);
+const set = (name, def, infmt, outfmt = x => x) =>
+    yes ? def : prompt(name, package[name] ? outfmt(package[name]) : def, infmt);
 
 module.exports = {
     name: set('name', basename),
-    author: set('author', config.sources.user.data.author || ''),
+    author: set('author', config.sources.user.data.author || '',
+        x => x,
+        ({name='', email, url}) => name
+            .concat(email ? ` <${email}>` : '')
+            .concat(url ? ` (${url})` : '')),
     version: set('version', '1.0.0'),
     license: set('license', 'Apache-2.0'),
     description: set('description', ''),
-    'private': set('private', false, parseBool),
-    keywords: set('keywords',  '', val =>
-        val.split(',').filter(String).map(x => x.trim())),
+    'private': set('private', 'false', parseBool, JSON.stringify),
+    keywords: set('keywords',  '',
+        val => val.split(',').filter(String).map(x => x.trim()),
+        val => val.join(', ')),
     main: set('main', 'dist/src/index.js'),
-    repository: set('repository', ''),
-    homepage: set('homepage', '', val =>
-        val !== '' ? val : `${module.exports.repository}#readme`),
+    repository: set('repository', '', x => x, x => x.url),
+    homepage: set('homepage', ''),
 
     dependencies: package.dependencies || {},
     optionalDependencies: package.optionalDependencies || {},
