@@ -16,7 +16,8 @@ module.exports = {
     keywords: set('keywords',  '',
         val => val.split(',').filter(String).map(x => x.trim()),
         val => val.join(', ')),
-    main: set('main', 'dist/src/index.js'),
+    main: 'dist/src/index.js',
+    browser: `dist/${basename}.min.js`,
     repository: set('repository', '', x => x, x => x.url),
     homepage: set('homepage', ''),
 
@@ -27,6 +28,7 @@ module.exports = {
         'tape': '4.x.x',
         'typescript': '2.x.x',
         'ts-node': '2.x.x',
+        'uglify-js': '2.8.x',
     },
 
     eslintConfig: package.eslintConfig || {
@@ -39,7 +41,8 @@ module.exports = {
     },
 
     scripts: package.scripts || {
-        'build': 'NODE_ENV=production npm -s run build:tsc',
+        'build': 'NODE_ENV=production npm -s run build:tsc; NODE_ENV=production npm -s run build:browser',
+        'build:browser': cb => cb(null, `tsc --allowJs -m amd --outFile /dev/stdout | uglifyjs > ${module.exports.browser}`),
         'build:tsc': 'tsc --allowJs -m umd --outDir dist src/* tests/*',
         'install:basedirs': 'shx mkdir -p dist src tests',
         'install:basefiles': 'shx touch src/index.js tests/index.js',
