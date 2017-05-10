@@ -43,7 +43,7 @@ module.exports = {
     scripts: package.scripts || {
         'build': 'NODE_ENV=production npm -s run build:tsc; NODE_ENV=production npm -s run build:browser',
         'build:browser': cb => cb(null, `tsc --allowJs -m amd --outFile /dev/stdout | uglifyjs > ${module.exports.browser}`),
-        'build:tsc': 'tsc --allowJs -m umd --outDir dist src/* tests/*',
+        'build:tsc': 'tsc --allowJs -t es5 -m commonjs --outDir dist src/* tests/*',
         'install:basedirs': 'shx mkdir -p dist src tests',
         'install:basefiles': 'shx touch src/index.js tests/index.js',
         'postinstall': 'npm run -s install:basedirs; npm run -s install:basefiles',
