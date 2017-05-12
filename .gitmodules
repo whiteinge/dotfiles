@@ -46,3 +46,6 @@
 [submodule ".vim/pack/foo/start/ale"]
 	path = .vim/pack/foo/start/ale
 	url = https://github.com/w0rp/ale.git
+[submodule ".vim/pack/foo/start/purescript-vim"]
+	path = .vim/pack/foo/start/purescript-vim
+	url = https://github.com/raichoo/purescript-vim.git
