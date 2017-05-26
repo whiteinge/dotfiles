@@ -112,7 +112,8 @@
 
     # Merge a GitHub pull request into the current branch.
     # Usage: git preq <preq>
-    preq = "!sh -c 'git pull upstream refs/pull/${1:?Missing preq}/head' -"
+    # Usage: git preq <preq> <remote>
+    preq = "!sh -c 'git pull --no-ff ${2:-upstream} refs/pull/${1:?Missing preq}/head' -"
 
     # Configure local clone to also make local refs for all GitHub pull
     # requests for the specified remote
