@@ -25,9 +25,10 @@ module.exports = {
     optionalDependencies: package.optionalDependencies || {},
     devDependencies: package.devDependencies || {
         'shx': '0.2.x',
+        'tap-spec': '4.1.x',
         'tape': '4.x.x',
-        'typescript': '2.x.x',
         'ts-node': '2.x.x',
+        'typescript': '2.x.x',
         'uglify-js': '2.8.x',
     },
 
@@ -50,6 +51,7 @@ module.exports = {
         'preversion': 'npm run build',
         'test': 'npm -s run test:suite || EXIT=$? npm -s run test:lint || EXIT=$?; exit ${EXIT:-0}',
         'test:lint': 'eslint ./src',
-        'test:suite': `ts-node -D -F -O '{\"allowJs\": true}' node_modules/tape/bin/tape tests/**/*.js`,
+        'test:suite': `npm -s run test:tape -- tests/**/*.js | tap-spec`,
+        'test:tape': `ts-node -D -F -O '{\"allowJs\": true}'`,
     },
 }
