@@ -10,7 +10,7 @@ local opts
 # Consume and ignore all the notify-send flags.
 zparseopts -E -D -a opts -- -hint: u: i:
 
-title="${1}"
-msg="${2}"
+title="${1:=Alert}"
+message="${2:=Message}"
 
-osascript -e 'display notification "'"${msg}"'" with title "'"${title}"'"'
+osx-clipboard-unfuck terminal-notifier -title "${title}" -message "${message}"
