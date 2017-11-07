@@ -1,0 +1,26 @@
+# Various hacks and bullshit to get a sane environment going on OSX.
+
+alias open='osx-clipboard-unfuck open'
+
+# Fixes for custom Brew paths.
+# brew --prefix is too slow to call three times. Hardcoding paths instead...
+
+# export PATH="$HOME/bin:$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
+export PATH="$HOME/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/opt/python/libexec/bin:$PATH"
+# export MANPATH="$HOME/man:$(brew --prefix)/opt/coreutils/libexec/gnuman:$MANPATH"
+# export MANPATH="$HOME/man:$(brew --prefix)/opt/findutils/share:$MANPATH"
+export MANPATH="$HOME/man:/usr/local/opt/coreutils/libexec/gnuman:/usr/local/opt/findutils/share/man:$MANPATH"
+
+
+export NVM_DIR=~/.nvm
+# source $(brew --prefix nvm)/nvm.sh
+source /usr/local/opt/nvm/nvm.sh
+
+# Need to upgrade from gpg1 to gpg2?
+export PATH="/usr/local/opt/gnupg/libexec/gpgbin:$PATH"
+
+export ANDROID_HOME=/usr/local/opt/android-sdk
+alias vlc='/Applications/VLC.app/Contents/MacOS/VLC -I rc'
+
+alias vi='reattach-to-user-namespace vim'
+alias vim='reattach-to-user-namespace vim'
