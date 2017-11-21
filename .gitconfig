@@ -65,7 +65,7 @@
     ctags = !.git/hooks/ctags
 
     # Open all modified files in EDITOR
-    editm = "!$EDITOR $(git ls-files -m)"
+    editm = "!${EDITOR:-vi} $(git ls-files -m)"
 
     # Alias to make an archive with a prefix set to the name of the repo.
     # git tar <ref> (defaults HEAD)
