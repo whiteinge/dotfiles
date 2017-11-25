@@ -17,18 +17,21 @@
 # automatic merging savvy with the awesome and simplicity of a simple two-way
 # diff.
 #
-# Add this mergetool to your ~/.gitconfig (you can substitute gvim for vim):
+# Add this mergetool as new option to your git config with:
 #
-# git config --global merge.tool diffconflicts
-# git config --global mergetool.diffconflicts.cmd 'diffconflicts vim $BASE $LOCAL $REMOTE $MERGED'
-# git config --global mergetool.diffconflicts.trustExitCode true
-# git config --global mergetool.diffconflicts.keepBackup false
+#     git config --global mergetool.diffconflicts.cmd 'diffconflicts vim $BASE $LOCAL $REMOTE $MERGED'
+#     git config --global mergetool.diffconflicts.trustExitCode true
+#     git config --global mergetool.diffconflicts.keepBackup false
 #
 # The next time you perform a merge with conflicts, invoke this tool with the
-# following command. (Of course you can set it as your default mergetool as
-# well.)
+# following command.
 #
-#   git mergetool --tool diffconflicts
+#     git mergetool --tool diffconflicts
+#
+# Of course you can set it as your default mergetool as well. If you want to make
+# this the default conflict resolution tool:
+#
+#     git config --global merge.tool diffconflicts
 #
 # This tool can open three tabs in Vim that each provide a different way to
 # view the conflicts. You can resolve the conflicts in the first tab and save
