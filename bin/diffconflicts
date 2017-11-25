@@ -40,11 +40,18 @@
 # because the other tabs are only occasionally useful for tough merges. To open
 # Tab2 and Tab3 use the mapping <leader>D.
 #
-#   Tab1 is a two-way diff of just the conflicts. Resolve the conflicts here
+#   Tab1 is a two-way diff of just the conflicts. Resolve the conflicts in LCONFL
 #   and save the file.
 #       +--------------------------------+
 #       |    LCONFL     |    RCONFL      |
 #       +--------------------------------+
+#
+#   If git config merge.conflictStyle is diff3 (instead default merge), Tab1 is
+#   a three-way diff. Resolve conflicts in BCONFL:
+#       +--------------------------------+
+#       |  LCONFL  |  BCONFL  |  RCONFL   |
+#       +--------------------------------+
+#
 #   Tab2 is a three-way diff of the original files and the merge base. This is
 #   the traditional three-way diff. Although noisy, it is occasionally useful
 #   to view the three original states of the conflicting file before the merge.
@@ -102,11 +109,23 @@ RCONFL="${MERGED_PATH}/.LOCAL.$$.${MERGED_FILE}"
 trap 'rm -f "'"${LCONFL}"'" "'"${RCONFL}"'"' SIGINT SIGTERM EXIT
 
 # Remove the conflict markers for each 'side' and put each into a temp file
-$GNU_SED -r -e '/^<<<<<<< /,/^=======\r?$/d' -e '/^>>>>>>> /d' "${MERGED}" > "${LCONFL}"
-$GNU_SED -r -e '/^=======\r?$/,/^>>>>>>> /d' -e '/^<<<<<<< /d' "${MERGED}" > "${RCONFL}"
+if [ $(git config merge.conflictStyle) == "diff3" ] ; then
+    BCONFL="${MERGED_PATH}/.BASE.$$.${MERGED_FILE}"
+    trap 'rm -f "'"${BCONFL}"'" "'"${LCONFL}"'" "'"${RCONFL}"'"' SIGINT SIGTERM EXIT
+    $GNU_SED -r -e '/^<<<<<<< /,/^||||||| /d' -e '/^=======\r?$/,/^>>>>>>> /d' "${MERGED}" > "${BCONFL}"
+    $GNU_SED -r -e '/^\|\|\|/,/^>>>>>>> /d' -e '/^<<<<<<< /d' "${MERGED}" > "${RCONFL}"
+    $GNU_SED -r -e '/^<<<<<<< /,/^=======\r?$/d' -e '/^>>>>>>> /d' "${MERGED}" > "${LCONFL}"
+    FILES="${LCONFL} ${BCONFL} ${RCONFL}"
+    SOLUTION="${BCONFL}"
+else
+    $GNU_SED -r -e '/^=======\r?$/,/^>>>>>>> /d' -e '/^<<<<<<< /d' "${MERGED}" > "${RCONFL}"
+    $GNU_SED -r -e '/^<<<<<<< /,/^=======\r?$/d' -e '/^>>>>>>> /d' "${MERGED}" > "${LCONFL}"
+    FILES="${LCONFL}" "${RCONFL}"
+    SOLUTION="${LCONFL}"
+fi
 
 # Fire up vimdiff
-$cmd -f -R -d "${LCONFL}" "${RCONFL}" \
+$cmd -f -R -d ${FILES} \
      -c ":set noro" \
      -c ":nmap <leader>D :tabe $QLOCAL<CR>:vert diffs $QBASE<CR>:vert diffs $QREMOTE<CR>:winc t<CR>:tabe $QMERGED<CR>:tabfir<CR>"
 
@@ -114,7 +133,7 @@ EC=$?
 
 # Overwrite $MERGED only if vimdiff exits cleanly.
 if [[ $EC == "0" ]] ; then
-    cat "${LCONFL}" > "${MERGED}"
+    cat "${SOLUTION}" > "${MERGED}"
 fi
 
 exit $EC
