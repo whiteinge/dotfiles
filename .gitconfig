@@ -67,6 +67,10 @@
     # Open all modified files in EDITOR
     editm = "!${EDITOR:-vi} $(git ls-files -m)"
 
+    # Open all files modified in a commit in EDITOR
+    editc = "!sh -c '${EDITOR:-vi} $(git diff-tree --no-commit-id --name-only \
+        -r ${1:?Commit required})' -"
+
     # Alias to make an archive with a prefix set to the name of the repo.
     # git tar <ref> (defaults HEAD)
     tar = "!bash -c 'REF=${1:-HEAD}; \
