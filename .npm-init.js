@@ -24,6 +24,8 @@ module.exports = {
     dependencies: package.dependencies || {},
     optionalDependencies: package.optionalDependencies || {},
     devDependencies: package.devDependencies || {
+        'browserify': '14.x.x',
+        'json-server': '0.12.x',
         'shx': '0.2.x',
         'tap-spec': '4.1.x',
         'tape': '4.x.x',
@@ -43,12 +45,13 @@ module.exports = {
 
     scripts: package.scripts || {
         'build': 'NODE_ENV=production npm -s run build:tsc; NODE_ENV=production npm -s run build:browser',
-        'build:browser': cb => cb(null, `tsc --allowJs -m amd --outFile /dev/stdout | uglifyjs > ${module.exports.browser}`),
+        'build:browser': cb => cb(null, `browserify ./dist/src/index.js | uglifyjs > ${module.exports.browser}`),
         'build:tsc': 'tsc --allowJs -t es5 -m commonjs --outDir dist src/* tests/*',
         'install:basedirs': 'shx mkdir -p dist src tests',
         'install:basefiles': 'shx touch src/index.js tests/index.js',
         'postinstall': 'npm run -s install:basedirs; npm run -s install:basefiles',
         'preversion': 'npm run build',
+        'srv:local': 'json-server dist/sandbox-db.json --static .',
         'test': 'npm -s run test:suite || EXIT=$? npm -s run test:lint || EXIT=$?; exit ${EXIT:-0}',
         'test:lint': 'eslint ./src',
         'test:suite': `npm -s run test:tape -- tests/**/*.js | tap-spec`,
