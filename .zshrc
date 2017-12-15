@@ -182,6 +182,11 @@ alias node='env NODE_NO_READLINE=1 rlwrap node'
 alias rs='rsync -avhzC --progress'
 compdef rs=rsync
 
+# Print all files under the current path without prefixed path.
+# Useful for listing files under one path based on the files in another. E.g.:
+# cd /path/to/dotfiles; filesunder | xargs -0 -I@ ls -l $HOME/@
+alias filesunder='find . \( -name .git -type d \) -prune -o -type f -printf "%P\0"'
+
 # Quickly ssh through a bastian host without having to hard-code in ~/.ssh/config
 alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
 
