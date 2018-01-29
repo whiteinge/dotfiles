@@ -503,6 +503,9 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 """ Disable concealing for vim-json
 let g:vim_json_syntax_conceal = 0
 
+""" Mapping to call DetectIndent
+nmap <silent> <leader>i :1verbose DetectIndent<cr>
+
 " }}}
 
 " eof

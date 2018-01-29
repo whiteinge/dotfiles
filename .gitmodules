@@ -49,3 +49,6 @@
 [submodule ".vim/pack/foo/start/purescript-vim"]
 	path = .vim/pack/foo/start/purescript-vim
 	url = https://github.com/raichoo/purescript-vim.git
+[submodule ".vim/pack/foo/detectindent"]
+	path = .vim/pack/foo/start/detectindent
+	url = https://github.com/ciaranm/detectindent.git
