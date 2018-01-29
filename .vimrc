@@ -63,7 +63,7 @@ set complete-=t,i               " Remove tags and included files from default in
 set virtualedit=block           " Let cursor move past the last char in <C-V> mode
 set nostartofline               " Avoid moving cursor to BOL when jumping around
 
-set cryptmethod=blowfish        " Use (much) stronger blowfish encryption
+set cryptmethod=blowfish2       " Use (much) stronger blowfish encryption
 
 " Fix for legacy vi inconsistency
 map Y y$
