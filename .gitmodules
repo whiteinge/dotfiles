@@ -52,3 +52,6 @@
 [submodule ".vim/pack/foo/detectindent"]
 	path = .vim/pack/foo/start/detectindent
 	url = https://github.com/ciaranm/detectindent.git
+[submodule ".fonts/TTF/Hasklig"]
+	path = .fonts/TTF/Hasklig
+	url = https://github.com/i-tu/Hasklig.git
