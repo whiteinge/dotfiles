@@ -168,13 +168,9 @@ alias vv=$EDITOR' -N -u NONE' # fast Vim that doesn't load a vimrc or plugins
 
 alias less='less -imJMW'
 alias cls='clear' # note: ctrl-L under zsh does something similar
-alias locate='locate -i'
 alias lynx='lynx -cfg=$HOME/.lynx.cfg -lss=$HOME/.lynx.lss'
 alias ducks='du -cks * | sort -rn | head -15'
 alias tree="tree -FC --charset=ascii"
-alias psf='ps -opid,uid,cpu,time,stat,command'
-alias df='df -h'
-alias dus='du -sh'
 alias info='info --vi-keys'
 alias clip='xclip -selection clipboard'
 alias ocaml='rlwrap ocaml'
@@ -189,9 +185,6 @@ alias filesunder='find . \( -name .git -type d \) -prune -o -type f -printf "%P\
 
 # Quickly ssh through a bastian host without having to hard-code in ~/.ssh/config
 alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
-
-# Useful for accessing versioned Mercurial Queues
-alias mq='hg -R $(hg root)/.hg/patches'
 
 # Useful for working with Git remotes; e.g., ``git log IN``
 alias -g IN='..@{u}'
@@ -217,38 +210,6 @@ function mplayerx2() {
     zparseopts -D -E -a args -- s: -speed:
     mplayer -af scaletempo -speed ${args[2]:=1.5} $1
 }
-
-# Integrate ssh-agent with GNU Screen:
-######################################
-#
-# ssh-agent varies the location of the socket pointed to by SSH_AUTH_SOCK; to
-# avoid having to update that variable in every terminal running in Screen
-# every time we reattach we create a permanent pointer that is easier to update
-SCREEN_AUTH_SOCK=$HOME/.screen/ssh-auth-sock
-#
-# For local Screen sessions, start ssh-agent and update SCREEN_AUTH_SOCK to
-# point to the new ssh-agent socket. Bonus: when the screen session is detached
-# the agent will be killed, securing your session. Simply run ssh-add every
-# time you start a new screen session or reattach.
-alias sc="exec ssh-agent \
-    sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
-    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec screen -e\"^Aa\" -S main -DRR'"
-#
-# For remote Screen sessions (e.g. ssh-ed Screen inside local Screen), update
-# SCREEN_AUTH_SOCK to point at the (hopefully) existing forwarded SSH_AUTH_SOCK
-# that points to your locally running agent. (For more info see ForwardAgent in
-# the ssh_config manpage.)
-alias rsc="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
-    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec screen -e\"^Ss\" -S main -DRR'"
-
-# tmux agent alias
-alias tm="exec ssh-agent \
-    sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
-    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec tmux -2 attach'"
-
-# remote tmux agent alias
-alias rtm="exec sh -c 'ln -sfn \$SSH_AUTH_SOCK $SCREEN_AUTH_SOCK; \
-    SSH_AUTH_SOCK=$SCREEN_AUTH_SOCK exec tmux attach'"
 
 # }}}
 # Miscellaneous Functions:
