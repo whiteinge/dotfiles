@@ -12,3 +12,7 @@ let g:tagbar_type_markdown = {
 if bufname('%') == 'presentation.md'
     let b:ftskeleton="~/.vim/ftplugin/markdown/skeleton/remark.md"
 endif
+
+setl foldnestmax=1
+let g:markdown_folding=1
+let g:markdown_fenced_languages = ['html', 'python', 'sh', 'js=javascript', 'hs=haskell']
