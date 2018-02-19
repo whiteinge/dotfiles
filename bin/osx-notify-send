@@ -13,4 +13,4 @@ zparseopts -E -D -a opts -- -hint: u: i:
 title="${1:=Alert}"
 message="${2:=Message}"
 
-osx-clipboard-unfuck terminal-notifier -title "${title}" -message "${message}"
+terminal-notifier -title "${title}" -message "${message}"
