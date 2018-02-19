@@ -41,7 +41,7 @@
 --regex-JavaScript=/^[ \t]*export[ \t]+(default)?[ \t]*(var|const)[ \t]+([a-zA-Z0-9_]+)[ \t].*(function|=>)/\3/f,functions/
 --regex-JavaScript=/^[ \t]*export[ \t]+(default)?[ \t]*(var|const|type)[ \t]+([a-zA-Z0-9_]+)[ \t]+/\3/v,variables/
 --regex-JavaScript=/^[ \t]*export[ \t]+(default)?[ \t]*([a-zA-Z0-9_]+);?$/\2/?,exports/
---regex-JavaScript=/([a-zA-Z0-9_]+):[ \t]+(function|=>)/\1/m,methods/
+--regex-JavaScript=/([a-zA-Z0-9_]+):[ \t].*(function|=>)/\1/m,methods/
 
 --exclude=.git
 --exclude=.svn
