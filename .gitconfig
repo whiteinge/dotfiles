@@ -119,6 +119,12 @@
     # Usage: git preq <preq> <remote>
     preq = "!sh -c 'git pull --no-ff ${2:-upstream} refs/pull/${1:?Missing preq}/head' -"
 
+    # Make a local branch from a remote branch somewhere on GitHub.
+    # Usage git ghbranch username reponame remotebranchname localbranchname
+    ghbranch = "!sh -c 'git fetch git@github.com:${1:?Missing user}/\
+        ${2:?Missing repo}.git \
+        ${3:?Missing remote branch}:${4:?Missing local branch}' -"
+
     # Configure local clone to also make local refs for all GitHub pull
     # requests for the specified remote
     # Usage: git addrefspr upstream; git fetch upstream; git show upstream/pr/13
