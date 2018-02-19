@@ -131,6 +131,10 @@
     addrefspr = "!sh -c 'git config --add \
         remote.${1:?Missing remote}.fetch \"+refs/pull/*/head:refs/remotes/$1/pr/*\"' -"
 
+    permission-reset = "!git diff -p -R --no-color \
+        | grep -E '^(diff|(old|new) mode)' --color=never \
+        | git apply"
+
 [core]
     excludesfile = ~/.gitignore
 
