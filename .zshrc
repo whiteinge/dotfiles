@@ -166,6 +166,7 @@ alias lls='ll -Sr'
 alias vi=$EDITOR
 alias vv=$EDITOR' -N -u NONE' # fast Vim that doesn't load a vimrc or plugins
 
+alias c='curl -sS -D /dev/stderr'
 alias less='less -imJMW'
 alias cls='clear' # note: ctrl-L under zsh does something similar
 alias lynx='lynx -cfg=$HOME/.lynx.cfg -lss=$HOME/.lynx.lss'
