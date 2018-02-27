@@ -114,8 +114,16 @@ map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
 " Maps Omnicompletion to CTRL-space.
 inoremap <nul> <C-X><C-O>
 
-" Maps file completion to CTRL-F.
-inoremap <C-F> <C-X><C-F>
+" Maps file completion to CTRL-F relative to current file path.
+inoremap <C-F>
+    \ <C-O>:let b:oldpwd = getcwd() <bar>
+    \ lcd %:p:h<cr><C-X><C-F>
+" Restore path when done.
+au CompleteDone *
+    \ if exists('b:oldpwd') |
+    \   cd `=b:oldpwd` |
+    \   unlet b:oldpwd |
+    \ endif
 
 " Don't select first autocomplete item, follow typing.
 set completeopt=longest,menuone,preview
