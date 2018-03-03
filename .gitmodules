@@ -52,3 +52,9 @@
 [submodule ".vim/pack/foo/start/detectindent"]
 	path = .vim/pack/foo/start/detectindent
 	url = https://github.com/ciaranm/detectindent.git
+[submodule ".vim/pack/foo/start/vim-scala"]
+	path = .vim/pack/foo/start/vim-scala
+	url = https://github.com/derekwyatt/vim-scala.git
+[submodule ".vim/pack/foo/start/ensime-vim"]
+	path = .vim/pack/foo/start/ensime-vim
+	url = https://github.com/ensime/ensime-vim.git
