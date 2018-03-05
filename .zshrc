@@ -192,9 +192,6 @@ alias -g IN='..@{u}'
 alias -g OUT='@{u}..'
 alias -g UP='@{u}'
 
-# Useful for running ``git fetch -a`` on several repos.
-alias fetchall='find . -type d -name .git -print0 | xargs -r -0 -I@ git --git-dir=@ fetch -a'
-
 # Don't prompt to save when exiting R
 alias R='R --no-save'
 
@@ -516,6 +513,53 @@ function xssh() {
         sh -c 'ssh -T HOST < '${tmpfile}' | sed -e "s/^/HOST: /g"'
 }
 compdef xssh=ssh
+
+# }}}
+# wait_for_ssh {{{1
+# Block until a multiplexed ssh connection is ready
+#
+# Useful for making a single ssh connection that can be reused for many ssh
+# operations. This requires ControlMaster and ControlPath to be configured in
+# your ~/.ssh/config file.
+#
+# Usage:
+#   SSH="me@example.com"
+#   trap 'ssh -O exit '${SSH} SIGINT SIGTERM EXIT
+#   ssh -N ${SSH} &
+#   _wait_for_ssh ${SSH}
+#   ...use multiplexed ssh connection here...
+
+function _wait_for_ssh () {
+    [[ $# -eq 1 ]] || { echo "ssh hostname required"; exit 1; }
+
+    local ssh="${1}"
+
+    echo -n "Connecting to GitHub."
+    while ! ssh -O check ${ssh} &>/dev/null true; do
+        echo -n '.' ; sleep 0.5;
+    done
+    echo -e "\nConnected!\n"
+}
+
+# }}}
+# fetchall {{{1
+# Run git fetch on all repos under the current dir
+
+function fetchall () {
+    local GH_SSH="git@github.com"
+
+    # Start a connection and wait for it; exit when we're done
+    trap 'ssh -O exit '${GH_SSH} SIGINT SIGTERM EXIT
+    ssh -N ${GH_SSH} &
+    _wait_for_ssh ${GH_SSH}
+
+    # Kick off a ton of parallel fetch operations
+    time find . -type d -name .git -print0 \
+        | xargs -t -r -0 -P5 -I@ git --git-dir=@ fetch -a
+
+    local count=$(find . -type d -name .git -print | wc -l)
+    printf 'Fetched upstream changes for %s repositories.\n' "$count"
+}
 
 # }}}
 # presentation_mode {{{1
