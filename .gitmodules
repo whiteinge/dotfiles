@@ -58,3 +58,6 @@
 [submodule ".vim/pack/foo/start/ensime-vim"]
 	path = .vim/pack/foo/start/ensime-vim
 	url = https://github.com/ensime/ensime-vim.git
+[submodule ".vim/pack/foo/start/vim-repeat"]
+	path = .vim/pack/foo/start/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
