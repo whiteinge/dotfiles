@@ -117,9 +117,14 @@ module.exports = {
     eslintConfig: package.eslintConfig || {
         env: {
             browser: true,
+            es6: true,
             node: true,
         },
-        rules: {
+        rules: {},
+        parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+            ecmaFeatures: {jsx: true},
         },
     },
 
