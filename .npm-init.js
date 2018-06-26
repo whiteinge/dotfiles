@@ -10,11 +10,6 @@ Browserified sandbox:
 npm i rx
 echo "import * as Rx from 'rx'; window.Rx = Rx" > src/index.js
 npm run start:browser
-
-Node console sandbox:
-npm i rx
-echo "import * as Rx from 'rx'; console.log('rx', Rx);" > src/index.js
-npm run start:node
 **/
 
 const fs = require('fs');
@@ -29,10 +24,13 @@ const distDir = 'dist';
 const testDir = 'tests';
 
 const main = path.join(distDir, srcDir, 'index.js');
-const src = path.join(srcDir, 'index.js');
+const srcIndex = path.join(srcDir, 'index.js');
+const testIndex = path.join(testDir, 'index.js');
+const build = path.join(distDir, `${basename}.js`);
 const min = path.join(distDir, `${basename}.min.js`);
 
-const tscArgs = `--allowJs -t es5 -m commonjs --outDir ${distDir} ${srcDir}/* ${testDir}/*`;
+const tscArgs = `--jsx react --allowJs -t es5 -m commonjs`;
+const browserifyArgs = `${srcIndex} -p [ tsify ${tscArgs} ]`;
 
 // Create .gitignore file.
 const gitignore = path.join(dirname, '.gitignore');
@@ -89,16 +87,20 @@ module.exports = {
     optionalDependencies: package.optionalDependencies || {},
     devDependencies: package.devDependencies || {
         'browserify': '14.x.x',
+        'eslint': '5.x.x',
         'json-server': '0.12.x',
         'npm-run-all': '4.x.x',
         'postbuild': '2.x.x',
+        'prettier': '1.x.x',
         'shx': '0.2.x',
-        'tap-spec': '4.x.x',
+        'tap-spec': '5.x.x',
         'tape': '4.x.x',
         'ts-node': '2.x.x',
-        'ts-watch': '1.x.x',
+        'tsify': '4.x.x',
         'typescript': '2.x.x',
         'uglify-js': '2.x.x',
+        'watch': '1.x.x',
+        'watchify': '3.x.x',
     },
 
     eslintConfig: package.eslintConfig || {
@@ -111,24 +113,36 @@ module.exports = {
     },
 
     scripts: package.scripts || {
-        'build': `NODE_ENV=production run-s build:all`,
-        'build:all': `run-s build:ts build:browser`,
-        'build:browser': cb => cb(null, `browserify ${main} | uglifyjs > ${min}`),
-        'build:ts': `tsc ${tscArgs}`,
-        'log': `clear && node ${main}`,
-        'presrv:browser': `shx mkdir -p ${distDir}`,
-        'postbuild:browser': `postbuild -i index.tmpl -o ${distDir}/index.html -j ${min} -g ${distDir}`,
-        'preversion': `npm run build`,
-        'repl': `ts-node -D -F -O '{\"allowJs\": true}'`,
-        'srv:browser': `json-server ./${distDir}/${basename}-db.json --static ./${distDir}`,
-        'start': `run-s start:browser`,
-        'start:browser': `run-p watch:browser srv:browser`,
-        'start:node': `run-s watch:log`,
+        'init:dist': `shx mkdir -p ${distDir}`,
+        'init:build': `shx touch ${build}`,
+
+        'build:index': `postbuild -i index.tmpl -o ${distDir}/index.html -j ${build} -g ${distDir}`,
+        'prebuild:index': `run-s init:dist init:build`,
+
+        'build:ts': `tsc ${tscArgs} --outDir ${distDir} ${srcDir}/* ${testDir}/*`,
+        'watch:ts': `npm run -s build:ts -- -w`,
+
+        'build:prod': `NODE_ENV=production npm -s run build:browserify | uglifyjs > ${min}`,
+        'prebuild:prod': `run-s init:dist`,
+        'postbuild:prod': `gzip -c ${min} > ${min}.gz`,
+
+        'build:browserify': `browserify ${browserifyArgs}`,
+        'watch:browserify': `watchify ${browserifyArgs} --debug -o ${build}`,
+        'prebuild:browserify': `run-s init:dist`,
+        'prewatch:browserify': `run-s init:dist`,
+
+        'watch:db': `json-server -w ./${distDir}/${basename}-db.json --static ./${distDir}`,
+        'prewatch:db': `run-s init:dist build:index`,
+
         'test': `run-p test:*`,
+        'pretest': `npm run build:ts`,
         'test:lint': `eslint ${srcDir}`,
         'test:tape': `run-s repl -- ${testDir}/**/*.js | tap-spec`,
-        'watch:browser': `npm -s run watch:ts -- --onSuccess 'npm run-s build:browser'`,
-        'watch:log': `npm -s run watch:ts -- --onSuccess 'npm run-s log'`,
-        'watch:ts': `ts-watch ${tscArgs}`,
+
+        'repl': `ts-node -D -F -O '{\"allowJs\": true}'`,
+
+        'start': `run-p watch:browserify watch:db`,
+        'post:install': `run-s init:dist`,
+        'preversion': `npm run build:prod`,
     },
 };
