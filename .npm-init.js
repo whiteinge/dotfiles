@@ -57,6 +57,17 @@ if (!fs.existsSync(index)) fs.writeFileSync(index, `
 </html>
 `);
 
+// Create Prettier config.
+const prettierConfig = path.join(dirname, '.prettierrc');
+if (!fs.existsSync(prettierConfig)) fs.writeFileSync(prettierConfig,
+    JSON.stringify({
+    bracketSpacing: false,
+    parser: 'typescript',
+    singleQuote: true,
+    tabWidth: 4,
+    trailingComma: 'es5',
+}));
+
 // Scaffold common dirs.
 [srcDir, testDir].forEach(function(dir) {
     if (!fs.existsSync(dir)) {
