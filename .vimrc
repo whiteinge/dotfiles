@@ -268,6 +268,17 @@ nmap <silent> <leader>dm :call DiffToggle(2)<cr>
 nmap <silent> <leader>dr :call DiffToggle(3)<cr>
 nmap <silent> <leader>du :diffupdate<cr>
 
+" Toggle respecting/ignoring whitespace differences.
+" http://vim.wikia.com/wiki/Ignore_white_space_in_vimdiff
+function! IwhiteToggle()
+    if &diffopt =~ 'iwhite'
+        set diffopt-=iwhite
+    else
+        set diffopt+=iwhite
+    endif
+endfunction
+nmap <silent> <leader>dw :call IwhiteToggle()<CR>
+
 
 " }}}
 " X11 Integration {{{
