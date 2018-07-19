@@ -1,6 +1,9 @@
 #!/bin/bash
 # A better vimdiff mergetool for Git
 #
+# NOTE: Now also an installable Vim plugin:
+# https://github.com/whiteinge/diffconflicts
+#
 # Git does a great job resolving merge conflicts automatically but there are
 # times when human intervention is still needed. Git resolves all the conflicts
 # that it is able to and finally wraps each conflict it cannot resolve within

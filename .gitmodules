@@ -61,3 +61,6 @@
 [submodule ".vim/pack/foo/start/vim-repeat"]
 	path = .vim/pack/foo/start/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
+[submodule ".vim/pack/foo/start/diffconflicts"]
+	path = .vim/pack/foo/start/diffconflicts
+	url = https://github.com/whiteinge/diffconflicts.git
