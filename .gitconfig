@@ -159,12 +159,14 @@
 [merge]
     tool = diffconflicts
 
-[mergetool "diffconflicts"]
-    cmd = diffconflicts $EDITOR $BASE $LOCAL $REMOTE $MERGED
-    trustExitCode = true
-    keepBackup = false
-
 [mergetool "gdiffconflicts"]
     cmd = diffconflicts gvim $BASE $LOCAL $REMOTE $MERGED
     trustExitCode = true
     keepBackup = false
+
+[mergetool]
+    keepBackup = false
+
+[mergetool "diffconflicts"]
+    cmd = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+    trustExitCode = true
