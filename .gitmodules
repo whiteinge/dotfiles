@@ -4,9 +4,6 @@
 [submodule ".vim/bundle/salt-vim"]
 	path = .vim/pack/foo/start/salt-vim
 	url = git://github.com/saltstack/salt-vim.git
-[submodule ".vim/bundle/surround.vim"]
-	path = .vim/pack/foo/start/surround.vim
-	url = git://github.com/vim-scripts/surround.vim.git
 [submodule ".vim/bundle/tagbar"]
 	path = .vim/pack/foo/start/tagbar
 	url = git://github.com/majutsushi/tagbar.git
