@@ -359,6 +359,48 @@ nmap <silent> <leader>S :call Scratch()<cr>
 command! -nargs=* Scratch call Scratch(<f-args>)
 
 " }}}
+" Helper function for making opfunc operators {{{1
+"
+" Abstract the boilerplate around opfunc so we can write simple functions that
+" take an input, modify it, and return the replacement text.
+" Unfortunately viml doesn't support closures and opfunc doesn't support
+" funcrefs so using this requires four lines of other boilerplate.
+function! MakeOpfunc(fn)
+    let obj = copy(a:)
+
+    function obj.opfuncWrapper(type, ...)
+        let l:reg_backup = @@
+        let l:sel_backup = &selection
+        let &selection = "inclusive"
+        " -- Backup ^^
+
+        if a:0  " Invoked from Visual mode, use '< and '> marks.
+            let l:is_inline = 0
+            silent exe "normal! `<" . a:type . "`>y"
+        elseif a:type == 'line' " Line
+            let l:is_inline = 0
+            silent exe "normal! '[V']y"
+        elseif a:type == 'block' " Block
+            let l:is_inline = 0
+            silent exe "normal! `[\<C-V>`]y"
+        else " ???
+            let l:is_inline = 1
+            silent exe "normal! `[v`]y"
+        endif
+
+        " Call fn on the yank register, reselect, then paste new results.
+        let @@ = self.fn(@@, l:is_inline)
+        silent exe "normal! gvp"
+
+        " -- Restore vv
+        let @@ = l:reg_backup
+        let &selection = l:sel_backup
+    endfunction
+
+    return obj
+endfunction
+
+" }}}
 " Diff two registers {{{
 " Open a diff of two registers in a new tabpage. Close the tabpage when
 " finished. If no registers are specified it diffs the most recent yank with
