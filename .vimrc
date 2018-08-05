@@ -401,6 +401,52 @@ function! MakeOpfunc(fn)
 endfunction
 
 " }}}
+" {{{1 Surround a visual selection of opfunc movement with characters.
+"
+" Surround('foo', 1, '<')   // => <foo>
+
+let b:__surround_char = '"'
+function! Surround(text, ...)
+    let l:is_inline = get(a:, 1, 1)
+    let l:surround_char_override = get(a:, 2, 0)
+
+    let l:common_pairs = {
+        \'{': '}', '}': '{',
+        \'(': ')', ')': '(',
+        \'<': '>', '>': '<',
+    \}
+
+    if l:surround_char_override isnot 0
+        let b:__surround_char = l:surround_char_override
+    else
+        " Not sure if possible to detect when a command is repeated with '.'
+        " to avoid re-prompting each time. Remember last input instead.
+        let b:__surround_char = input("Surround with what chars? ",
+            \b:__surround_char)
+    endif
+
+    let l:open = b:__surround_char
+    let l:close = get(l:common_pairs, l:open, l:open)
+
+    if l:is_inline isnot 1
+        let l:open = l:open ."\n"
+        let l:close = "\n". l:close
+    endif
+
+    let l:ret = substitute(a:text, '^', l:open, "")
+    let l:ret = substitute(l:ret, '$', l:close, "")
+
+    return l:ret
+endfunction
+
+let g:SurroundWrapped = MakeOpfunc(function("Surround"))
+function! SurroundOp(...)
+    return call(g:SurroundWrapped.opfuncWrapper, a:000)
+endfunction
+noremap <silent> <leader>s :set opfunc=SurroundOp<cr>g@
+vmap <silent> <leader>s :<C-U>call SurroundOp(visualmode(), 1)<cr>
+
+" }}}
 " Diff two registers {{{
 " Open a diff of two registers in a new tabpage. Close the tabpage when
 " finished. If no registers are specified it diffs the most recent yank with
