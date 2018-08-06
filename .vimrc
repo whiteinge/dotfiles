@@ -443,10 +443,7 @@ function! Surround(text, ...)
     return l:ret
 endfunction
 
-let g:SurroundWrapped = MakeOpfunc(function("Surround"))
-function! SurroundOp(...)
-    return call(g:SurroundWrapped.opfuncWrapper, a:000)
-endfunction
+call MakeOpfunc("Surround")
 noremap <silent> <leader>s :set opfunc=SurroundOp<cr>g@
 vmap <silent> <leader>s :<C-U>call SurroundOp(visualmode(), 1)<cr>
 
