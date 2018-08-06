@@ -430,7 +430,6 @@ function! Surround(text, ...)
 
     if l:is_inline isnot 1
         let l:open = l:open ."\n"
-        let l:close = "\n". l:close
     endif
 
     let l:ret = substitute(a:text, '^', l:open, "")
