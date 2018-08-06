@@ -389,7 +389,7 @@ function! MakeOpfunc(fn)
         endif
 
         " Call fn on the yank register, reselect, then paste new results.
-        let @@ = self.fn(@@, l:is_inline)
+        let @@ = call(self.fn, [@@, l:is_inline] + a:000)
         silent exe "normal! gvp"
 
         " -- Restore vv
