@@ -471,34 +471,6 @@ endfunction
 command! -nargs=* DiffRegs call DiffRegsFunc(<f-args>)
 
 " }}}
-" YankList {{{1
-" Is is possbile to store the ten most recent yanks using opfunc (similar to
-" the built-in numbered registers)?
-" NOTE: work in progress, this is currently non-functional
-
-" noremap <silent> gy :set opfunc=YankList<cr>g@
-" vmap <silent> gy :<C-U>call YankList(visualmode(), 1)<cr>
-" map <silent> gyy Y
-
-function! YankList(type, ...)
-    let sel_save = &selection
-    let &selection = "inclusive"
-    let reg_save = @@
-
-    echo "Something was copied!\n"
-
-    if a:0  " Invoked from Visual mode, use '< and '> marks.
-        silent exe "normal! `<" . a:type . "`>y"
-    elseif a:type == 'line' " Line
-        silent exe "normal! '[V']y"
-    elseif a:type == 'block' " Block
-        silent exe "normal! `[\<C-V>`]y"
-    else " ???
-        silent exe "normal! `[v`]y"
-    endif
-endfunction
-
-" }}}
 " SplitItems Break out vals with a consistent delimiter on to separate lines {{{
 "
 " Useful for reordering function parameters or list items or delimited text
