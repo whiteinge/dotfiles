@@ -363,12 +363,11 @@ command! -nargs=* Scratch call Scratch(<f-args>)
 "
 " Abstract the boilerplate around opfunc so we can write simple functions that
 " take an input, modify it, and return the replacement text.
-" Unfortunately viml doesn't support closures and opfunc doesn't support
-" funcrefs so using this requires four lines of other boilerplate.
-function! MakeOpfunc(fn)
+function! MakeOpfunc(fnStr)
+    " Pretend we have variable closure by creating a class.
     let obj = copy(a:)
 
-    function obj.opfuncWrapper(type, ...)
+    function obj.opfunc(type, ...)
         let l:reg_backup = @@
         let l:sel_backup = &selection
         let &selection = "inclusive"
@@ -383,13 +382,14 @@ function! MakeOpfunc(fn)
         elseif a:type == 'block' " Block
             let l:is_inline = 0
             silent exe "normal! `[\<C-V>`]y"
-        else " ???
+        else " inline
             let l:is_inline = 1
             silent exe "normal! `[v`]y"
         endif
 
         " Call fn on the yank register, reselect, then paste new results.
-        let @@ = call(self.fn, [@@, l:is_inline] + a:000)
+        let l:Fn = function(self.fnStr)
+        let @@ = call(l:Fn, [@@, l:is_inline] + a:000)
         silent exe "normal! gvp"
 
         " -- Restore vv
@@ -397,7 +397,12 @@ function! MakeOpfunc(fn)
         let &selection = l:sel_backup
     endfunction
 
-    return obj
+    " Yes, this is a crazy hack. No, I don't want to talk about it. opfunc
+    " doesn't work with funcrefs (is there a hidden namespace for real
+    " functions?) so create a real function, but with a dynamic name.
+    let s:[a:fnStr ."Class"] = obj.opfunc
+    exe ":fu! ". a:fnStr 
+        \."Op(...) \n return call(s:". a:fnStr ."Class, a:000) \n endf"
 endfunction
 
 " }}}
