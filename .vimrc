@@ -511,7 +511,7 @@ function! SplitItems(type, ...)
     pu! "
     set nopaste
 endfunction
-nnoremap <leader>s :set opfunc=SplitItems<cr>g@
+nnoremap <leader>js :set opfunc=SplitItems<cr>g@
 
 function! JoinItems(type, ...)
     let c = input("Join with what chars? ", ", ")
@@ -521,7 +521,7 @@ function! JoinItems(type, ...)
     exe "normal! P\<esc>"
     set nopaste
 endfunction
-nnoremap <leader>j :set opfunc=JoinItems<cr>g@
+nnoremap <leader>jj :set opfunc=JoinItems<cr>g@
 
 " }}}
 " Plugin settings {{{
