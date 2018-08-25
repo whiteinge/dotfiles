@@ -46,6 +46,7 @@ if (!fs.existsSync(index)) fs.writeFileSync(index, `
 <html lang=en>
 <head>
     <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${basename}</title>
     <!-- inject:git-hash -->
 </head>
