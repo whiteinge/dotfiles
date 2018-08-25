@@ -529,9 +529,6 @@ nnoremap <leader>j :set opfunc=JoinItems<cr>g@
 """ Enable builtin matchit plugin
 runtime macros/matchit.vim
 
-""" Wordnet settings
-noremap  <F11> "wyiw:call WordNetOverviews(@w)<cr>
-
 """ Gundo settings
 nnoremap <F7> :GundoToggle<cr>
 
@@ -572,14 +569,6 @@ let g:tagbar_iconchars = ['+', '-']
 let g:flagship_skip = 'fugitive#statusline'
 let g:tablabel =
     \ "%N%{flagship#tabmodified()} %{flagship#tabcwds('shorten',',')}"
-
-" Dispatch mappings
-nmap <silent> <leader>b :Make!<cr>
-
-""" vim-diff-enhanced settings
-" Toggle between different diff algorithms
-nmap <silent> <leader>dp :CustomDiff patience<cr>
-nmap <silent> <leader>dh :CustomDiff histogram<cr>
 
 " See .md files as markdown instead of modula-2.
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
