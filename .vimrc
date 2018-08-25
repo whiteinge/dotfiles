@@ -43,8 +43,8 @@ set directory=$HOME/.vim/swapdir,.
 " Searches the current directory as well as subdirectories with commands like :find, :grep, etc.
 set path=.,**
 
-set cindent                     " Enables the second-most configurable indentation (see :help C-indenting).
-set cinoptions=l1,c4,(s,U1,w1,m1,j1,J1
+set autoindent
+set smartindent
 
 set formatoptions+=j            " Remove comment leader when joining lines
 
