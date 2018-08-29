@@ -213,7 +213,7 @@ if &columns < 88
 endif
 
 " Slight variant of standard status line with 'ruler' set that shows file infos.
-set statusline=%<%f\ %h%m%r%w\ %y\ %{&fileencoding},%{&fileformat}\ \ %{ALEGetStatusLine()}\ %q%=\ %-14.(%l,%c%V%)\ %P
+set statusline=%<%f\ %h%m%r%w\ %y\ %{&fileencoding},%{&fileformat}\ \ %q%=\ %-14.(%l,%c%V%)\ %P
 
 " }}}
 " Multi-buffer/window/tab editing {{{
@@ -537,7 +537,6 @@ let g:ale_set_highlights = 0
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = 'EE'
 let g:ale_sign_warning = 'WW'
-let g:ale_statusline_format = ['E%d', 'W%d', 'Ok']
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['prettier']
 let g:ale_javascript_prettier_use_local_config = 1
