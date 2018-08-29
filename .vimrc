@@ -537,9 +537,6 @@ let g:ale_set_highlights = 0
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = 'EE'
 let g:ale_sign_warning = 'WW'
-let g:ale_fixers = {}
-let g:ale_fixers['javascript'] = ['prettier']
-let g:ale_javascript_prettier_use_local_config = 1
 
 nmap <silent> <leader>p :ALEFix<cr>
 nmap <silent> <leader>y :call ale#Lint()<cr>
