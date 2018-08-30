@@ -13,9 +13,6 @@
 [submodule ".zsh-syntax-highlighting"]
 	path = .zsh-syntax-highlighting
 	url = git://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule ".vim/bundle/vim-dispatch"]
-	path = .vim/pack/foo/start/vim-dispatch
-	url = git://github.com/tpope/vim-dispatch.git
 [submodule "bin/xcape"]
 	path = bin/xcape
 	url = https://github.com/alols/xcape.git
