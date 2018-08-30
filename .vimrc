@@ -540,12 +540,6 @@ let g:ale_set_quickfix = 1
 nmap <silent> <leader>p :ALEFix<cr>
 nmap <silent> <leader>y :call ale#Lint()<cr>
 
-""" signify settings
-let g:signify_vcs_list = ['git']
-hi SignifySignAdd    ctermfg=2
-hi SignifySignDelete ctermfg=1
-hi SignifySignChange ctermfg=3
-
 """ Fugitive settings
 " Open current buffer in a new tab and show Fugitive diff
 nmap <silent> <leader>cc :tab split \| Gdiff <cr>
