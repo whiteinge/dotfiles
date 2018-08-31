@@ -16,3 +16,5 @@ endif
 setl foldnestmax=1
 let g:markdown_folding=1
 let g:markdown_fenced_languages = ['html', 'python', 'sh', 'js=javascript', 'hs=haskell']
+
+setl textwidth=79
