@@ -238,8 +238,7 @@ nmap ]q :cnext<cr>
 nmap [q :cprev<cr>
 nmap ]Q :clast<cr>
 nmap [Q :cfirst<cr>
-nmap <silent> <leader>fq :copen<cr>
-nmap <silent> <leader>fc :cclose<cr>
+nmap <silent> <leader>qf :botright cwindow<cr>:wincmd p<cr>
 
 " Disable one diff window during a three-way diff allowing you to cut out the
 " noise of a three-way diff and focus on just the changes between two versions
