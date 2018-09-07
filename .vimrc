@@ -464,6 +464,30 @@ call MakeOpfunc("Surround")
 noremap <silent> <leader>s :set opfunc=SurroundOp<cr>g@
 vmap <silent> <leader>s :<C-U>call SurroundOp(visualmode(), 1)<cr>
 
+" {{{ MRU
+" Massage and truncate the oldfiles list for an easy most-recently-used list.
+
+fu! MRU()
+    let l:files = copy(v:oldfiles)
+    let l:files = map(l:files, {idx, val -> {'idx': idx + 1, 'path': val}})
+
+    let l:files = filter(l:files, {idx, val -> filereadable(expand(val['path']))
+        \&& val['path'] !~ '__Tagbar__'
+        \&& val['path'] !~ '__Gundo_'
+        \&& val['path'] !~ '.git/'
+        \&& val['path'] !~ 'vim/vim81/doc/'
+        \&& val['path'] !~ '/dev/fd'
+        \&& val['path'] !~ '/var/folders'
+    \})
+
+    let l:files = map(l:files, {idx, val -> val.idx ."\t". val.path})
+    return join(l:files[:20], "\n") . "\n"
+endfu
+nnoremap <leader>me :echo MRU()<cr>:edit #<
+nnoremap <leader>ms :echo MRU()<cr>:split #<
+nnoremap <leader>mv :echo MRU()<cr>:vsplit #<
+nnoremap <leader>mt :echo MRU()<cr>:tabedit #<
+
 " }}}
 " Diff two registers {{{
 " Open a diff of two registers in a new tabpage. Close the tabpage when
