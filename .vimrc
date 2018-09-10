@@ -349,176 +349,47 @@ set printencoding=utf-8
 
 command! -nargs=1 Warn echohl WarningMsg | echo <args> | echohl None
 
-" /path/to/file.js -> /p/t/file.js
-" /home/path/to/file.js -> ~/p/t/file.js
-function! ShortPath(path)
-    let l:sep = '/'
-
-    let l:file = fnamemodify(a:path, ':t')
-    let l:path = fnamemodify(a:path, ':p:~:h')
-    let l:head = l:path[0] == '/' ? l:path[0] : ''
-
-    let l:segs = split(l:path, l:sep)
-    let l:mods = map(l:segs, 'v:val[0]')
-    let l:ret = join(l:mods, l:sep)
-
-    return l:head . l:ret . l:sep . l:file
-endfunction
-
-" }}}
-" Make the current buffer a scratch buffer {{{1
-
-function! Scratch()
-	setlocal buftype=nofile bufhidden=delete nobuflisted
-    Warn "This file is now a scratch file!"
-endfunction
-nmap <silent> <leader>S :call Scratch()<cr>
-command! -nargs=* Scratch call Scratch(<f-args>)
-
-" }}}
-" {{{1 Surround a visual selection of opfunc movement with characters.
-"
-" Surround('foo', 1, '<')   // => <foo>
-
-let b:__surround_char = '"'
-function! Surround(text, ...)
-    let l:is_inline = get(a:, 1, 1)
-    let l:surround_char_override = get(a:, 2, 0)
-
-    let l:common_pairs = {
-        \'{': '}', '}': '{',
-        \'(': ')', ')': '(',
-        \'<': '>', '>': '<',
-    \}
-
-    if l:surround_char_override isnot 0
-        let b:__surround_char = l:surround_char_override
-    else
-        " Not sure if possible to detect when a command is repeated with '.'
-        " to avoid re-prompting each time. Remember last input instead.
-        let b:__surround_char = input("Surround with what chars? ",
-            \b:__surround_char)
-    endif
-
-    let l:open = b:__surround_char
-    let l:close = get(l:common_pairs, l:open, l:open)
-
-    if l:is_inline isnot 1
-        let l:open = l:open ."\n"
-    endif
-
-    let l:ret = substitute(a:text, '^', l:open, "")
-    let l:ret = substitute(l:ret, '$', l:close, "")
-
-    return l:ret
-endfunction
-
-call MakeOpfunc("Surround")
-noremap <silent> <leader>s :set opfunc=SurroundOp<cr>g@
-vmap <silent> <leader>s :<C-U>call SurroundOp(visualmode(), 1)<cr>
-
-" {{{ MRU
-" Massage and truncate the oldfiles list for an easy most-recently-used list.
-
-fu! MRU()
-    let l:files = copy(v:oldfiles)
-    let l:files = map(l:files, {idx, val -> {'idx': idx + 1, 'path': val}})
-
-    let l:files = filter(l:files, {idx, val -> filereadable(expand(val['path']))
-        \&& val['path'] !~ '__Tagbar__'
-        \&& val['path'] !~ '__Gundo_'
-        \&& val['path'] !~ '.git/'
-        \&& val['path'] !~ 'vim/vim81/doc/'
-        \&& val['path'] !~ '/dev/fd'
-        \&& val['path'] !~ '/var/folders'
-    \})
-
-    let l:files = map(l:files, {idx, val -> val.idx ."\t". val.path})
-    return join(l:files[:20], "\n") . "\n"
-endfu
-nnoremap <leader>me :echo MRU()<cr>:edit #<
-nnoremap <leader>ms :echo MRU()<cr>:split #<
-nnoremap <leader>mv :echo MRU()<cr>:vsplit #<
-nnoremap <leader>mt :echo MRU()<cr>:tabedit #<
-
-" }}}
-" Diff two registers {{{
-" Open a diff of two registers in a new tabpage. Close the tabpage when
-" finished. If no registers are specified it diffs the most recent yank with
-" the most recent deletion.
-" Usage:
-"   :DiffRegs
-"   :DiffRegs @a @b
-
-function! DiffRegsFunc(...)
-    let l:left = a:0 == 2 ? a:1 : "@0"
-    let l:right = a:0 == 2 ? a:2 : "@1"
-
-    tabnew
-    exe 'put! ='. l:left
-    vnew
-    exe 'put! ='. l:right
-
-    windo call Scratch()
-    windo diffthis
-    winc t
-endfunction
-command! -nargs=* DiffRegs call DiffRegsFunc(<f-args>)
-
-" }}}
-" SplitItems Break out vals with a consistent delimiter on to separate lines {{{
-"
-" Useful for reordering function parameters or list items or delimited text
-" since Vim makes it easy to reorder lines. Once ordered, lines can be
-" re-joined with the sister-function below.
-"
-" E.g., given the text:
-"
-"   def foo(bar, baz, qux, quux):
-"       pass
-"
-" Use a text-object to select everything within the parenthesis:
-" <leader>si(
-" Choose ", " as the delimiter (the default), which results in:
-"
-"     def foo(
-"   bar
-"   baz
-"   qux
-"   quux
-"   ):
-"       pass
-"
-" Reorder the items as necessary then join using:
-" <leader>ji(
-" Choose ", " as the delimeter to join with (the default).
-"
-" FIXME: currently joining does not include the text-object chars
-" TODO: visual selection support; some text objects are not multi-line (",')
-
-function! SplitItems(type, ...)
-    let c = input("Split on what chars? ", ", ")
-    normal! `[v`]x
-    let @@ = substitute(@@, c, '\n', 'g')
-    set paste
-    exe "normal! i\<cr>\<esc>"
-    pu! "
-    set nopaste
-endfunction
-nnoremap <leader>js :set opfunc=SplitItems<cr>g@
-
-function! JoinItems(type, ...)
-    let c = input("Join with what chars? ", ", ")
-    normal! `[v']d
-    let @@ = substitute(@@, '\n', c, 'g')
-    set paste
-    exe "normal! P\<esc>"
-    set nopaste
-endfunction
-nnoremap <leader>jj :set opfunc=JoinItems<cr>g@
-
 " }}}
 " Plugin settings {{{
+
+""" Easily make a buffer into a scratch buffer:
+nmap <silent> <leader>S :call scratch#Scratch()<cr>
+command! -nargs=* Scratch call scratch#Scratch(<f-args>)
+
+""" Surround a visual selection of opfunc movement with characters.
+" E.g., to surround with parens: \s(iw
+" TODO: Is this really better than: c<motion>"<C-r><C-o>""<Esc>
+nmap <expr> <leader>s( opfuncwrapper#WrapOpfunc('surround#Surround', 1, '(')
+nmap <expr> <leader>s{ opfuncwrapper#WrapOpfunc('surround#Surround', 1, '{')
+nmap <expr> <leader>s< opfuncwrapper#WrapOpfunc('surround#Surround', 1, '<')
+nmap <expr> <leader>s" opfuncwrapper#WrapOpfunc('surround#Surround', 1, '"')
+nmap <expr> <leader>s' opfuncwrapper#WrapOpfunc('surround#Surround', 1, "'")
+nmap <expr> <leader>s` opfuncwrapper#WrapOpfunc('surround#Surround', 1, '`')
+nmap <expr> <leader>ss opfuncwrapper#WrapOpfunc('surround#Surround', 1,
+    \input("Surround with what chars? "))
+vmap <silent> <leader>s( :<C-U>call 
+    \opfuncwrapper#WrapOpfunc('surround#Surround', 0, '(')<cr>
+
+""" Change Case mappings
+noremap <expr> <leader>hcth WrapOpfunc('changecase#ChangeCase', 1, 'CamelToHyphen')
+noremap <expr> <leader>hcts WrapOpfunc('changecase#ChangeCase', 1, 'CamelToSnake')
+noremap <expr> <leader>hhtc WrapOpfunc('changecase#ChangeCase', 1, 'HyphenToCamel')
+noremap <expr> <leader>hhts WrapOpfunc('changecase#ChangeCase', 1, 'HyphenToSnake')
+noremap <expr> <leader>hstc WrapOpfunc('changecase#ChangeCase', 1, 'SnakeToCamel')
+noremap <expr> <leader>hsth WrapOpfunc('changecase#ChangeCase', 1, 'SnakeToHyphen')
+
+""" MRU mappings
+nnoremap <leader>me :echo mru#MRU()<cr>:edit #<
+nnoremap <leader>ms :echo mru#MRU()<cr>:split #<
+nnoremap <leader>mv :echo mru#MRU()<cr>:vsplit #<
+nnoremap <leader>mt :echo mru#MRU()<cr>:tabedit #<
+
+""" Diff two registers
+command! -nargs=* DiffRegs call diffregs#DiffRegsFunc(<f-args>)
+
+""" Join and split items based on a delimeter
+nnoremap <leader>js :set opfunc=joinsplit#SplitItems<cr>g@
+nnoremap <leader>jj :set opfunc=joinsplit#JoinItems<cr>g@
 
 """ Enable builtin matchit plugin
 runtime macros/matchit.vim

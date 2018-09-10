@@ -8,5 +8,5 @@ au BufEnter <buffer> nested if winnr('$') < 2 | q | endif
 
 " Make the quickfix file paths (a lot) shorter.
 au BufReadPost <buffer> setl modifiable
-    \ | silent exe '%s/^[^\|]*/\=ShortPath(submatch(0))/'
+    \ | silent exe '%s/^[^\|]*/\=shortpath#ShortPath(submatch(0))/'
     \ | setl nomodifiable
