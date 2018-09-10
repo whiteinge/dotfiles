@@ -371,12 +371,7 @@ vmap <silent> <leader>s( :<C-U>call
     \opfuncwrapper#WrapOpfunc('surround#Surround', 0, '(')<cr>
 
 """ Change Case mappings
-noremap <expr> <leader>hcth WrapOpfunc('changecase#ChangeCase', 1, 'CamelToHyphen')
-noremap <expr> <leader>hcts WrapOpfunc('changecase#ChangeCase', 1, 'CamelToSnake')
-noremap <expr> <leader>hhtc WrapOpfunc('changecase#ChangeCase', 1, 'HyphenToCamel')
-noremap <expr> <leader>hhts WrapOpfunc('changecase#ChangeCase', 1, 'HyphenToSnake')
-noremap <expr> <leader>hstc WrapOpfunc('changecase#ChangeCase', 1, 'SnakeToCamel')
-noremap <expr> <leader>hsth WrapOpfunc('changecase#ChangeCase', 1, 'SnakeToHyphen')
+let g:caser_prefix = mapleader .'h'
 
 """ MRU mappings
 nnoremap <leader>me :echo mru#MRU()<cr>:edit #<

@@ -40,3 +40,6 @@
 [submodule ".vim/pack/foo/start/diffconflicts"]
 	path = .vim/pack/foo/start/diffconflicts
 	url = https://github.com/whiteinge/diffconflicts.git
+[submodule ".vim/pack/foo/start/vim-caser"]
+	path = .vim/pack/foo/start/vim-caser
+	url = https://github.com/arthurxavierx/vim-caser.git
