@@ -358,8 +358,12 @@ nnoremap <leader>mt :echo mru#MRU()<cr>:tabedit #<
 command! -nargs=* DiffRegs call diffregs#DiffRegsFunc(<f-args>)
 
 """ Join and split items based on a delimeter
-nnoremap <leader>js :set opfunc=joinsplit#SplitItems<cr>g@
-nnoremap <leader>jj :set opfunc=joinsplit#JoinItems<cr>g@
+nmap <expr> <leader>js, opfuncwrapper#WrapOpfunc('joinsplit#SplitItems', 1, ', ')
+nmap <expr> <leader>jss opfuncwrapper#WrapOpfunc('joinsplit#SplitItems', 1,
+    \input("Split on what chars? ", ", "))
+nmap <expr> <leader>jj, opfuncwrapper#WrapOpfunc('joinsplit#JoinItems', 1, ', ')
+nmap <expr> <leader>jjj opfuncwrapper#WrapOpfunc('joinsplit#JoinItems', 1,
+    \input("Join on what chars? ", ", "))
 
 """ Enable builtin matchit plugin
 runtime macros/matchit.vim
