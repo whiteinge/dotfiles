@@ -324,6 +324,9 @@ command! -nargs=1 Warn echohl WarningMsg | echo <args> | echohl None
 " }}}
 " Plugin settings {{{
 
+" Make mapleader default explicit
+let mapleader = '\'
+
 """ Easily make a buffer into a scratch buffer:
 nmap <silent> <leader>S :call scratch#Scratch()<cr>
 command! -nargs=* Scratch call scratch#Scratch(<f-args>)
