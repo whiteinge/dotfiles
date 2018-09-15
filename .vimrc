@@ -130,6 +130,7 @@ set listchars=tab:>-,trail:\ ,precedes:<,extends:>
 " Show listchars; highlight lines more than 80 chars, trailing spaces, only
 " whitespace. Toggle with \l
 nnoremap <silent> <leader>l
+      \ :set cursorcolumn!<cr>:set cursorcolumn?<cr>
       \ :set nolist!<cr>:set nolist?<cr>
       \ :if exists('w:long_line_match') <bar>
       \   silent! call matchdelete(w:long_line_match) <bar>
