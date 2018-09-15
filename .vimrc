@@ -242,8 +242,18 @@ if &columns < 88
     set foldcolumn=0
 endif
 
-" Slight variant of standard status line with 'ruler' set that shows file infos.
-set statusline=%<%f\ %h%m%r%w\ %y\ %{&fileencoding},%{&fileformat}\ \ %q%=\ %-14.(%l,%c%V%)\ %P
+" Slight variant of standard statusline with 'ruler', file infos, and alt file.
+let Fnames = fp#Pipe([
+    \ {-> [
+    \     fp#Maybe('fp#ShortPath')(expand('%')),
+    \     fp#Maybe({x -> fnamemodify(x, ':t')})(expand('#')),
+    \ ]},
+    \ function('fp#Filter')(function('fp#Complement')('fp#IsNil')),
+    \ function('fp#Join')('  #'),
+\ ])
+set statusline=%<%{Fnames(0)}\
+    \ %h%m%r%w\ %y\ %{&fileencoding},%{&fileformat}\
+    \ %q%=\ %-14.(%l,%c%V%)\ %P
 
 " }}}
 " Multi-buffer/window/tab editing {{{
