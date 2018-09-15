@@ -11,6 +11,13 @@ set ignorecase                  " Ignores case when pattern matching
 set smartcase                   " Ignores ignorecase when pattern contains uppercase characters
 set hlsearch                    " Highlights search results
 
+" Set the search pattern without moving the cursor.
+" https://www.reddit.com/r/vim/comments/vzd0q/how_do_i_set_the_search_pattern_without_moving/c5a5m4z
+nnoremap <silent> <leader>* :let @/ = '\<' .  expand('<cword>') . '\>'
+  \\| call histadd('/', @/)
+  \\| if &hlsearch != 0 \| set hlsearch \| endif
+  \\| echo '/' . @/ . '/='<cr>
+
 " Use leader-n to unhighlight search results in normal mode:
 nmap <silent> <leader>n :silent noh<cr>
 
