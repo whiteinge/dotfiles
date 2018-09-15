@@ -1,1 +1,2 @@
-setlocal keywordprg=:help
+setl keywordprg=:help
+setl textwidth=0
