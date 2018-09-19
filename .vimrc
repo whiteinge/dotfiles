@@ -411,8 +411,8 @@ nmap <expr> <leader>jjj opfuncwrapper#WrapOpfunc('joinsplit#JoinItems', 1,
 """ Enable builtin matchit plugin
 runtime macros/matchit.vim
 
-""" Gundo settings
-nnoremap <F7> :GundoToggle<cr>
+""" undotree settings
+nnoremap <F7> :UndotreeToggle<cr>
 
 """ ale settings
 let g:ale_set_highlights = 0

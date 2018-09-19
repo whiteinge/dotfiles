@@ -1,6 +1,3 @@
-[submodule ".vim/bundle/Gundo"]
-	path = .vim/pack/foo/start/Gundo
-	url = git://github.com/vim-scripts/Gundo.git
 [submodule ".vim/bundle/tagbar"]
 	path = .vim/pack/foo/start/tagbar
 	url = git://github.com/majutsushi/tagbar.git
@@ -43,3 +40,6 @@
 [submodule ".vim/pack/foo/start/vim-caser"]
 	path = .vim/pack/foo/start/vim-caser
 	url = https://github.com/arthurxavierx/vim-caser.git
+[submodule ".vim/pack/foo/start/undotree"]
+	path = .vim/pack/foo/start/undotree
+	url = https://github.com/mbbill/undotree.git
