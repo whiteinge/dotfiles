@@ -165,6 +165,7 @@ alias lls='ll -Sr'
 
 alias vi=$EDITOR
 alias vv=$EDITOR' -N -u NONE' # fast Vim that doesn't load a vimrc or plugins
+alias vvv=$EDITOR' -N --noplugin' # Loads vimrc but no plugins
 
 alias c='curl -sS -D /dev/stderr'
 alias less='less -imJMW'
