@@ -13,9 +13,6 @@
 [submodule "bin/xcape"]
 	path = bin/xcape
 	url = https://github.com/alols/xcape.git
-[submodule ".vim/bundle/vim-flagship"]
-	path = .vim/pack/foo/start/vim-flagship
-	url = https://github.com/tpope/vim-flagship.git
 [submodule ".vim/bundle/vim-filebeagle"]
 	path = .vim/pack/foo/start/vim-filebeagle
 	url = https://github.com/jeetsukumaran/vim-filebeagle.git
