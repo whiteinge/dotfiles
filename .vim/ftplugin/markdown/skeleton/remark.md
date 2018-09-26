@@ -1,10 +1,4 @@
-name: section
-layout: true
 class: center, middle, inverse
-
----
-
-template: section
 
 # Title
 ## Subtitle
@@ -17,7 +11,6 @@ seth@eseth.com
 ---
 
 class: center, middle
-layout: false
 
 # Opening Slide
 
@@ -55,9 +48,36 @@ Checklist:
   * Summary – Short!
   * Action steps – Specific actions; specific time-frame.
 
----
+<!--
+Remark cheatsheet:
+
+class: left, center, right, top, middle, bottom
+
+background-image: url(image.jpg)
+background-position: center;
+background-repeat: no-repeat;
+background-size: contain;
 
 count: true
+exclude: false
+
+
+.left-column[
+Text here
+]
+
+.right-column[
+Text here
+]
+
+.footnote[
+* [Link](http://example.com)
+* [Link 2](http://example.org)
+* [Link 3](http://example.net)
+]
+-->
+
+---
 
 ## Slide
 
@@ -65,9 +85,6 @@ count: true
 --
 
 * Bar
+--
 
-.footnote[
-* [Link](http://example.com)
-* [Link 2](http://example.org)
-* [Link 3](http://example.net)
-]
+* Baz
