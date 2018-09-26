@@ -97,3 +97,27 @@ fu! fp#Complement(fn)
     let l:Fn = type(a:fn) is v:t_string ? function(a:fn) : a:fn
     return {x -> !l:Fn(x)}
 endfu
+
+" DefaultTo
+" fp#DefaultTo('doh')('')
+fu! fp#DefaultTo(default)
+    return {x -> x == 0 || x == '' ? a:default : x}
+endfu
+
+" IsEmpty
+" fp#IsEmpty('')
+fu! fp#IsEmpty(val)
+    if (type(a:val) is v:t_number)
+        return a:val == 0
+    elseif (type(a:val) is v:t_string)
+        return a:val == ''
+    elseif (type(a:val) is v:t_list)
+        return len(a:val0) == 0
+    elseif (type(a:val) is v:t_dict)
+        return len(a:val0) == 0
+    elseif (type(a:val) is v:t_float)
+        return a:val0 == 0.0
+    else
+        return 0
+    endif
+endfu
