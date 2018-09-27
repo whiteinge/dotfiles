@@ -10,10 +10,16 @@ set bind-tty-special-chars off
 # Completion Options
 set page-completions on
 set completion-ignore-case on
-set completion-query-items 200
+set completion-map-case on
+set completion-query-items 1000
+set skip-completed-text on
 set show-all-if-ambiguous on
 set show-all-if-unmodified on
 set visible-stats on
+
+# Display Options
+set mark-directories on
+set mark-symlinked-directories on
 
 # Useful stuff for UTF-8
 set meta-flag on

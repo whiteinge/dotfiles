@@ -150,6 +150,9 @@
     smtpuser = whiteinge@gmail.com
     smtpserverport = 587
 
+[commit]
+  template = ~/.gitmessage
+
 [diff]
     tool = clivimdiff
 
