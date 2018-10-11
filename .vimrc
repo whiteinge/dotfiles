@@ -147,7 +147,7 @@ map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
 " Maps Omnicompletion to CTRL-space.
 inoremap <nul> <C-X><C-O>
 
-" Maps file completion to CTRL-F relative to current file path.
+" Maps file completion relative to current file path.
 inoremap <C-F>
     \ <C-O>:let b:oldpwd = getcwd() <bar>
     \ lcd %:p:h<cr><C-X><C-F>
@@ -157,6 +157,11 @@ au CompleteDone *
     \   cd `=b:oldpwd` |
     \   unlet b:oldpwd |
     \ endif
+" Chain multiple path completions with / key. Selects the first suggestion if
+" no current selection. Use ctrl-y to finish completion as normal.
+imap <expr> / pumvisible()
+    \ ? len(v:completed_item) ? '<C-Y><C-F>' : '<C-N><C-Y><C-F>'
+    \ : '/'
 
 " Don't select first autocomplete item, follow typing.
 set completeopt=longest,menuone,preview
