@@ -154,15 +154,18 @@ alias zmv='noglob zmv'
 # e.g., zmv *.JPEG *.jpg
 
 alias ls='ls -F --color'
-alias la='ls -A'
-alias ll='ls -lh'
-alias lls='ll -Sr'
+alias la='ls -A'; compdef la=ls
+alias ll='ls -lh'; compdef ll=ls
+alias lls='ll -Sr'; compdef lls=ls
 
-alias vi=$EDITOR
-alias vv=$EDITOR' -N -u NONE' # fast Vim that doesn't load a vimrc or plugins
-alias vvv=$EDITOR' -N --noplugin' # Loads vimrc but no plugins
+alias vi=$EDITOR; compdef vi=vim
+# fast Vim that doesn't load a vimrc or plugins
+alias vv=$EDITOR' -N -u NONE'; compdef vv=vim
+# Loads vimrc but no plugins
+alias vvv=$EDITOR' -N --noplugin'; compdef vvv=vim
 
 alias c='curl -sS -D /dev/stderr'
+compdef c=curl
 alias less='less -imJMW'
 alias cls='clear' # note: ctrl-L under zsh does something similar
 alias lynx='lynx -cfg=$HOME/.lynx.cfg'
