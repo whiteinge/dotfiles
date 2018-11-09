@@ -1,9 +1,4 @@
 #!/bin/zsh
-# Best Goddamn zshrc in the whole world.
-# Author: Seth House <seth@eseth.com>
-# Modified: 2009-10-11
-# thanks to Adam Spiers, Steve Talley, Aaron Toponce, and Unix Power Tools
-
 local -a precmd_functions
 
 # {{{ setting options

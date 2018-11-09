@@ -1,7 +1,3 @@
-" Best Goddamn vimrc in the whole world.
-" Author: Seth House <seth@eseth.com>
-" For more information type :help followed by the command.
-
 filetype plugin indent on
 
 " Search {{{
@@ -454,6 +450,3 @@ let g:vim_json_syntax_conceal = 0
 nmap <silent> <leader>i :1verbose DetectIndent<cr>
 
 " }}}
-
-" eof
-" vim:ft=vim:fdm=marker:ff=unix:nowrap:tabstop=4:shiftwidth=4:softtabstop=4:smarttab:shiftround:expandtab

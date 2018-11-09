@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Best goddamn .pythonrc file in the whole world.
+""".pythonrc for history/completion & Django dev
 
 This file is executed when the Python interactive shell is started if
 $PYTHONSTARTUP is in your environment and points to this file. It's just
@@ -19,8 +19,6 @@ from code import InteractiveConsole
 # Imports we want
 import datetime
 import pdb
-
-AUTHOR = 'Seth House <seth@eseth.com>'
 
 # Color Support
 ###############

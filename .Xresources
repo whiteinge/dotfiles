@@ -1,7 +1,3 @@
-! The best, goddamn Xresources file in the whole world.
-! Author: Seth House <seth@eseth.com>
-! -----------------------------------------------------------------------------
-
 ! --- Xft {{{1
 ! -----------------------------------------------------------------------------
 ! calculate dpi with xdpyinfo | grep resolution

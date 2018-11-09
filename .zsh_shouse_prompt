@@ -1,5 +1,4 @@
-# Best Goddamn zsh prompt in the whole world.
-# Author: Seth House <seth@eseth.com>
+# A configurable prompt with the dog from Nethack for companionship
 
 fpath=( ~/.zsh_functions $fpath )
 [[ -d $HOME/.zsh_functions/VCS_Info ]] \
