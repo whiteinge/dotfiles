@@ -201,6 +201,10 @@ nmap <silent> <leader>dts :exe ':r !date '. escape(b:dateformat, '%')<cr>
 " Mapping to write a file using sudo
 cnoremap sudow w !sudo tee % >/dev/null
 
+" Use command mode readline/Emacs shortcut to go to the beginning of the line.
+" I can never remember Vim's default. Where does that ctrl-b come from?
+cnoremap <c-a> <Home>
+
 " }}}
 " Folding (spacebar toggles) {{{
 " Spacebar toggles a fold, zi toggles all folding, zM closes all folds
