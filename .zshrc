@@ -29,7 +29,7 @@ setopt                          \
         rm_star_wait
 
 # Push a command onto a stack allowing you to run another command first
-bindkey '^J' push-line
+bindkey '^J' push-line-or-edit
 
 # }}}
 # {{{ environment settings
