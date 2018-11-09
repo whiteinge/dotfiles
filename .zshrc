@@ -240,51 +240,6 @@ if [[ -n "$ZSHRUN" ]]; then
 fi
 
 # }}}
-# gext A wrapper to grep files with a given file name match {{{1
-# Also guesses case-insensitivity and performs many searches in parallel.
-
-gext() {
-    local -a prune
-    local spath search ext help is_icase extsearch findcmd xargscmd grepcmd
-
-    spath="$1"
-    search="$2"
-    ext="$3"
-
-    # Assemble an array of files/paths to prune from the find results by
-    # co-opting the various excludes from GREP_OPTIONS. (<3 Zsh <3)
-    prune=( ${(s: :)GREP_OPTIONS2} )
-    prune=( ${(M)prune:#--exclude*} )
-    prune=( ${(S)prune//--exclude-dir=/-path \*/} )
-    prune=( ${(S)prune//--exclude=/-name } )
-    prune="${(j: -o :)prune}"
-
-    help="Usage: gext ./somepath sometext [file-name-pattern]
-    Search will be case-sensitive if the search text contains capital letters.
-
-    gext . thing
-    gext . thing '*.py'
-    gext . thing 'specific-file.*'
-    "
-
-    # Output help if missing path or search
-    [[ -n "${spath}" ]] && [[ -n "${search}" ]] || { echo ${help}; return 1 }
-
-    # Check for capital letters in the search pattern
-    echo "${search}" | grep -qE '[A-Z]+'
-    [[ $? -ne 0 ]] && is_icase=1
-
-    find "${spath}" \
-        '(' ${(s: :)prune} ')' -prune \
-        -o '(' -type f -o -type l ')' ${ext:+-name} ${ext:+$ext} \
-        -print0 \
-    | xargs -0 -P8 \
-        grep ${(s: :)GREP_OPTIONS2} \
-        ${is_icase:+-i} \
-        -nH -E -e "${search}"
-}
-
-# }}}
 # ..() Switch to parent directory by matching on partial name {{{1
 # Usage:
 # cd /usr/share/doc/zsh
