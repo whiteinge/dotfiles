@@ -1,0 +1,25 @@
+#!/bin/sh
+# A qutebrowser userscript to invoke a Terminal window and block until it
+# closes. Uses the ZSHRUN flag and some Applescript to auto-close after
+# invoking a command.
+#
+# The QUTE_* environment variables are available for reading and writing.
+# Write commands as usual to $QUTE_FIFO. E.g.:
+#   printf 'insert-text Testing\n' >> "$QUTE_FIFO"
+
+main() {
+    ZSHRUN=1 osascript <<END
+tell app "Terminal"
+    if not (exists window 1) then reopen
+    activate
+
+    repeat until (not exists window 1)
+        delay 0.5
+    end repeat
+
+    quit
+end tell
+END
+}
+
+main "$@"
