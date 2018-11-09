@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+script="${1:?Script name required.}"
+lang=${2:-sh}
+
+printf "#!/usr/bin/env $lang\n\n\n" > "$script"
+chmod +x "$script"
+
+${EDITOR:-vi} -c ':3' "$script"
