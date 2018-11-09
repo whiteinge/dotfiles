@@ -234,6 +234,7 @@ if [[ -n "$ZSHRUN" ]]; then
         exit
     }
     zle -N _accept_and_quit
+    bindkey "^J" accept-line
     bindkey "^M" _accept_and_quit
     PROMPT="zshrun %~> "
     RPROMPT=""
