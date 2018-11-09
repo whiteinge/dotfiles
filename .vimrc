@@ -276,6 +276,12 @@ nmap [q :cprev<cr>
 nmap ]Q :clast<cr>
 nmap [Q :cfirst<cr>
 nmap <silent> <leader>qf :botright cwindow<cr>:wincmd p<cr>
+nmap ]l :lnext<cr>
+nmap [l :lprev<cr>
+nmap ]L :llast<cr>
+nmap [L :lfirst<cr>
+nmap <silent> <leader>lf :botright lwindow<cr>:wincmd p<cr>
+" FIXME: consolodate qf, lf, af, al.
 
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
