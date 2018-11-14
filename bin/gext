@@ -14,9 +14,8 @@ gext() {
     # co-opting the various excludes from GREP_OPTIONS. (<3 Zsh <3)
     prune=( ${(s: :)GREP_OPTIONS2} )
     prune=( ${(M)prune:#--exclude*} )
-    prune=( ${(S)prune//--exclude-dir=/-path \*/} )
+    prune=( ${(S)prune//--exclude-dir=/-path } )
     prune=( ${(S)prune//--exclude=/-name } )
-    prune="${(j: -o :)prune}"
 
     help="Usage: gext ./somepath sometext [file-name-pattern]
     Search will be case-sensitive if the search text contains capital letters.
@@ -39,12 +38,15 @@ gext() {
     # Check for capital letters in the search pattern
     [[ "${#search//[^A-Z]}" -eq 0 ]] && is_icase=1
 
+    # set -x
     find "${spath}" \
-        '(' ${(s: :)prune} ')' -prune \
-        -o '(' -type f -o -type l ')' ${ext:+-name} ${ext:+$ext} \
+        '(' ${(s: :)${(j: -o :)prune}} ')' -prune \
+        -o '(' -type f -o -type l ')' \
+        ${ext:+-name} \
+        ${ext:+$ext} \
         -print0 \
     | xargs -0 -P8 \
-        grep ${(s: :)GREP_OPTIONS2} \
+        grep --color \
         ${is_icase:+-i} \
         -nH -E -e "${search}" "${@?}"
 }
