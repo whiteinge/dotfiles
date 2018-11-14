@@ -73,22 +73,21 @@ export CVSIGNORE='*.swp *.orig *.rej .git'
 # Silence Wine debugging output (why isn't this a default?)
 export WINEDEBUG=-all
 
-# A function to construct GREP_OPTIONS dynamically by reading a file named
-# .grepoptions in both the user's home directory and the current directory (for
+# A function to construct GEXT_OPTIONS dynamically by reading a file named
+# .gextoptions in both the user's home directory and the current directory (for
 # project-level grep options and ignores)
-# Grep has deprecated this envvar. Use GREP_OPTIONS2 instead to avoid warning.
-function grep_options() {
+function gext_options() {
     local -a opts
-    local proj_opts=${PWD}/.grepoptions
+    local proj_opts=${PWD}/.gextoptions
 
-    opts=( ${(f)"$(< "${HOME}/.grepoptions")"} )
+    opts=( ${(f)"$(< "${HOME}/.gextoptions")"} )
 
     if [[ -r ${proj_opts} ]] && [[ $PWD != $HOME ]] ; then
         opts+=( ${${(f)"$(< "${proj_opts}")"}:#[#]*} )
     fi
 
-    GREP_OPTIONS2="${(j: :)opts}"
-    export GREP_OPTIONS2
+    GEXT_OPTIONS="${(j: :)opts}"
+    export GEXT_OPTIONS
 }
 
 # }}}
@@ -605,6 +604,6 @@ function curlretry() {
 ### }}}
 
 # Run precmd functions
-precmd_functions=( precmd_prompt grep_options )
+precmd_functions=( precmd_prompt gext_options )
 
 # EOF
