@@ -153,11 +153,11 @@ au CompleteDone *
     \   cd `=b:oldpwd` |
     \   unlet b:oldpwd |
     \ endif
-" Chain multiple path completions with / key. Selects the first suggestion if
-" no current selection. Use ctrl-y to finish completion as normal.
-imap <expr> / pumvisible()
+" Chain multiple path completions with <tab> key. Selects the first suggestion
+" if no current selection. Use ctrl-y to finish completion as normal.
+imap <expr> <tab> pumvisible()
     \ ? len(v:completed_item) ? '<C-Y><C-F>' : '<C-N><C-Y><C-F>'
-    \ : '/'
+    \ : '<tab>'
 
 " Don't select first autocomplete item, follow typing.
 set completeopt=longest,menuone,preview
