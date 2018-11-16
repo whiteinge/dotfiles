@@ -1,0 +1,112 @@
+#!/usr/bin/env zsh
+# A port of the excellent t to store todos in any Git repository.
+# https://github.com/sjl/t
+#
+# The todos are unobtrusive additions to any Git repo. The todos themselves are
+# stored in Git as dangling commits, and Git notes are used to keep references
+# to those objects so they're not garbage collected.
+#
+# Setup: either the CWD should be a Git repo or the TODO_REPO variable should
+# point to a Git repo used to store the todo list.
+
+NAME=$(basename "$0")
+
+TODO_REPO=${TODO_REPO:-'./.git'}
+TODO_NS=${TODO_NS:-'todo'}
+TODO_ARCHIVE=${TODO_ARCHIVE:-'todo-archive'}
+
+local -a git=( "git" "--git-dir" "${TODO_REPO}" )
+
+test -d "$TODO_REPO"
+NO_REPO=$?
+
+command -v "git" 1>/dev/null 2>/dev/null
+NO_GIT=$?
+
+add() {
+    local in="$*"
+
+    if [[ $in == *$'\n'* ]]; then
+        printf 'TODOs cannot be multi-line.\n' 1>&2
+        exit 1
+    fi
+
+    printf '%s' "$in" \
+        | "$git[@]" hash-object --stdin -w \
+        | xargs -I@ "$git[@]" notes --ref "$TODO_NS" add @ --allow-empty -m ''
+}
+
+list() {
+    "${git[@]}" notes --ref "$TODO_NS" \
+        | cut -d' ' -f2 \
+        | "${git[@]}" cat-file --batch \
+        | xargs -d '\n' -n 2 \
+        | while read -r sha otype len content; do
+            printf '%s - %s\n' \
+                "$(${git[@]} rev-parse --short=4 ${sha})" \
+                "$content"
+        done \
+        | sort
+}
+
+del() {
+    local id="${1:?Todo ID is required.}"
+    "$git[@]" notes --ref "$TODO_NS" remove "$id"
+}
+
+arch() {
+    :
+}
+
+hist() {
+    :
+}
+
+help() {
+    echo "${NAME} [<flag>] [<arg>]\n"
+    echo "List all todos: ${NAME}
+Add a new todo: ${NAME} Walk the plants.
+    : ${NAME} Water the dog.
+Delete a todo: ${NAME} -d <hash>
+Archive a todo: ${NAME} -a <hash>
+List todo archives: ${NAME} -A
+Show this help: ${NAME} -h
+" | column -t -s ':'
+}
+
+main() {
+    local cmd
+    local opt
+    local OPTARG
+    local OPTIND
+
+    if [ "$NO_REPO" -ne 0 ]; then
+        printf 'Todo repository "%s" not found.\n' "$TODO_REPO" 1>&2
+        exit 1
+    fi
+
+    if [ "$NO_GIT" -ne 0 ]; then
+        printf 'Git must be installed.\n' 1>&2
+        exit 1
+    fi
+
+    if [ $# -eq 0 ]; then
+        cmd='list'
+    else
+        while getopts hdaA opt; do
+            case $opt in
+                h) cmd='help';;
+                d) cmd='del';;
+                a) cmd='arch';;
+                A) cmd='hist';;
+            esac
+        done
+        shift $(( OPTIND - 1 ))
+
+        cmd="${cmd:-add}"
+    fi
+
+    "$cmd" "$@"
+}
+
+main "$@"
