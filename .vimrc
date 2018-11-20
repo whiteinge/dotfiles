@@ -114,6 +114,9 @@ vnoremap K :m '<-2<CR>gv=gv
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 
+" Select most recently edited text.
+nnoremap <leader>v `[v`]
+
 " Add a line without changing position or leaving mode
 map <leader>o :set paste<cr>m`o<esc>``:set nopaste<cr>
 map <leader>O :set paste<cr>m`O<esc>``:set nopaste<cr>
