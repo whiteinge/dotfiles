@@ -212,6 +212,10 @@ cnoremap sudow w !sudo tee % >/dev/null
 " I can never remember Vim's default. Where does that ctrl-b come from?
 cnoremap <c-a> <Home>
 
+" Add thumbs-up/down emoji as digraphs
+dig +1 128077
+dig -1 128078
+
 " }}}
 " Folding (spacebar toggles) {{{
 " Spacebar toggles a fold, zi toggles all folding, zM closes all folds
