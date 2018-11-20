@@ -64,6 +64,7 @@ c.url.searchengines['pypi'] = 'https://pypi.python.org/pypi?%3Aaction=search&ter
 c.url.searchengines['python'] = 'https://docs.python.org/3.5/search.html?q={}&check_keywords=yes&area=default'
 c.url.searchengines['steam'] = 'http://store.steampowered.com/search/?ref=os&term={}'
 c.url.searchengines['unpkg'] = 'https://unpkg.com/{}/'
+c.url.searchengines['youtube'] = 'https://www.youtube.com/results?search_query={}'
 
 c.aliases['github-first-commit'] = """jseval javascript:(b=>fetch('https://api.github.com/repos/'+b[1]+'/commits?sha='+(b[2]||'')).then(c=>Promise.all([c.headers.get('link'),c.json()])).then(c=>{if(c[0]){var d=c[0].split(',')[1].split(';')[0].slice(2,-1);return fetch(d).then(e=>e.json())}return c[1]}).then(c=>c.pop().html_url).then(c=>window.location=c))(window.location.pathname.match(/\/([^\/]+\/[^\/]+)(?:\/tree\/([^\/]+))?/));"""
 c.aliases['video-1x'] = """jseval javascript:(function(){document.querySelector('video').playbackRate=1})()"""
@@ -72,6 +73,7 @@ c.aliases['video-2x'] = """jseval javascript:(function(){document.querySelector(
 c.aliases['audio-1x'] = """jseval javascript:(function(){document.querySelector('audio').playbackRate=1})()"""
 c.aliases['audio-1.5x'] = """jseval javascript:(function(){document.querySelector('audio').playbackRate=1.5})()"""
 c.aliases['audio-2x'] = """jseval javascript:(function(){document.querySelector('audio').playbackRate=2})()"""
+c.aliases['larder-add'] = """jseval javascript:(function(){if(window.LarderBM!==undefined){LarderBM();}else{document.head.appendChild(document.createElement('script')).src='https://larder.io/static/js/bookmarklet.js?667829';}})();"""
 
 # Enable spell check
 # /usr/share/qutebrowser/scripts/dictcli.py install en-US
