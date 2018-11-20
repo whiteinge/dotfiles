@@ -167,7 +167,6 @@ alias c='curl -sS -D /dev/stderr'
 compdef c=curl
 alias less='less -imJMW'
 alias cls='clear' # note: ctrl-L under zsh does something similar
-alias lynx='lynx -cfg=$HOME/.lynx.cfg'
 alias ducks='du -cks * | sort -rn | head -15'
 alias tree="tree -FC --charset=ascii"
 alias info='info --vi-keys'

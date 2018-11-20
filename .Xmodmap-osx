@@ -1,7 +1,0 @@
-! Switch left command and option (super and alt).
-clear mod1
-clear mod4
-keycode 133 = Meta_L
-keycode 64 = Super_L
-add mod1 = Meta_L
-add mod4 = Super_L
