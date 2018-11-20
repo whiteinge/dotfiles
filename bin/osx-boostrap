@@ -1,0 +1,133 @@
+#!/usr/bin/env sh
+# Bootstrap a new OS X machine.
+
+# Set common prefs ############################################################
+
+# Disable elastic scroll in Chrome.
+defaults write -g NSScrollViewRubberbanding -bool false
+
+# Avoid creating .DS_Store files on network volumes.
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
+# Screensaver.
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 30
+
+# Finder.
+defaults write com.apple.finder QuitMenuItem -bool true
+defaults write com.apple.finder DisableAllAnimations -bool true
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+chflags nohidden ~/Library
+
+# Safari.
+defaults write com.apple.Safari IncludeDebugMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtras -bool true
+
+# Dock.
+defaults write com.apple.Dock autohide -bool true
+defaults write com.apple.dock orientation -string right
+defaults write com.apple.dock tilesize -int 45
+defaults write com.apple.dock autohide-delay -float 0
+defaults write com.apple.dock autohide-time-modifier -float 0
+
+# Time Machine.
+defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+
+# Prefs.
+defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
+defaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool false
+defaults write -g ApplePressAndHoldEnabled -bool false
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+# Workspace keyboard shortcuts.
+# If this file doesn't already exist all keyboard shortcuts not listed here
+# will be zeroed out (no default). You can create it by clicking 'Reset to
+# defaults' in the keyboard prefs. :(
+defaults write ~/Library/Preferences/com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 118 \
+    '<dict><key>enabled</key><true/><key>value</key><dict><key>type</key><string>standard</string><key>parameters</key><array><integer>65535</integer><integer>122</integer><integer>9437184</integer></array></dict></dict>'
+defaults write ~/Library/Preferences/com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 119 \
+    '<dict><key>enabled</key><true/><key>value</key><dict><key>type</key><string>standard</string><key>parameters</key><array><integer>65535</integer><integer>120</integer><integer>9437184</integer></array></dict></dict>'
+defaults write ~/Library/Preferences/com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 120 \
+    '<dict><key>enabled</key><true/><key>value</key><dict><key>type</key><string>standard</string><key>parameters</key><array><integer>65535</integer><integer>99</integer><integer>9437184</integer></array></dict></dict>'
+defaults write ~/Library/Preferences/com.apple.symbolichotkeys.plist AppleSymbolicHotKeys -dict-add 121 \
+    '<dict><key>enabled</key><true/><key>value</key><dict><key>type</key><string>standard</string><key>parameters</key><array><integer>65535</integer><integer>118</integer><integer>9437184</integer></array></dict></dict>'
+
+# Set up a few login items.
+printf '
+/Applications/Backup\ and\ Sync.app
+/Applications/iTerm.app
+/Applications/Keybase.app
+/Applications/Flux.app
+/Applications/Hammerspoon.app
+' | xargs -I@ osascript -e 'tell application "System Events" to make login item at end with properties {path: "@", hidden:false}'
+
+# Make it so.
+pkill -9 Finder
+pkill -9 Dock
+
+# Install common packages #####################################################
+
+# Install xcode CLI tools
+xcode-select --install
+
+# Install youtube-dl
+curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
+chmod +x /usr/local/bin/youtube-dl
+
+# Install Homebrew
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+printf '
+bash
+cataclysm
+cloc
+coreutils --with-default-names
+ctags
+curl
+diffutils
+ffmpeg
+findutils --with-default-names
+gawk
+git
+gnu-sed --with-default-names
+gnu-tar --with-default-names
+gnu-which --with-default-names
+gnupg
+grep --with-default-names
+gzip
+jq
+less
+lua
+lynx
+make --with-default-names
+mplayer
+ncdu
+nethack
+nmap
+openssh
+pandoc
+pinentry-mac
+readline
+rlwrap
+rsync
+socat
+sqlite
+terminal-notifier
+tidy-html5
+tmux
+tree
+unzip
+vim
+watch
+wtf
+zsh
+' | xargs brew install
+
+printf '
+android-platform-tools
+gimp
+haskell-platform
+qutebrowser
+vlc
+' | xargs brew cask install
