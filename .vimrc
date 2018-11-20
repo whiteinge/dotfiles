@@ -106,6 +106,10 @@ vnoremap <leader>. :normal .<cr>
 " containing the macro.
 vnoremap <leader>@ :normal @
 
+" Move visual block.
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
 " Allow undoing individual insert-mode changes with ctrl-u and ctrl-w
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
