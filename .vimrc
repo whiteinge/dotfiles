@@ -314,6 +314,8 @@ map <leader>dc /\v^[<=>]{7}( .*\|$)<cr>
 " escape sequence. (Terimal.app on OSX and WSL on Windows.)
 nmap <silent> <leader>6 <c-^><cr>
 
+" Use gext script instead of grep.
+set grepprg=gext
 
 " }}}
 " X11 Integration {{{
