@@ -171,6 +171,7 @@ alias lynx='lynx -cfg=$HOME/.lynx.cfg'
 alias ducks='du -cks * | sort -rn | head -15'
 alias tree="tree -FC --charset=ascii"
 alias info='info --vi-keys'
+alias wtf='wtf -o'
 alias clip='xclip -selection clipboard'
 alias ocaml='rlwrap ocaml'
 alias node='env NODE_NO_READLINE=1 rlwrap node'
