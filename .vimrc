@@ -59,22 +59,41 @@ set formatoptions+=n            " Recognize numbered lists
 " Don't let ftplugins override formatoptions
 au FileType * set fo=tcqj1n
 
-" Better indention/ hierarchy
-" https://www.reddit.com/r/vim/comments/4wmugj/enhance_vim_as_a_writing_environment/d68sfgj
 " Un-fuck '*' in formatlistpat.
 setl comments=
-set formatlistpat=^\\s*                    " Optional leading whitespace
-set formatlistpat+=[                       " Start class
-set formatlistpat+=\\[({]\\?               " |  Optionally match opening punctuation
-set formatlistpat+=\\(                     " |  Start group
-set formatlistpat+=[0-9]\\+                " |  |  A number
-set formatlistpat+=\\\|[iIvVxXlLcCdDmM]\\+ " |  |  Roman numerals
-set formatlistpat+=\\\|[a-zA-Z]            " |  |  A single letter
-set formatlistpat+=\\)                     " |  End group
-set formatlistpat+=[\\]:.)}                " |  Closing punctuation
-set formatlistpat+=]                       " End class
-set formatlistpat+=\\s\\+                  " One or more spaces
-set formatlistpat+=\\\|^\\s*[-–+o*•]\\s\\+ " Or bullet points
+
+" Better indention/ hierarchy
+" https://www.reddit.com/r/vim/comments/4wmugj/enhance_vim_as_a_writing_environment/d68sfgj
+" Optional leading whitespace
+" Start class
+" |  Optionally match opening punctuation
+" |  Start group
+" |  |  A number
+" |  |  Roman numerals
+" |  |  A single letter
+" |  End group
+" |  Closing punctuation
+" End class
+" One or more spaces
+" Or bullet points
+let formatlistpat='
+    \^\s*
+    \[
+    \\[({]\?
+    \\(
+    \[0-9]\+
+    \\|[iIvVxXlLcCdDmM]\+
+    \\|[a-zA-Z]
+    \\)
+    \[\]:.)}
+    \]
+    \\s\+
+    \\|^\s*[-–+o*•]\s\+
+    \'
+" ) Fix broken syntax highlighting.
+let &flp=formatlistpat
+" Don't let ftplugins override formatoptions
+au FileType * let &flp=formatlistpat
 
 set expandtab                   " Uses spaces instead of tab characters
 set smarttab                    " Helps with backspacing because of expandtab
