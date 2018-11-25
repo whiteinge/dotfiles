@@ -4,7 +4,7 @@
 # brew --prefix is too slow to call three times. Hardcoding paths instead...
 
 # export PATH="$HOME/bin:$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
-export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/curl/bin:/usr/local/bin:/usr/local/opt/python/libexec/bin:$PATH"
+export PATH="$HOME/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/curl/bin:/usr/local/bin:/usr/local/opt/python/libexec/bin:$PATH"
 # export MANPATH="$HOME/man:$(brew --prefix)/opt/coreutils/libexec/gnuman:$MANPATH"
 # export MANPATH="$HOME/man:$(brew --prefix)/opt/findutils/share:$MANPATH"
 export MANPATH="$HOME/man:/usr/local/opt/coreutils/libexec/gnuman:/usr/local/opt/findutils/share/man:$MANPATH"

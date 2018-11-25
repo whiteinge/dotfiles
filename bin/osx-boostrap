@@ -29,6 +29,7 @@ gnu-which --with-default-names
 gnupg
 grep --with-default-names
 gzip
+haskell-stack
 jq
 less
 lua
@@ -60,7 +61,6 @@ zsh
 printf '
 android-platform-tools
 gimp
-haskell-platform
 qutebrowser
 vlc
 ' | xargs brew cask install
