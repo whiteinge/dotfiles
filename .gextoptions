@@ -8,6 +8,7 @@
 --exclude-dir=*node_modules
 --exclude=*.bundle.js
 --exclude=*.min.js
+--exclude=*.min.css
 --exclude=*.pyc
 --exclude=*.pyo
 --exclude=tags
