@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# Output file names and line numbers for all changes in a Git commit in
+# a format appropriate for loading into Vim's quickfix list.
+#
+# Usage: git editc HEAD
+
+REF=${1:-HEAD}
+
+$EDITOR -q <(git diff-tree -p -U0 --diff-filter=AM -r "$REF" | awk '
+/^\+\+\+ / {
+    fname=substr($2, 2)
+}
+/^@@ / {
+    nr=substr($3, 2)
+    sub(/,.*/, "", nr)
+    sub(/.*@@ /, "", $0)
+
+    printf(".%s:%s: %s\n", fname, nr, $0)
+}')
