@@ -176,6 +176,7 @@ alias ocaml='rlwrap ocaml'
 alias node='env NODE_NO_READLINE=1 rlwrap node'
 alias rs='rsync -avhzC --progress'
 compdef rs=rsync
+alias mplayer='mplayer -af scaletempo -speed 1'
 
 # Print all files under the current path without prefixed path.
 # Useful for listing files under one path based on the files in another. E.g.:
@@ -199,13 +200,6 @@ alias -g RANDOM='"$(files=(*(.)) && echo $files[$RANDOM%${#files}+1])"'
 # trailing space helps sudo recognize aliases
 # breaks if flags are given (e.g. sudo -u someuser vi /etc/hosts)
 alias sudo='command sudo '
-
-# mplayerx2 -s 2.0 mymovie.m4v
-function mplayerx2() {
-    local -a args
-    zparseopts -D -E -a args -- s: -speed:
-    mplayer -af scaletempo -speed ${args[2]:=1.5} $1
-}
 
 # }}}
 # Miscellaneous Functions:
