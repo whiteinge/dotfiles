@@ -1,19 +1,25 @@
 # Various hacks and bullshit to get a sane environment going on OSX.
+# brew --prefix <pkg> is way, way too slow for use here;
+# hardcode paths instead.
 
-# Fixes for custom Brew paths.
-# brew --prefix is too slow to call three times. Hardcoding paths instead...
+paths=(
+    "${HOME}/bin" \
+    "/usr/local/bin" \
+    "/usr/local/opt/coreutils/libexec/gnubin" \
+    "/usr/local/opt/curl/bin" \
+    "/usr/local/opt/python/libexec/bin" \
+    "/usr/local/opt/gnupg/libexec/gpgbin" \
+)
 
-# export PATH="$HOME/bin:$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
-export PATH="$HOME/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/curl/bin:/usr/local/bin:/usr/local/opt/python/libexec/bin:$PATH"
-# export MANPATH="$HOME/man:$(brew --prefix)/opt/coreutils/libexec/gnuman:$MANPATH"
-# export MANPATH="$HOME/man:$(brew --prefix)/opt/findutils/share:$MANPATH"
-export MANPATH="$HOME/man:/usr/local/opt/coreutils/libexec/gnuman:/usr/local/opt/findutils/share/man:$MANPATH"
-
-export NVM_DIR=$HOME/.nvm
-# source $(brew --prefix nvm)/nvm.sh
-source /usr/local/opt/nvm/nvm.sh
-
-# Need to upgrade from gpg1 to gpg2?
-export PATH="/usr/local/opt/gnupg/libexec/gpgbin:$PATH"
+manpaths=(
+    "$HOME/man" \
+    "/usr/local/opt/coreutils/libexec/gnuman" \
+    "/usr/local/opt/findutils/share/man" \
+)
 
 export ANDROID_HOME=/usr/local/opt/android-sdk
+export NVM_DIR=$HOME/.nvm
+source /usr/local/opt/nvm/nvm.sh
+
+export PATH="${(j|:|)paths}:${PATH}"
+export MANPATH="${(j|:|)manpaths}:${MANPATH}"
