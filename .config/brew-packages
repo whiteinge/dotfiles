@@ -1,0 +1,53 @@
+awscli
+bash
+cataclysm
+cloc
+cmake
+coreutils --with-default-names
+ctags
+curl
+diffutils
+ffmpeg
+findutils --with-default-names
+flow
+gawk
+git
+gnu-sed --with-default-names
+gnu-tar --with-default-names
+gnu-which --with-default-names
+gnupg
+grep --with-default-names
+gzip
+haskell-stack
+jo
+jq
+less
+lua
+lynx
+make --with-default-names
+mplayer
+ncdu
+nethack
+nmap
+nvm
+openssh
+p7zip
+pandoc
+pinentry-mac
+readline
+rlwrap
+rsync
+socat
+sqlite
+task-spooler
+terminal-notifier
+tidy-html5
+tmux
+tree
+unzip
+vim
+vis
+watch
+wget
+wtf
+zsh
