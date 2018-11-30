@@ -95,15 +95,15 @@ type $GNU_SED >/dev/null 2>&1 || GNU_SED="sed"
 # Temporary files for left and right side, keeping file extensions for syntax highlighting
 MERGED_PATH="$(dirname ${MERGED})"
 MERGED_FILE="$(basename ${MERGED})"
-LCONFL="${MERGED_PATH}/.REMOTE.$$.${MERGED_FILE}"
-RCONFL="${MERGED_PATH}/.LOCAL.$$.${MERGED_FILE}"
+LCONFL="${MERGED_PATH}/.LOCAL.$$.${MERGED_FILE}"
+RCONFL="${MERGED_PATH}/.REMOTE.$$.${MERGED_FILE}"
 
 # Always delete our temp files; Git will handle it's own temp files
 trap 'rm -f "'"${LCONFL}"'" "'"${RCONFL}"'"' SIGINT SIGTERM EXIT
 
 # Remove the conflict markers for each 'side' and put each into a temp file
-$GNU_SED -r -e '/^<<<<<<< /,/^=======\r?$/d' -e '/^>>>>>>> /d' "${MERGED}" > "${LCONFL}"
-$GNU_SED -r -e '/^=======\r?$/,/^>>>>>>> /d' -e '/^<<<<<<< /d' "${MERGED}" > "${RCONFL}"
+$GNU_SED -r -e '/^<<<<<<< /,/^=======\r?$/d' -e '/^>>>>>>> /d' "${MERGED}" > "${RCONFL}"
+$GNU_SED -r -e '/^=======\r?$/,/^>>>>>>> /d' -e '/^<<<<<<< /d' "${MERGED}" > "${LCONFL}"
 
 # Fire up vimdiff
 $cmd -f -R -d "${LCONFL}" "${RCONFL}" \
