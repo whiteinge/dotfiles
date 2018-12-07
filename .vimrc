@@ -105,8 +105,6 @@ set nojoinspaces                " Prevents inserting two spaces after punctuatio
 set lazyredraw                  " Will not redraw the screen while running macros (goes faster)
 set pastetoggle=<F9>            " Useful so auto-indenting doesn't mess up code when pasting
 
-set complete-=t,i               " Remove tags and included files from default insert completion
-
 set virtualedit=block           " Let cursor move past the last char in <C-V> mode
 set nostartofline               " Avoid moving cursor to BOL when jumping around
 
@@ -162,28 +160,6 @@ nnoremap <silent> <leader>l
 " Toggle spell-checking
 map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
 
-" Maps Omnicompletion to CTRL-space.
-inoremap <nul> <C-X><C-O>
-
-" Maps file completion relative to current file path.
-inoremap <C-F>
-    \ <C-O>:let b:oldpwd = getcwd() <bar>
-    \ lcd %:p:h<cr><C-X><C-F>
-" Restore path when done.
-au CompleteDone *
-    \ if exists('b:oldpwd') |
-    \   cd `=b:oldpwd` |
-    \   unlet b:oldpwd |
-    \ endif
-" Chain multiple path completions with <tab> key. Selects the first suggestion
-" if no current selection. Use ctrl-y to finish completion as normal.
-imap <expr> <tab> pumvisible()
-    \ ? len(v:completed_item) ? '<C-Y><C-F>' : '<C-N><C-Y><C-F>'
-    \ : '<tab>'
-
-" Don't select first autocomplete item, follow typing.
-set completeopt=longest,menuone,preview
-
 " Change directory to the path of the current file
 map <leader>cd :cd %:p:h<cr>
 
@@ -192,14 +168,6 @@ map <leader>ce :e <C-R>=expand("%:p:h") . "/" <cr>
 map <leader>cs :sp <C-R>=expand("%:p:h") . "/" <cr>
 map <leader>cv :vs <C-R>=expand("%:p:h") . "/" <cr>
 map <leader>ct :tabnew <C-R>=expand("%:p:h") . "/" <cr>
-
-set dictionary=spell        " Complete words from the spelling dict.
-
-" Use generic omnicompletion if something more specific isn't already set
-if has("autocmd") && exists("+omnifunc")
-    au Filetype *
-        \ if &omnifunc == "" | setl omnifunc=syntaxcomplete#Complete | endif
-endif
 
 if has("autocmd")
     " Helps if you have to use another editor on the same file
@@ -247,6 +215,37 @@ set suffixes+=.pyc,.pyo         " Don't autocomplete these filetypes
 set wildmenu                    "wmnu:  enhanced ex command completion
 set wildmode=longest:full,list:full  "wim:   helps wildmenu auto-completion
 set wildignore+=*/node_modules/**
+
+set dictionary=spell        " Complete words from the spelling dict.
+set complete-=t,i           " Remove tags and included files from default insert completion
+
+" Maps Omnicompletion to CTRL-space.
+inoremap <nul> <C-X><C-O>
+
+" Maps file completion relative to current file path.
+inoremap <C-F>
+    \ <C-O>:let b:oldpwd = getcwd() <bar>
+    \ lcd %:p:h<cr><C-X><C-F>
+" Restore path when done.
+au CompleteDone *
+    \ if exists('b:oldpwd') |
+    \   cd `=b:oldpwd` |
+    \   unlet b:oldpwd |
+    \ endif
+" Chain multiple path completions with <tab> key. Selects the first suggestion
+" if no current selection. Use ctrl-y to finish completion as normal.
+imap <expr> <tab> pumvisible()
+    \ ? len(v:completed_item) ? '<C-Y><C-F>' : '<C-N><C-Y><C-F>'
+    \ : '<tab>'
+
+" Don't select first autocomplete item, follow typing.
+set completeopt=longest,menuone,preview
+
+" Use generic omnicompletion if something more specific isn't already set
+if has("autocmd") && exists("+omnifunc")
+    au Filetype *
+        \ if &omnifunc == "" | setl omnifunc=syntaxcomplete#Complete | endif
+endif
 
 " }}}
 " Window Layout {{{
