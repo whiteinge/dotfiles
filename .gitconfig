@@ -149,19 +149,8 @@
 [commit]
   template = ~/.gitmessage
 
-[diff]
-    tool = clivimdiff
-
-[difftool "clivimdiff"]
-    cmd = gvimdiff -v $LOCAL $REMOTE
-
 [merge]
     tool = diffconflicts
-
-[mergetool "gdiffconflicts"]
-    cmd = diffconflicts gvim $BASE $LOCAL $REMOTE $MERGED
-    trustExitCode = true
-    keepBackup = false
 
 [mergetool]
     keepBackup = false
