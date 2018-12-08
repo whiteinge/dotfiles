@@ -413,6 +413,9 @@ let mapleader = '\'
 nmap <silent> <leader>S :call scratch#Scratch()<cr>
 command! -nargs=* Scratch call scratch#Scratch(<f-args>)
 
+""" Diff unstaged changes.
+nmap <silent> <leader>cc :call stagediff#StageDiff()<cr>
+
 """ Surround a visual selection of opfunc movement with characters.
 " E.g., to surround with parens: \s(iw
 " TODO: Is this really better than: c<motion>"<C-r><C-o>""<Esc>
