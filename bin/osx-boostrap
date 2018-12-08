@@ -16,5 +16,6 @@ xargs /usr/local/bin/brew install < $HOME/.config/brew-packages
 printf '
 android-platform-tools
 gimp
+powershell
 vlc
 ' | xargs /usr/local/bin/brew cask install
