@@ -478,15 +478,13 @@ compdef xssh=ssh
 #   ...use multiplexed ssh connection here...
 
 function _wait_for_ssh () {
-    [[ $# -eq 1 ]] || { echo "ssh hostname required"; exit 1; }
+    local ssh="${1?:ssh hostname required}"
 
-    local ssh="${1}"
-
-    echo -n "Connecting to GitHub."
+    printf 'Connecting to "%s".\n' "$ssh"
     while ! ssh -O check ${ssh} &>/dev/null true; do
-        echo -n '.' ; sleep 0.5;
+        printf '.' ; sleep 0.5;
     done
-    echo -e "\nConnected!\n"
+    printf '\nConnected!\n'
 }
 
 # }}}
@@ -494,6 +492,7 @@ function _wait_for_ssh () {
 # Run git fetch on all repos under the current dir
 
 function fetchall () {
+    setopt LOCAL_OPTIONS NO_MONITOR
     local GH_SSH="git@github.com"
 
     # Start a connection and wait for it; exit when we're done
