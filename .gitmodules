@@ -1,9 +1,6 @@
 [submodule ".vim/bundle/tagbar"]
 	path = .vim/pack/foo/start/tagbar
 	url = git://github.com/majutsushi/tagbar.git
-[submodule ".vim/bundle/vim-fugitive"]
-	path = .vim/pack/foo/start/vim-fugitive
-	url = git://github.com/tpope/vim-fugitive.git
 [submodule ".vim/bundle/vim-commentary"]
 	path = .vim/pack/foo/start/vim-commentary
 	url = git://github.com/tpope/vim-commentary.git

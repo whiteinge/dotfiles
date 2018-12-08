@@ -461,12 +461,6 @@ let g:ale_echo_cursor = 0
 nmap <silent> <leader>af :ALEFix<cr>
 nmap <silent> <leader>al :call ale#Lint()<cr>
 
-""" Fugitive settings
-" Open current buffer in a new tab and show Fugitive diff
-nmap <silent> <leader>cc :tab split \| Gdiff <cr>
-nmap <silent> <leader>ci :Gcommit<cr>
-nmap <silent> <leader>ca :Gcommit --amend --reuse-message=HEAD<cr>
-
 """ Tagbar plugin settings
 map <F5> :TagbarToggle<cr>
 let g:tagbar_sort = 0
@@ -474,11 +468,6 @@ let g:tagbar_compact = 1
 let g:tagbar_autoshowtag = 1
 let g:tagbar_width = 25
 let g:tagbar_iconchars = ['+', '-']
-
-" Flagship settings
-let g:flagship_skip = 'fugitive#statusline'
-let g:tablabel =
-    \ "%N%{flagship#tabmodified()} %{flagship#tabcwds('shorten',',')}"
 
 " See .md files as markdown instead of modula-2.
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
