@@ -40,7 +40,7 @@ list() {
     "${git[@]}" notes --ref "$TODO_NS" \
         | cut -d' ' -f2 \
         | "${git[@]}" cat-file --batch \
-        | xargs -d '\n' -n 2 \
+        | xargs -r -d '\n' -n 2 \
         | while read -r sha otype len content; do
             printf '%s - %s\n' \
                 "$(${git[@]} rev-parse --short=4 ${sha})" \
