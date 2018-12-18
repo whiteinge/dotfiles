@@ -11,7 +11,8 @@ fu! s:WriteToIndex(fname)
 endfu
 
 fu! stagediff#StageDiff()
-    let s:fname = expand('%')
+    let s:fname = fnamemodify(expand('%'), ':~:.')
+    let l:ft = &ft
 
     tabe %
     diffthis
@@ -19,6 +20,7 @@ fu! stagediff#StageDiff()
     silent exe ':r !git show :'. s:fname
     1delete
     set nomodified
+    let &ft = l:ft
     diffthis
 
     setl buftype=acwrite bufhidden=delete nobuflisted
