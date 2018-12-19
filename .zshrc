@@ -599,4 +599,8 @@ function curlretry() {
 # Run precmd functions
 precmd_functions=( precmd_prompt gext_options )
 
+if [[ -r "$HOME/.zsh_customize" ]]; then
+    source "$HOME/.zsh_customize"
+fi
+
 # EOF
