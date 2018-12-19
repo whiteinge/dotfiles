@@ -1,0 +1,6 @@
+alias vi='gvim -v'
+alias vim='gvim -v'
+alias vimdiff='gvimdiff -v'
+export EDITOR='gvim -v'
+export VISUAL='gvim -v'
+export GIT_EDITOR='gvim -v'
