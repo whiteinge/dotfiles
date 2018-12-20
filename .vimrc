@@ -415,6 +415,8 @@ command! -nargs=* Scratch call scratch#Scratch(<f-args>)
 
 """ Diff unstaged changes.
 nmap <silent> <leader>cc :call stagediff#StageDiff()<cr>
+nmap <silent> <leader>ci :term ++close git commit<cr>
+nmap <silent> <leader>ca :term ++close git commit --amend --no-edit<cr>
 
 """ Surround a visual selection of opfunc movement with characters.
 " E.g., to surround with parens: \s(iw
