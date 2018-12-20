@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+import sys
+if sys.version.startswith('3'):
+    import urllib.parse
+    print(urllib.parse.unquote(sys.stdin.read()))
+else:
+    import urllib2
+    print(urllib2.unquote(sys.stdin.read().encode('utf8')))
