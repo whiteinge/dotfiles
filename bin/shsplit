@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+'''
+Reformat a one-line shell command:
+
+    someshellcommand.sh -f --foo 'this is a --string do not split'
+
+As a multiline shell command:
+
+    someshellcommand.sh \
+        -f  \
+        --foo 'this is a --string do not split'
+'''
+import shlex
+import sys
+
+prev = ''
+for i in shlex.shlex():
+    if i.startswith('-'):
+        if prev == '-':
+            sys.stdout.write(i)
+        else:
+            sys.stdout.write(' \\\n    %s' % i)
+    else:
+        if prev == '-':
+            sys.stdout.write('%s ' % i)
+        else:
+            sys.stdout.write(i)
+
+    prev = i
