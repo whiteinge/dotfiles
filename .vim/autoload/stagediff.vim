@@ -3,7 +3,12 @@
 " Call stagediff#StageDiff to open a new tab containing the diff.
 
 fu! s:WriteToIndex(fname)
-    let l:mode = split(system('git ls-files --stage '. a:fname), ' ')[0]
+    try
+        let l:mode = split(system('git ls-files --stage '. a:fname), ' ')[0]
+    catch
+        let l:mode = '100644'
+    endtry
+
     let l:ret = execute('write !git hash-object --stdin -w
         \ | xargs -I@ git update-index --add
         \ --cacheinfo '. l:mode .',@,'. a:fname)
@@ -14,11 +19,23 @@ fu! stagediff#StageDiff()
     let s:fname = fnamemodify(expand('%'), ':~:.')
     let l:ft = &ft
 
+    if (len(system('git ls-files --unmerged '. s:fname)))
+        echohl WarningMsg
+            \ | echon "Please resolve conflicts first."
+            \ | echohl None
+        return 1
+    endif
+
     tabe %
     diffthis
     vnew
-    silent exe ':r !git show :'. s:fname
-    1delete
+
+    call system('git ls-files --error-unmatch '. s:fname)
+    if (!v:shell_error)
+        silent exe ':r !git show :'. s:fname
+        1delete
+    endif
+
     set nomodified
     let &ft = l:ft
     diffthis
