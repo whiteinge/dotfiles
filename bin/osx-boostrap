@@ -4,18 +4,32 @@
 # Install xcode CLI tools
 xcode-select --install
 
+# Install Homebrew
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
 # Install youtube-dl
 curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
 chmod +x /usr/local/bin/youtube-dl
 
-# Install Homebrew
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
-xargs /usr/local/bin/brew install < $HOME/.config/brew-packages
+xargs /usr/local/bin/brew install < $HOME/src/dotfiles/.config/brew-packages
 
 printf '
 android-platform-tools
 gimp
 powershell
+virtualbox
 vlc
+xquartz
 ' | xargs /usr/local/bin/brew cask install
+
+printf 'Adding zsh to /etc/shells (enter password):\n'
+sudo printf '/usr/local/bin/zsh\n' >> /etc/shells
+chsh -s /usr/local/bin/zsh
+
+/usr/X11/bin/lndir -silent $HOME/src/dotfiles $HOME
+( cd $HOME; ln -s .zsh_customize-brew .zsh_customize; )
+
+printf '
+All set (hopefully).
+Install your font of choice and all the unscriptable OSX apps and settings.
+'
