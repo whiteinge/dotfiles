@@ -329,6 +329,10 @@ nmap <silent> <leader>dw :call iwhitetoggle#IwhiteToggle()<CR>
 " Find merge conflict markers
 map <leader>dc /\v^[<=>]{7}( .*\|$)<cr>
 
+" Use a (usually) better diff algorithm.
+set diffopt+=algorithm:patience
+set diffopt+=indent-heuristic
+
 " Alias for ctrl-^ using leader since some terminal emulators consume that
 " escape sequence. (Terimal.app on OSX and WSL on Windows.)
 nmap <silent> <leader>6 <c-^><cr>
