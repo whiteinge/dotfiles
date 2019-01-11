@@ -2,6 +2,9 @@
     email = seth@eseth.com
     name = Seth House
 
+[push]
+    default = upstream
+
 [alias]
     b = branch -vv
     bc = branch --contains
@@ -17,6 +20,7 @@
     i = ghissues
     m = merge --no-ff
     mt = mergetool
+    p = push
     rl = reflog --date=relative
     short = rev-parse --short
     sh = show --summary --stat --pretty=fuller --patch
@@ -102,10 +106,6 @@
     preqbase = "!sh -c 'parent1=$(git rev-list --merges --parents $1 \
         | awk -v head=\"$(git rev-parse HEAD)\" '\\''$3 == head { print $2 }'\\'');\
         git merge-base \"$parent1\" HEAD' -"
-
-    ### Custom Git commands (found in ~/bin)
-    # Push only the current branch to the upstream branch
-    p = pushcurrent
 
     # Show individual diffs for all incoming/outgoing changesets
     in = pagediffs ..@{u}
