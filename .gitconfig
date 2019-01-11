@@ -19,6 +19,7 @@
     mt = mergetool
     rl = reflog --date=relative
     short = rev-parse --short
+    sh = show --summary --stat --pretty=fuller --patch
     st = status -s -b
     stat = diff --stat
     untracked = ls-files --others --exclude-standard
