@@ -340,6 +340,9 @@ nmap <silent> <leader>6 <c-^><cr>
 " Use gext script instead of grep.
 set grepprg=gext
 
+" Also look for the tags file inside the Git directory.
+set tags+=.git/tags;
+
 " }}}
 " X11 Integration {{{
 " (I.e.: don't do any automatic integration, please :)
