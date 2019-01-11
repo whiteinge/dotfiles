@@ -11,7 +11,7 @@ xcode-select --install
 curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
 chmod +x /usr/local/bin/youtube-dl
 
-xargs /usr/local/bin/brew install < $HOME/src/dotfiles/.config/brew-packages
+xargs /usr/local/bin/brew install < $HOME/src/dotfiles/tmp/config/packages-brew
 
 printf '
 android-platform-tools
