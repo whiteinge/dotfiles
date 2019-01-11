@@ -512,7 +512,7 @@
 	<key>MaxVertically</key>
 	<false/>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/src/dotfiles/.config</string>
+	<string>~/src/dotfiles/tmp/config</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 448}</string>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -3612,7 +3612,7 @@
 		</dict>
 	</dict>
 	<key>PrefsCustomFolder</key>
-	<string>/Users/sethhouse/src/dotfiles/.config</string>
+	<string>/Users/sethhouse/src/dotfiles/tmp/config</string>
 	<key>Print In Black And White</key>
 	<true/>
 	<key>PromptOnClose</key>
