@@ -190,7 +190,9 @@ alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
 
 # Useful for working with Git remotes; e.g., ``git log IN``
 alias -g IN='..@{u}'
+alias -g IIN='...@{u}'
 alias -g OUT='@{u}..'
+alias -g OOUT='@{u}...'
 alias -g UP='@{u}'
 
 # Don't prompt to save when exiting R
