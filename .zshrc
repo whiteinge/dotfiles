@@ -183,6 +183,7 @@ alias mplayer='mplayer -af scaletempo -speed 1'
 # Useful for listing files under one path based on the files in another. E.g.:
 # cd /path/to/dotfiles; filesunder | xargs -0 -I@ ls -l $HOME/@
 alias filesunder='find . \( -name .git -type d \) -prune -o -type f -printf "%P\0"'
+alias filesmissing='find . -maxdepth 2 -xtype l'
 
 # Quickly ssh through a bastian host without having to hard-code in ~/.ssh/config
 alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
