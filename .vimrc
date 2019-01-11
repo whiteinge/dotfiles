@@ -450,7 +450,7 @@ vmap <silent> <leader>s( :<C-U>call
     \opfuncwrapper#WrapOpfunc('surround#Surround', 0, '(')<cr>
 
 """ Change Case mappings
-let g:caser_prefix = mapleader .'h'
+let g:caser_prefix = mapleader .'w'
 
 """ MRU mappings
 nnoremap <leader>me :echo mru#MRU()<cr>:edit #<
