@@ -8,7 +8,7 @@
 	path = .zsh-syntax-highlighting
 	url = git://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule "bin/xcape"]
-	path = bin/xcape
+	path = tmp/repos/xcape
 	url = https://github.com/alols/xcape.git
 [submodule ".vim/bundle/vim-filebeagle"]
 	path = .vim/pack/foo/start/vim-filebeagle
