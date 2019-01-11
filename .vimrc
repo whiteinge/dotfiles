@@ -20,6 +20,11 @@ nmap <silent> <leader>n :silent noh<cr>
 " Display the number of matches for the last search
 nmap <leader># :%s///gn<cr>
 
+" Highlight arbitrary text, separately from searching, accepts a count and
+" highlights the text under the cursor. E.g.: 3\hh
+nn <leader>hh :<c-u>call matchadd('Match'. v:count1, expand('<cword>'), v:count1)<cr>
+nn <leader>hn :call clearmatches()<cr>
+
 " }}}
 " Line Wrap {{{
 
@@ -388,6 +393,10 @@ au VimEnter,ColorScheme * hi DiffChange ctermbg=0
 " The drawback of using reverse is there is no consistent color to highlight
 " the changes, but reverse is still fairly easy to spot.
 au VimEnter,ColorScheme * hi DiffText cterm=reverse ctermbg=none
+
+" Add MatchN highlights for highlighting arbitrary text matches legibly.
+call map(range(1, 9), {k, v ->
+    \ execute(printf('hi Match%s cterm=bold,reverse ctermfg=%s', k + 1, v))})
 
 " }}}
 " Printing {{{
