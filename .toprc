@@ -1,14 +1,16 @@
-RCfile for "top with windows"		# shameless braggin'
-Id:a, Mode_altscr=0, Mode_irixps=1, Delay_time=3.000, Curwin=0
-Def	fieldscur=ABEHIOQTWKNMcdfgjplrsuvyzX
-	winflags=32312, sortindx=10, maxtasks=0
+top's Config File (Linux processes with windows)
+Id:i, Mode_altscr=0, Mode_irixps=1, Delay_time=3.0, Curwin=0
+Def	fieldscur=¥¦¨3´;½@Ä·º¹*'-06<8>?ACFGÅML)+,./125BHIJKNOPQRSTUVWXYZ[\]^_`abcdefghij
+	winflags=163380, sortindx=18, maxtasks=0, graph_cpus=1, graph_mems=2
 	summclr=3, msgsclr=1, headclr=6, taskclr=7
-Job	fieldscur=ABcefgjlrstuvyzMKNHIWOPQDX
-	winflags=62776, sortindx=0, maxtasks=0
+Job	fieldscur=¥¦*(-068>?@ACFG¹·º³´Ä»¼½§ÅML)+,./125BHIJKNOPQRSTUVWXYZ[\]^_`abcdefghij
+	winflags=193844, sortindx=0, maxtasks=0, graph_cpus=0, graph_mems=0
 	summclr=6, msgsclr=6, headclr=7, taskclr=6
-Mem	fieldscur=ANOPQRSTUVbcdefgjlmyzWHIKX
-	winflags=62776, sortindx=13, maxtasks=0
+Mem	fieldscur=¥º»¼½¾¿ÀÁÃ&*'(-0689FGÄ³´·ÅML)+,./125BHIJKNOPQRSTUVWXYZ[\]^_`abcdefghij
+	winflags=193844, sortindx=21, maxtasks=0, graph_cpus=0, graph_mems=0
 	summclr=5, msgsclr=5, headclr=4, taskclr=5
-Usr	fieldscur=ABDECGfhijlopqrstuvyzMKNWX
-	winflags=62776, sortindx=4, maxtasks=0
+Usr	fieldscur=¥¦§¨ª°-3468;<=>?@ACFG¹·ºÄÅML)+,./125BHIJKNOPQRSTUVWXYZ[\]^_`abcdefghij
+	winflags=193844, sortindx=3, maxtasks=0, graph_cpus=0, graph_mems=0
 	summclr=3, msgsclr=3, headclr=2, taskclr=3
+Fixed_widest=0, Summ_mscale=1, Task_mscale=0, Zero_suppress=0
+
