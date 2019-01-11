@@ -491,21 +491,28 @@ function _wait_for_ssh () {
 # Run git fetch on all repos under the current dir
 
 function fetchall () {
+    find . -type d -name .git -print0 \
+        | xargs -t -r -0 -P5 -I@ git --git-dir=@ fetch -a
+}
+
+function ssh_fetchall () {
     setopt LOCAL_OPTIONS NO_MONITOR
-    local GH_SSH="git@github.com"
+    local SSH_URI="${1:?SSH connection string required.}"
 
     # Start a connection and wait for it; exit when we're done
-    trap 'ssh -O exit '${GH_SSH} SIGINT SIGTERM EXIT
-    ssh -N ${GH_SSH} &
-    _wait_for_ssh ${GH_SSH}
+    trap 'ssh -O exit '${SSH_URI} SIGINT SIGTERM EXIT
+    ssh -N ${SSH_URI} &
+    _wait_for_ssh ${SSH_URI}
 
     # Kick off a ton of parallel fetch operations
-    time find . -type d -name .git -print0 \
-        | xargs -t -r -0 -P5 -I@ git --git-dir=@ fetch -a
+    time fetchall
 
     local count=$(find . -type d -name .git -print | wc -l)
     printf 'Fetched upstream changes for %s repositories.\n' "$count"
 }
+
+alias fetchall-gh='ssh_fetchall "git@github.com"'
+alias fetchall-gl='ssh_fetchall "git@gitlab.com"'
 
 # }}}
 # presentation_mode {{{1
