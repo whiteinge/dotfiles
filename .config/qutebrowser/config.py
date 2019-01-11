@@ -43,11 +43,7 @@ config.bind(r'\u', 'spawn -u quterun')
 config.bind(r'\w', ';;'.join([
     'open -t https://www.irccloud.com/',
     'tab-pin',
-    'open -t https://jane.slack.com/',
-    'tab-pin',
     'open -t https://mail.google.com/mail/u/0/#inbox',
-    'tab-pin',
-    'open -t https://mail.google.com/mail/u/1/#inbox',
     'tab-pin',
     'open -t https://octobox.io/?per_page=100',
     'tab-pin',
