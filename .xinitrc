@@ -32,7 +32,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     unset f
 fi
 
-$HOME/bin/xcape/xcape &
+xcape &
 slstatus &
 st tmux &
 exec dwm
