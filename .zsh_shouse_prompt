@@ -147,7 +147,7 @@ function +pr-mode-compact() {
     zstyle ':pr_nethack:*' pwd "%1~" # only last segment of cwd
     zstyle ':vcs_info:git*+set-message:*' hooks git-st git-st-compact git-untracked git-stash-compact
 
-    pr_llines=( "${pr_com[pwd]} ${pr_com[jobs]} ${pr_com[prompt]}" )
+    pr_llines=( "${SSH_CLIENT+${pr_com[usr]} }${pr_com[pwd]} ${pr_com[jobs]} ${pr_com[prompt]}" )
 
     [[ -n ${pr_com[vcs]} ]] && pr_rlines=(
         ${pr_com[vcs]}
