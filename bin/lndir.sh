@@ -2,8 +2,8 @@
 # Dead-simple replacement for lndir for WSL and/or busybox.
 # https://github.com/Microsoft/WSL/issues/2229
 
-local src="${1:?Source path is required.}"
-local dst="${2:?Destination path is required.}"
+src="${1:?Source path is required.}"
+dst="${2:?Destination path is required.}"
 
 case $src in
     /*) src=$src;;
