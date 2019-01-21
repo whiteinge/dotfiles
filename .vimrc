@@ -433,7 +433,18 @@ command! -nargs=* Scratch call scratch#Scratch(<f-args>)
 nmap <silent> <leader>cc :call stagediff#StageDiff()<cr>
 nmap <silent> <leader>ci :term ++close git commit<cr>
 nmap <silent> <leader>ca :term ++close git commit --amend --no-edit<cr>
-nmap <silent> <leader>cb :vert term ++close git blame -f --abbrev-commit --date=relative HEAD -- %<cr>
+" nmap <silent> <leader>cb :vert term ++close git blame -c --date=relative -- %<cr>
+nmap <silent> <leader>cb <bar>
+    \ :55vnew <bar>
+    \ :call scratch#Scratch() <bar>
+    \ :setl nowrap <bar>
+    \ :exe 'r !git blame -c --date=relative -- '. fnamemodify(expand('#'), ':~:.') <bar>
+    \ 1delete <bar>
+    \ :setl scrollbind <bar>
+    \ :wincmd p <bar>
+    \ :setl scrollbind <bar>
+    \ :syncbind <bar>
+    \ <cr>
 
 """ Surround a visual selection of opfunc movement with characters.
 " E.g., to surround with parens: \s(iw
