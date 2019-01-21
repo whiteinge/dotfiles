@@ -20,7 +20,7 @@ find "$src" -mindepth 1 \( -name .git -type d \) -prune -o -type d \
     ' \
     | xargs mkdir -p
 
-find "$src" -mindepth 1 \( -name .git \) -prune -o -type f -print \
+find "$src" -mindepth 1 \( -name .git \) -prune -o \( -type f -o -type l \) -print \
     | awk -v src="$src" -v dst="$dst" '
         BEGIN { sub(/\/$/, "", src) }
         {
