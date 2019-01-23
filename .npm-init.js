@@ -40,6 +40,7 @@ const tsArgs = {
 const tscArgs = Object.entries(tsArgs)
     .map(([k,v]) => `--${k} ${v}`)
     .join(' ');
+const tsNodeArgs = `-O '${JSON.stringify(tsArgs)}'`;
 const browserifyArgs = `${srcIndex} -p [ tsify ${tscArgs} ]`;
 
 // Create .gitignore file.
@@ -166,7 +167,7 @@ module.exports = {
         'test:lint': `eslint ${srcDir}`,
         'test:tape': `run-s repl -- ${testDir}/**/*.js | tap-spec`,
 
-        'repl': `ts-node -D -F -O '{\"allowJs\": true}'`,
+        'shell': `ts-node -D -F -T ${tsNodeArgs}`,
 
         'start': `run-p watch:browserify watch:db`,
         'post:install': `run-s init:dist`,
