@@ -29,7 +29,17 @@ const testIndex = path.join(testDir, 'index.js');
 const build = path.join(distDir, `${basename}.js`);
 const min = path.join(distDir, `${basename}.min.js`);
 
-const tscArgs = `--jsx react --allowJs -t es5 -m commonjs`;
+const tsArgs = {
+    allowJs: true,
+    jsx: 'react',
+    target: 'es5',
+    module: 'commonjs',
+    types: [],
+};
+
+const tscArgs = Object.entries(tsArgs)
+    .map(([k,v]) => `--${k} ${v}`)
+    .join(' ');
 const browserifyArgs = `${srcIndex} -p [ tsify ${tscArgs} ]`;
 
 // Create .gitignore file.
