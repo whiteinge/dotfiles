@@ -68,6 +68,11 @@
     lt = log --topo-order --format=format:'%C(auto)%h%d%C(reset) %s %C(bold blue)(%an, %ar)%C(reset)'
     lm = log --oneline --decorate --topo-order --merges --ancestry-path
 
+    # Show the Git log and automatically shorten & search for a SHA. E.g.:
+    # git lf deb8dff8d8c1ed8acb7d7a2ec1158e7db136aab3
+    lf = "!sh -c 'GIT_PAGER=\"$PAGER -p $(git short $1)\" git l' -"
+    ltf = "!sh -c 'GIT_PAGER=\"$PAGER -p $(git short $1)\" git lt' -"
+
     # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
     ctags = !.git/hooks/ctags
 
