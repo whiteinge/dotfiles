@@ -4,8 +4,10 @@ dash
 dpkg
 git
 grep
+jq
 make
 man
+mpv
 nnn
 nodejs
 openssh
