@@ -77,7 +77,7 @@ if (!fs.existsSync(prettierConfig)) fs.writeFileSync(prettierConfig,
     parser: 'typescript',
     singleQuote: true,
     tabWidth: 4,
-    trailingComma: 'es5',
+    trailingComma: 'all',
 }));
 
 // Scaffold common dirs.
