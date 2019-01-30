@@ -538,8 +538,8 @@ function countdown() {
         remaining=$(( target - now ))
 
         if (( $remaining > 0 )) ; then
-            printf '\rT-minus: %s' "${remaining}"
-            sleep 0.5
+            printf '\rT-minus: %3d' "${remaining}"
+            sleep 1
         else
             printf '\a\n'
             break
@@ -554,7 +554,7 @@ function _timer_elapsed() {
     local start=$1
     local end=${(%)epoch}
 
-    printf '\nElapsed time: %s seconds\n' "$(( end - start ))"
+    printf '%d\n' "$(( end - start ))"
 }
 
 function timer() {
@@ -562,12 +562,13 @@ function timer() {
     local epoch='%D{%s}'
     local start=${(%)epoch}
 
-    trap '_timer_elapsed '"${start}"'; return;' INT
+    trap 'printf '\''\nTime elapsed: %d seconds\n'\'' \
+        "$(_timer_elapsed '"$start"')"; return;' INT
 
     printf 'Starting timer at %s\n' "${(%)dts}"
     while true; do 
-        printf '\r%s' "${(%)dts}"
-        sleep 0.5
+        printf '\r%4d seconds' "$(_timer_elapsed "$start")"
+        sleep 1
     done
 }
 
