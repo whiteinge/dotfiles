@@ -46,6 +46,7 @@
     # Fast-forward merge upstream or ref: git up; git up myremote/mybranch
     up = "!sh -c 'git merge --ff-only ${1:-\"@{u}\"}' -"
 
+    # Make a stub commit with file and file contents. Useful for demoing.
     stub = "!sh -c 'echo $1 > $1; git add $1; git commit -m Add-$1' -"
 
     # Perform a merge in-memory and output if any conflicts are found (dry-run)
