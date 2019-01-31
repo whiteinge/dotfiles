@@ -174,6 +174,9 @@ map <leader>cs :sp <C-R>=expand("%:p:h") . "/" <cr>
 map <leader>cv :vs <C-R>=expand("%:p:h") . "/" <cr>
 map <leader>ct :tabnew <C-R>=expand("%:p:h") . "/" <cr>
 
+" Read a file starting in the same dir as the current file
+map <leader>cr :r <C-R>=expand("%:p:h") . "/" <cr>
+
 if has("autocmd")
     " Helps if you have to use another editor on the same file
     au FileChangedShell * Warn "File has been changed outside of Vim."
