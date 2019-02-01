@@ -291,7 +291,7 @@ endif
 
 " Slight variant of standard statusline with 'ruler', file infos, and alt file.
 let M = {x, y -> x == '' ? '' : y . x}
-set statusline=%<%t\ %{M(expand('#:t'),'#')}\
+set statusline=%t\ %<%{M(expand('#:t'),'#')}\
     \ %h%m%r%w\ %y\ %{&fileencoding},%{&fileformat}\
     \ %q%=\ %-14.(%l,%c%V%)\ %P
 
