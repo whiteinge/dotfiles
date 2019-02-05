@@ -255,6 +255,13 @@ if has("autocmd") && exists("+omnifunc")
         \ if &omnifunc == "" | setl omnifunc=syntaxcomplete#Complete | endif
 endif
 
+" Quickly select a file to edit via :term and a CLI fuzzy-finder.
+" Curious that :term doesn't mimic :! for cmd parsing. This train-wreck of
+" string escaping boils down to: printf '\e]51;["drop", "somefilename"]\a'
+nnoremap <silent><leader>ff :term ++curwin ++close sh -c "
+    \fext . \| slmenu -i -l $LINES \| xargs -I{} printf '\\e]51;[\"drop\",\"{}\"]\\a'
+    \"<cr>
+
 " }}}
 " Window Layout {{{
 
