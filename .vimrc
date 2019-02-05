@@ -521,4 +521,8 @@ let g:vim_json_syntax_conceal = 0
 """ Mapping to call DetectIndent
 nmap <silent> <leader>i :1verbose DetectIndent<cr>
 
+""" filebeagle settings
+let g:filebeagle_show_hidden = 1
+let g:filebeagle_check_gitignore = 1
+
 " }}}
