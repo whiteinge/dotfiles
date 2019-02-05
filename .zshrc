@@ -39,6 +39,8 @@ umask 027
 path+=( $HOME/bin /sbin /usr/sbin /usr/local/sbin ); path=( ${(u)path} );
 CDPATH=$CDPATH::$HOME:/usr/local
 
+export MANPATH="$HOME/share/man:${MANPATH}"
+
 PYTHONSTARTUP=$HOME/.pythonrc.py
 export PYTHONSTARTUP
 
