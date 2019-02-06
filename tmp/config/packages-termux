@@ -11,6 +11,7 @@ mpv
 nnn
 nodejs
 openssh
+pick
 readline
 rlwrap
 termux-api

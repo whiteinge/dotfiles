@@ -260,7 +260,7 @@ endif
 " string escaping boils down to: printf '\e]51;["drop", "somefilename"]\a'
 nnoremap <silent><leader>ff :term ++curwin ++close sh -c "
     \ffind . '(' -type f -o -type l ')' -print
-    \\| slmenu -i -l $LINES
+    \\| pick
     \\| xargs -I{} printf '\\e]51;[\"drop\",\"{}\"]\\a'
     \"<cr>
 
