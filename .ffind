@@ -21,3 +21,6 @@
 
 # ctags
 -name tags
+
+# Vim plugins
+-path *.vim/pack
