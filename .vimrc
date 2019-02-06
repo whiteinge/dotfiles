@@ -321,13 +321,12 @@ nmap ]q :cnext<cr>
 nmap [q :cprev<cr>
 nmap ]Q :clast<cr>
 nmap [Q :cfirst<cr>
-nmap <silent> <leader>qf :botright cwindow<cr>:wincmd p<cr>
 nmap ]l :lnext<cr>
 nmap [l :lprev<cr>
 nmap ]L :llast<cr>
 nmap [L :lfirst<cr>
-nmap <silent> <leader>lf :botright lwindow<cr>:wincmd p<cr>
-" FIXME: consolodate qf, lf, af, al.
+nmap <silent> <leader>fq :botright cwindow<cr>:wincmd p<cr>
+nmap <silent> <leader>fl :botright lwindow<cr>:wincmd p<cr>
 
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
@@ -476,10 +475,10 @@ vmap <silent> <leader>s( :<C-U>call
 let g:caser_prefix = mapleader .'w'
 
 """ MRU mappings
-nnoremap <leader>me :echo mru#MRU()<cr>:edit #<
-nnoremap <leader>ms :echo mru#MRU()<cr>:split #<
-nnoremap <leader>mv :echo mru#MRU()<cr>:vsplit #<
-nnoremap <leader>mt :echo mru#MRU()<cr>:tabedit #<
+nnoremap <leader>fe :echo mru#MRU()<cr>:edit #<
+nnoremap <leader>fs :echo mru#MRU()<cr>:split #<
+nnoremap <leader>fv :echo mru#MRU()<cr>:vsplit #<
+nnoremap <leader>ft :echo mru#MRU()<cr>:tabedit #<
 
 """ Diff two registers
 command! -nargs=* DiffRegs call diffregs#DiffRegsFunc(<f-args>)
@@ -503,8 +502,8 @@ let g:ale_set_highlights = 0
 let g:ale_set_signs = 0
 let g:ale_echo_cursor = 0
 
-nmap <silent> <leader>af :ALEFix<cr>
-nmap <silent> <leader>al :call ale#Lint()<cr>
+nmap <silent> <leader>fg :ALEFix<cr>
+nmap <silent> <leader>fm :call ale#Lint()<cr>
 
 """ Tagbar plugin settings
 map <F5> :TagbarToggle<cr>
