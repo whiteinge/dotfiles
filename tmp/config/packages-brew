@@ -20,6 +20,7 @@ gnupg
 grep --with-default-names
 gzip
 haskell-stack
+htop
 jo
 jq
 less
