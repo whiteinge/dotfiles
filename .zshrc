@@ -75,23 +75,6 @@ export CVSIGNORE='*.swp *.orig *.rej .git'
 # Silence Wine debugging output (why isn't this a default?)
 export WINEDEBUG=-all
 
-# A function to construct GEXT_OPTIONS dynamically by reading a file named
-# .gextoptions in both the user's home directory and the current directory (for
-# project-level grep options and ignores)
-function gext_options() {
-    local -a opts
-    local proj_opts=${PWD}/.gextoptions
-
-    opts=( ${(f)"$(< "${HOME}/.gextoptions")"} )
-
-    if [[ -r ${proj_opts} ]] && [[ $PWD != $HOME ]] ; then
-        opts+=( ${${(f)"$(< "${proj_opts}")"}:#[#]*} )
-    fi
-
-    GEXT_OPTIONS="${(j: :)opts}"
-    export GEXT_OPTIONS
-}
-
 # }}}
 # {{{ completions
 
@@ -608,7 +591,7 @@ function curlretry() {
 ### }}}
 
 # Run precmd functions
-precmd_functions=( precmd_prompt gext_options )
+precmd_functions=( precmd_prompt )
 
 if [[ -r "$HOME/.zsh_customize" ]]; then
     source "$HOME/.zsh_customize"

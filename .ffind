@@ -1,0 +1,23 @@
+# VCS dirs
+-path *.bzr
+-path *.git
+-path *.hg
+-path *.svn
+
+# Common JS dirs
+-path *_build
+-path *build
+-path *dist
+-path *node_modules
+
+# Common JS build files
+-name *.bundle.js
+-name *.min.css
+-name *.min.js
+
+# Python build files
+-name *.pyc
+-name *.pyo
+
+# ctags
+-name tags
