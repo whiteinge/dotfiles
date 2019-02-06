@@ -1,21 +1,12 @@
 #!/usr/bin/env zsh
-# gext A wrapper to grep files with a given file name match
-# Also guesses case-insensitivity and performs many searches in parallel.
+# gext - A wrapper for find/grep to parallelize and search by extension
 
 gext() {
-    local -a prune
-    local spath search ext args help is_icase extsearch findcmd xargscmd grepcmd
+    local spath search ext help is_icase
 
     spath="$1"
     search="$2"
     ext="$3"
-
-    # Assemble an array of files/paths to prune from the find results by
-    # co-opting the various excludes from GEXT_OPTIONS. (<3 Zsh <3)
-    prune=( ${(s: :)GEXT_OPTIONS} )
-    prune=( ${(M)prune:#--exclude*} )
-    prune=( ${(S)prune//--exclude-dir=/-path } )
-    prune=( ${(S)prune//--exclude=/-name } )
 
     help="Usage: gext ./somepath sometext [file-name-pattern]
     Search will be case-sensitive if the search text contains capital letters.
@@ -27,21 +18,20 @@ gext() {
     "
 
     # Output help if missing path or search
-    [[ -n "${spath}" ]] && [[ -n "${search}" ]] || { echo ${help}; return 1 }
+    [[ -n "$spath" ]] && [[ -n "$search" ]] || { printf '%s\n' "$help"; return 1; }
     shift 2
 
     # Pass any remaining args through to the final grep as $@.
-    # FIXME: gext should take it's own params via zparseopts in order to pass
+    # TODO: gext should take it's own params via zparseopts in order to pass
     # different args to the various sub commands.
-    [[ -n "${ext}" ]] && shift 1
+    [[ -n "$ext" ]] && shift 1
 
     # Check for capital letters in the search pattern
     [[ "${#search//[^A-Z]}" -eq 0 ]] && is_icase=1
 
     # set -x
-    find "${spath}" \
-        '(' ${(s: :)${(j: -o :)prune}} ')' -prune \
-        -o '(' -type f -o -type l ')' \
+    ffind "${spath}" \
+        '(' -type f -o -type l ')' \
         ${ext:+-name} \
         ${ext:+$ext} \
         -print0 \
