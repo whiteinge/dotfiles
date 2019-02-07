@@ -25,9 +25,17 @@
 "       delimeter to join with (the default).
 
 fu! joinsplit#SplitItems(text, is_inline, char)
-    return substitute(a:text, a:char, '\n', 'g') ."\n"
+    return fp#Pipe([
+        \ {x -> a:is_inline ? split(x, a:char) : split(x, "\n")},
+        \ fp#Map({x -> trim(x, " \r\n\t". a:char)}),
+        \ fp#Join("\n"),
+        \ {x -> a:is_inline ? x ."\n" : x},
+    \ ])(a:text)
 endfu
 
 fu! joinsplit#JoinItems(text, is_inline, char)
-    return join(split(a:text), a:char)
+    return fp#Pipe([
+        \ {x -> split(x, "\n")},
+        \ fp#Join(a:char),
+    \ ])(a:text)
 endfu
