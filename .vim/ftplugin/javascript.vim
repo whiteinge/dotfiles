@@ -29,4 +29,4 @@ let g:tagbar_type_javascript = {
 \ }
 
 " Persistent macro to sort ES6 imports.
-nmap <leader>qi f{\js,i{vi{!sort\jj,i{k2J2J\af
+nmap <leader>qi f{\js,i{vi{!sort\jj,i{k2J2J\fg
