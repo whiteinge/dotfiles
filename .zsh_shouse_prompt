@@ -144,8 +144,9 @@ function +pr-mode-full() {
 #
 # ~/src/dotfiles %                        d2a3f82f U? master +1/-2
 function +pr-mode-compact() {
+    zstyle ':pr_nethack:*' remote_compact true
     zstyle ':pr_nethack:*' pwd "%1~" # only last segment of cwd
-    zstyle ':vcs_info:git*+set-message:*' hooks git-st git-st-compact git-untracked git-stash-compact
+    zstyle ':vcs_info:git*+set-message:*' hooks git-st git-up git-st-compact git-untracked git-stash-compact
 
     pr_llines=( "${SSH_CLIENT+${pr_com[usr]} }${pr_com[pwd]} ${pr_com[jobs]} ${pr_com[prompt]}" )
 
@@ -256,14 +257,22 @@ function +vi-git-st() {
 
 # Show the upstream-tracking branch after the local branch.
 function +vi-git-up() {
-    local remote
+    local remote remote_compact
+    zstyle -g remote_compact ":pr_nethack:*" remote_compact
+    zstyle -t ":pr_nethack:*" debug && debug=1 || debug=0
 
     # Are we on a remote-tracking branch?
     remote=${$(git rev-parse --verify ${hook_com[branch]}@{upstream} \
         --symbolic-full-name --abbrev-ref 2>/dev/null)}
 
     if [[ -n ${remote} ]] ; then
-        hook_com[branch]="${hook_com[branch]} [${remote} ${(j:/:)gitstatus}]"
+        if [[ ${remote_compact} ]]; then
+            if [[ ! ${remote} =~ ".*${hook_com[branch]}" ]]; then
+                hook_com[branch]="${hook_com[branch]} [${remote} ${(j:/:)gitstatus}]"
+            fi
+        else
+            hook_com[branch]="${hook_com[branch]} [${remote} ${(j:/:)gitstatus}]"
+        fi
     fi
 }
 
