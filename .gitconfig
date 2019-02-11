@@ -165,9 +165,9 @@
 
 [pager]
     # Don't paginate the oneline log output if less than one page.
-    l = $PAGER -FX
-    lt = $PAGER -FX
-    b = $PAGER -FX
+    l = $PAGER -F
+    lt = $PAGER -F
+    b = $PAGER -F
 
 [merge]
     tool = diffconflicts
