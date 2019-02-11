@@ -41,16 +41,16 @@ zstyle ':pr_nethack:*' usr "%n"
 zstyle ':pr_nethack:*' host "%m"
 
 # Set vcs_info options
-zstyle ':vcs_info:*' enable git hg bzr svn
-zstyle ':vcs_info:(hg*|git*):*' get-revision true
-zstyle ':vcs_info:(hg*|git*):*' check-for-changes true
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:(git*):*' get-revision true
+zstyle ':vcs_info:(git*):*' check-for-changes true
 
-zstyle ':vcs_info:(hg*|git*)' formats "(%s) %12.12i %c%u %b%m" # hash changes branch misc
-zstyle ':vcs_info:(hg*|git*)' actionformats "(%s|${white}%a${gray}) %12.12i %c%u %b%m"
-zstyle ':vcs_info:hg*:*' branchformat "%b" # only show branch
+zstyle ':vcs_info:(git*)' formats "%12.12i %c%u %b%m" # hash changes branch misc
+zstyle ':vcs_info:(git*)' actionformats "%12.12i %c%u %b%m"
+zstyle ':vcs_info::*' branchformat "%b" # only show branch
 
-zstyle ':vcs_info:(hg*|git*):*' stagedstr "${green}S${gray}"
-zstyle ':vcs_info:(hg*|git*):*' unstagedstr "${red}U${gray}"
+zstyle ':vcs_info:(git*):*' stagedstr "${green}S${gray}"
+zstyle ':vcs_info:(git*):*' unstagedstr "${red}U${gray}"
 
 # prompt functions ############################################################
 
