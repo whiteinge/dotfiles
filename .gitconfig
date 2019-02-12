@@ -80,8 +80,17 @@
     # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
     ctags = !.git/hooks/ctags
 
-    # Open all modified files in EDITOR
-    editm = "!${EDITOR:-vi} $(git ls-files -m)"
+    # Open all modified files into Vim's quickfix.
+    # E.g.: git editm
+    editm = "!zsh -c '$EDITOR -q <(git diff -p -U0 --diff-filter=AM \
+        | diff-to-quickfix)'"
+
+    # Open all files changed within a commit range into Vim's quickfix.
+    # Defaults to HEAD.
+    # E.g.: git editc HEAD~3..
+    editc = "!zsh -c '$EDITOR -q <(git diff-tree -p -U0 --diff-filter=AM -r \
+        \"${1:-HEAD}\" \
+        | diff-to-quickfix)' -"
 
     # Alias to make an archive with a prefix set to the name of the repo.
     # git tar <ref> (defaults HEAD)
