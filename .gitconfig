@@ -3,7 +3,7 @@
     name = Seth House
 
 [push]
-    default = upstream
+    default = current
 
 [alias]
     b = branch -vv
