@@ -316,7 +316,8 @@ joinpdf () {
 # Development helpers {{{
 
 # Start an echo server
-alias echoserver='socat -T1 TCP-L:8080,crlf,reuseaddr,fork EXEC:cat'
+alias echoserver="socat -v -T0.05 TCP-L:8080,reuseaddr,fork \
+    system:'cat $HOME/tmp/http-preamble -'"
 
 # Start a webserver in the current directory
 alias pyhttp='python -m SimpleHTTPServer'
