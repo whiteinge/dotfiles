@@ -328,6 +328,14 @@ nmap [L :lfirst<cr>
 nmap <silent> <leader>fq :botright cwindow<cr>:wincmd p<cr>
 nmap <silent> <leader>fl :botright lwindow<cr>:wincmd p<cr>
 
+" Open all files referenced in the quickfix list as args.
+" Sometimes you just want to step through the files and not all the changes.
+nmap <silent> <leader>fa :call fp#Pipe([
+    \ {xs -> map(xs, '"$argadd #". v:val.bufnr')},
+    \ {xs -> uniq(xs)},
+    \ {xs -> map(xs, {i, x -> execute(x)})},
+\ ])(getqflist())<cr>
+
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
 nmap <silent> <leader>dm :call difftoggle#DiffToggle(2)<cr>
