@@ -321,6 +321,7 @@ alias echoserver="socat -v -T0.05 TCP-L:8080,reuseaddr,fork \
 
 # Start a webserver in the current directory
 alias pyhttp='python -m SimpleHTTPServer'
+alias py3http='python -m http.server'
 # Start a echoing SMTP server
 alias pysmtp='python -m smtpd -n -c DebuggingServer localhost:1025'
 # Print an interactive Python shell session as regular Python (reads stdin)
