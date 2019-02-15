@@ -146,7 +146,7 @@ map <F2> :reg "0123456789-*+:/<cr>
 nnoremap <silent><leader>u :exe "set " . (&rnu == 1 ? "nornu" : "rnu")<cr>
 
 " Displays tabs with :set list & displays when a line runs off-screen
-set listchars=tab:>-,trail:\ ,precedes:<,extends:>
+set listchars=tab:>-,trail:\ ,precedes:<,extends:>,eol:$,nbsp:%
 
 " Show listchars; highlight lines more than 80 chars, trailing spaces, only
 " whitespace. Toggle with \l
