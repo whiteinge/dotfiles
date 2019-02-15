@@ -3,21 +3,21 @@ bash
 cataclysm
 cloc
 cmake
-coreutils --with-default-names
+coreutils
 ctags
 curl
 diffutils
 entr
 ffmpeg
-findutils --with-default-names
+findutils
 flow
 gawk
 git
-gnu-sed --with-default-names
-gnu-tar --with-default-names
-gnu-which --with-default-names
+gnu-sed
+gnu-tar
+gnu-which
 gnupg
-grep --with-default-names
+grep
 gzip
 haskell-stack
 htop
@@ -26,7 +26,7 @@ jq
 less
 lua
 lynx
-make --with-default-names
+make
 mplayer
 ncdu
 nethack

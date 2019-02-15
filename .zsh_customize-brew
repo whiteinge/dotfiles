@@ -5,16 +5,27 @@
 paths=(
     "${HOME}/bin" \
     "/usr/local/bin" \
-    "/usr/local/opt/coreutils/libexec/gnubin" \
     "/usr/local/opt/curl/bin" \
+    "/usr/local/opt/coreutils/libexec/gnubin" \
+    "/usr/local/opt/findutils/libexec/gnubin" \
+    "/usr/local/opt/gnu-sed/libexec/gnubin" \
+    "/usr/local/opt/gnu-tar/libexec/gnubin" \
+    "/usr/local/opt/gnu-which/libexec/gnubin" \
+    "/usr/local/opt/grep/libexec/gnubin" \
+    "/usr/local/opt/make/libexec/gnubin" \
     "/usr/local/opt/python/libexec/bin" \
-    "/usr/local/opt/gnupg/libexec/gpgbin" \
 )
 
 manpaths=(
     "$HOME/man" \
+    "/usr/local/opt/curl/share/man" \
     "/usr/local/opt/coreutils/libexec/gnuman" \
-    "/usr/local/opt/findutils/share/man" \
+    "/usr/local/opt/findutils/libexec/gnuman" \
+    "/usr/local/opt/gnu-sed/libexec/gnuman" \
+    "/usr/local/opt/gnu-tar/libexec/gnuman" \
+    "/usr/local/opt/gnu-which/libexec/gnuman" \
+    "/usr/local/opt/grep/libexec/gnuman" \
+    "/usr/local/opt/make/libexec/gnuman" \
 )
 
 export ANDROID_HOME=/usr/local/opt/android-sdk
