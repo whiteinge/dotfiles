@@ -325,6 +325,8 @@ nmap ]l :lnext<cr>
 nmap [l :lprev<cr>
 nmap ]L :llast<cr>
 nmap [L :lfirst<cr>
+
+" Open the quickfix and location list windows.
 nmap <silent> <leader>fq :botright cwindow<cr>:wincmd p<cr>
 nmap <silent> <leader>fl :botright lwindow<cr>:wincmd p<cr>
 
