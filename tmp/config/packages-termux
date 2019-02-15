@@ -12,9 +12,11 @@ nnn
 nodejs
 openssh
 pick
+proot
 readline
 rlwrap
 termux-api
+termux-exec
 tigervnc
 tmux
 tree
