@@ -17,6 +17,7 @@ gnu-sed
 gnu-tar
 gnu-which
 gnupg
+graphviz
 grep
 gzip
 haskell-stack
