@@ -64,6 +64,20 @@
             '\\''$0 ~ remote && !/(master|develop)/ { print \"refs/heads/\" $2 }'\\'' \
         | xargs -p -r git push ${1} --delete' -"
 
+    # Prune any deleted remote branches and also delete any local branches of
+    # the same name. Will prompt before deleting the local branches.
+    # This is useful if branches are squashed when merged since you can't know
+    # which local/remote branches are the same after that.
+    # Usage: git deletepruned origin
+    deletepruned = "!zsh -c ' \
+        comm -12 \
+            <(git remote prune \"${1:?Remote name required.}\" \
+                | awk -v remote=\"$1\" '\\''$0 ~ \".*pruned.*\" remote \"/\" \
+                    { sub(\"^\" remote \"/\", \"\", $3); print $3 }'\\'') \
+            <(git branch --list | sed -e '\\''s/^[ \\*]\\+//g'\\'') \
+        | xargs -p -r git branch -D \
+    ' -"
+
     l = log --format=format:'%C(auto)%h%d%C(reset) %s %C(bold blue)(%an, %ar)%C(reset)'
     ll = log --stat --decorate --abbrev-commit --date=relative
     lll = log -p --stat --decorate --abbrev-commit --date=relative --color-moved
