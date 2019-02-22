@@ -9,24 +9,28 @@ autoload -U zmv
 autoload zcalc
 
 setopt                          \
+        append_history          \
         auto_cd                 \
         auto_pushd              \
         chase_links             \
-        noclobber               \
         complete_aliases        \
         extended_glob           \
         hist_ignore_all_dups    \
-        hist_save_no_dups       \
+        hist_ignore_dups        \
         hist_ignore_space       \
+        hist_reduce_blanks      \
+        hist_save_no_dups       \
+        hist_verify             \
         ignore_eof              \
-        share_history           \
-        noflowcontrol           \
         list_types              \
         mark_dirs               \
+        noclobber               \
+        noflowcontrol           \
         path_dirs               \
         prompt_percent          \
         prompt_subst            \
-        rm_star_wait
+        rm_star_wait            \
+        share_history
 
 # Push a command onto a stack allowing you to run another command first
 bindkey '^J' push-line-or-edit
