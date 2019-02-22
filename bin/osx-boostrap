@@ -28,6 +28,7 @@ chsh -s /usr/local/bin/zsh
 
 /usr/X11/bin/lndir -silent $HOME/src/dotfiles $HOME
 ( cd $HOME; ln -s .zsh_customize-brew .zsh_customize; )
+( cd $HOME/bin; ln -s osx-notify-send notify-send; ln -s osx-xclip xclip; )
 
 printf '
 All set (hopefully).
