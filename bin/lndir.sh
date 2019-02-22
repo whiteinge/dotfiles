@@ -1,6 +1,13 @@
 #!/usr/bin/env sh
-# Dead-simple replacement for lndir for WSL and/or busybox.
+# Create a shadow directory of symbolic links to another directory tree
+#
+# A naive implementation of lndir for WSL and/or busybox that don't have easy
+# access to that package. Attempts to be as performant as can be expected since
+# we're potentially creating thousands of symlinks.
 # https://github.com/Microsoft/WSL/issues/2229
+#
+# Usage:
+#   lndir.sh $HOME/src/dotfiles $HOME
 
 src="${1:?Source path is required.}"
 dst="${2:?Destination path is required.}"

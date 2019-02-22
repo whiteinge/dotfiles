@@ -9,6 +9,9 @@ As a multiline shell command:
     someshellcommand.sh \
         -f  \
         --foo 'this is a --string do not split'
+
+This is useful for taking the "Copy as CURL" from the Chrome developer tools
+network tab and making it readable.
 '''
 import shlex
 import sys

@@ -1,9 +1,11 @@
 #!/usr/bin/env zsh
-# A port of the excellent t to store todos in any Git repository.
+# Store a todo list in any Git repository
+#
+# A port of the excellent t to use Git as storage.
 # https://github.com/sjl/t
 #
-# The todos are unobtrusive additions to any Git repo. The todos themselves are
-# stored in Git as dangling commits, and Git notes are used to keep references
+# The todos are unobtrusive, local-only additions to a Git repo. They are
+# stored in Git as dangling commits and Git notes are used to keep references
 # to those objects so they're not garbage collected.
 #
 # Setup: either the CWD should be a Git repo or the TODO_REPO variable should

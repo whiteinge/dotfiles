@@ -1,10 +1,10 @@
 #!/bin/bash
-
 # vipe: Use your $EDITOR to edit text in pipelines.
-
+#
+# https://www.uninformativ.de/git/bin-pub/file/vipe.html
+#
 # Write all data to a temporary file, edit that file, then print it
 # again.
-
 
 tmp=$(mktemp)
 trap 'rm -f "$tmp"' 0

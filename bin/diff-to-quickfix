@@ -1,6 +1,10 @@
 #!/usr/bin/env awk -f
 # Output file names and line numbers for all changes in a unified diff in
 # a format appropriate for loading into Vim's quickfix list.
+#
+# Usage:
+#   vi -q $(git diff -p -U0 --diff-filter=AM -r HEAD~5.. | diff-to-quickfix)
+#   vi -q $(diff -U0 a b | diff-to-quickfix)
 
 /^\+\+\+ / {
     fname=substr($2, 2)

@@ -1,6 +1,10 @@
 #!/bin/sh
-# A script to invoke a Terminal window and block until it # closes. Uses the
-# ZSHRUN flag and some Applescript to auto-close after # invoking a command.
+# An OSX script to invoke a Terminal window and block until it closes. Uses the
+# ZSHRUN flag and some Applescript to auto-close after invoking a command.
+#
+# One possible use is to invoke this from Qutebrowser, use a CLI password
+# manager, then echo the result back into the Qutebrowser FIFO so the password
+# appears in the HTML <input> field.
 
 main() {
     # 'tell application "Safari" to return URL of the front document' \

@@ -1,4 +1,9 @@
 #!/usr/bin/env sh
+# Quickly create and edit a new shell script, already marked as executable
+#
+# Usage:
+#   new-sh foo.sh
+#   new-sh foo.py python
 
 script="${1:?Script name required.}"
 lang=${2:-sh}

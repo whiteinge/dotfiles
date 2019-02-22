@@ -1,6 +1,5 @@
 #!/bin/zsh
-# Given a range of commits, open the full diff of each commit as a separate
-# file in Vim (for the nice syntax highlighting).
+# Given a range of commits, open the full diff of each commit separately
 #
 # Examples:
 #

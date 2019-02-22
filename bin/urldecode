@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+# Decode urlencoded stdin
+#
+# Usage:
+#   printf 'foo%20bar' | urldecode
+
 import sys
 if sys.version.startswith('3'):
     import urllib.parse
