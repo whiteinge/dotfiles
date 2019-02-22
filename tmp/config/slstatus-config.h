@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* interval between updates (in ms) */
-const unsigned int interval = 5000;
+const unsigned int interval = 30000;
 
 /* text to show if no value can be retrieved */
 static const char unknown_str[] = "n/a";
@@ -62,7 +62,8 @@ static const char unknown_str[] = "n/a";
 static const struct arg args[] = {
 	/* function format          argument */
 	{ datetime, "%s",           "%H:%M %a, %b %d" },
-	{ wifi_perc, " | W: %s%%",       "wlan0" },
-	{ vol_perc, " | V: %s",       "/dev/mixer" },
-	{ battery_perc, " | B: %s%%",       "bq27500-0" },
+	{ wifi_perc, " | W: %s%%",       "wlp1s0" },
+	/* { vol_perc, " | V: %s",       "/dev/mixer" }, */
+	{ battery_perc, " | B: %s%%",       "BAT0" },
+	{ battery_remaining, " (%s)",       "BAT0" },
 };
