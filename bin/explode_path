@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# Take a path and output all child paths as absolute paths
+
+# set -x
+path_name="${1:-$PWD}"
+
+while : ; do
+    printf '%s\n' "$path_name"
+    test "$path_name" = '/' && break
+
+    path_name="$(dirname "$path_name")"
+done

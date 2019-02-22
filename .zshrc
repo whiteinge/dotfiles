@@ -225,28 +225,26 @@ if [[ -n "$ZSHRUN" ]]; then
 fi
 
 # }}}
-# ..() Switch to parent directory by matching on partial name {{{1
-# Usage:
-# cd /usr/share/doc/zsh
-# .. s      # cd's to /usr/share
+# ...() Open fuzzy-finder of parent directory names {{{1
 
-function .. () {
-    (( $# == 0 )) && { cd .. && return }
+alias ..='cd ..'
+function ...() {
+    explode_path | tail -n +2 | pick | read -d -r new_dir
+    cd "$new_dir"
+}
 
-    local match_idx
-    local -a parents matching_parents new_path
-    parents=( ${(s:/:)PWD} )
-    matching_parents=( ${(M)${parents[1,-2]}:#"${1}"*} )
+# }}}
+# cdd() Open fuzzy-finder of child directory names {{{1
 
-    if (( ${#matching_parents} )); then
-        match_idx=${parents[(i)${matching_parents[-1]}]}
-        new_path=( ${parents[1,${match_idx}]} )
+function cdd() {
+    ffind . -type d | pick | read -d -r new_dir
+    cd "$new_dir"
+}
 
-        cd "/${(j:/:)new_path}"
-        return $?
-    fi
-
-    return 1
+# Same thing but open with nnn instead of cd'ing.
+function nnnn() {
+    ffind "${1:-$PWD}" -type d | pick | read -d -r new_dir
+    nnn "$new_dir"
 }
 
 # }}}
