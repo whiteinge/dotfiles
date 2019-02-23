@@ -63,7 +63,7 @@ static const struct arg args[] = {
 	/* function format          argument */
 	{ datetime, "%s",           "%H:%M %a, %b %d" },
 	{ wifi_perc, " | W: %s%%",       "wlp1s0" },
-	/* { vol_perc, " | V: %s",       "/dev/mixer" }, */
+	{ run_command, " | V: %s", "pulseaudio-ctl full-status | awk '{ gsub(/yes/, \"!\"); gsub(/no/, \".\"); print $1 \"%\", \"s\" $2, \"m\" $3 }'" },
 	{ battery_perc, " | B: %s%%",       "BAT0" },
 	{ battery_remaining, " (%s)",       "BAT0" },
 };
