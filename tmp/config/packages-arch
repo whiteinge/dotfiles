@@ -52,6 +52,7 @@ vi
 which
 xcape
 xclip
+xcursor-comix
 xf86-video-intel
 xinit-xsession
 xorg-server
@@ -59,6 +60,7 @@ xorg-xev
 xorg-xinit
 xorg-xkill
 xorg-xrandr
+xscreensaver
 yank
 yay
 zsh
