@@ -13,10 +13,10 @@ findutils
 flow
 gawk
 git
+gnupg
 gnu-sed
 gnu-tar
 gnu-which
-gnupg
 graphviz
 grep
 gzip
@@ -56,4 +56,5 @@ vis
 watch
 wget
 wtf
+yank
 zsh
