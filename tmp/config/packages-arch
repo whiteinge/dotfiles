@@ -36,6 +36,7 @@ patch
 pick-git
 pkgconf
 psmisc
+pulseaudio
 pulseaudio-bluetooth
 pulseaudio-ctl
 qutebrowser
