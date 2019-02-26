@@ -1,4 +1,7 @@
 #!/bin/zsh
+# Start profling:
+# zmodload zsh/zprof
+
 local -a precmd_functions
 
 # {{{ setting options
@@ -597,5 +600,8 @@ precmd_functions=( precmd_prompt )
 if [[ -r "$HOME/.zsh_customize" ]]; then
     source "$HOME/.zsh_customize"
 fi
+
+# End profiling:
+# zprof
 
 # EOF
