@@ -29,8 +29,19 @@ manpaths=(
 )
 
 export ANDROID_HOME=/usr/local/opt/android-sdk
-export NVM_DIR=$HOME/.nvm
-source /usr/local/opt/nvm/nvm.sh
 
 export PATH="${(j|:|)paths}:${PATH}"
 export MANPATH="${(j|:|)manpaths}:${MANPATH}"
+
+# Lazy-load NVM because it increases startup by an order of magnitude(!).
+# https://gist.github.com/fl0w/07ce79bd44788f647deab307c94d6922
+export NVM_DIR=$HOME/.nvm
+lazynvm() {
+    unset -f nvm node npm npx
+    source /usr/local/opt/nvm/nvm.sh
+}
+
+nvm () { lazynvm; nvm $@; };
+node () { lazynvm; env NODE_NO_READLINE=1 rlwrap node $@; };
+npm () { lazynvm; npm $@; };
+npx () { lazynvm; npx $@; };

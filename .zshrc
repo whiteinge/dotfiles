@@ -161,7 +161,6 @@ alias wtf='wtf -o'
 alias nnn='nnn -S'
 alias clip='xclip -selection clipboard'
 alias ocaml='rlwrap ocaml'
-alias node='env NODE_NO_READLINE=1 rlwrap node'
 alias rs='rsync -avhzC --progress'
 compdef rs=rsync
 alias mplayer='mplayer -af scaletempo -speed 1'
