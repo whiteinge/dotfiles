@@ -21,6 +21,8 @@ test "$lang" = 'sh' && cat >> "$script" <<-'EOS'
 export NAME=$(basename "$0")
 export VERSION='0.0.1'
 export VERBOSE="${OVERRIDE_VERBOSE:-0}"
+TEMP_DIR="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
 
 export LERR=2
 export LINFO=4; exec 4>/dev/null
@@ -76,29 +78,26 @@ _main () {
     #
     # Flags _must_ be the first argument to `${NAME}`, before `command`.
 
-    local temp_dir="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
-        'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
-
     trap '
         excode=$?; trap - EXIT;
         exec 4>&-
         exec 5>&-
         exec 6>&-
-        rm -rf '"$temp_dir"'
+        rm -rf '"$TEMP_DIR"'
         exit $excode
     ' INT TERM EXIT
 
     while getopts Vhvx opt; do
         case $opt in
-        V)  printf 'Version: %s\n' $VERSION
-            exit;;
+        V) printf 'Version: %s\n' $VERSION
+           exit;;
         h) help _main
-            printf '\nAvailable commands:\n\n'
-            _all_funcs
-            printf '\n'
-            exit;;
-        v)  VERBOSE=$(( VERBOSE + 1 ));;
-        x)  set -x;;
+           printf '\nAvailable commands:\n\n'
+           _all_funcs
+           printf '\n'
+           exit;;
+        v) VERBOSE=$(( VERBOSE + 1 ));;
+        x) set -x;;
         esac
     done
     shift $(( OPTIND - 1 ))
@@ -107,7 +106,9 @@ _main () {
     [ $VERBOSE -gt 0 ] && exec 4>&2
     [ $VERBOSE -gt 1 ] && exec 5>&2
 
-    cmd="${1:?'No command given. Available commands: '$(_all_funcs)}"
+    mkdir -p -m 700 "$TEMP_DIR"
+
+    cmd="${1:?'No command given. Available commands: '$(_all_funcs | sort)}"
     shift
     printf 'Running command %s\n' "$cmd" 1>&$LDEBUG
     "$cmd" "$@"
