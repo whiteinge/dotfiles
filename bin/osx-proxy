@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# Toggle the OSX HTTP/HTTPS proxies on for the primary interface
+#
+# Usage:
+#   osx-proxy on
+#   osx-proxy off
+
+state="${1:?'Proxy state is required (on|off)'}"
+networkservice=$(networksetup -listallnetworkservices | awk 'NR == 2')
+
+networksetup -setwebproxystate "$networkservice" "$state"
+networksetup -setsecurewebproxystate "$networkservice" "$state"
