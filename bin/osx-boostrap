@@ -16,7 +16,6 @@ xargs /usr/local/bin/brew install < $HOME/src/dotfiles/tmp/config/packages-brew
 printf '
 android-platform-tools
 gimp
-powershell
 virtualbox
 vlc
 xquartz
