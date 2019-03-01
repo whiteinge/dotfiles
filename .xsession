@@ -39,5 +39,5 @@ xscreensaver -no-splash &
 
 xcape &
 slstatus &
-st tmux &
+qterminal &
 exec dwm
