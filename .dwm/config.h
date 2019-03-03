@@ -1,5 +1,12 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h>
+static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+5%",     NULL };
+static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%",     NULL };
+static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "0", "toggle",  NULL };
+static const char *upbri[]   = { "/bin/xbacklight", "-inc", "10",     NULL };
+static const char *downbri[]   = { "/bin/xbacklight", "-dec", "10",     NULL };
+
 /* appearance */
 static const char *fonts[] = {
 	"monospace:size=10"
@@ -87,6 +94,11 @@ static Key keys[] = {
 	TAGKEYS(                        XK_F3,                      2)
 	TAGKEYS(                        XK_F4,                      3)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ 0,                       XF86XK_AudioLowerVolume, spawn, {.v = downvol } },
+	{ 0,                       XF86XK_AudioMute, spawn, {.v = mutevol } },
+	{ 0,                       XF86XK_AudioRaiseVolume, spawn, {.v = upvol   } },
+	{ 0,                       XF86XK_MonBrightnessUp, spawn, {.v = upbri   } },
+	{ 0,                       XF86XK_MonBrightnessDown, spawn, {.v = downbri   } },
 };
 
 /* button definitions */
