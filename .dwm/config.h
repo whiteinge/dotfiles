@@ -33,7 +33,6 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "st",          NULL,       NULL,       0,            0,           -1 },
-	{ "qutebrowser", NULL,       NULL,       0,            0,           -1 },
 };
 
 /* layout(s) */
