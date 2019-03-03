@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+# Bootstrap a minimal Fedora install
+#
+# Use the netinstaller, choose the "Minimal install", only check the "C
+# Development Tools and Libraries" group.
+
+# Enable RPM Fusion repo.
+dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+# Enable Google Chrome repo.
+dnf install -y https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+
+# Install baseline packages.
+xargs dnf install -y < $HOME/src/dotfiles/tmp/config/packages-fedora
+
+# Enable laptop-friendly services.
+systemctl enable systemd-backlight@backlight:intel_backlight.service
+systemctl enable thermald.service
+systemctl enable tlp
+systemctl enable xdm.service
+systemctl set-default graphical.target
+systemctl --user enable pulseaudio.socket
+
+# Of course.
+curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
+chmod +x /usr/local/bin/youtube-dl
