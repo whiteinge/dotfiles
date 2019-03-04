@@ -9,8 +9,26 @@ do_search() {
     printf '\e[s'       # save pos
     printf '\e[1B'      # move down
     printf '\e[1000D'   # move to far left
-    printf '\e[J%s'     # clear from cursor downward
-    printf '%s\n' "$input" | grep -i "$search" | head -n $(( ${LINES} - 2 ))
+
+    printf '%s\n' "$input" \
+        | awk -v search="$search" -v lines="$LINES" -v cols="$COLUMNS" '
+    BEGIN { maxl = lines - 1; maxc = maxl * cols; if (search == "") search = ".*" }
+    NR >= maxl { exit }
+    tolower($0) !~ search { next }
+    # Total line length & remaining whitespace, even for wrapped lines:
+    {
+        len = length($0)
+        if (len < cols) {
+            total += cols
+        } else {
+            total += len + (cols - (len % cols))
+        }
+    }
+    total >= maxc { exit }
+    { printf("\033[2K%s\n", $0) }   # Clear line & print match.
+    END { printf("\033[J") }        # Clear remaining lines.
+    '
+
     printf '\e[u'       # restore pos
     printf '\e[?25h'    # show cursor
 }
