@@ -6,6 +6,7 @@ static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%"
 static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "0", "toggle",  NULL };
 static const char *upbri[]   = { "/bin/xbacklight", "-inc", "10",     NULL };
 static const char *downbri[]   = { "/bin/xbacklight", "-dec", "10",     NULL };
+static const char *xauto[]   = { "/bin/xrandr", "--auto",      NULL };
 
 /* appearance */
 static const char *fonts[] = {
@@ -98,6 +99,7 @@ static Key keys[] = {
 	{ 0,                       XF86XK_AudioRaiseVolume, spawn, {.v = upvol   } },
 	{ 0,                       XF86XK_MonBrightnessUp, spawn, {.v = upbri   } },
 	{ 0,                       XF86XK_MonBrightnessDown, spawn, {.v = downbri   } },
+	{ 0,                       XK_Print, spawn, {.v = xauto   } },
 };
 
 /* button definitions */
