@@ -79,13 +79,20 @@ volume () {
 }
 
 all () {
-    printf '%s | %s | %s | %s | %s | %s' \
+    printf '%s | %s | %s | %s' \
         "$(curdate)" \
-        "$(load)" \
-        "$(ram)" \
         "$(wifi)" \
         "$(volume)" \
         "$(battery)"
+}
+
+repeat () {
+    local interval="${1:?Interval required.}"
+
+    while : ; do
+        printf '%s\n' "$(all)"
+        sleep "$interval"
+    done
 }
 
 _main () {
