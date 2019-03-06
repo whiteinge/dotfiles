@@ -1,0 +1,97 @@
+#!/usr/bin/env sh
+# Collect various system stats for feeding into lemonbar
+
+curdate () {
+    date +'%H:%M %a, %b %d'
+}
+
+load () {
+    awk '{ print "L:", $1, $2, $3 }' < /proc/loadavg
+}
+
+ram () {
+    awk '
+    /MemTotal/ { total = $2 }
+    /MemFree/ { free = $2 }
+    /^Buffers/ { buffers = $2 }
+    /^Cached/ { cached = $2 }
+    END {
+        printf("R: %2.0f%%", 100 * (total - free - cached - buffers) / total)
+    }
+    ' < /proc/meminfo
+}
+
+wifi () {
+    nmcli --terse con show --active | awk -F: '{ printf("W: %s", $1) }'
+    printf ' '
+    awk 'NR == 3 { printf("%2.0f%%", $3) }' < /proc/net/wireless
+
+    # nmcli -f SSID,BARS dev wifi list \
+    #     | awk 'NR == 2 { print "W: " $1, $2; exit }'
+}
+
+battery () {
+    upower -i $(upower -e | grep 'BAT') | awk -F: '
+    function ltrim(s) { sub(/^[ \t\r\n]+/, "", s); return s }
+    { $1 = ltrim($1); $2 = ltrim($2) }
+    $1 == "state" {
+        if ($2 == "charging") state = "+"
+        if ($2 == "fully-charged") state = "·"
+        if ($2 == "discharging") state = "-"
+    }
+    $1 == "percentage" { pct = $2 }
+    $1 ~ "time" {
+        time = $2
+        sub(/minutes/, "m", time)
+        sub(/hours/, "h", time)
+    }
+    END {
+        printf("B: %s%s%s", state, pct, (time ? " (" time ")" : ""))
+    }
+    '
+}
+
+volume () {
+    sink=$(pacmd stat | awk -F': ' '/Default sink/ { print $2 }')
+    sour=$(pacmd stat | awk -F': ' '/Default source/ { print $2 }')
+
+    pactl list sinks | awk -v sink="$sink" '
+        $0 ~ sink { found=1 }
+        !found { next }
+        /Mute: / && $2 ~ "yes" { muted="!" }
+        /\tVolume: / {
+            printf("V: %s%s", $5, muted)
+            exit
+        }
+    '
+
+    printf ' '
+
+    pactl list sources | awk -v sink="$sour" '
+        $0 ~ sink { found=1 }
+        !found { next }
+        /Mute: / && $2 ~ "yes" { muted="!" }
+        /\tVolume: / {
+            printf("M: %s%s", $5, muted)
+            exit
+        }
+    '
+}
+
+all () {
+    printf '%s | %s | %s | %s | %s | %s' \
+        "$(curdate)" \
+        "$(load)" \
+        "$(ram)" \
+        "$(wifi)" \
+        "$(volume)" \
+        "$(battery)"
+}
+
+_main () {
+    cmd="${1:?'Missing command.'}"
+    shift
+    "$cmd" "$@"
+}
+
+_main "$@"
