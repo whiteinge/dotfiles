@@ -1,0 +1,44 @@
+# Media keys.
+bind-key XF86AudioLowerVolume "/usr/bin/pactl set-sink-volume 0 -5%"
+bind-key XF86AudioRaiseVolume "/usr/bin/pactl set-sink-volume 0 +5%"
+bind-key XF86AudioMute "/usr/bin/pactl set-sink-mute 0 toggle"
+bind-key XF86MonBrightnessUp "/bin/xbacklight -inc 10"
+bind-key XF86MonBrightnessDown "/bin/xbacklight -dec 10"
+bind-key XF86Print "/bin/xrandr --auto"
+bind-key CM-q "xscreensaver-command -lock"
+
+# Workspace keys.
+bind-key M-F1 group-only-1
+bind-key M-F2 group-only-2
+bind-key M-F3 group-only-3
+bind-key M-F4 group-only-4
+bind-key CM-F1 window-movetogroup-1
+bind-key CM-F2 window-movetogroup-2
+bind-key CM-F3 window-movetogroup-3
+bind-key CM-F4 window-movetogroup-4
+
+# Mouse keys.
+bind-mouse M-1    window-move
+bind-mouse M-3    window-resize
+
+# Layout settings.
+snapdist 20
+gap 20 0 0 0        # Leave space for lemonbar
+ignore bar          # lemonbar
+
+# Application menu
+command qterminal qterminal
+command firefox firefox
+command chrome google-chrome
+command qutebrowser qutebrowser
+
+# Predefined groups (get from xprop).
+autogroup 1     "qterminal"
+autogroup 2     "Navigator,Firefox,google-chrome,Google-chrome,qutebrowser"
+
+# Inherit current selected group.
+sticky yes
+
+# Colors.
+color activeborder darkblue
+color inactiveborder lightgrey
