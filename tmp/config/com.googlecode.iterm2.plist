@@ -478,7 +478,7 @@
 	<key>HideActivityIndicator</key>
 	<false/>
 	<key>HideMenuBarInFullscreen</key>
-	<true/>
+	<false/>
 	<key>HideScrollbar</key>
 	<true/>
 	<key>HideTab</key>
@@ -530,7 +530,7 @@
 	gAKACoAN0xAJChEVGVdOUy5rZXlzoxITFIADgASABaMWFxiABoAHgAiACVpJZGVudGlm
 	aWVyVVdpZHRoVkhpZGRlblEwI0BowAAAAAAACNIhIiMkWiRjbGFzc25hbWVYJGNsYXNz
 	ZXNcTlNEaWN0aW9uYXJ5oiMlWE5TT2JqZWN00xAJCicrGaMSExSAA4AEgAWjLC0YgAuA
-	DIAIgAlRMSNAdKGdsi0OVtIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
+	DIAIgAlRMSNAc7Gdsi0OVtIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
 	TlNLZXllZEFyY2hpdmVy0Tg5VUFycmF5gAEACAARABoAIwAtADIANwBGAEwAUQBcAGMA
 	ZgBoAGoAbABzAHsAfwCBAIMAhQCJAIsAjQCPAJEAnACiAKkAqwC0ALUAugDFAM4A2wDe
 	AOcA7gDyAPQA9gD4APwA/gEAAQIBBAEGAQ8BFAEjAScBLwFBAUQBSgAAAAAAAAIBAAAA
@@ -547,15 +547,17 @@
 	<key>NSTableView Supports v2 KeyBingingTable</key>
 	<true/>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>697 1216 512 296 0 0 1440 2537 </string>
+	<string>734 797 551 296 0 0 1440 2537 </string>
+	<key>NSWindow Frame SUUpdateAlert</key>
+	<string>410 1626 620 392 0 0 1440 2560 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
-	<string>501 777 599 521 0 0 1440 2537 </string>
+	<string>582 770 606 469 0 0 1440 2537 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>410 296 796 486 0 0 1440 900 </string>
+	<string>349 1090 796 486 0 0 1440 2537 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>0 0 1440 900 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>104 937 570 452 0 0 1440 2537 </string>
+	<string>508 1317 650 452 0 0 1440 2537 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>105 762 1046 1149 0 0 1440 2537 </string>
 	<key>New Bookmarks</key>
@@ -3562,6 +3564,8 @@
 	<string>9836E8AA-18FF-42A4-A448-0672330B2516</string>
 	<key>NoSyncPermissionToShowTip</key>
 	<false/>
+	<key>NoSyncSuppressClipboardAccessDeniedWarning</key>
+	<true/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>568230852.59869206</real>
 	<key>OnlyWhenMoreTabs</key>
@@ -3634,7 +3638,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-01-10T21:43:18Z</date>
+	<date>2019-03-06T16:26:02Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -3693,7 +3697,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.2.6</string>
+	<string>3.2.7</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
