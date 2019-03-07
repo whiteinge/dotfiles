@@ -21,6 +21,7 @@ bind-key CM-F3 window-movetogroup-3
 bind-key CM-F4 window-movetogroup-4
 
 # Mouse keys.
+unbind-mouse all    # Remove the click menus
 bind-mouse M-1    window-move
 bind-mouse M-3    window-resize
 
