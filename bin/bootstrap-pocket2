@@ -16,19 +16,23 @@ sed -i -e '/GRUB_CMDLINE_LINUX/ s/quiet"$/fbcon=rotate:1 quiet"/' /etc/default/g
 grub2-mkconfig -o /boot/grub2/grub.cfg
 
 # Set up X server for the unique display.
-cat > /etc/xorg.conf.d/20-intel.conf <<'EOF'
-Section "Device"
-	Identifier "Intel Graphics"
-	Driver "intel"
-	Option "AccelMethod" "sna"
-	Option "TearFree" "true"
-	Option "DRI" "3"
-EndSection
-EOF
+# cat > /etc/xorg.conf.d/20-intel.conf <<'EOF'
+# Section "Device"
+# 	Identifier "Intel Graphics"
+# 	Driver "intel"
+# 	Option "AccelMethod" "sna"
+# 	Option "TearFree" "true"
+# 	Option "DRI" "3"
+# EndSection
+# EOF
 
 cat > /etc/xorg.conf.d/30-display.conf <<'EOF'
 Section "Monitor"
 	Identifier "eDP1"
+	Option "Rotate" "right"
+EndSection
+Section "Monitor"
+	Identifier "eDP-1"
 	Option "Rotate" "right"
 EndSection
 EOF
