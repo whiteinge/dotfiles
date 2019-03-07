@@ -201,7 +201,7 @@ cnoremap sudow w !sudo tee % >/dev/null
 
 " Use command mode readline/Emacs shortcut to go to the beginning of the line.
 " I can never remember Vim's default. Where does that ctrl-b come from?
-cnoremap <c-a> <Home>
+cnoremap <C-a> <Home>
 
 " Add thumbs-up/down emoji as digraphs
 dig +1 128077
@@ -443,7 +443,6 @@ set printfont=Monaco:h8         " face-type (not size) ignored in PostScript out
 set printencoding=utf-8
 
 " }}}
-
 " Scripting helpers {{{1
 
 command! -nargs=1 Warn echohl WarningMsg | echo <args> | echohl None
