@@ -4,6 +4,12 @@
 # Use the netinstaller, choose the "Minimal install", only check the "C
 # Development Tools and Libraries" group.
 
+# Set up udev rules for adb.
+echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", MODE="0660", GROUP="wheel"' \
+    | tee —append /etc/udev/rules.d/51-android.rules
+chmod a+r /etc/udev/rules.d/51-android.rules
+udevadm control --reload-rules
+
 # Enable RPM Fusion repo.
 dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
