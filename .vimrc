@@ -337,11 +337,12 @@ nmap [L :lfirst<cr>
 " Toggle the quickfix and location list windows.
 let IsQfOpen = {-> len(filter(getwininfo(),
     \ 'v:val.quickfix && !v:val.loclist'))}
-let IsLocOpen = {-> len(filter(getwininfo(), 'v:val.loclist'))}
+let IsLocOpen = {-> len(filter(getwininfo(), {i,v ->
+    \ bufnr('%') == bufnr(get(v.variables, 'quickfix_title', '__gndn'))}))}
 nmap <silent> <leader>fq :exe IsQfOpen()
     \? ':cclose' : ':botright copen \| :wincmd p'<cr>
-nmap <silent> <leader>fl :exe IsLocOpen()
-    \? ':lclose' : ':botright lopen \| :wincmd p'<cr>
+nmap <silent> <leader>fl :exe IsLocOpen(getwininfo())
+    \? ':lclose' : ':lopen \| :wincmd p'<cr>
 
 " Open all files referenced in the quickfix list as args.
 " Sometimes you just want to step through the files and not all the changes.
