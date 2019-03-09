@@ -112,11 +112,11 @@ fu! fp#IsEmpty(val)
     elseif (type(a:val) is v:t_string)
         return a:val == ''
     elseif (type(a:val) is v:t_list)
-        return len(a:val0) == 0
+        return len(a:val) == 0
     elseif (type(a:val) is v:t_dict)
-        return len(a:val0) == 0
+        return len(a:val) == 0
     elseif (type(a:val) is v:t_float)
-        return a:val0 == 0.0
+        return a:val == 0.0
     else
         return 0
     endif
