@@ -258,6 +258,7 @@ endif
 " Quickly select a file to edit via :term and a CLI fuzzy-finder.
 " Curious that :term doesn't mimic :! for cmd parsing. This train-wreck of
 " string escaping boils down to: printf '\e]51;["drop", "somefilename"]\a'
+" which is what Vim's :term uses to communicate commands back up to Vim.
 nnoremap <silent><leader>ff :term ++curwin ++close sh -c "
     \ffind . '(' -type f -o -type l ')' -print
     \\| pick
