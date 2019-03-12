@@ -1,29 +1,20 @@
 #!/usr/bin/env zsh
 # Store a todo list in any Git repository
 #
-# A port of the excellent t to use Git as storage.
+# A semi-port of the excellent t to use Git as storage.
 # https://github.com/sjl/t
 #
-# The todos are unobtrusive, local-only additions to a Git repo. They are
-# stored in Git as dangling commits and Git notes are used to keep references
-# to those objects so they're not garbage collected.
+# The todos are stored as namespaced refs. The namespace default namespace can
+# be overridden by setting TODO_NS.
 #
 # Setup: either the CWD should be a Git repo or the TODO_REPO variable should
 # point to a Git repo used to store the todo list.
 
 NAME=$(basename "$0")
-
 TODO_REPO=${TODO_REPO:-'./.git'}
 TODO_NS=${TODO_NS:-'todo'}
-TODO_ARCHIVE=${TODO_ARCHIVE:-'todo-archive'}
 
 local -a git=( "git" "--git-dir" "${TODO_REPO}" )
-
-test -d "$TODO_REPO"
-NO_REPO=$?
-
-command -v "git" 1>/dev/null 2>/dev/null
-NO_GIT=$?
 
 add() {
     local in="$*"
@@ -35,15 +26,14 @@ add() {
 
     printf '%s' "$in" \
         | "$git[@]" hash-object --stdin -w \
-        | xargs -I@ "$git[@]" notes --ref "$TODO_NS" add @ --allow-empty -m ''
+        | xargs -I{} "$git[@]" update-ref "refs/${TODO_NS}/{}" {}
 }
 
 list() {
-    "${git[@]}" notes --ref "$TODO_NS" \
-        | cut -d' ' -f2 \
-        | "${git[@]}" cat-file --batch \
+    "${git[@]}" for-each-ref --format '%(refname:lstrip=2)' "refs/${TODO_NS}" \
+        | "${git[@]}" cat-file --batch='%(objectname)' \
         | xargs -r -d '\n' -n 2 \
-        | while read -r sha otype len content; do
+        | while read -r sha content; do
             printf '%s - %s\n' \
                 "$(${git[@]} rev-parse --short=4 ${sha})" \
                 "$content"
@@ -53,27 +43,27 @@ list() {
 
 del() {
     local id="${1:?Todo ID is required.}"
-    "$git[@]" notes --ref "$TODO_NS" remove "$id"
-}
-
-arch() {
-    :
-}
-
-hist() {
-    :
+    "$git[@]" rev-parse "$id" \
+        | xargs -r -I{} "$git[@]" update-ref -d "refs/${TODO_NS}/{}" {}
 }
 
 help() {
-    echo "${NAME} [<flag>] [<arg>]\n"
-    echo "List all todos: ${NAME}
-Add a new todo: ${NAME} Walk the plants.
-    : ${NAME} Water the dog.
-Delete a todo: ${NAME} -d <hash>
-Archive a todo: ${NAME} -a <hash>
-List todo archives: ${NAME} -A
-Show this help: ${NAME} -h
-" | column -t -s ':'
+    cat <<-EOF
+	Usage: ${NAME} [<flags>] [*<arg>]
+
+	List all todos: ${NAME}
+
+	Add a new todo: ${NAME} Walk the plants.
+	              : ${NAME} Water the dog.
+
+	Flag        | Description
+	----------- | -----------
+	-d <hash>   | Show version.
+	-h          | Show this screen.
+	-x          | Enable xtrace debug logging.
+
+	Flags _must_ be the first argument to ${NAME}.
+EOF
 }
 
 main() {
@@ -82,12 +72,14 @@ main() {
     local OPTARG
     local OPTIND
 
-    if [ "$NO_REPO" -ne 0 ]; then
+    test -d "$TODO_REPO"
+    if [ "$?" -ne 0 ]; then
         printf 'Todo repository "%s" not found.\n' "$TODO_REPO" 1>&2
         exit 1
     fi
 
-    if [ "$NO_GIT" -ne 0 ]; then
+    command -v "git" 1>/dev/null 2>/dev/null
+    if [ "$?" -ne 0 ]; then
         printf 'Git must be installed.\n' 1>&2
         exit 1
     fi
@@ -95,12 +87,10 @@ main() {
     if [ $# -eq 0 ]; then
         cmd='list'
     else
-        while getopts hdaA opt; do
+        while getopts hd opt; do
             case $opt in
                 h) cmd='help';;
                 d) cmd='del';;
-                a) cmd='arch';;
-                A) cmd='hist';;
             esac
         done
         shift $(( OPTIND - 1 ))
