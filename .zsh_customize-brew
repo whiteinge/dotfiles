@@ -4,6 +4,7 @@
 
 paths=(
     "${HOME}/bin" \
+    "${HOME}/.nodenv/shims" \
     "/usr/local/bin" \
     "/usr/local/opt/curl/bin" \
     "/usr/local/opt/coreutils/libexec/gnubin" \
@@ -33,15 +34,21 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 export PATH="${(j|:|)paths}:${PATH}"
 export MANPATH="${(j|:|)manpaths}:${MANPATH}"
 
-# Lazy-load NVM because it increases startup by an order of magnitude(!).
-# https://gist.github.com/fl0w/07ce79bd44788f647deab307c94d6922
-export NVM_DIR=$HOME/.nvm
-lazynvm() {
-    unset -f nvm node npm npx
-    source /usr/local/opt/nvm/nvm.sh
-}
 
-nvm () { lazynvm; nvm $@; };
-node () { lazynvm; env NODE_NO_READLINE=1 rlwrap node $@; };
-npm () { lazynvm; npm $@; };
-npx () { lazynvm; npx $@; };
+# Inline nodenv init to shave a few more ms off the startup time.
+# eval "$(nodenv init -)"
+export NODENV_SHELL=zsh
+nodenv() {
+  local command
+  command="${1:-}"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  rehash|shell)
+    eval "$(nodenv "sh-$command" "$@")";;
+  *)
+    command nodenv "$command" "$@";;
+  esac
+}
