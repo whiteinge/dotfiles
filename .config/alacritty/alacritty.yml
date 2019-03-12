@@ -1,5 +1,4 @@
 window:
-  decorations: none         # Neither borders nor title bar
   start_maximized: true
 
 scrolling:
