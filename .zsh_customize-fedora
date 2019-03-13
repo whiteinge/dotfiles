@@ -1,6 +1,23 @@
-alias vi='gvim -v'
-alias vim='gvim -v'
-alias vimdiff='gvimdiff -v'
-export EDITOR='gvim -v'
-export VISUAL='gvim -v'
-export GIT_EDITOR='gvim -v'
+# Fedora's CLI Vim doesn't have clipboard integration so wrap starting Gvim
+# without a GUI.
+unalias vi
+
+if ! [[ -x $HOME/bin/vim ]]; then
+    cat > $HOME/bin/vim <<-'EOF'
+	#!/usr/bin/env zsh
+	exec gvim -v "$@"
+EOF
+    chmod +x $HOME/bin/vim
+fi
+
+if ! [[ -L $HOME/bin/vi ]]; then
+    ln -s $HOME/bin/vim $HOME/bin/vi
+fi
+
+if ! [[ -x $HOME/bin/vimdiff ]]; then
+cat > $HOME/bin/vimdiff <<-'EOF'
+	#!/usr/bin/env zsh
+	exec gvimdiff -v
+EOF
+    chmod +x $HOME/bin/vimdiff
+fi
