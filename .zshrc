@@ -18,6 +18,7 @@ setopt                          \
         chase_links             \
         complete_aliases        \
         extended_glob           \
+        extended_history        \
         hist_ignore_all_dups    \
         hist_ignore_dups        \
         hist_ignore_space       \
