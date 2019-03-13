@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # Mostly thanks to https://github.com/joshskidmore/gpd-pocket-2-arch-guide
 
-dnf install -y iwl7260-firmware
+dnf install -y iwl7260-firmware xorg-x11-drv-intel
 
 # Add Yubikey detection.
 cat > /etc/udev/rules.d/70-u2f.rules <<'EOF'
@@ -17,13 +17,14 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 
 # Set up X server for the unique display.
 # cat > /etc/xorg.conf.d/20-intel.conf <<'EOF'
-# Section "Device"
-# 	Identifier "Intel Graphics"
-# 	Driver "intel"
-# 	Option "AccelMethod" "sna"
-# 	Option "TearFree" "true"
-# 	Option "DRI" "3"
-# EndSection
+Section "Device"
+	Identifier "Intel Graphics"
+	Driver "intel"
+	Option "AccelMethod" "sna"
+	Option "TearFree" "true"
+        # Use DRI 2 to avoid a severe rendering flicker in Chrome.
+	Option "DRI" "2"
+EndSection
 # EOF
 
 cat > /etc/xorg.conf.d/30-display.conf <<'EOF'
