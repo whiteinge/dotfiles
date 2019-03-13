@@ -14,6 +14,8 @@ git
 google-chrome-stable
 gparted
 graphviz
+HandBrake
+HandBrake-gui
 haskell-platform
 imake
 jq
@@ -52,6 +54,7 @@ tree
 unzip
 util-linux-user
 vim-X11
+vlc
 which
 wine
 winetricks
