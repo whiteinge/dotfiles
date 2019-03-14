@@ -7,17 +7,12 @@
 
 [alias]
     b = branch -vv
-    bc = branch --contains
-    cdate = "!git --no-pager log -1 --format='%ci'"
     ca = commit --amend --no-edit
     cm = commit --amend -o
     ci = commit
-    cp = commit --patch
     co = checkout
     d = diff
     dc = diff --cached
-    dh = "!git diff --color | diff-highlight | less -r"
-    i = ghissues
     m = merge --no-ff
     mt = mergetool
     p = push
@@ -26,7 +21,6 @@
     sh = show --summary --stat --pretty=fuller --patch
     st = status -s -b
     stat = diff --stat
-    untracked = ls-files --others --exclude-standard
 
     # Fetch all or one remote: git f; git f upstream
     f = "!sh -c 'git fetch --tags ${1:-\"--all\"}' -"
@@ -36,9 +30,6 @@
 
     # Rebase against upstream HEAD or ref: git r; git r HEAD~10
     rup = "!sh -c 'git rebase ${1:-\"@{u}\"}' -"
-
-    # Reset HEAD and the index to upstream or ref: git re; git rs HEAD~1
-    rs = "!sh -c 'git reset --soft --keep ${1:-\"@{u}\"}' -"
 
     # Hard reset to upstream or ref: git re; git rh HEAD~1
     rh = "!sh -c 'git reset --hard ${1:-\"@{u}\"}' -"
