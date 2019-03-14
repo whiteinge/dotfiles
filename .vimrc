@@ -314,9 +314,8 @@ set switchbuf=usetab            " Jumps to first tab or window that contains spe
 set showtabline=1               " Display the tabbar if there are multiple tabs. Use :tab ball or invoke Vim with -p
 set hidden                      " Allows opening a new buffer in place of an existing one without first saving the existing one
 
-" Type <F1> follwed by a buffer number or name fragment to jump to it.
-" Also replaces the annoying help button. Based on tip 821.
-map <F1> :ls<cr>:b<space>
+" Type <F1> to open a fuzzy-finder of available buffers.
+map <F1> :call pick#Buf()<cr>
 
 " Quickly jump to a tag if there's only one match, otherwise show the list
 map <F3> :tj<space>
