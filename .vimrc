@@ -329,14 +329,14 @@ if ! &diff
 endif
 
 " Shortcuts for working with quickfix/location lists
-nmap ]q :cnext<cr>
-nmap [q :cprev<cr>
-nmap ]Q :clast<cr>
-nmap [Q :cfirst<cr>
-nmap ]l :lnext<cr>
-nmap [l :lprev<cr>
-nmap ]L :llast<cr>
-nmap [L :lfirst<cr>
+nmap ]q :norm zc<cr>:cnext<cr>:norm zo<cr>
+nmap [q :norm zc<cr>:cprev<cr>:norm zo<cr>
+nmap ]Q :norm zc<cr>:clast<cr>:norm zo<cr>
+nmap [Q :norm zc<cr>:cfirst<cr>:norm zo<cr>
+nmap ]l :norm zc<cr>:lnext<cr>:norm zo<cr>
+nmap [l :norm zc<cr>:lprev<cr>:norm zo<cr>
+nmap ]L :norm zc<cr>:llast<cr>:norm zo<cr>
+nmap [L :norm zc<cr>:lfirst<cr>:norm zo<cr>
 
 " Toggle the quickfix and location list windows.
 let IsQfOpen = {-> len(filter(getwininfo(),
