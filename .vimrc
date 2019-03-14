@@ -9,21 +9,24 @@ set hlsearch                    " Highlights search results
 
 " Set the search pattern without moving the cursor.
 " https://www.reddit.com/r/vim/comments/vzd0q/how_do_i_set_the_search_pattern_without_moving/c5a5m4z
-nnoremap <silent> <leader>* :let @/ = '\<' .  expand('<cword>') . '\>'
+nn <silent> <leader>* :let @/ = '\<' .  expand('<cword>') . '\>'
   \\| call histadd('/', @/)
   \\| if &hlsearch != 0 \| set hlsearch \| endif
   \\| echo '/' . @/ . '/='<cr>
 
 " Use leader-n to unhighlight search results in normal mode:
-nmap <silent> <leader>n :silent noh<cr>
+nm <silent> <leader>n :silent noh<cr>
 
 " Display the number of matches for the last search
-nmap <leader># :%s///gn<cr>
+nm <leader># :%s///gn<cr>
 
 " Highlight arbitrary text, separately from searching, accepts a count and
 " highlights the text under the cursor. E.g.: 3\hh
 nn <leader>hh :<c-u>call matchadd('Match'. v:count1, expand('<cword>'), v:count1)<cr>
 nn <leader>hn :call clearmatches()<cr>
+
+" Grep for the word under the cursor.
+nn <leader>gr :silent grep . <cword><cr>:redraw!<cr>
 
 " }}}
 " Line Wrap {{{
