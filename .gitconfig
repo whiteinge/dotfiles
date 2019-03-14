@@ -7,9 +7,11 @@
 
 [alias]
     b = branch -vv
+    ap = add --patch
     ca = commit --amend --no-edit
     cm = commit --amend -o
     ci = commit
+    cr = reset HEAD~1
     co = checkout
     d = diff
     dc = diff --cached
