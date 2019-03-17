@@ -28,27 +28,65 @@ fu! pick#Pick(cb, inbuf)
     endfu
 endfu
 
-" Open pick#Pick with the current buffer list (:ls)
-fu! pick#Buf()
+fu! pick#SwitchBuf(in, ...)
+    let l:GetData = function(a:in)
+    let l:SwitchBuf = a:0 >= 1 ? function(a:1) : {x -> x}
+    let l:FmtRet = a:0 >= 2 ? function(a:2) : {x -> x}
+
     let l:curbuf = bufnr('%')
     let l:curalt = bufnr('#')
-
-    redir @m | silent ls | redir END
     botright new
-    let l:inbuf = bufnr('%')
-    1put m
-    1,2delete
     setl buftype=nofile bufhidden=hide nobuflisted
+    let l:inbuf = bufnr('%')
+    call l:GetData()
     " Uncomment for a full-window picker instead.
     " close
 
-    fu! s:BufCb(ret) closure
-        " Switch (or restore) buffer and alternate buffers.
-        let l:msg = trim(substitute(a:ret, '^ *\([0-9]\+\).*$', '\1', ''))
-        exe 'b '. (l:msg == '' ? l:curbuf : l:msg)
-        silent! let @# = (l:msg == '' ? l:curalt : l:curbuf)
+    " Switch (or restore) buffer and alternate buffers.
+    fu! BufCb(ret) closure
+        let l:newbuf = l:FmtRet(trim(a:ret))
+        if (l:newbuf == '')
+            exe 'b '. l:curbuf
+            silent! let @# = l:curalt
+        else
+            call l:SwitchBuf(l:newbuf)
+            silent! let @# = l:curbuf
+        endif
+
         exe l:inbuf .'bwipeout'
     endfu
 
-    call pick#Pick('s:BufCb', l:inbuf)
+    call pick#Pick('BufCb', l:inbuf)
+endfu
+
+" Open pick#Pick with the current buffer list (:ls)
+fu! pick#Buf()
+    redir @m | silent ls | redir END
+
+    fu! GetData()
+        1put m
+        1,2delete
+    endfu
+
+    fu! FmtRet(ret)
+        return substitute(a:ret, '^ *\([0-9]\+\).*$', '\1', '')
+    endfu
+
+    fu! SwitchBuf(newbuf)
+        exe 'b '. a:newbuf
+    endfu
+
+    call pick#SwitchBuf('GetData', 'SwitchBuf', 'FmtRet')
+endfu
+
+fu! pick#Shell(shellin)
+    fu! GetData() closure
+        exe 'read !'. a:shellin
+    endfu
+
+    fu! SwitchBuf(newbuf)
+        exe 'e '. a:newbuf
+    endfu
+
+    call pick#SwitchBuf('GetData', 'SwitchBuf')
 endfu

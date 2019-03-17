@@ -258,15 +258,9 @@ if has("autocmd") && exists("+omnifunc")
         \ if &omnifunc == "" | setl omnifunc=syntaxcomplete#Complete | endif
 endif
 
-" Quickly select a file to edit via :term and a CLI fuzzy-finder.
-" Curious that :term doesn't mimic :! for cmd parsing. This train-wreck of
-" string escaping boils down to: printf '\e]51;["drop", "somefilename"]\a'
-" which is what Vim's :term uses to communicate commands back up to Vim.
-nnoremap <silent><leader>ff :term ++curwin ++close sh -c "
-    \ffind . '(' -type f -o -type l ')' -print
-    \\| pick
-    \\| xargs -I{} printf '\\e]51;[\"drop\",\"{}\"]\\a'
-    \"<cr>
+" Edit a file from a list of files under the current directory.
+nmap <silent> <leader>ff :call pick#Shell(
+    \"ffind . '(' -type f -o -type l ')' -print")<cr>
 
 " }}}
 " Window Layout {{{
@@ -468,6 +462,7 @@ command! -nargs=* Scratch call scratch#Scratch(<f-args>)
 
 """ Diff unstaged changes.
 nmap <silent> <leader>cc :call stagediff#StageDiff()<cr>
+nmap <silent> <leader>cf :call pick#Shell("git ls-files")<cr>
 nmap <silent> <leader>ci :term ++close git commit<cr>
 nmap <silent> <leader>ca :term ++close git commit --amend --no-edit<cr>
 " nmap <silent> <leader>cb :vert term ++close git blame -c --date=relative -- %<cr>
