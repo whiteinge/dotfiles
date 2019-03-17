@@ -328,14 +328,14 @@ if ! &diff
 endif
 
 " Shortcuts for working with quickfix/location lists
-nmap ]q :norm zc<cr>:cnext<cr>:norm zo<cr>
-nmap [q :norm zc<cr>:cprev<cr>:norm zo<cr>
-nmap ]Q :norm zc<cr>:clast<cr>:norm zo<cr>
-nmap [Q :norm zc<cr>:cfirst<cr>:norm zo<cr>
-nmap ]l :norm zc<cr>:lnext<cr>:norm zo<cr>
-nmap [l :norm zc<cr>:lprev<cr>:norm zo<cr>
-nmap ]L :norm zc<cr>:llast<cr>:norm zo<cr>
-nmap [L :norm zc<cr>:lfirst<cr>:norm zo<cr>
+nmap <silent>]q :silent! norm zc<cr> :cnext <bar> :file<cr> :silent! norm zo<cr>
+nmap <silent>[q :silent! norm zc<cr> :cprev <bar> :file<cr> :silent! norm zo<cr>
+nmap <silent>[Q :silent! norm zc<cr> :cfirst <bar> :file<cr> :silent! norm zo<cr>
+nmap <silent>]Q :silent! norm zc<cr> :clast <bar> :file<cr> :silent! norm zo<cr>
+nmap <silent>]l :silent! norm zc<cr> :lnext <bar> :file<cr> :silent! norm zo<cr>
+nmap <silent>[l :silent! norm zc<cr> :lprev <bar> :file<cr> :silent! norm zo<cr>
+nmap <silent>[L :silent! norm zc<cr> :lfirst <bar> :file<cr> :silent! norm zo<cr>
+nmap <silent>]L :silent! norm zc<cr> :llast <bar> :file<cr> :silent! norm zo<cr>
 
 " Toggle the quickfix and location list windows.
 let IsQfOpen = {-> len(filter(getwininfo(),
