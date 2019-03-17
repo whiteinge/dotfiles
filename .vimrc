@@ -146,7 +146,7 @@ map <leader>O :set paste<cr>m`O<esc>``:set nopaste<cr>
 map <F2> :reg "0123456789-*+:/<cr>
 
 " Toggle between line numbers and relative line numbers
-nnoremap <silent><leader>u :exe "set " . (&rnu == 1 ? "nornu" : "rnu")<cr>
+nnoremap <silent> <leader>u :exe "set " . (&rnu == 1 ? "nornu" : "rnu")<cr>
 
 " Displays tabs with :set list & displays when a line runs off-screen
 set listchars=tab:>-,trail:\ ,precedes:<,extends:>,eol:$,nbsp:%
@@ -301,10 +301,10 @@ set statusline=%t\ %<%{M(expand('#:t'),'#')}\
 
 " Intercept default window movement keys when inside a tmux session.
 if !empty($TMUX)
-    map <silent><C-w>h :call vimortmux#VimOrTmuxNav('h')<cr>
-    map <silent><C-w>j :call vimortmux#VimOrTmuxNav('j')<cr>
-    map <silent><C-w>k :call vimortmux#VimOrTmuxNav('k')<cr>
-    map <silent><C-w>l :call vimortmux#VimOrTmuxNav('l')<cr>
+    map <silent> <C-w>h :call vimortmux#VimOrTmuxNav('h')<cr>
+    map <silent> <C-w>j :call vimortmux#VimOrTmuxNav('j')<cr>
+    map <silent> <C-w>k :call vimortmux#VimOrTmuxNav('k')<cr>
+    map <silent> <C-w>l :call vimortmux#VimOrTmuxNav('l')<cr>
 endif
 
 " }}}
