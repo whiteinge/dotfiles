@@ -521,7 +521,7 @@ nmap <expr> <leader>jjj opfuncwrapper#WrapOpfunc('joinsplit#JoinItems', 1,
 runtime macros/matchit.vim
 
 """ undotree settings
-nnoremap <F7> :UndotreeToggle<cr>
+nnoremap <F6> :UndotreeToggle<cr>
 
 """ ale settings
 let g:ale_set_highlights = 0
