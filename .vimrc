@@ -322,14 +322,14 @@ if ! &diff
 endif
 
 " Shortcuts for working with quickfix/location lists
-nmap <silent>]q :silent! norm zc<cr> :cnext <bar> :file<cr> :silent! norm zo<cr>
-nmap <silent>[q :silent! norm zc<cr> :cprev <bar> :file<cr> :silent! norm zo<cr>
-nmap <silent>[Q :silent! norm zc<cr> :cfirst <bar> :file<cr> :silent! norm zo<cr>
-nmap <silent>]Q :silent! norm zc<cr> :clast <bar> :file<cr> :silent! norm zo<cr>
-nmap <silent>]l :silent! norm zc<cr> :lnext <bar> :file<cr> :silent! norm zo<cr>
-nmap <silent>[l :silent! norm zc<cr> :lprev <bar> :file<cr> :silent! norm zo<cr>
-nmap <silent>[L :silent! norm zc<cr> :lfirst <bar> :file<cr> :silent! norm zo<cr>
-nmap <silent>]L :silent! norm zc<cr> :llast <bar> :file<cr> :silent! norm zo<cr>
+nmap <silent>]q :cnext <bar> :file<cr>
+nmap <silent>[q :cprev <bar> :file<cr>
+nmap <silent>[Q :cfirst <bar> :file<cr>
+nmap <silent>]Q :clast <bar> :file<cr>
+nmap <silent>]l :lnext <bar> :file<cr>
+nmap <silent>[l :lprev <bar> :file<cr>
+nmap <silent>[L :lfirst <bar> :file<cr>
+nmap <silent>]L :llast <bar> :file<cr>
 
 " Toggle the quickfix and location list windows.
 let IsQfOpen = {-> len(filter(getwininfo(),
