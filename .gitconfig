@@ -190,6 +190,9 @@
     lt = $PAGER -F
     b = $PAGER -F
 
+[rerere]
+    enabled = true
+
 [merge]
     tool = diffconflicts
 
