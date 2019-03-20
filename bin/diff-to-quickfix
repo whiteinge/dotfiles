@@ -6,14 +6,22 @@
 #   vi -q $(git diff -p -U0 --diff-filter=AM -r HEAD~5.. | diff-to-quickfix)
 #   vi -q $(diff -U0 a b | diff-to-quickfix)
 
+/^diff/ {
+    in_hunk=0
+    if (NR != 1 ) { printf("--\n") }
+}
 /^\+\+\+ / {
     fname=substr($2, 2)
 }
 
 /^@@ / {
+    in_hunk=1
     nr=substr($3, 2)
     sub(/,.*/, "", nr)
-    sub(/.*@@ /, "", $0)
+    printf(".%s:%s:%s\n", fname, nr, $0)
+    next
+}
 
-    printf(".%s:%s: %s\n", fname, nr, $0)
+in_hunk {
+    printf("%s\n", $0)
 }
