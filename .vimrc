@@ -369,8 +369,10 @@ set diffopt+=indent-heuristic
 " escape sequence. (Terimal.app on OSX and WSL on Windows.)
 nmap <silent> <leader>6 <c-^><cr>
 
-" Use gext script instead of grep.
+" Use gext script instead of grep; make command to avoid confusion since the
+" options are different.
 set grepprg=gext
+command! -nargs=* Gext grep <args>
 
 " Also look for the tags file inside the Git directory.
 set tags+=.git/tags;
