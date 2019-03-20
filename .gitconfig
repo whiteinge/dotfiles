@@ -44,7 +44,7 @@
     stub = "!sh -c 'echo $1 > $1; git add $1; git commit -m Add-$1' -"
 
     # Cherry-pick a commit directly into the working directory.
-    cherry-patch = "!sh -c 'git show \"$1\" | git apply' -"
+    cherry-patch = "!sh -c 'git show \"${1:?Missing revision}\" | git apply' -"
 
     # Perform a merge in-memory and output if any conflicts are found (dry-run)
     # Usage: git mergetest otherbranch
