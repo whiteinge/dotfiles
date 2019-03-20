@@ -104,7 +104,7 @@
     # Open all files changed within a commit range into Vim's quickfix.
     # Defaults to HEAD.
     # E.g.: git editc HEAD~3..
-    editc = "!zsh -c '$EDITOR +bd1 -q <(git diff-tree -p -U0 --diff-filter=AM -r \
+    editc = "!zsh -c '$EDITOR +bd1 -q <(git diff -p -U0 --diff-filter=AM -r \
         \"${1:-HEAD}\" \
         | diff-to-quickfix)' -"
 
