@@ -122,7 +122,7 @@ if [[ ! -n "$ZSHRUN" ]]; then
     #   $HOME/.zsh-syntax-highlighting/
     if [[ -d $HOME/.zsh-syntax-highlighting/ ]]; then
         source $HOME/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-        ZSH_HIGHLIGHT_HIGHLIGHTERS+=( brackets pattern cursor )
+        ZSH_HIGHLIGHT_HIGHLIGHTERS+=( brackets pattern )
     fi
 fi
 
