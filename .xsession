@@ -37,10 +37,7 @@ xscreensaver -no-splash &
 # xscreensaver-command -watch \
 #     | while read a; do echo $a | grep '^LOCK' && mpc stop; done &
 
-$HOME/bin/status repeat 5 \
-    | lemonbar -p -f Hasklig:size=10 \
-    | while read line; do eval "$line"; done &
-
+$HOME/bin/status &
 xcape &
 qterminal &
 exec cwm

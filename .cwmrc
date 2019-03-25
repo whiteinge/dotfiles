@@ -29,8 +29,7 @@ bind-mouse M-3    window-resize
 # Layout settings.
 fontname "Hasklig:pixelsize=14"
 snapdist 20
-gap 20 0 0 0        # Leave space for lemonbar
-ignore bar          # lemonbar
+gap 20 0 0 0        # Leave space for status bar
 
 # Application menu
 command qterminal qterminal

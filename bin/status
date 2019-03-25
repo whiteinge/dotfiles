@@ -1,12 +1,18 @@
 #!/usr/bin/env sh
-# Collect various system stats for feeding into lemonbar
+# Collect various system stats for feeding into a status bar
+#
+# Usage:
+#   Run without args to start loop that updates the osd.
+#   Invoke individual status outputs:
+#       status all
+#       status battery
 
 curdate () {
     date +'%H:%M %a, %b %d'
 }
 
 load () {
-    awk '{ print "L:", $1, $2, $3 }' < /proc/loadavg
+    awk '{ print $1, $2, $3 }' < /proc/loadavg
 }
 
 ram () {
@@ -16,15 +22,15 @@ ram () {
     /^Buffers/ { buffers = $2 }
     /^Cached/ { cached = $2 }
     END {
-        printf("R: %2.0f%%", 100 * (total - free - cached - buffers) / total)
+        printf("%2.0f%%\n", 100 * (total - free - cached - buffers) / total)
     }
     ' < /proc/meminfo
 }
 
 wifi () {
-    nmcli --terse con show --active | awk -F: '{ printf("W: %s", $1) }'
+    nmcli --terse con show --active | awk -F: '/:wl/ { printf("%s", $1) }'
     printf ' '
-    awk 'NR == 3 { printf("%2.0f%%", $3) }' < /proc/net/wireless
+    awk 'NR == 3 { printf("%2.0f%%\n", $3) }' < /proc/net/wireless
 
     # nmcli -f SSID,BARS dev wifi list \
     #     | awk 'NR == 2 { print "W: " $1, $2; exit }'
@@ -46,59 +52,82 @@ battery () {
         sub(/hours/, "h", time)
     }
     END {
-        printf("B: %s%s%s", state, pct, (time ? " (" time ")" : ""))
+        printf("%s%s%s\n", state, pct, (time ? " (" time ")" : ""))
     }
     '
 }
 
-volume () {
+speaker () {
     sink=$(pacmd stat | awk -F': ' '/Default sink/ { print $2 }')
-    sour=$(pacmd stat | awk -F': ' '/Default source/ { print $2 }')
 
     pactl list sinks | awk -v sink="$sink" '
         $0 ~ sink { found=1 }
         !found { next }
         /Mute: / && $2 ~ "yes" { muted="!" }
         /\tVolume: / {
-            printf("V: %s%s", $5, muted)
+            printf("%s%s\n", $5, muted)
             exit
         }
     '
+}
 
-    printf ' '
+mic () {
+    sour=$(pacmd stat | awk -F': ' '/Default source/ { print $2 }')
 
     pactl list sources | awk -v sink="$sour" '
         $0 ~ sink { found=1 }
         !found { next }
         /Mute: / && $2 ~ "yes" { muted="!" }
         /\tVolume: / {
-            printf("M: %s%s", $5, muted)
+            printf("%s%s\n", $5, muted)
             exit
         }
     '
 }
 
-all () {
-    printf '%s | %s | %s | %s' \
-        "$(curdate)" \
-        "$(wifi)" \
-        "$(volume)" \
-        "$(battery)"
+window_count () {
+    wmctrl -l | wc -l
 }
 
-repeat () {
-    local interval="${1:?Interval required.}"
+vdesktop () {
+    xprop -root | awk -F' = ' '
+    $1 ~ "_NET_CURRENT_DESKTOP" { print $2 }
+    '
+}
 
-    while : ; do
-        printf '%s\n' "$(all)"
-        sleep "$interval"
-    done
+all () {
+    printf '[%s, %s]' "$(vdesktop)" "$(window_count)"
+    printf '  '
+
+    printf '%s' "$(curdate)"
+    printf '  |  '
+
+    printf 'W: %s' "$(wifi)"
+    printf '  |  '
+
+    printf 'V: %s' "$(speaker)"
+    printf '  '
+    printf 'M: %s' "$(mic)"
+    printf '  |  '
+
+    printf 'B: %s' "$(battery)"
+    printf '\n';
 }
 
 _main () {
-    cmd="${1:?'Missing command.'}"
-    shift
-    "$cmd" "$@"
+    if [ $# -ne 0 ]; then
+        cmd="$1"
+        shift
+        "$cmd" "$@"
+        exit $?
+    fi
+
+    {
+        while : ; do
+            all
+            sleep 5
+        done;
+    } | osd_cat -l 1 -c gray -d 0 -f -*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*
 }
 
 _main "$@"
