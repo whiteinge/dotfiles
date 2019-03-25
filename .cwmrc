@@ -8,6 +8,13 @@ bind-key CM-r "/bin/xrandr --auto"
 bind-key CM-q "xscreensaver-command -lock"
 bind-key C-slash "dswitcher"
 bind-key M-slash "dmenu_run"
+# For keyboards without media keys:
+bind-key CMS-Up "/bin/xdotool key --clearmodifiers XF86AudioRaiseVolume"
+bind-key CMS-Down "/bin/xdotool key --clearmodifiers XF86AudioLowerVolume"
+bind-key CMS-Return "/bin/xdotool key --clearmodifiers XF86AudioMute"
+bind-key CMS-Right "/bin/xdotool key --clearmodifiers XF86AudioNext"
+bind-key CMS-Left "/bin/xdotool key --clearmodifiers XF86AudioPrev"
+bind-key CMS-space "/bin/xdotool key --clearmodifiers XF86AudioPlay"
 
 # Workspace keys.
 bind-key M-F1 group-only-1

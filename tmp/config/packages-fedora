@@ -65,6 +65,7 @@ xbacklight
 xbindkeys
 xcape
 xclip
+xdotool
 xorg-x11-apps
 xorg-x11-fonts-misc
 xorg-x11-font-utils
