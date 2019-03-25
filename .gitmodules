@@ -34,9 +34,6 @@
 [submodule ".vim/pack/foo/start/undotree"]
 	path = .vim/pack/foo/start/undotree
 	url = https://github.com/mbbill/undotree.git
-[submodule "tmp/repos/bar-xft"]
-	path = tmp/repos/bar-xft
-	url = https://github.com/krypt-n/bar.git
 [submodule "tmp/repos/pick"]
 	path = tmp/repos/pick
 	url = https://github.com/mptre/pick.git
