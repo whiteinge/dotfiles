@@ -1,0 +1,41 @@
+\documentclass[english]{letter}
+\usepackage{invoice}
+\usepackage{babel}
+
+% Usage:
+% pdflatex /path/to/invoice.latex > /path/to/invoice.pdf
+%
+% Requires (place in $HOME/texmf/tex/latex):
+% bigdelim.sty, bigstrut.sty, invoice.def, invoice.sty, multirow.sty,
+% realcalc.tex
+
+\makeatletter
+\makeatother
+
+\begin{document}
+
+\address{Your Name\\
+Address 1\\
+Address 2}
+
+\letter{Their Name\\
+Address 1\\
+Address 2}
+
+\signature{Your Name}
+
+Invoice Title\\
+From Date--To Date
+
+\opening{Payment due upon receipt.}
+
+\begin{invoice}{USD}{0}
+\ProjectTitle{Your Project Title}
+   % \Fee{Desc.} {rate} {count}
+   \Fee{Widgets} {7} {2}
+   \Fee{Sprockets} {7} {3}
+\end{invoice}
+
+\closing{It is a pleasure working with you.}
+
+\end{document}

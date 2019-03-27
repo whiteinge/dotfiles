@@ -16,3 +16,8 @@ let g:tagbar_type_tex = {
     \ ],
     \ 'sort'    : 0,
 \ }
+
+" Use a skeleton template for creating invoices.
+if bufname('%') =~? '.*invoice.*'
+    let b:ftskeleton="~/.vim/ftplugin/tex/skeleton/invoice.tex"
+endif
