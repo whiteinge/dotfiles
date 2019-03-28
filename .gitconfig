@@ -101,10 +101,13 @@
     edits = "!zsh -c '$EDITOR +bd1 -q <(git diff --cached -p -U0 --diff-filter=AM \
         | diff-to-quickfix)'"
 
-    # Open all files changed within a commit range into Vim's quickfix.
-    # Defaults to HEAD.
+    # Open all files changed within either a single commit, or a commit range
+    # into Vim's quickfix. Defaults to HEAD.
+    # E.g.: git editc HEAD~3
     # E.g.: git editc HEAD~3..
-    editc = "!zsh -c '$EDITOR +bd1 -q <(git diff -p -U0 --diff-filter=AM -r \
+    editc = "!zsh -c ' \
+        [[ \"$1\" =~ \"\\.\\.\" ]] && dcmd=diff || dcmd=diff-tree ; \
+        $EDITOR +bd1 -q <(git $dcmd -p -U0 --diff-filter=AM -r \
         \"${1:-HEAD}\" \
         | diff-to-quickfix)' -"
 
