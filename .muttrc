@@ -1,0 +1,154 @@
+# Local #######################################################################
+set realname = "Seth House"
+set from = "Seth House <seth@eseth.com>"
+
+# Reading Mail ################################################################
+set sort = threads
+set sort_aux = last-date-received
+set move = no                       # move read msgs to your mbox folder?
+set mark_old = no
+set charset = utf-8
+set message_cachedir = ~/.mutt/cache/bodies
+set message_cache_clean = yes
+
+# Viewing Mail ################################################################
+# set mailcap_path = ~/.mailcap
+auto_view text/html
+ignore *
+unignore Date: From: To: CC: Bcc: Subject:
+hdr_order Subject: Date: From: To: CC: Bcc:
+set index_format = "%{%b %d} %-15.15L [%Z] %s"
+
+
+# Writing Mail ################################################################
+set markers = no
+set include = yes
+set reverse_name = yes
+set reverse_realname = no
+
+
+# Mail Server #################################################################
+
+# Create encrypted file containing:
+# set imap_pass="password"
+# set smtp_pass="password"
+# set imap_user="user"
+# set folder = "folder"
+# set smtp_url="smtp-server"
+# set spoolfile="spoolfile"
+#
+# Encrypt via:
+# gpg -r [your keyid] -e ~/.mutt/passwords
+# shred ~/.mutt/passwords
+# rm ~/.mutt/passwords
+source "gpg -qd ~/.mutt/passwords.gpg |"
+
+set copy = yes
+set imap_idle = yes
+set mail_check = 60
+set postponed = "+Drafts"
+set record = "+Sent"
+set reverse_alias = yes
+set send_charset = utf-8
+set sort_alias = alias
+set ssl_force_tls = yes
+
+
+# Color ######################################################################
+color indicator default blue                        # current highlighted line
+color tree blue default                             # threads arrow
+color status blue white                             # top and bottom status
+color index cyan default "~Q"                       # replied to
+color index green default "~N"                      # new
+color index green default "~O"                      # unread
+color index green default "~U"                      # unread
+color index blue default "~D"                       # deleted
+color index magenta default "~F"                    # flagged
+
+color header green default "^To:"
+color header green default "^cc"
+color header red default "^From:"
+color header brightblue default "^date:"
+color header brightyellow default "^subject"
+color signature blue default
+color attachment magenta default
+color tilde blue default
+color quoted green default
+color quoted1 cyan default
+color quoted2 brightgreen default
+color quoted3 brightcyan default
+
+# highlight URLs
+color body yellow default "(finger|ftp|http|https|news|telnet)://[^ >]*"
+color body yellow default "<URL:[^ ]*>"
+color body yellow default "www\\.[-.a-z0-9]+\\.[a-z][a-z][a-z]?([-_./~a-z0-9]+)?"
+color body yellow default "mailto: *[^ ]+\(\\i?subject=[^ ]+\)?"
+color body yellow default "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+
+# highlight *bold* _underlined_ /italic/ text
+color body brightwhite default "[^[:alnum:]][*_/][-_&!.,[:alnum:]]+[*_/][^[:alnum:]]"
+color body brightwhite default "^[*_/][-_&!.,[:alnum:]]+[*_/][^[:alnum:]]"
+color body brightwhite default "^[*_/][-_&!.,[:alnum:]]+[*_/]$"
+
+
+# Vim keybindings #############################################################
+# https://ryanlue.com/posts/2017-05-21-mutt-the-vim-way
+
+# Navigation
+# ----------------------------------------------------
+bind generic             z         noop
+bind index,pager,attach  g         noop
+bind index,pager         d         noop
+bind index,pager         s         noop
+bind index,pager         c         noop
+bind generic,pager       t         noop
+
+bind generic,index,pager \Cf       next-page
+bind generic,index,pager \Cb       previous-page
+bind generic             gg        first-entry
+bind generic,index       G         last-entry
+bind pager               gg        top
+bind pager               G         bottom
+bind generic,pager       \Cy       previous-line
+bind generic,index,pager \Ce       next-line
+bind generic,index,pager \Cd       half-down
+bind generic,index,pager \Cu       half-up
+bind generic             zt        current-top
+bind generic             zz        current-middle
+bind generic             zb        current-bottom
+bind index               za        collapse-thread
+bind index               zA        collapse-all
+bind index,pager         N         search-opposite
+bind index               <Backtab> previous-new-then-unread
+
+# Go to folder...
+macro index,pager gi "<change-folder>=INBOX<enter>"       "open inbox"
+macro index,pager gd "<change-folder>=Drafts<enter>"      "open drafts"
+macro index,pager gs "<change-folder>=Sent<enter>"        "open sent"
+macro index,pager gt "<change-folder>$trash<enter>"       "open trash"
+macro index,pager gf "<change-folder>?"                   "open mailbox..."
+
+# Actions
+# ----------------------------------------------------
+bind  index,pager    a   group-reply
+macro index,pager    dd  "<delete-message><sync-mailbox>"                                 "move message to trash"
+macro index,pager    dat "<delete-thread><sync-mailbox>"                                  "move thread to trash"
+macro index,pager    ss  ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<save-message>?"                                                                                                                                     "save message to a mailbox"
+macro index          sat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015\"\015<mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix-cond><save-message>?"                                    "save thread to a mailbox"
+macro index          \;s ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<tag-prefix-cond><save-message>?"                                                                                                                    "save tagged messages to a mailbox"
+macro pager          sat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015<display-message>\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015<display-message>\"\015<exit><mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix><save-message>?" "save thread to a mailbox"
+macro index,pager    cc  ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<copy-message>?"                                                                                                                                     "copy message to a mailbox"
+macro index          cat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015\"\015<mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix-cond><copy-message>?"                                    "copy thread to a mailbox"
+macro index          \;c ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<tag-prefix-cond><copy-message>?"                                                                                                                    "copy tagged messages to a mailbox"
+macro pager          cat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015<display-message>\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015<display-message>\"\015<exit><mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix><copy-message>?" "copy thread to a mailbox"
+bind  generic        tt  tag-entry
+bind  index          tat tag-thread
+bind  pager          tt  tag-message
+macro pager          tat "<exit><mark-message>q<enter><tag-thread>'q<display-message>"    "tag-thread"
+macro index,pager    gx  "<pipe-message>urlview<Enter>"                                   "call urlview to extract URLs out of a message"
+macro attach,compose gx  "<pipe-entry>urlview<Enter>"                                     "call urlview to extract URLs out of a message"
+
+# Command Line
+# ----------------------------------------------------
+bind editor \Cp history-up
+bind editor \Cn history-down
