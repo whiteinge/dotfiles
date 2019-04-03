@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+xset -dpms
+trap 'xset +dpms' SIGINT SIGTERM EXIT
+while true; do
+    xset s reset
+    xscreensaver-command -deactivate 1> /dev/null 2> /dev/null
+    sleep ${1:-60} || break
+done
