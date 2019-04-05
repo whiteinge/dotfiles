@@ -1,0 +1,52 @@
+#!/usr/bin/env sh
+# Output how many sub-dependencies each main dependencies has.
+# Usage: npm ls | npm-deps-report
+
+awk '
+function clean_line() {
+    sub(/UNMET PEER DEPENDENCY /, "", $0)
+    sub(/ deduped/, "", $0)
+    sub(/^[^a-zA-Z@\d\s:]+/, "", $0)
+    sub(/@[a-zA-Z0-9.<>=-]+$/, "", $0)
+}
+
+NR == 1 { next }
+
+/^├── / || /^├─┬ / || /^└── / {
+    clean_line()
+    main_deps[$0] = 0
+    cur_dep = $0
+    all_deps[$0] = 1
+    next
+}
+
+{
+    clean_line()
+    if (main_deps[cur_dep] != 0) {
+        duplicate_deps[$0] += 1
+    }
+    main_deps[cur_dep] += 1
+    all_deps[$0] = 1
+}
+
+END {
+    print "Total deps:", length(all_deps)
+    print "Top-level deps:", length(main_deps)
+    print "Popular, reused deps:", length(duplicate_deps)
+    print ""
+
+    command = "sort -k 1,1nr -k 2,1"
+
+    printf "Main deps:\n\n"
+    for (i in main_deps) {
+        printf("%3s\t%s\n", main_deps[i], i) | command
+    }
+    close(command)
+
+    printf "\nPopular deps (times reused):\n\n"
+    for (j in duplicate_deps) {
+        printf("%3s\t%s\n", duplicate_deps[j], j) | command
+    }
+    close(command)
+}
+'
