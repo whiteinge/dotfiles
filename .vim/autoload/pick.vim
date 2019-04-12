@@ -36,7 +36,7 @@ fu! pick#SwitchBuf(in, ...)
     let l:curwin = win_getid()
     let l:curbuf = bufnr('%')
     let l:curalt = bufnr('#')
-    botright new
+    below new
     setl buftype=nofile bufhidden=hide nobuflisted
     let l:inbuf = bufnr('%')
     call l:GetData()
