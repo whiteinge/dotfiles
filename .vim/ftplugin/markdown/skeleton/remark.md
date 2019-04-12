@@ -8,12 +8,6 @@ by Seth House
 @whiteinge<br>
 seth@eseth.com
 
----
-
-class: center, middle
-
-# Opening Slide
-
 ???
 
 Questions:
@@ -76,6 +70,12 @@ Text here
 * [Link 3](http://example.net)
 ]
 -->
+
+---
+
+class: center, middle
+
+# Opening Slide
 
 ---
 
