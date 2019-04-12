@@ -28,6 +28,7 @@ fu! pick#Pick(cb, inbuf)
     endfu
 endfu
 
+" Helper for switching to a new file/buffer.
 fu! pick#SwitchBuf(in, ...)
     let l:GetData = function(a:in)
     let l:SwitchBuf = a:0 >= 1 ? function(a:1) : {x -> x}
@@ -60,7 +61,7 @@ fu! pick#SwitchBuf(in, ...)
     call pick#Pick('BufCb', l:inbuf)
 endfu
 
-" Open pick#Pick with the current buffer list (:ls)
+" Open the current buffer list (:ls) in Pick.
 fu! pick#Buf()
     redir @m | silent ls | redir END
 
@@ -80,6 +81,8 @@ fu! pick#Buf()
     call pick#SwitchBuf('GetData', 'SwitchBuf', 'FmtRet')
 endfu
 
+" Run a shell command, open the results in Pick, then edit the picked file.
+" Usage: pick#Shell("git ls-files")
 fu! pick#Shell(shellin)
     fu! GetData() closure
         exe 'read !'. a:shellin
