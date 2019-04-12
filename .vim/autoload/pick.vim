@@ -33,6 +33,7 @@ fu! pick#SwitchBuf(in, ...)
     let l:SwitchBuf = a:0 >= 1 ? function(a:1) : {x -> x}
     let l:FmtRet = a:0 >= 2 ? function(a:2) : {x -> x}
 
+    let l:curwin = win_getid()
     let l:curbuf = bufnr('%')
     let l:curalt = bufnr('#')
     botright new
@@ -44,15 +45,15 @@ fu! pick#SwitchBuf(in, ...)
 
     " Switch (or restore) buffer and alternate buffers.
     fu! BufCb(ret) closure
+        call win_gotoid(l:curwin)
         let l:newbuf = l:FmtRet(trim(a:ret))
-        if (l:newbuf == '')
-            exe 'b '. l:curbuf
-            silent! let @# = l:curalt
-        else
-            call l:SwitchBuf(l:newbuf)
-            silent! let @# = l:curbuf
+
+        if (l:newbuf == l:curbuf || l:newbuf == '')
+            return
         endif
 
+        call l:SwitchBuf(l:newbuf)
+        silent! let @# = l:curbuf
         exe l:inbuf .'bwipeout'
     endfu
 
