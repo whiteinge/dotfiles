@@ -1,20 +1,23 @@
 #!/usr/bin/env zsh
 # set -x
 
-do_search() {
-    local input="$1"
-    local search="$2"
+local input=''
+local length=0
+local query=''
+local result=''
 
+# Perform the search and draw the results.
+do_search() {
     printf '\e[?25l'    # hide cursor
     printf '\e[s'       # save pos
     printf '\e[1B'      # move down
     printf '\e[1000D'   # move to far left
 
     printf '%s\n' "$input" \
-        | awk -v search="$search" -v lines="$LINES" -v cols="$COLUMNS" '
-    BEGIN { maxl = lines - 1; maxc = maxl * cols; if (search == "") search = ".*" }
+        | awk -v query="$query" -v lines="$LINES" -v cols="$COLUMNS" '
+    BEGIN { maxl = lines - 1; maxc = maxl * cols; if (query == "") query = ".*" }
     NR >= maxl { exit }
-    tolower($0) !~ search { next }
+    tolower($0) !~ query { next }   # Skip non-matches.
     # Total line length & remaining whitespace, even for wrapped lines:
     {
         len = length($0)
@@ -27,49 +30,65 @@ do_search() {
     total >= maxc { exit }
     { printf("\033[2K%s\n", $0) }   # Clear line & print match.
     END { printf("\033[J") }        # Clear remaining lines.
-    '
+    ' | {
+        read -r result              # Save & output first matching item.
+        printf '%s\n' "$result"
+        cat                         # Output the rest.
+    }
 
     printf '\e[u'       # restore pos
     printf '\e[?25h'    # show cursor
 }
 
-main() {
-    input="$(< /dev/stdin)"
-    search=''
-
+# A process to collect user input.
+get_query() {
     # By line...
     while true; do
-        tput smcup
-        tput clear
-        printf '\rPrompt: '
-        do_search "$input" '.*'
+        tput smcup      # Start the alt-screen.
+        tput clear      # Use a blank alt-screen.
+        do_search
 
         # By char...
-        while read -rk1 key; do
+        # '\r\e[K': Redraw the read prompt on every keypress.
+        while read -rk1 $'?\r\e[KSearch ('"$length"' records): '"$query" key ; do
             # Backspace
             if [[ '#key' -eq '##^?' || '#key' -eq '##^h' ]]; then
-                if [[ -n "$search" ]]; then
+                if [[ -n "$query" ]]; then
                     printf '\e[3D\e[K'
-                    search="${search[1,-2]}"
+                    query="${query[1,-2]}"
                 else
                     printf '\e[2D\e[K'
                 fi
             # Return
             elif [[ '#key' -eq '##\n' || '#key' -eq '##\r' ]]; then
                 tput rmcup
-                printf '%s\n' "$search"
+                printf '%s\n' "$result"
                 exit
             # elif    arrows
             else
-                search="${search}${key}"
+                query="${query}${key}"
             fi
 
-            do_search "$input" "$search"
+            do_search
         done
 
-        sleep 1
-        tput rmcup
+        sleep 0.5
+        tput rmcup      # Remove the alt-screen.
     done
+}
+
+main() {
+    input="$(< /dev/stdin)"
+    length=$(printf '%s\n' "$input" | wc -l)
+
+    trap '
+        excode=$?; trap - EXIT;
+        kill $throttle_search_pid 2>/dev/null
+        kill $get_query_pid 2>/dev/null
+        return
+    ' INT TERM EXIT QUIT
+
+    get_query
 }
 
 main "$@"
