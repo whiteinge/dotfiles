@@ -498,10 +498,7 @@ vmap <silent> <leader>s( :<C-U>call
 let g:caser_prefix = mapleader .'w'
 
 """ MRU mappings
-nnoremap <leader>fe :echo mru#MRU()<cr>:edit #<
-nnoremap <leader>fs :echo mru#MRU()<cr>:split #<
-nnoremap <leader>fv :echo mru#MRU()<cr>:vsplit #<
-nnoremap <leader>ft :echo mru#MRU()<cr>:tabedit #<
+nnoremap <leader>fe :call pick#MRU()<cr>
 
 """ Diff two registers
 command! -nargs=* DiffRegs call diffregs#DiffRegsFunc(<f-args>)

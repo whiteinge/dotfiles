@@ -96,3 +96,21 @@ fu! pick#Shell(shellin)
 
     call pick#SwitchBuf('GetData', 'SwitchBuf')
 endfu
+
+" Use Pick to select an option from the most-recently-used buffer list.
+fu! pick#MRU()
+    fu! GetData()
+        1put = mru#MRU()
+        1,2delete
+    endfu
+
+    fu! FmtRet(ret)
+        return substitute(a:ret, '^ *\([0-9]\+\).*$', '\1', '')
+    endfu
+
+    fu! SwitchBuf(newbuf)
+        exe 'e #<'. a:newbuf
+    endfu
+
+    call pick#SwitchBuf('GetData', 'SwitchBuf', 'FmtRet')
+endfu
