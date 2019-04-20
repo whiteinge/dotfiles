@@ -6,7 +6,7 @@ awk '
 function clean_line() {
     sub(/UNMET PEER DEPENDENCY /, "", $0)
     sub(/ deduped/, "", $0)
-    sub(/^[^a-zA-Z@\d\s:]+/, "", $0)
+    sub(/^[^a-zA-Z@0-9\s:]+/, "", $0)
     sub(/@[a-zA-Z0-9.<>=-]+$/, "", $0)
 }
 
