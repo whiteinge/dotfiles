@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+# Serve a local directory via HTTP (via socat).
+
+http() {
+    local HTTP_METHOD
+    local HTTP_PATH
+    local HTTP_VERSION
+
+    read -r HTTP_METHOD HTTP_PATH HTTP_VERSION
+    local rpath="$PWD$HTTP_PATH"
+
+    printf '%s %s\n' "$HTTP_METHOD" "$HTTP_PATH" 1>&2
+
+    if [[ "$rpath" = *..* ]]; then
+        printf 'HTTP/1.0 400\r\n\r\n'
+    elif [[ -d "$rpath" ]]; then
+        printf 'HTTP/1.0 200\r\n\r\n'
+        ls "$rpath"
+    elif [[ -r "$rpath" ]]; then
+        printf 'HTTP/1.0 200\r
+Content-Type: %s\r
+Content-Length: %s\r
+\r
+' \
+            $(file -b --mime-type "$rpath") \
+            $(wc -c < "$rpath")
+        cat "$rpath"
+    else
+        printf 'HTTP/1.0 404\r\n\r\n'
+    fi
+}
+
+main() {
+    if [[ $# -eq 0 ]]; then
+        socat TCP-L:8000,fork,reuseaddr EXEC:"${0} http"
+    else
+        "$1" "$@"
+    fi
+}
+
+# set -x
+main "$@"
