@@ -63,6 +63,7 @@ endfu
 
 " Open the current buffer list (:ls) in Pick.
 fu! pick#Buf()
+    let l:reg_backup = @m
     redir @m | silent ls | redir END
 
     fu! GetData()
@@ -79,6 +80,7 @@ fu! pick#Buf()
     endfu
 
     call pick#SwitchBuf('GetData', 'SwitchBuf', 'FmtRet')
+    let @m = l:reg_backup
 endfu
 
 " Run a shell command, open the results in Pick, then edit the picked file.
