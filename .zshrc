@@ -362,9 +362,9 @@ function screencast() {
     size=${(j:x:)${wininfo[1,2]}}
     offset=${(j:,:)${wininfo[3,4]}}
 
-    ffmpeg -f alsa -ac 2 -i hw:0,0 \
+    ffmpeg -f pulse -ac 2 -i default \
         -f x11grab -r 30 -s ${size} -i ${DISPLAY}+${offset} \
-        -acodec pcm_s16le -vcodec libx264 -vpre lossless_ultrafast \
+        -acodec pcm_s16le -vcodec libx264 \
         -threads 0 -y $HOME/screencast-${now}.avi
 
     return $?
