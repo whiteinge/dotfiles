@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+pick <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs xrandr
+	Notebook    --auto --output eDP1 --scale 0.4x0.4 --rotate right
+	Desktop     --auto --output eDP1 --off
+	Present     --auto --output eDP1 --panning 1024x768
+	Auto        --auto
+EOF
