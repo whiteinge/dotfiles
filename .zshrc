@@ -44,7 +44,16 @@ bindkey '^J' push-line-or-edit
 
 umask 027
 
-path+=( $HOME/bin /sbin /usr/sbin /usr/local/sbin ); path=( ${(u)path} );
+path+=(
+    $HOME/bin \
+    $HOME/.local/bin \
+    /sbin \
+    /usr/sbin \
+    /usr/local/bin \
+    /usr/local/sbin \
+)
+path=( ${(u)path} );
+
 CDPATH=$CDPATH::$HOME:/usr/local
 
 export MANPATH="$HOME/share/man:${MANPATH}"
