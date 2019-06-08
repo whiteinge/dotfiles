@@ -163,6 +163,12 @@ alias vv=$EDITOR' -N -u NONE'; compdef vv=vim
 # Loads vimrc but no plugins
 alias vvv=$EDITOR' -N --noplugin'; compdef vvv=vim
 
+alias vimprof=$EDITOR' \
+    --cmd "profile start vim-profile.log" \
+    --cmd "profile func *" \
+    --cmd "profile file *"'
+
+
 alias c='curl -sS -D /dev/stderr'
 compdef c=curl
 alias less='less -imJMW'
