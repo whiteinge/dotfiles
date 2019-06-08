@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+
+# ^cmd  - holds the pane open after the command exits
+# @cmd  - run the command and keeps a shell open in the new pane
+# cmd   - run the command and exit the pane when the command exits
+#
+# Usage:
+#   printf '
+#   ^uptime
+#   @date
+#   ssh localhost
+#   ' | muxtmux
+_main () {
+    local twin
+
+    awk '
+    BEGIN {
+        flags["^"] = "read"
+        flags["@"] = "$SHELL"
+    }
+    $0 == "" { next }
+    {
+        flag = substr($0, 1, 1)
+        if (flags[flag] == "") {
+            print $0
+        } else {
+            print substr($0, 2) ";" flags[flag]
+        }
+    }
+    ' | while read -r cmd; do
+        if [[ -z "$twin" ]]; then
+            twin="$(tmux new-window -d -P -F '#{window_index}' "$cmd")"
+        else
+            tmux split-window -t "$twin" "$cmd"
+        fi
+    done
+
+    tmux select-layout -t "$twin" tiled
+    tmux select-window -t "$twin"
+}
+
+_main "$@"
