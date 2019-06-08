@@ -1,6 +1,19 @@
 #!/usr/bin/env sh
 # Serve a local directory via HTTP (via socat).
 
+rep() {
+    local status="${1:?Status is required.}"
+    shift 1
+
+    printf '%s %s %s\n' "$status" "$HTTP_METHOD" "$HTTP_PATH" 1>&2
+    printf 'HTTP/1.0 %s\r\n' "$status"
+    for hdr in "$@"; do
+        printf '%s\r\n' "$hdr"
+    done
+    printf '\r\n'
+    cat
+}
+
 http() {
     local HTTP_METHOD
     local HTTP_PATH
@@ -9,24 +22,20 @@ http() {
     read -r HTTP_METHOD HTTP_PATH HTTP_VERSION
     local rpath="$PWD$HTTP_PATH"
 
-    printf '%s %s\n' "$HTTP_METHOD" "$HTTP_PATH" 1>&2
+    if [ -r "${rpath}/index.html" ]; then
+        rpath="${rpath}/index.html"
+    fi
 
     if [[ "$rpath" = *..* ]]; then
-        printf 'HTTP/1.0 400\r\n\r\n'
+        printf '' | rep 400
     elif [[ -d "$rpath" ]]; then
-        printf 'HTTP/1.0 200\r\n\r\n'
-        ls "$rpath"
+        ls "$rpath" | rep 200
     elif [[ -r "$rpath" ]]; then
-        printf 'HTTP/1.0 200\r
-Content-Type: %s\r
-Content-Length: %s\r
-\r
-' \
-            $(file -b --mime-type "$rpath") \
-            $(wc -c < "$rpath")
-        cat "$rpath"
+        cat "$rpath" | rep 200 \
+            "Content-Type: $(file -b --mime-type "$rpath")" \
+            "Content-Length: $(wc -c < "$rpath")"
     else
-        printf 'HTTP/1.0 404\r\n\r\n'
+        printf '' | rep 404
     fi
 }
 
