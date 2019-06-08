@@ -16,4 +16,4 @@ local -a revisions
 revisions=( ${(f)$(git rev-list --reverse ${@})} )
 [[ ${#revisions} -gt 0 ]] || exit 1
 
-eval $PAGER -f "<(git show --color=always --color-moved -p --stat ${=revisions})"
+eval $PAGER -f "<(git sh --color=always --color-moved -p --stat ${=revisions})"
