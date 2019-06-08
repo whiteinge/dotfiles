@@ -1,0 +1,82 @@
+#!/usr/bin/env sh
+# Wrappers around cryptsetup to create/mount/unmount encrypted images
+#
+# Usage:
+#   create foo.img 100
+#   mount foo.img /path/to/mount
+#   unmount foo.img /path/to/mount
+#   check foo.img
+
+open() {
+    local img="${1:?Missing image path.}"
+    local name="${2:?Missing name.}"
+
+    if [ ! -e "/dev/mapper/${name}" ]; then
+        printf 'Opening image.\n'
+        sudo cryptsetup luksOpen "$img" "$name"
+    fi
+}
+
+close() {
+    local img="${1:?Missing image path.}"
+    local name="$(basename "$img")"
+
+    sudo cryptsetup luksClose "$name"
+}
+
+mount() {
+    local img="${1:?Missing image path.}"
+    local name="$(basename "$img")"
+    local mount_path="${2:?Missing path to mount image.}"
+
+    if [ ! -d "$mount_path" ]; then
+        mkdir -p "$mount_path"
+    fi
+
+    open "$img" "$name"
+    sudo mount -o uid=$UID "/dev/mapper/${name}" "$mount_path"
+}
+
+unmount() {
+    local img="${1:?Missing image path.}"
+    local name="$(basename "$img")"
+    local mount_path="${2:?Missing path to mount image.}"
+
+    sudo umount "$mount_path"
+    close "$img"
+
+    if [ -n "$(find "$mount_path" -maxdepth 0 -empty)" ]; then
+        rm -r "$mount_path"
+    fi
+}
+
+create() {
+    local img="${1:?Missing image path.}"
+    local size="${2:?Missing size (MB).}"
+    local fstype="${3:-msdos}"
+    local name="$(basename "$img")"
+
+    printf 'Creating image file.\n'
+    dd if=/dev/zero of="$img" bs=1M count="$size"
+    printf 'Formatting new image.\n'
+    cryptsetup -vy luksFormat "$img" || exit 1
+    open "$img" "$name" || exit 1
+    sudo "mkfs.${fstype}" "/dev/mapper/${name}"
+}
+
+check() {
+    local img="${1:?Missing image path.}"
+    local name="$(basename "$img")"
+
+    open "$img" "$name"
+    sudo fsck "/dev/mapper/${name}"
+}
+
+_main () {
+    cmd="${1:?'No command given.'}"
+    shift
+    "$cmd" "$@"
+    exit $?
+}
+
+_main "$@"
