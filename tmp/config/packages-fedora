@@ -14,6 +14,8 @@ git
 google-chrome-stable
 gparted
 graphviz
+groff
+groff-doc
 HandBrake
 HandBrake-gui
 haskell-platform
@@ -26,6 +28,7 @@ lynx
 mplayer
 ncdu
 nethack
+nethogs
 NetworkManager-tui
 NetworkManager-wifi
 nmap
@@ -42,7 +45,9 @@ pulseaudio
 pulseaudio-utils
 qterminal
 qutebrowser
+rclone
 rlwrap
+rsync
 socat
 surf
 sxiv
@@ -75,6 +80,7 @@ xorg-x11-xdm
 xorg-x11-xinit
 xorg-x11-xinit-session
 xosd
+xpdf
 xscreensaver
 yank
 zsh
