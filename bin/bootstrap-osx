@@ -29,6 +29,8 @@ chsh -s /usr/local/bin/zsh
 ( cd $HOME; ln -s .zsh_customize-brew .zsh_customize; )
 ( cd $HOME/bin; ln -s osx-notify-send notify-send; ln -s osx-xclip xclip; )
 
+$HOME/src/dotfiles/bin/osx-toggle-interfaces install_plist
+
 printf '
 All set (hopefully).
 Install your font of choice and all the unscriptable OSX apps and settings.

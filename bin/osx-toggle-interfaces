@@ -1,0 +1,92 @@
+#!/usr/bin/env zsh
+# When connection status changes:
+# turn wifi off if connected to ethernet;
+# turn wifi on if not connected to ethernet.
+
+NAME="$(basename "$0")"
+FULLPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+
+xargs_bin='/usr/local/opt/findutils/libexec/gnubin/xargs'
+awk_bin='/usr/local/bin/awk'
+
+read -r -d '' plist <<EOS
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>com.asb.toggleairport</string>
+        <key>OnDemand</key>
+        <true/>
+        <key>ProgramArguments</key>
+        <array>
+            <string>${FULLPATH}/${NAME}</string>
+        </array>
+        <key>WatchPaths</key>
+        <array>
+            <string>/Library/Preferences/SystemConfiguration</string>
+        </array>
+        <!--
+        <key>StandardErrorPath</key>
+        <string>/tmp/${NAME}-err.log</string>
+        <key>StandardOutPath</key>
+        <string>/tmp/${NAME}-out.log</string>
+        -->
+    </dict>
+</plist>
+EOS
+
+install_plist() {
+    dest_file="${HOME}/Library/LaunchAgents/com.eseth.toggleairport.plist"
+    if [[ ! -r "$dest_file" ]]; then
+        printf '%s\n' "$plist" > "$dest_file"
+        launchctl load "$dest_file"
+    fi
+}
+
+list() {
+    networksetup -listallhardwareports \
+        | "$awk_bin" '
+            BEGIN { RS=""; FS="\n"; OFS="\t" }
+            /VLAN/ { exit }
+            {
+                sub(/^.*: /, "", $1)
+                sub(/^.*: /, "", $2)
+                ifaces[$2] = $1
+            }
+            END {
+                for (i in ifaces) print i, ifaces[i]
+            }
+            ' \
+        | sort
+}
+
+status() {
+    ifconfig | "$awk_bin" '
+        BEGIN { FS=": "; OFS="\t" }
+        $1 ~ /^[a-zA-Z]+/ { iface=$1 }
+        /status: / { print iface, $2 == "active" ? 1 : 0 }
+        ' \
+    | sort \
+    | join -t'	' - <(list)
+}
+
+toggle_wifi() {
+    status | "$awk_bin" '
+        BEGIN { FS="\t" }
+        /Ethernet/ || /USB.*LAN/ { is_ethernet_active = $2 == 1 }
+        /Wi-Fi/ || /Wireless/ { wifi_ifaces[$1] = $3 }
+        END {
+            for (iface in wifi_ifaces)
+                print iface, is_ethernet_active ? "off" : "on"
+        }
+        ' \
+        | "$xargs_bin" -r -n2 networksetup -setairportpower
+}
+
+_main () {
+    cmd="${1:-toggle_wifi}"
+    "$cmd"
+}
+
+_main "$@"
