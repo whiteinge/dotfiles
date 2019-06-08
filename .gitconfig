@@ -155,10 +155,10 @@
 
     # Merge a GitHub pull request into the current branch.
     # Usage: git preq <preq>
-    # Usage: git preq <preq> <remote>
+    # Usage: git preq <preq> [<remote>]
     preq = "!sh -c 'git pull --no-ff ${2:-upstream} refs/pull/${1:?Missing preq}/head' -"
     # Same thing but for GitLab:
-    mreq = "!sh -c 'git pull --no-ff ${2:-upstream} refs/merge-requests/${1:?Missing preq}/head' -"
+    mreq = "!sh -c 'git pull --no-ff ${2:-origin} refs/merge-requests/${1:?Missing preq}/head' -"
 
     # Make a local branch from a remote branch somewhere on GitHub.
     # Usage git ghbranch username reponame remotebranchname localbranchname
