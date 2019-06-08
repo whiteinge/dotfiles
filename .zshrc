@@ -229,6 +229,10 @@ alias -g RED='2> >(while read line; do echo -e "\e[01;31m$line\e[0m" >&2; done)'
 # breaks if flags are given (e.g. sudo -u someuser vi /etc/hosts)
 alias sudo='command sudo '
 
+# Drop-in for quick notifications. E.g., sleep 10; lmk
+alias lmk='notify-send "Task in $(basename $(pwd)) is done"\
+    "Task in $(basename $(pwd)) is done"'
+
 # }}}
 # Miscellaneous Functions:
 # error Quickly output a message and exit with a return code {{{1
