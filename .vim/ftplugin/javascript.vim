@@ -29,4 +29,8 @@ let g:tagbar_type_javascript = {
 \ }
 
 " Persistent macro to sort ES6 imports.
-nmap <leader>qi f{\js,i{vi{!sort\jj,i{k2J2J\fg
+nmap <leader>qi f{\js,i{vi{!sort<cr>\jj,i{k2J2J\fg
+
+" Auto-namespace action constants.
+nmap <leader>qn f:wa<c-r>=expand('%:t:r')<cr>/<esc>gui'
+nmap <leader>qN vi{:norm <leader>qn<cr>
