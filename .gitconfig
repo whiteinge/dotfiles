@@ -6,7 +6,7 @@
     default = current
 
 [alias]
-    b = branch -vv
+    b = branch -vv --sort=-committerdate
     ap = add --patch
     ca = commit --amend --no-edit
     cm = commit --amend -o
