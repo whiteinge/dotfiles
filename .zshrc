@@ -89,6 +89,8 @@ export CVSIGNORE='*.swp *.orig *.rej .git'
 
 # Silence Wine debugging output (why isn't this a default?)
 export WINEDEBUG=-all
+# We pretty much always want 32-bit...
+export WINEARCH=win32
 
 # }}}
 # {{{ completions
