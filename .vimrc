@@ -453,6 +453,10 @@ set printencoding=utf-8
 
 command! -nargs=1 Warn echohl WarningMsg | echo <args> | echohl None
 
+" I stopped using modelines and they can be a security risk, best to disable.
+set nomodeline
+set modelines=0
+
 " }}}
 " Plugin settings {{{
 
