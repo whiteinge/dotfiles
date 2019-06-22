@@ -52,3 +52,6 @@
 [submodule "tmp/repos/click"]
 	path = tmp/repos/click
 	url = https://github.com/minond/click.git
+[submodule "tmp/repos/ghcup"]
+	path = tmp/repos/ghcup
+	url = https://gitlab.haskell.org/haskell/ghcup.git
