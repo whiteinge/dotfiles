@@ -25,6 +25,8 @@ let g:tagbar_type_python = {
     \ ]
 \ }
 
+let b:ale_fixers = ['autopep8']
+
 " Add PYTHONPATH to Vim path to enable 'gf' (also works when in a virtualenv)
 if has('python')
 py << EOL
