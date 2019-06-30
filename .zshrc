@@ -44,15 +44,17 @@ bindkey '^J' push-line-or-edit
 
 umask 027
 
-path+=(
+extra_path=(
     $HOME/bin \
+    $HOME/.cabal/bin \
+    $HOME/.ghcup/bin \
     $HOME/.local/bin \
     /sbin \
     /usr/sbin \
     /usr/local/bin \
     /usr/local/sbin \
 )
-path=( ${(u)path} );
+export PATH="${(j|:|)extra_path}:$PATH"
 
 CDPATH=$CDPATH::$HOME:/usr/local
 
