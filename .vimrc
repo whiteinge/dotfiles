@@ -415,6 +415,9 @@ au ColorScheme * hi TabLineFill cterm=bold ctermbg=none
 au ColorScheme * hi CursorLine cterm=bold
 au ColorScheme * hi LineNr cterm=bold ctermfg=0 ctermbg=none
 
+" Set the ColorColumn for toggling via set list.
+au ColorScheme * hi ColorColumn ctermbg=7
+
 " Reverse for visual selection is too noisy and not usually legible so just
 " disable highlighting inside the selection.
 au ColorScheme * hi Visual cterm=bold ctermfg=7 ctermbg=8
