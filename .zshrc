@@ -224,7 +224,7 @@ alias -g UP='@{u}'
 alias R='R --no-save'
 
 # Selects a random file: ``mplayer RANDOM``
-alias -g RANDOM='"$(files=(*(.)) && echo $files[$RANDOM%${#files}+1])"'
+alias -g RANDOM='"$(shuf -e -n1 *)"'
 
 # Output stderr in red. Usage: somecomand RED
 alias -g RED='2> >(while read line; do echo -e "\e[01;31m$line\e[0m" >&2; done)'
