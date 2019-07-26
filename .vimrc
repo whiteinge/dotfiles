@@ -152,18 +152,29 @@ nnoremap <silent> <leader>u :exe "set " . (&rnu == 1 ? "nornu" : "rnu")<cr>
 set listchars=tab:>-,trail:\ ,precedes:<,extends:>,eol:$,nbsp:%
 
 " Show listchars; highlight lines more than 80 chars, trailing spaces, only
-" whitespace. Toggle with \l
-nnoremap <silent> <leader>l
-      \ :set cursorcolumn!<cr>:set cursorcolumn?<cr> <bar>
-      \ :set nolist!<cr>:set nolist?<cr> <bar>
-      \ :if exists('w:long_line_match') <bar>
-      \   silent! call matchdelete(w:long_line_match) <bar>
-      \   unlet w:long_line_match <bar>
-      \ elseif &textwidth > 0 <bar>
-      \   let w:long_line_match = matchadd('ErrorMsg', '\%>'.&tw.'v.\+', -1) <bar>
-      \ else <bar>
-      \   let w:long_line_match = matchadd('ErrorMsg', '\%>80v.\+', -1) <bar>
-      \ endif<cr>
+" whitespace.
+nnoremap <silent> <leader>ll
+    \ :set nolist!<cr>:set nolist?<cr> <bar>
+    \ :if exists('w:long_line_match') <bar>
+    \   silent! call matchdelete(w:long_line_match) <bar>
+    \   unlet w:long_line_match <bar>
+    \ elseif &textwidth > 0 <bar>
+    \   let w:long_line_match = matchadd('ErrorMsg', '\%>'.&tw.'v.\+', -1) <bar>
+    \ else <bar>
+    \   let w:long_line_match = matchadd('ErrorMsg', '\%>80v.\+', -1) <bar>
+    \ endif<cr>
+
+" Toggle cursorcolumn.
+nnoremap <silent> <leader>lc
+    \ :silent set cursorcolumn!<cr>:silent set cursorcolumn?<cr> <bar>
+
+" Toggle colorcolumn for the current shiftwidth.
+nnoremap <silent> <leader>lt
+    \ :if &colorcolumn <bar>
+    \   silent! set colorcolumn= <bar>
+    \ else <bar>
+    \   silent! exe("set colorcolumn=". join(range(1, 80, &shiftwidth), ',')) <bar>
+    \ endif<cr> <bar>
 
 " Toggle spell-checking
 map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
