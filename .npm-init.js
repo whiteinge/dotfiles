@@ -1,15 +1,6 @@
 /**
-Quickly get a new project up and running
-
-Transpiles ES6 and produces Node and browser builds. Quick start:
-npm init -y
-npm i
-npm start
-
-Browserified sandbox:
-npm i rx
-echo "import * as Rx from 'rx'; window.Rx = Rx" > src/index.js
-npm run start:browser
+Quickly get a new browser or Node project up and running with transpilation
+development API and production bundles.
 **/
 
 const fs = require('fs');
@@ -29,19 +20,23 @@ const testIndex = path.join(testDir, 'index.js');
 const build = path.join(distDir, `${basename}.js`);
 const min = path.join(distDir, `${basename}.min.js`);
 
-const tsArgs = {
-    allowJs: true,
-    jsx: 'react',
-    target: 'es5',
-    module: 'commonjs',
-    types: [],
-};
-
-const tscArgs = Object.entries(tsArgs)
-    .map(([k,v]) => `--${k} ${v}`)
-    .join(' ');
-const tsNodeArgs = `-O '${JSON.stringify(tsArgs)}'`;
-const browserifyArgs = `${srcIndex} -p [ tsify ${tscArgs} ]`;
+const tsconfig = path.join(dirname, 'tsconfig.json');
+if (!fs.existsSync(tsconfig)) fs.writeFileSync(tsconfig, JSON.stringify({
+    include: [srcDir, testDir],
+    compilerOptions: {
+        allowJs: true,
+        skipLibCheck: true,
+        jsx: 'react',
+        module: 'commonjs',
+        target: 'es5',
+        rootDir: '.',
+        outDir: distDir,
+        sourceMap: false,
+        inlineSourceMap: true,
+        inlineSources: true,
+        types: [],
+    },
+}, null, 4));
 
 // Create .gitignore file.
 const gitignore = path.join(dirname, '.gitignore');
@@ -59,14 +54,82 @@ if (!fs.existsSync(index)) fs.writeFileSync(index, `
     <meta charset=utf-8>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${basename}</title>
-    <!-- inject:git-hash -->
 </head>
 <body>
     <div id="container"></div>
     <!-- inject:js -->
-    <!-- endinject -->
 </body>
 </html>
+`);
+
+const server = path.join(dirname, 'server.js');
+if (!fs.existsSync(server)) fs.writeFileSync(server, `
+const path = require('path');
+
+const polka = require('polka');
+const staticdir = require('serve-static');
+
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+const adapter = new FileSync('./dist/db.json');
+const db = low(adapter);
+
+const PORT = process.env.PORT || 8000;
+const dir = path.join(__dirname, './dist');
+
+const app = polka()
+    .use(staticdir(dir))
+    .use((req, rep, next) => {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString() });
+        req.on('end', () => {
+            try { req.body = JSON.parse(body) }
+            catch(err) { req.body = body }
+            next();
+        });
+    })
+    .use((req, rep, next) => {
+        rep.setHeader('Access-Control-Allow-Origin', '*');
+        next();
+    })
+    .use((req, rep, next) => {
+        rep.setHeader('Content-Type', 'application/json');
+        rep.json = x => rep.end(JSON.stringify(x, null, 4));
+        next();
+    });
+
+// GET /users
+// GET /users?username=foo
+app.get('/users', (req, rep) => rep.json(
+    db.get('users').filter(req.query).value()));
+
+app.post('/users', (req, rep) => console.log('XXX', req.body) || rep.json(
+    db.get('users')
+        .thru(xs => {
+            const nextID = db._.chain(xs)
+                .maxBy('id').get('id', '0')
+                .toNumber().add(1).toString()
+                .value();
+            xs.push(Object.assign(req.body, {id: nextID}));
+            return xs;
+        })
+        .write()));
+
+app.get('/users/:id', (req, rep) => rep.json(
+    db.get('users').find(req.params).value()));
+
+app.put('/users/:id', (req, rep) => rep.json(
+    db.get('users')
+        .find(req.params)
+        .thru(x => Object.assign(req.body, {id: x.id}))
+        .write()));
+
+app.delete('/users/:id', (req, rep) => rep.json(
+    db.get('users').remove(req.params).write()));
+
+db.defaults({users: [{username: 'foo', id: '1'}]}).write();
+
+app.listen(PORT, console.error);
 `);
 
 // Create Prettier config.
@@ -88,9 +151,33 @@ if (!fs.existsSync(prettierConfig)) fs.writeFileSync(prettierConfig,
     };
 });
 
+// Create perf/mem test scaffolds.
+const memTest = path.join(dirname, testDir, 'mem.js')
+const perfTest = path.join(dirname, testDir, 'perf.js')
+
+if (!fs.existsSync(memTest)) fs.writeFileSync(memTest, `
+const used = process.memoryUsage();
+for (let key in used) {
+    console.log(\`\${key} \${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB\`);
+}
+`)
+
+if (!fs.existsSync(perfTest)) fs.writeFileSync(perfTest, `
+var Benchmark = require('benchmark')
+var suite = new Benchmark.Suite()
+
+suite
+  .add('functionName', functionName)
+  .on('cycle', function(event) { console.log(String(event.target)) })
+  .on('complete', function() {
+    console.log('Fastest is ' + this.filter('fastest').map('name'))
+  })
+  .run({ async: true })
+`)
+
 module.exports = {
     name: set('name', basename),
-    author: set('author', config.sources.user.data.author || '',
+    author: set('author', config.sources.user.data['init.author.name'] || '',
         x => x,
         ({name='', email, url}) => name
             .concat(email ? ` <${email}>` : '')
@@ -98,7 +185,7 @@ module.exports = {
     version: set('version', '1.0.0'),
     license: set('license', 'Apache-2.0'),
     description: set('description', ''),
-    'private': set('private', 'false', parseBool, JSON.stringify),
+    'private': set('private', false, parseBool, JSON.stringify),
     keywords: set('keywords',  '',
         val => val.split(',').filter(String).map(x => x.trim()),
         val => val.join(', ')),
@@ -109,68 +196,43 @@ module.exports = {
     dependencies: package.dependencies || {},
     optionalDependencies: package.optionalDependencies || {},
     devDependencies: package.devDependencies || {
-        'browserify': '14.x.x',
-        'eslint': '5.x.x',
-        'json-server': '0.12.x',
-        'npm-run-all': '4.x.x',
-        'postbuild': '2.x.x',
+        'benchmark': '2.x.x',
+        'browserify': '16.x.x',
+        'lowdb': '1.x.x',
+        'polka': '0.5.x',
         'prettier': '1.x.x',
-        'shx': '0.2.x',
+        'serve-static': '1.x.x',
+        'source-map-explorer': '2.x.x',
         'tap-spec': '5.x.x',
         'tape': '4.x.x',
-        'ts-node': '2.x.x',
-        'tsify': '4.x.x',
+        'tsc-watch': '2.x.x',
+        'tslib': '1.x.x',
         'typescript': '2.x.x',
-        'uglify-js': '2.x.x',
-        'watch': '1.x.x',
-        'watchify': '3.x.x',
-    },
-
-    eslintConfig: package.eslintConfig || {
-        env: {
-            browser: true,
-            es6: true,
-            node: true,
-        },
-        rules: {},
-        parserOptions: {
-            ecmaVersion: 6,
-            sourceType: 'module',
-            ecmaFeatures: {jsx: true},
-        },
+        'uglify-js': '3.x.x',
     },
 
     scripts: package.scripts || {
-        'init:dist': `shx mkdir -p ${distDir}`,
-        'init:build': `shx touch ${build}`,
+        'build:index': `sed -e 's@<!-- inject:js -->@<script src="/${basename}.min.js"></script>@g' index.tmpl > ${distDir}/index.html`,
+        'build:stats': `source-map-explorer ${min}{,.map} --html ${build}-stats.html`,
 
-        'build:index': `postbuild -i index.tmpl -o ${distDir}/index.html -j ${build} -g ${distDir}`,
-        'prebuild:index': `run-s init:dist init:build`,
+        'build:node': 'tsc || true',
+        'watch:node': `tsc-watch --onSuccess 'node ${main}'`,
 
-        'build:ts': `tsc ${tscArgs} --outDir ${distDir} ${srcDir}/* ${testDir}/*`,
-        'watch:ts': `npm run -s build:ts -- -w`,
+        'build:prod': `NODE_ENV=production npm -s run build:browserify`,
+        'prebuild:prod': 'NODE_ENV=production npm run -s build:node',
+        'postbuild:prod': `gzip -c ${min} > ${min}.gz; npm run -s build:stats`,
 
-        'build:prod': `NODE_ENV=production npm -s run build:browserify | uglifyjs > ${min}`,
-        'prebuild:prod': `run-s init:dist`,
-        'postbuild:prod': `gzip -c ${min} > ${min}.gz`,
+        'build:browserify': `browserify ${main} --debug | uglifyjs --source-map 'url=${min}.map,content=inline' -o ${min}`,
+        'postbuild:browserify': 'npm run -s build:index',
+        'watch:browserify': `tsc-watch --onSuccess 'npm run -s build:browserify'`,
 
-        'build:browserify': `browserify ${browserifyArgs}`,
-        'watch:browserify': `watchify ${browserifyArgs} --debug -o ${build}`,
-        'prebuild:browserify': `run-s init:dist`,
-        'prewatch:browserify': `run-s init:dist`,
+        'watch:db': `node ${server}`,
+        'prewatch:db': `mkdir -p ${distDir}`,
 
-        'watch:db': `json-server -w ./${distDir}/${basename}-db.json --static ./${distDir}`,
-        'prewatch:db': `run-s init:dist build:index`,
+        'test': `tape ${distDir}/${testDir}/**/*.js | tap-spec`,
+        'pretest': `npm run build:node`,
 
-        'test': `run-p test:*`,
-        'pretest': `npm run build:ts`,
-        'test:lint': `eslint ${srcDir}`,
-        'test:tape': `run-s repl -- ${testDir}/**/*.js | tap-spec`,
-
-        'shell': `ts-node -D -F -T ${tsNodeArgs}`,
-
-        'start': `run-p watch:browserify watch:db`,
-        'post:install': `run-s init:dist`,
+        'start': `npm run -s watch:browserify & npm run -s watch:db`,
         'preversion': `npm run build:prod`,
     },
 };
