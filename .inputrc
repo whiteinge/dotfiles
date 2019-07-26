@@ -1,28 +1,54 @@
 # Woo!
 set editing-mode vi
 
-# Adds punctuation as word delimiters
-set bind-tty-special-chars off
+### Completion Options {{{1
 
-# Completion Options
-set page-completions on
-set completion-ignore-case on
-set completion-map-case on
-set completion-query-items 1000
-set skip-completed-text on
+# Show completion options on first tab; begin cycling on second tab.
+set menu-complete-display-prefix on
+
+# Show all available completion options on second tab.
 set show-all-if-ambiguous on
 set show-all-if-unmodified on
+
+# Completion should ignore options case.
+set completion-ignore-case on
+
+# Treat - and _ as equivalent in completion options.
+set completion-map-case on
+
+# Prompt to show many completions (larger default for larger terminals).
+set completion-query-items 500
+
+# Avoid duplicating text when completing an option mid-word.
+set skip-completed-text on
+
+# Show symbols to denote file type of each completion option.
 set visible-stats on
 
-# Display Options
+# Show completion options in color. Also highlight the search prefix.
+set colored-stats on
+set colored-completion-prefix on
+
+### Display Options {{{1
+
+# Append directories with a slash.
 set mark-directories on
+
+# Append symlinks with an at.
 set mark-symlinked-directories on
 
-# Useful stuff for UTF-8
+### UTF {{{1
+
+# Hard-code some UTF-8 conversion defaults.
 set meta-flag on
 set input-meta on
 set output-meta on
 set convert-meta off
+
+### vi-mode edit bindings {{{1
+
+# Treat symbols as word delimiters too.
+set bind-tty-special-chars off
 
 $if mode=vi
     set keymap vi-command
@@ -30,18 +56,27 @@ $if mode=vi
     "G": end-of-history
 
     set keymap vi-insert
+    TAB: menu-complete
+    "\e[Z": menu-complete-backward
+
     "\C-l": clear-screen
     "\C-w": backward-kill-word
-    # auto-complete from the history
+
     "\C-p": history-search-backward
     "\C-n": history-search-forward
 $endif
 
+### Bash overrides {{{1
+
 $if Bash
 $endif
 
+### Python REPL overrides {{{1
+
 $if Python
 $endif
+
+### Cleanup {{{1
 
 # IPython needs this to appear at the bottom of the
 # file for clear-screen to work
