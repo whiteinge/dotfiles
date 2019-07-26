@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# Like echo but delimit with newlines instead of spaces.
+#
+# echol *
+# echol app{1..10}.example.com
+
+printf '%s\n' "$@"
