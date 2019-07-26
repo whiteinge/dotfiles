@@ -17,7 +17,7 @@ fi
 if ! [[ -x $HOME/bin/vimdiff ]]; then
 cat > $HOME/bin/vimdiff <<-'EOF'
 	#!/usr/bin/env zsh
-	exec gvimdiff -v
+	exec gvimdiff -v "$@"
 EOF
     chmod +x $HOME/bin/vimdiff
 fi
