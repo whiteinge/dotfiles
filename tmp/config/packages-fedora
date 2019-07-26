@@ -21,6 +21,7 @@ HandBrake-gui
 haskell-platform
 imake
 jq
+libdvdcss
 libnotify
 libXrandr
 lua
