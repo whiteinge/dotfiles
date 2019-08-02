@@ -1,0 +1,7 @@
+! Switch command and option back to PC defaults.
+clear mod1
+clear mod4
+keycode 133 = Super_L
+keycode 64 = Meta_L
+add mod1 = Super_L
+add mod4 = Meta_L
