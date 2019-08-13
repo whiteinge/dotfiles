@@ -4,5 +4,7 @@ pick <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs xrandr
 	Notebook    --auto --output eDP1 --scale 0.4x0.4 --rotate right
 	Desktop     --auto --output eDP1 --off
 	Present     --auto --output eDP1 --panning 1024x768
+	Reset       --auto --output eDP1 --transform none
+	Work        --auto --output DP1 --rotate left --output eDP1 --off
 	Auto        --auto
 EOF
