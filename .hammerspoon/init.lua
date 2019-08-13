@@ -1,3 +1,7 @@
+-------------------------------------------------------------------------------
+-- Dual-purpose the ctrl key as both escape (when pressed and released) and as
+-- a regular ctrl (when pressed along with another key).
+
 send_escape = false
 last_mods = {}
 
@@ -36,3 +40,12 @@ end
 
 other_tap = hs.eventtap.new({hs.eventtap.event.types.keyDown}, other_handler)
 other_tap:start()
+
+-------------------------------------------------------------------------------
+-- Fix ctrl-6 in Terminal.app for Vim.
+
+ctrl_6_handler = function()
+    hs.eventtap.keyStroke({'ctrl', 'shift'}, '6', 0)
+end
+
+hs.hotkey.bind({'ctrl'}, '6', nil, ctrl_6_handler)
