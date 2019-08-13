@@ -9,6 +9,7 @@ curl
 diffutils
 entr
 ffmpeg
+figlet
 findutils
 flow
 gawk
