@@ -22,26 +22,72 @@ http() {
     read -r HTTP_METHOD HTTP_PATH HTTP_VERSION
     local rpath="$PWD$HTTP_PATH"
 
+    if [[ "$rpath" = *..* ]]; then
+        printf '' | rep 400
+        exit
+    fi
+
     if [ -r "${rpath}/index.html" ]; then
         rpath="${rpath}/index.html"
     fi
 
-    if [[ "$rpath" = *..* ]]; then
-        printf '' | rep 400
-    elif [[ -d "$rpath" ]]; then
+    if [[ -d "$rpath" ]]; then
         ls "$rpath" | rep 200
-    elif [[ -r "$rpath" ]]; then
-        cat "$rpath" | rep 200 \
-            "Content-Type: $(file -b --mime-type "$rpath")" \
-            "Content-Length: $(wc -c < "$rpath")"
-    else
-        printf '' | rep 404
+        exit
     fi
+
+    if [[ -r "$rpath" ]]; then
+        local clen="$(wc -c < "$rpath")"
+        local ctype=""
+
+        case "$rpath" in
+            *.js) ctype='application/javascript';;
+            *.json) ctype='application/json';;
+            *) ctype="$(file -b --mime-type "$rpath")";;
+        esac
+
+        cat "$rpath" | rep 200 \
+            "Content-Type: ${ctype}" \
+            "Content-Length: ${clen}"
+        exit
+    fi
+
+    printf '' | rep 404
+}
+
+mk_cert() {
+    openssl req -x509 \
+        -newkey rsa:4096 \
+        -days 365 \
+        -nodes \
+        -subj "/C=US/ST=Utah/L=Ogden/O=ACME, Inc./OU=Org/CN=localhost" \
+        -keyout /tmp/httpdirkey.pem \
+        -out /tmp/httpdircert.pem \
+        2>/dev/null
 }
 
 main() {
+    local opt
+    local OPTIND
+    local OPTARG
+    local listen="TCP-LISTEN"
+    local port="8000"
+    local ssl=""
+
+    while getopts p:s opt; do
+        case $opt in
+        p) port="$OPTARG";;
+        s) mk_cert;
+            ssl=",cert=/tmp/httpdircert.pem,key=/tmp/httpdirkey.pem,verify=0";
+            listen="OPENSSL-LISTEN";
+            ;;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
     if [[ $# -eq 0 ]]; then
-        socat TCP-L:8000,fork,reuseaddr EXEC:"${0} http"
+        printf '%s on port %s\n' "$listen" "$port"
+        socat "${listen}:${port},fork,reuseaddr${ssl}" EXEC:"${0} http"
     else
         "$1" "$@"
     fi
