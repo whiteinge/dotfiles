@@ -16,6 +16,10 @@ bind-key CMS-Right "/bin/xdotool key --clearmodifiers XF86AudioNext"
 bind-key CMS-Left "/bin/xdotool key --clearmodifiers XF86AudioPrev"
 bind-key CMS-space "/bin/xdotool key --clearmodifiers XF86AudioPlay"
 
+# Application keys.
+bind-key CM-t "qterminal"
+bind-key CMS-t "qterminal"
+
 # Workspace keys.
 bind-key M-F1 group-only-1
 bind-key M-F2 group-only-2
