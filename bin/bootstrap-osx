@@ -1,16 +1,17 @@
 #!/usr/bin/env sh
 # Bootstrap a new OS X machine.
 
-# Install xcode CLI tools
+# Install xcode CLI tools.
 xcode-select --install
 
-# Install Homebrew
+# Install Homebrew.
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-# Install youtube-dl
+# Install youtube-dl.
 curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
 chmod +x /usr/local/bin/youtube-dl
 
+# Install the baseline packages.
 xargs /usr/local/bin/brew install < $HOME/src/dotfiles/tmp/config/packages-brew
 
 printf '
@@ -21,6 +22,7 @@ vlc
 xquartz
 ' | xargs /usr/local/bin/brew cask install
 
+# Make yourself at home.
 printf 'Adding zsh to /etc/shells (enter password):\n'
 sudo printf '/usr/local/bin/zsh\n' >> /etc/shells
 chsh -s /usr/local/bin/zsh
@@ -29,6 +31,7 @@ chsh -s /usr/local/bin/zsh
 ( cd $HOME; ln -s .zsh_customize-brew .zsh_customize; )
 ( cd $HOME/bin; ln -s osx-notify-send notify-send; ln -s osx-xclip xclip; )
 
+# Install script that toggles Wifi on and off.
 $HOME/src/dotfiles/bin/osx-toggle-interfaces install_plist
 
 # Hide the Terminal.app scrollbar.
