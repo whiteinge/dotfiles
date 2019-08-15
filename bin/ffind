@@ -57,7 +57,9 @@ main() {
 
     [[ -n "$spath" ]] || { printf '%s\n' "$help"; return 1; }
 
-    if (( ${@[(I)-print*]} == 0 )); then local add_print=1; fi
+    if (( ${@[(I)-print*]} == 0 )) && (( ${@[(I)-exec*]} == 0 )); then
+        local add_print=1;
+    fi
 
     # set -x
     find "$spath" \
