@@ -1,0 +1,77 @@
+#!/usr/bin/env zsh
+# A simple polling file/directory watcher
+#
+# Runs 'cmd' in a new tmux pane. Respawns when files are added/removed/changed.
+#
+# Run 'cmd' when any regular files under the current directory are changed:
+#
+#     watch-changes <cmd>
+#     watch-changes cal -y
+#     watch-changes nnn -d
+#
+# Run 'cmd' when any files found by 'findcmd' are changed:
+#
+#     watch-changes <cmd> -- <findcmd>
+#     watch-changes nnn -d -- find . -name 'foo*'
+
+interval=2
+
+trap '
+    tmux kill-pane -t "$pane_tgt" 2>/dev/null
+    tmux selectp -T ""
+' INT QUIT EXIT
+
+new_sha=""
+old_sha=""
+
+local -a cmd
+local -a findcmd
+
+for arg in "$@"; do
+    if [[ "$arg" = '--' ]]; then
+        shift
+        break
+    fi
+
+    cmd+=( "$arg" )
+    shift
+done
+
+for arg in "$@"; do
+    findcmd+=( "$arg" )
+    shift
+done
+
+if [[ -z "$findcmd" ]]; then
+    findcmd=( ffind . -type f )
+fi
+
+pane_src="$(tmux display -p '#{pane_id}')"
+pane_tgt="$(tmux splitw -v -P -F '#{pane_id}')"
+
+tmux selectp -t "$pane_src"
+tmux resize-pane -y 1
+tmux selectp -t "$pane_tgt" -T "Respawning: ${cmd}"
+
+last_run="$(date +%s)"
+
+printf 'Watching every %s seconds. Ctrl-c to stop.' "$interval"
+while true; do
+    now="$(date +%s)"
+    new_sha="$(${findcmd[*]} -exec stat -c '%Y' {} + | md5sum)"
+
+    if [ "$new_sha" != "$old_sha" ]; then
+        tmux respawnp -k -t "$pane_tgt"
+
+        # Keep repeated cmd out of history by prepending a space.
+        tmux send-keys -t "$pane_tgt" " $cmd" Enter
+
+        old_sha="$new_sha"
+        last_run="$(date +%s)"
+    fi
+
+    tmux selectp -t "$pane_src" \
+        -T "Last run: $(expr $now - $last_run) seconds ago."
+
+    sleep "$interval" || break
+done
