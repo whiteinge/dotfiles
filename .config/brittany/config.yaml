@@ -32,8 +32,8 @@ conf_layout:
   lconfig_indentAmount: 4
   lconfig_alignmentBreakOnMultiline: true
   lconfig_cols: 80
-  lconfig_indentPolicy: IndentPolicyFree
+  lconfig_indentPolicy: IndentPolicyLeft
   lconfig_indentWhereSpecial: true
   lconfig_columnAlignMode:
-    tag: ColumnAlignModeMajority
+    tag: ColumnAlignModeDisabled
     contents: 0.7
