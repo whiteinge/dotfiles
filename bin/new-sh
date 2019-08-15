@@ -14,41 +14,20 @@ chmod +x "$script"
 test "$lang" = 'sh' && cat >> "$script" <<-'EOS'
 # Short Description
 #
-# This is a
-# Longer
-# Description
+# Longer Description
 
-export NAME=$(basename "$0")
-export VERSION='0.0.1'
-export VERBOSE="${OVERRIDE_VERBOSE:-0}"
+NAME=$(basename "$0")
+VERSION='0.0.1'
 TEMP_DIR="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
     'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
 
-export LERR=2
-export LINFO=4; exec 4>/dev/null
-export LDEBUG=5; exec 5>/dev/null
-
 help () {
-    # Extract contiguous lines of comments and function params as help text
-    #
-    # Exported environment variables can be used for string interpolation in
-    # the extracted commented text.
-    #
-    local cmd="${1:?'Command name required.'}"
+    # Extract contiguous lines of comments in a function as help text
 
-    awk -v cmd="$cmd" '
+    awk -v cmd="${1:?'Command name required.'}" -v NAME="$NAME" '
     $0 ~ "^" cmd "\\s*\\(\\)\\s*{" { is_found=1; next }
-    ! is_found { next }
-    !NF { exit }
-    {
-        line=$0
-        while(match(line, "[$]{[^}:]*}")) {
-            var=substr(line, RSTART+2, RLENGTH -3)
-            gsub("[$]{"var"}", ENVIRON[var], line)
-        }
-        gsub(/^\s*#\s?/, "", line)
-        print line
-    }
+    is_found && !NF { exit }
+    is_found { gsub(/^\s*#\s?/, ""); gsub(/NAME/, NAME); print; }
     ' "$0"
 }
 
@@ -63,26 +42,28 @@ _main () {
     #
     # `${NAME} [<flags>] (command [<arg>, <name=value>...])`
     #
-    #     ${NAME} -h              # Short, usage help text.
-    #     ${NAME} help            # All help text. Warning: long!
-    #     ${NAME} help command    # Command-specific help text.
-    #     ${NAME} command         # Run a command without and with args:
-    #     ${NAME} command foo bar baz=Baz qux='Qux arg here'
+    #     NAME -h              # Short, usage help text.
+    #     NAME help command    # Command-specific help text.
+    #     NAME command         # Run a command without and with args:
+    #     NAME command foo bar baz=Baz qux='Qux arg here'
     #
     # Flag | Description
     # ---- | -----------
     # -V   | Show version.
     # -h   | Show this screen.
-    # -v   | Logging output; specify multiple times: info, debug.
     # -x   | Enable xtrace debug logging.
     #
     # Flags _must_ be the first argument to `${NAME}`, before `command`.
 
+    local opt
+    local OPTARG
+    local OPTIND
+
+    local cmd
+    local ret
+
     trap '
         excode=$?; trap - EXIT;
-        exec 4>&-
-        exec 5>&-
-        exec 6>&-
         rm -rf '"$TEMP_DIR"'
         exit $excode
     ' INT TERM EXIT
@@ -93,24 +74,21 @@ _main () {
            exit;;
         h) help _main
            printf '\nAvailable commands:\n\n'
-           _all_funcs
+           _all_funcs | sort
            printf '\n'
            exit;;
-        v) VERBOSE=$(( VERBOSE + 1 ));;
         x) set -x;;
         esac
     done
     shift $(( OPTIND - 1 ))
 
-    # Selectively enable logging.
-    [ $VERBOSE -gt 0 ] && exec 4>&2
-    [ $VERBOSE -gt 1 ] && exec 5>&2
-
     mkdir -p -m 700 "$TEMP_DIR"
 
-    cmd="${1:?'No command given. Available commands: '$(_all_funcs | sort)}"
+    cmd="${1:?"No command given.
+
+$($0 -h)"}"
+
     shift
-    printf 'Running command %s\n' "$cmd" 1>&$LDEBUG
     "$cmd" "$@"
     ret=$?
 
