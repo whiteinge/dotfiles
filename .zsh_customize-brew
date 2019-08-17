@@ -4,7 +4,6 @@
 
 paths=(
     "${HOME}/bin" \
-    "${HOME}/.nodenv/shims" \
     "/usr/local/bin" \
     "/usr/local/opt/curl/bin" \
     "/usr/local/opt/coreutils/libexec/gnubin" \
@@ -33,22 +32,3 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 
 export PATH="${(j|:|)paths}:${PATH}"
 export MANPATH="${(j|:|)manpaths}:${MANPATH}"
-
-
-# Inline nodenv init to shave a few more ms off the startup time.
-# eval "$(nodenv init -)"
-export NODENV_SHELL=zsh
-nodenv() {
-  local command
-  command="${1:-}"
-  if [ "$#" -gt 0 ]; then
-    shift
-  fi
-
-  case "$command" in
-  rehash|shell)
-    eval "$(nodenv "sh-$command" "$@")";;
-  *)
-    command nodenv "$command" "$@";;
-  esac
-}

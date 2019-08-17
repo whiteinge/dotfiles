@@ -46,6 +46,8 @@ umask 027
 
 extra_path=(
     $HOME/bin \
+    $HOME/.nodenv/bin \
+    $HOME/.nodenv/shims/ \
     $HOME/.cabal/bin \
     $HOME/.ghcup/bin \
     $HOME/.local/bin \
@@ -93,6 +95,26 @@ export CVSIGNORE='*.swp *.orig *.rej .git'
 export WINEDEBUG=-all
 # We pretty much always want 32-bit...
 export WINEARCH=win32
+
+# Inline nodenv init to shave a few more ms off the startup time.
+# eval "$(nodenv init -)"
+export NODENV_SHELL=zsh
+source "$HOME/.nodenv/libexec/../completions/nodenv.zsh"
+command nodenv rehash 2>/dev/null
+nodenv() {
+    local command
+    command="${1:-}"
+    if [ "$#" -gt 0 ]; then
+        shift
+    fi
+
+    case "$command" in
+        rehash|shell)
+            eval "$(nodenv "sh-$command" "$@")";;
+        *)
+            command nodenv "$command" "$@";;
+    esac
+}
 
 # }}}
 # {{{ completions

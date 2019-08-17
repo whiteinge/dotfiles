@@ -49,3 +49,6 @@
 [submodule "tmp/repos/ghcup"]
 	path = tmp/repos/ghcup
 	url = https://gitlab.haskell.org/haskell/ghcup.git
+[submodule ".nodenv"]
+	path = .nodenv
+	url = https://github.com/nodenv/nodenv.git
