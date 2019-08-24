@@ -3,8 +3,6 @@
 # hardcode paths instead.
 
 paths=(
-    "${HOME}/bin" \
-    "/usr/local/bin" \
     "/usr/local/opt/curl/bin" \
     "/usr/local/opt/coreutils/libexec/gnubin" \
     "/usr/local/opt/findutils/libexec/gnubin" \
@@ -17,7 +15,6 @@ paths=(
 )
 
 manpaths=(
-    "$HOME/man" \
     "/usr/local/opt/curl/share/man" \
     "/usr/local/opt/coreutils/libexec/gnuman" \
     "/usr/local/opt/findutils/libexec/gnuman" \
