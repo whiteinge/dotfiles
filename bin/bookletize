@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+# Converts a PDF to a fold-able booklet sized PDF
+# Print it double-sided and fold in the middle
+
+main () {
+    (( $+commands[pdfinfo] )) && (( $+commands[pdflatex] )) || {
+        printf 'Missing required pdfinfo or pdflatex\n'
+        return 1
+    }
+
+    pagecount=$(pdfinfo $1 | awk '/^Pages/{print $2+3 - ($2+3)%4;}')
+
+    # create single fold booklet form in the working directory
+    pdflatex -interaction=batchmode \
+    '\documentclass{book}\
+    \usepackage{pdfpages}\
+    \begin{document}\
+    \includepdf[pages=-,signature='$pagecount',landscape]{'$1'}\
+    \end{document}' 2>&1 >/dev/null
+}
+
+main "$@"

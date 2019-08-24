@@ -298,28 +298,6 @@ function nnnn() {
 }
 
 # }}}
-# {{{ bookletize()
-# Converts a PDF to a fold-able booklet sized PDF
-# Print it double-sided and fold in the middle
-
-bookletize ()
-{
-    (( $+commands[pdfinfo] )) && (( $+commands[pdflatex] )) || {
-        error 1 "Missing req'd pdfinfo or pdflatex"
-    }
-
-    pagecount=$(pdfinfo $1 | awk '/^Pages/{print $2+3 - ($2+3)%4;}')
-
-    # create single fold booklet form in the working directory
-    pdflatex -interaction=batchmode \
-    '\documentclass{book}\
-    \usepackage{pdfpages}\
-    \begin{document}\
-    \includepdf[pages=-,signature='$pagecount',landscape]{'$1'}\
-    \end{document}' 2>&1 >/dev/null
-}
-
-# }}}
 # {{{ joinpdf()
 # Merges, or joins multiple PDF files into "joined.pdf"
 
