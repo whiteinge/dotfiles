@@ -306,59 +306,6 @@ function nnnn() {
 }
 
 # }}}
-# wait_for_ssh {{{1
-# Block until a multiplexed ssh connection is ready
-#
-# Useful for making a single ssh connection that can be reused for many ssh
-# operations. This requires ControlMaster and ControlPath to be configured in
-# your ~/.ssh/config file.
-#
-# Usage:
-#   SSH="me@example.com"
-#   trap 'ssh -O exit '${SSH} SIGINT SIGTERM EXIT
-#   ssh -N ${SSH} &
-#   _wait_for_ssh ${SSH}
-#   ...use multiplexed ssh connection here...
-
-function _wait_for_ssh () {
-    local ssh="${1?:ssh hostname required}"
-
-    printf 'Connecting to "%s".\n' "$ssh"
-    while ! ssh -O check ${ssh} &>/dev/null true; do
-        printf '.' ; sleep 0.5;
-    done
-    printf '\nConnected!\n'
-}
-
-# }}}
-# fetchall {{{1
-# Run git fetch on all repos under the current dir
-
-function fetchall () {
-    find . -type d -name .git -print0 \
-        | xargs -t -r -0 -P5 -I@ git --git-dir=@ fetch -a
-}
-
-function ssh_fetchall () {
-    setopt LOCAL_OPTIONS NO_MONITOR
-    local SSH_URI="${1:?SSH connection string required.}"
-
-    # Start a connection and wait for it; exit when we're done
-    trap 'ssh -O exit '${SSH_URI} SIGINT SIGTERM EXIT
-    ssh -N ${SSH_URI} &
-    _wait_for_ssh ${SSH_URI}
-
-    # Kick off a ton of parallel fetch operations
-    time fetchall
-
-    local count=$(find . -type d -name .git -print | wc -l)
-    printf 'Fetched upstream changes for %s repositories.\n' "$count"
-}
-
-alias fetchall-gh='ssh_fetchall "git@github.com"'
-alias fetchall-gl='ssh_fetchall "git@gitlab.com"'
-
-# }}}
 # presentation_mode {{{1
 # Set various settings and open a new xterm window for giving presentations
 
