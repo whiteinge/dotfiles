@@ -1,0 +1,39 @@
+#!/usr/bin/env sh
+# Run a command and open two tmux panes to tail stdout and stderr separately
+#
+# Usage: tailsplit [command]
+#
+# NOTE: Output can still be saved via less' 's' binding.
+
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+
+trap '
+    excode=$?; trap - EXIT;
+    tmux killp -t "$outpane" 2>/dev/null
+    tmux killp -t "$errpane" 2>/dev/null
+    rm -rf "$TEMP"
+    exit $excode
+' INT TERM EXIT
+
+mkdir -p "$TEMP"
+OUT="$TEMP/sdout"
+ERR="$TEMP/sderr"
+
+INITIAL_PANE="$(tmux display -p '#{pane_id}')"
+
+touch "$OUT" "$ERR"
+
+outpane=$(tmux splitw -P -F '#{pane_id}' -- less +F "$OUT")
+tmux selectp -t "$outpane" -T "stdout: $*"
+
+errpane=$(tmux splitw -P -F '#{pane_id}' -h -- less +F "$ERR")
+tmux selectp -t "$errpane" -T "stderr: $*"
+
+tmux selectp -t "$INITIAL_PANE"
+
+"$@" 1>"$OUT" 2>"$ERR"
+
+printf 'Press enter to quit.\n'
+read

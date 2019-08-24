@@ -308,26 +308,6 @@ function nnnn() {
 # }}}
 alias tea-timer="countdown 120 && notify-send 'Tea!' 'Tea is done.'"
 
-# ztail {{{1
-# Run a command then open two tmux panes to tail stdout and stderr separately.
-
-function ztail() {
-    unsetopt noclobber
-
-    trap '
-        excode=$?; trap - EXIT;
-        rm -f /tmp/ztail.{out,err}
-        return
-    ' INT TERM EXIT QUIT
-
-    touch /tmp/ztail.out /tmp/ztail.err
-    tmux splitw 'less +F /tmp/ztail.out'
-    tmux splitw -v 'less +F /tmp/ztail.err'
-
-    "$@" 1>/tmp/ztail.out 2>/tmp/ztail.err
-}
-
-# }}}
 # curlretry {{{1
 # Repeatedly download & resume from a URL until finished;
 # useful for bad connections.
