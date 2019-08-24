@@ -8,8 +8,6 @@ local -a precmd_functions
 
 autoload edit-command-line
 autoload -U compinit
-autoload -U zmv
-autoload zcalc
 
 setopt                          \
         append_history          \
@@ -36,9 +34,6 @@ setopt                          \
         rm_star_wait            \
         share_history
 
-# Push a command onto a stack allowing you to run another command first
-bindkey '^J' push-line-or-edit
-
 # }}}
 # {{{ environment settings
 
@@ -64,10 +59,6 @@ export MANPATH="$HOME/share/man:${MANPATH}"
 
 PYTHONSTARTUP=$HOME/.pythonrc.py
 export PYTHONSTARTUP
-
-# Local development projects go here
-SRCDIR=$HOME/src
-alias tworkon='SRCDIR=$HOME/tmp djworkon'
 
 HISTFILE=$HOME/.zsh_history
 HISTFILESIZE=65536  # search this with `grep | sort -u`
@@ -175,9 +166,6 @@ bindkey "^L" tmux-clear-screen
 # }}}
 # {{{ aliases
 
-alias zmv='noglob zmv'
-# e.g., zmv *.JPEG *.jpg
-
 alias ls='ls -F --color'
 alias la='ls -A'; compdef la=ls
 alias ll='ls -lh'; compdef ll=ls
@@ -234,24 +222,12 @@ alias -g RANDOM='"$(shuf -e -n1 *)"'
 # Output stderr in red. Usage: somecomand RED
 alias -g RED='2> >(while read line; do echo -e "\e[01;31m$line\e[0m" >&2; done)'
 
-# trailing space helps sudo recognize aliases
-# breaks if flags are given (e.g. sudo -u someuser vi /etc/hosts)
-alias sudo='command sudo '
-
 # Drop-in for quick notifications. E.g., sleep 10; lmk
 alias lmk='notify-send "Task in $(basename $(pwd)) is done"\
     "Task in $(basename $(pwd)) is done"'
 
 # }}}
 # Miscellaneous Functions:
-# error Quickly output a message and exit with a return code {{{1
-function error() {
-    EXIT=$1 ; MSG=${2:-"$NAME: Unknown Error"}
-    [[ $EXIT -eq 0 ]] && echo $MSG || echo $MSG 1>&2
-    return $EXIT
-}
-
-# }}}
 # zshrun A lightweight, one-off application launcher {{{1
 # by Mikael Magnusson (I think)
 #
