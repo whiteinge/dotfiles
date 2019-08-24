@@ -194,23 +194,6 @@ alias vimprof=$EDITOR' \
     --cmd "profile func *" \
     --cmd "profile file *"'
 
-# Wrap curl to always output headers and timing (to stderr).
-# Note this adds an artificial trailing newline to the response body to flush
-# stdout before writing timing infos to stderr.
-alias c='curl -sS -D /dev/stderr -w "
-%{stderr}
-----------
-curl timing report
-
-namelookup:     %{time_namelookup}
-connect:        %{time_connect}
-appconnect:     %{time_appconnect}
-pretransfer:    %{time_pretransfer}
-redirect:       %{time_redirect}
-starttransfer:  %{time_starttransfer}
-----------
-total:          %{time_total}
-"'
 compdef c=curl
 
 alias less='less -imJMW'
