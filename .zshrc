@@ -298,43 +298,6 @@ function nnnn() {
 }
 
 # }}}
-# {{{ genpass()
-# Generates a tough password of a given length
-
-function genmac() {
-    # Generate a locally-assigned (starts with 02) mac address from a salt.
-    # http://serverfault.com/a/299563
-
-    local salt=${1:-$FQDN}
-    echo $salt | md5sum |\
-        sed 's/^\(..\)\(..\)\(..\)\(..\)\(..\).*$/02:\1:\2:\3:\4:\5/'
-}
-
-function genpass() {
-    if [ ! "$1" ]; then
-        echo "Usage: $0 20"
-        echo "For a random, 20-character password."
-        return 1
-    fi
-
-    # Use pwgen if installed.
-    if (( $+commands[pwgen] )); then
-        echo $(pwgen -y $1)
-    else
-        dd if=/dev/urandom count=1 2>/dev/null |\
-            tr -cd 'A-Za-z0-9!@#$%^&*()_+' | cut -c-$1
-    fi
-}
-
-function genunixpass() {
-    # Generate a valid /etc/shadow password
-
-    local pass="${1:-saltdev}"
-    echo "pass: ${pass}"
-    echo $(python -c "import crypt; print crypt.crypt('"$pass"', '\$6\$SALTsalt')")
-}
-
-# }}}
 # {{{ bookletize()
 # Converts a PDF to a fold-able booklet sized PDF
 # Print it double-sided and fold in the middle

@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# Generate a locally-assigned (starts with 02) mac address from a salt.
+# http://serverfault.com/a/299563
+# Usage: FQDN="example.com" genmac
+
+function main() {
+    local salt=${1:-$FQDN}
+    echo $salt | md5sum |\
+        sed 's/^\(..\)\(..\)\(..\)\(..\)\(..\).*$/02:\1:\2:\3:\4:\5/'
+}
+
+main "$@"
