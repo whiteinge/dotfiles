@@ -430,13 +430,8 @@ let g:matchparen_insert_timeout = 5
 set synmaxcol=500               " Stop syntax highlighting on very long lines
 
 syntax enable
-if $PRESENTATION_MODE != ""
-    colorscheme zellner
-    set background=light
-else
-    colorscheme desert
-    set background=dark
-endif
+colorscheme desert
+set background=dark
 
 " Don't distinguish between delete, add, and change using bright colors. The
 " type of change is obvious -- add and delete appear opposite filler markers,

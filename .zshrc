@@ -306,14 +306,6 @@ function nnnn() {
 }
 
 # }}}
-# presentation_mode {{{1
-# Set various settings and open a new xterm window for giving presentations
-
-function presentation_mode() {
-    (PRESENTATION_MODE=1 xterm -fg black -bg white -fs 16 &>/dev/null &)
-}
-
-# }}}
 # countdown & timer {{{1
 # (Ab)use prompt escapes to get the time without spawning a subshell. :)
 
