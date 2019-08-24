@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# Merges, or joins multiple PDF files into "joined.pdf"
+
+main () {
+    gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=joined.pdf "$@"
+}
+
+main "$@"

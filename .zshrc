@@ -298,14 +298,6 @@ function nnnn() {
 }
 
 # }}}
-# {{{ joinpdf()
-# Merges, or joins multiple PDF files into "joined.pdf"
-
-joinpdf () {
-    gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=joined.pdf "$@"
-}
-
-# }}}
 # Development helpers {{{
 
 # Start an echo server
