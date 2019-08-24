@@ -308,18 +308,6 @@ function nnnn() {
 # }}}
 alias tea-timer="countdown 120 && notify-send 'Tea!' 'Tea is done.'"
 
-# curlretry {{{1
-# Repeatedly download & resume from a URL until finished;
-# useful for bad connections.
-
-function curlretry() {
-    local url=$1
-    local fname=$2
-    until curl -L -C - -g "${url}" -o "${fname}"; do echo Retrying && sleep 1; done
-}
-
-### }}}
-
 # Run precmd functions
 precmd_functions=( precmd_prompt )
 

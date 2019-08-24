@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# Repeatedly download & resume from a URL until finished;
+# useful for bad connections.
+
+function curlretry() {
+    local url="$1"
+    local fname="$2"
+
+    until curl -L -C - -g "${url}" -o "${fname}"; do
+        printf 'Retrying...\n'
+        sleep 1
+    done
+}
