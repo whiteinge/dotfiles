@@ -9,30 +9,30 @@ local -a precmd_functions
 autoload edit-command-line
 autoload -U compinit
 
-setopt                          \
-        append_history          \
-        auto_cd                 \
-        auto_pushd              \
-        chase_links             \
-        complete_aliases        \
-        extended_glob           \
-        extended_history        \
-        hist_ignore_all_dups    \
-        hist_ignore_dups        \
-        hist_ignore_space       \
-        hist_reduce_blanks      \
-        hist_save_no_dups       \
-        hist_verify             \
-        ignore_eof              \
-        list_types              \
-        mark_dirs               \
-        noclobber               \
-        noflowcontrol           \
-        path_dirs               \
-        prompt_percent          \
-        prompt_subst            \
-        rm_star_wait            \
-        share_history
+setopt \
+    append_history \
+    auto_cd \
+    auto_pushd \
+    chase_links \
+    complete_aliases \
+    extended_glob \
+    extended_history \
+    hist_ignore_all_dups \
+    hist_ignore_dups \
+    hist_ignore_space \
+    hist_reduce_blanks \
+    hist_save_no_dups \
+    hist_verify \
+    ignore_eof \
+    list_types \
+    mark_dirs \
+    noclobber \
+    noflowcontrol \
+    path_dirs \
+    prompt_percent \
+    prompt_subst \
+    rm_star_wait \
+    share_history
 
 # }}}
 # {{{ environment settings
@@ -53,23 +53,22 @@ extra_path=(
 )
 export PATH="${(j|:|)extra_path}:$PATH"
 
-CDPATH=$CDPATH::$HOME:/usr/local
-
 export MANPATH="$HOME/share/man:${MANPATH}"
 
-PYTHONSTARTUP=$HOME/.pythonrc.py
-export PYTHONSTARTUP
+CDPATH=$CDPATH::$HOME:/usr/local
 
 HISTFILE=$HOME/.zsh_history
 HISTFILESIZE=65536  # search this with `grep | sort -u`
 HISTSIZE=4096
 SAVEHIST=4096
 
-REPORTTIME=60       # Report time statistics for progs that take more than a minute to run
-WATCH=notme         # Report any login/logout of other users
+# Output time stats for progs that run for longer than a minute.
+REPORTTIME=60
+
+# Report any login/logout of other users.
+WATCH=notme
 WATCHFMT='%n %a %l from %m at %T.'
 
-# utf-8 in the terminal, will break stuff if your term isn't utf aware
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export LC_COLLATE=C
@@ -80,17 +79,15 @@ export LESS='-imJMWR'
 export PAGER="less $LESS"
 export MANPAGER=$PAGER
 export BROWSER='google-chrome'
-export CVSIGNORE='*.swp *.orig *.rej .git'
 
-# Silence Wine debugging output (why isn't this a default?)
 export WINEDEBUG=-all
-# We pretty much always want 32-bit...
 export WINEARCH=win32
 
-# Inline nodenv init to shave a few more ms off the startup time.
+export PYTHONSTARTUP=$HOME/.pythonrc.py
+
+# Inline nodenv init to shave ~10ms more off the startup time.
 # eval "$(nodenv init -)"
 export NODENV_SHELL=zsh
-source "$HOME/.nodenv/libexec/../completions/nodenv.zsh"
 command nodenv rehash 2>/dev/null
 nodenv() {
     local command
@@ -106,6 +103,7 @@ nodenv() {
             command nodenv "$command" "$@";;
     esac
 }
+source "$HOME/.nodenv/libexec/../completions/nodenv.zsh"
 
 # }}}
 # {{{ completions
@@ -116,6 +114,9 @@ zstyle ':completion:*' list-colors "$LS_COLORS"
 
 zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|nc|rsync):*' hosts '
     reply=( ${=${${(M)${(f)"$(<~/.ssh/config)"}:#Host*}#Host }:#*\**} )'
+
+# Custom script in $HOME/bin/c
+compdef c=curl
 
 # }}}
 # {{{ prompt and theme
@@ -166,36 +167,49 @@ bindkey "^L" tmux-clear-screen
 # }}}
 # {{{ aliases
 
+# ls:
 alias ls='ls -F --color'
 alias la='ls -A'; compdef la=ls
 alias ll='ls -lh'; compdef ll=ls
-alias lls='ll -Sr'; compdef lls=ls
 
-alias vi=$EDITOR; compdef vi=vim
+# Vim:
+alias vi=$EDITOR
 # fast Vim that doesn't load a vimrc or plugins
-alias vv=$EDITOR' -N -u NONE'; compdef vv=vim
+alias vv="${EDITOR} -N -u NONE"
 # Loads vimrc but no plugins
-alias vvv=$EDITOR' -N --noplugin'; compdef vvv=vim
+alias vvv="${EDITOR} -N --noplugin"
 
-alias vimprof=$EDITOR' \
-    --cmd "profile start vim-profile.log" \
-    --cmd "profile func *" \
-    --cmd "profile file *"'
+alias vimprof="${EDITOR} \
+    --cmd 'profile start vim-profile.log' \
+    --cmd 'profile func *' \
+    --cmd 'profile file *'"
 
-compdef c=curl
+compdef vi=vim
+compdef vv=vim
+compdef vvv=vim
+compdef vimprof=vim
 
+# Aliases that override default names:
 alias less='less -imJMW'
-alias cls='clear' # note: ctrl-L under zsh does something similar
-alias ducks='du -cks * | sort -rn | head -15'
 alias tree="tree -FC --charset=ascii"
 alias info='info --vi-keys'
 alias wtf='wtf -o'
 alias nnn='nnn -S'
-alias clip='xclip -selection clipboard'
 alias ocaml='rlwrap ocaml'
+alias mplayer='mplayer -af scaletempo -speed 1'
+alias R='R --no-save'
+
+# Aliases around scripts in $HOME/bin:
+alias tea-timer="countdown 120 && notify-send 'Tea!' 'Tea is done.'"
+alias fetchall-gh='fetchall "git@github.com"'
+alias fetchall-gl='fetchall "git@gitlab.com"'
+
+# Aliases that make new things:
+alias ducks='du -cks * | sort -rn | head -15'
+alias osx_openports='lsof -iTCP -sTCP:LISTEN -P'
+alias clip='xclip -selection clipboard'
 alias rs='rsync -avhzC --progress'
 compdef rs=rsync
-alias mplayer='mplayer -af scaletempo -speed 1'
 
 # Print all files under the current path without prefixed path.
 # Useful for listing files under one path based on the files in another. E.g.:
@@ -206,15 +220,12 @@ alias filesmissing='find . -maxdepth 2 -xtype l'
 # Quickly ssh through a bastian host without having to hard-code in ~/.ssh/config
 alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
 
-# Useful for working with Git remotes; e.g., ``git log IN``
+# Useful for working with Git remotes; e.g., ``git log IN``, ``git diff OUT``.
 alias -g IN='..@{u}'
 alias -g IIN='...@{u}'
 alias -g OUT='@{u}..'
 alias -g OOUT='@{u}...'
 alias -g UP='@{u}'
-
-# Don't prompt to save when exiting R
-alias R='R --no-save'
 
 # Selects a random file: ``mplayer RANDOM``
 alias -g RANDOM='"$(shuf -e -n1 *)"'
@@ -226,13 +237,20 @@ alias -g RED='2> >(while read line; do echo -e "\e[01;31m$line\e[0m" >&2; done)'
 alias lmk='notify-send "Task in $(basename $(pwd)) is done"\
     "Task in $(basename $(pwd)) is done"'
 
+# Output names if terminal can handle 256 colors.
+alias 256test='echo -e "\e[38;5;196mred\e[38;5;46mgreen\e[38;5;21mblue\e[0m"'
+
 # }}}
+
 # Miscellaneous Functions:
+
 # zshrun A lightweight, one-off application launcher {{{1
 # by Mikael Magnusson (I think)
 #
-# To run a command without closing the dialog press ctrl-j instead of enter
-# Invoke like:
+# Invokes a command and then immediately closes the terminal window.
+# To run a command without closing the terminal use ctrl-j instead of Enter.
+#
+# Usage:
 # sh -c 'ZSHRUN=1 uxterm -geometry 100x4+0+0 +ls'
 
 if [[ -n "$ZSHRUN" ]]; then
@@ -254,6 +272,7 @@ fi
 # ...() Open fuzzy-finder of parent directory names {{{1
 
 alias ..='cd ..'
+
 function ...() {
     explode_path | tail -n +2 | pick | read -d -r new_dir
     cd "$new_dir"
@@ -274,19 +293,11 @@ function nnnn() {
 }
 
 # }}}
-# 256-colors test {{{
-
-256test()
-{
-    echo -e "\e[38;5;196mred\e[38;5;46mgreen\e[38;5;21mblue\e[0m"
-}
-
-# }}}
-alias tea-timer="countdown 120 && notify-send 'Tea!' 'Tea is done.'"
 
 # Run precmd functions
 precmd_functions=( precmd_prompt )
 
+# Allow OS or environment specific overrides:
 if [[ -r "$HOME/.zsh_customize" ]]; then
     source "$HOME/.zsh_customize"
 fi
