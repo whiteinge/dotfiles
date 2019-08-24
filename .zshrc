@@ -78,7 +78,7 @@ export VISUAL=$EDITOR
 export LESS='-imJMWR'
 export PAGER="less $LESS"
 export MANPAGER=$PAGER
-export BROWSER='google-chrome'
+export BROWSER='firefox'
 
 export WINEDEBUG=-all
 export WINEARCH=win32
