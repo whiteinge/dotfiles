@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Output seconds elapsed
+
+start=$(date +%s) watch -t -n1 \
+    'expr $(date +%s) - $start | xargs printf "%s seconds"'

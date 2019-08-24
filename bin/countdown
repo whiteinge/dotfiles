@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+# A simple countdown timer
+
+function main() {
+    # (Ab)use prompt escapes to get the time without spawning a subshell. :)
+    local now remaining
+    local epoch='%D{%s}'
+    local target=$(( ${(%)epoch} + $1 ))
+
+    while true; do
+        now=${(%)epoch}
+        remaining=$(( target - now ))
+
+        if (( $remaining > 0 )) ; then
+            printf '\rT-minus: %3d' "${remaining}"
+            sleep 1
+        else
+            printf '\a\n'
+            break
+        fi
+    done
+}
+
+main "$@"
