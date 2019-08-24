@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Start a echoing SMTP server
+
+python -m smtpd -n -c DebuggingServer localhost:1025

@@ -298,28 +298,6 @@ function nnnn() {
 }
 
 # }}}
-# Development helpers {{{
-
-# Start an echo server
-alias echoserver="socat -v -T0.05 TCP-L:8080,reuseaddr,fork \
-    system:'cat $HOME/tmp/http-preamble -'"
-
-# Start a webserver in the current directory
-alias pyhttp='python -m SimpleHTTPServer'
-alias py3http='python -m http.server'
-# Start a echoing SMTP server
-alias pysmtp='python -m smtpd -n -c DebuggingServer localhost:1025'
-# Print an interactive Python shell session as regular Python (reads stdin)
-alias pyprintdoc='python -c "import doctest, sys; print doctest.script_from_examples(sys.stdin.read())"'
-# Validate and pretty-print JSON
-alias jsonpp='python -m json.tool'
-
-# Format Django's json dumps as one-record-per-line
-function djfmtjson() {
-    sed -i'.bak' -e 's/^\[/\[\n/g' -e 's/]$/\n]/g' -e 's/}}, /}},\n/g' $1
-}
-
-# }}}
 # Screencast helper {{{
 # Usage:
 # screencast [--window]

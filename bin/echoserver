@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Start an echo HTTP server.
+
+socat -v -T0.05 TCP-L:8080,reuseaddr,fork \
+    system:'cat $HOME/tmp/http-preamble -'
