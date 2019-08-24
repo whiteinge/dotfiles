@@ -306,65 +306,6 @@ function nnnn() {
 }
 
 # }}}
-# Dictionary lookup {{{1
-# Many more options, see:
-# http://linuxcommando.blogspot.com/2007/10/dictionary-lookup-via-command-line.html
-
-dict (){
-    curl 'dict://dict.org/d:$1:*'
-}
-
-spell (){
-    echo $1 | aspell -a
-}
-
-# }}}
-# Output total memory currently in use by you {{{1
-
-memtotaller() {
-    /bin/ps -u $(whoami) -o pid,rss,command |\
-        awk '{sum+=$2} END {print "Total " sum / 1024 " MB"}'
-}
-
-# Output total memory in use by all children processes
-memchildren() {
-    ps -h -o pid --ppid $1 |\
-        xargs printf "/proc/%s/smaps\n" |\
-        xargs awk '/^Pss/ { total += $2 } END { print "Total " total / 1024 " KB" }'
-}
-
-# }}}
-# xssh {{{1
-# Paralelize running shell commands through ssh on multiple hosts with xargs
-#
-# Usage:
-#   echo uptime | xssh host1 host2 host3
-#
-# Usage:
-#   xssh host1 host2 host3
-#   # prompts for commands; ctrl-d to finish
-#   free -m | awk '/^-/ { print $4, "MB" }'
-#   uptime
-#   ^d
-
-function xssh() {
-    local HOSTS="${argv}"
-    [[ -n "${HOSTS}" ]] || return 1
-
-    local tmpfile="/tmp/xssh.cmd.$$.$RANDOM"
-    trap 'rm -f '$tmpfile'; return;' EXIT
-
-    # Grab the command(s) from stdin and write to tmpfile
-    cat - > ${tmpfile}
-
-    # Execute up to 5 ssh processes at a time and pipe tmpfile to the stdin of
-    # the remote shell
-    echo -n "${HOSTS[@]}" | xargs -d" " -P5 -IHOST \
-        sh -c 'ssh -T HOST < '${tmpfile}' | sed -e "s/^/HOST: /g"'
-}
-compdef xssh=ssh
-
-# }}}
 # wait_for_ssh {{{1
 # Block until a multiplexed ssh connection is ready
 #
