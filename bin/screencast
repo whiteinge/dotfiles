@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+# Record a screencast on X11 using ffmpeg.
+#
+# Usage:
+# screencast [--window]
+
+function main() {
+    local now target size offset
+    local -a win wininfo
+    zparseopts -E -D -- w=win -window=win
+
+    zformat -f target "%(c.root.frame)" c:${#win}
+    now=$(date --rfc-3339=date)
+
+    wininfo=( $(xwininfo -stats -${target} | awk -F":" '
+        /Absolute.*X/ { x=$2 }
+        /Absolute.*Y/ { y=$2 }
+        /Width/ { w=$2 }
+        /Height/ { h=$2 }
+        END { print w, h, x, y }') )
+
+    size=${(j:x:)${wininfo[1,2]}}
+    offset=${(j:,:)${wininfo[3,4]}}
+
+    ffmpeg -f pulse -ac 2 -i default \
+        -f x11grab -r 30 -s ${size} -i ${DISPLAY}+${offset} \
+        -acodec pcm_s16le -vcodec libx264 \
+        -threads 0 -y $HOME/screencast-${now}.avi
+
+    return $?
+}
+
+main "$@"

@@ -298,53 +298,6 @@ function nnnn() {
 }
 
 # }}}
-# Screencast helper {{{
-# Usage:
-# screencast [--window]
-
-function screencast() {
-    local now target size offset
-    local -a win wininfo
-    zparseopts -E -D -- w=win -window=win
-
-    zformat -f target "%(c.root.frame)" c:${#win}
-    now=$(date --rfc-3339=date)
-
-    wininfo=( $(xwininfo -stats -${target} | awk -F":" '
-        /Absolute.*X/ { x=$2 }
-        /Absolute.*Y/ { y=$2 }
-        /Width/ { w=$2 }
-        /Height/ { h=$2 }
-        END { print w, h, x, y }') )
-
-    size=${(j:x:)${wininfo[1,2]}}
-    offset=${(j:,:)${wininfo[3,4]}}
-
-    ffmpeg -f pulse -ac 2 -i default \
-        -f x11grab -r 30 -s ${size} -i ${DISPLAY}+${offset} \
-        -acodec pcm_s16le -vcodec libx264 \
-        -threads 0 -y $HOME/screencast-${now}.avi
-
-    return $?
-}
-
-# Extract a clip from a larger video file
-# Usage:
-#   extract_clip somevid.mp4 [hh:mm:ss start time] [hh:mm:ss end time]
-function extract_clip() {
-    local start_seconds end_seconds duration
-
-    echo ${2} ${3} | awk 'BEGIN {FS=":"; ORS=" "; RS=" "}
-            { sec = $1 * 3600; sec += $2 * 60; sec += $3; print sec }' |\
-        read start_seconds end_seconds
-    duration=$(( end_seconds - start_seconds ))
-
-    ffmpeg -ss ${2} -t ${duration} -i ${1} -acodec copy -vcodec copy extracted_clip-${1}
-
-    return $?
-}
-
-# }}}
 # 256-colors test {{{
 
 256test()
