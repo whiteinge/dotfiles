@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+# Bootstrap a new Pocket 2 machine.
 # Mostly thanks to https://github.com/joshskidmore/gpd-pocket-2-arch-guide
 
 dnf install -y iwl7260-firmware xorg-x11-drv-intel

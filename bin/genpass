@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Generate a cryptographically AWFUL(!) password for those
+# Generate a cryptographically inadequate(!) password for those
 # times when pwgen isn't available or security doesn't matter.
 # Usage: genpass 10
 

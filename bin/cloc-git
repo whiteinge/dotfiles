@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+# Temporarily clone a repository and run cloc on it.
 # https://stackoverflow.com/a/29012789
+
 git clone --depth 1 "$1" temp-linecount-repo &&
   printf "('temp-linecount-repo' will be deleted automatically)\n\n\n" &&
   cloc temp-linecount-repo &&

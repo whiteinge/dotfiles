@@ -3,6 +3,9 @@
 #
 # Usage:
 # screencast [--window]
+#
+# The window flag will prompt you to click an existing window and the recording
+# will be limited to the coordinates and size of that window.
 
 function main() {
     local now target size offset
