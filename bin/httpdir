@@ -32,7 +32,7 @@ http() {
     fi
 
     if [[ -d "$rpath" ]]; then
-        ls "$rpath" | rep 200
+        ls -Fa "$rpath" | sort | rep 200
         exit
     fi
 
