@@ -342,12 +342,11 @@ nmap <silent> <leader>fl :exe IsLocOpen(getwininfo())
 
 " Open all files referenced in the quickfix list as args.
 " Sometimes you just want to step through the files and not all the changes.
-nmap <silent> <leader>fa :call fp#Pipe([
-    \ {xs -> filter(xs, {i, x -> bufname(x.bufnr) != ''})},
-    \ {xs -> sort(xs)},
-    \ {xs -> uniq(xs)},
-    \ {xs -> map(xs, {i, x -> execute('$argadd #'. x.bufnr)})},
-\ ])(getqflist())<cr>
+nmap <silent> <leader>fa :call getqflist()
+    \ ->filter({i, x -> bufname(x.bufnr) != ''})
+    \ ->sort()
+    \ ->uniq()
+    \ ->map({i, x -> execute('$argadd #'. x.bufnr)})<cr>
 
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
