@@ -101,7 +101,7 @@ endfu
 fu! pick#MRU()
     fu! GetData()
         1put = mru#MRU()
-        1,2delete
+        1delete
     endfu
 
     fu! FmtRet(ret)
