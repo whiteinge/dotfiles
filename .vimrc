@@ -462,6 +462,7 @@ command! -nargs=* Scratch call scratch#Scratch(<f-args>)
 """ Diff unstaged changes.
 nmap <silent> <leader>cc :call stagediff#StageDiff()<cr>
 nmap <silent> <leader>cf :call pick#Shell("git ls-files")<cr>
+nmap <silent> <leader>cs :term ++close git add %<cr>
 nmap <silent> <leader>ci :term ++close git commit<cr>
 nmap <silent> <leader>ca :term ++close git commit --amend --no-edit<cr>
 " nmap <silent> <leader>cb :vert term ++close git blame -c --date=relative -- %<cr>
