@@ -181,7 +181,7 @@ map <leader>cr :r <C-R>=expand("%:p:h") . "/" <cr>
 
 if has("autocmd")
     " Helps if you have to use another editor on the same file
-    au FileChangedShell * Warn "File has been changed outside of Vim."
+    au FileChangedShell * echo "File has been changed outside of Vim."
 endif
 
 " Restore last cursor position in file
@@ -446,16 +446,11 @@ set printfont=Monaco:h8         " face-type (not size) ignored in PostScript out
 set printencoding=utf-8
 
 " }}}
-" Scripting helpers {{{1
-
-command! -nargs=1 Warn echohl WarningMsg | echo <args> | echohl None
+" Plugin settings {{{
 
 " I stopped using modelines and they can be a security risk, best to disable.
 set nomodeline
 set modelines=0
-
-" }}}
-" Plugin settings {{{
 
 " Make mapleader default explicit
 let mapleader = '\'

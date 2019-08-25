@@ -2,5 +2,5 @@
 
 function! scratch#Scratch()
     setl buftype=nofile bufhidden=delete nobuflisted
-    Warn "This file is now a scratch file!"
+    echo "This file is now a scratch file!"
 endfunction
