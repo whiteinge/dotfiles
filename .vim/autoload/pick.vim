@@ -114,3 +114,19 @@ fu! pick#MRU()
 
     call pick#SwitchBuf('GetData', 'SwitchBuf', 'FmtRet')
 endfu
+
+" Select and edit an entry in the quickfix list.
+fu! pick#Qf()
+    fu! GetData()
+        1put = getqflist()
+            \ ->map({i, x -> bufname(x.bufnr)})
+            \ ->uniq()
+        1delete
+    endfu
+
+    fu! SwitchBuf(newbuf)
+        exe 'e '. a:newbuf
+    endfu
+
+    call pick#SwitchBuf('GetData', 'SwitchBuf')
+endfu
