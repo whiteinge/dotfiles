@@ -18,7 +18,7 @@ test "$lang" = 'sh' && cat >> "$script" <<-'EOS'
 
 NAME=$(basename "$0")
 VERSION='0.0.1'
-TEMP_DIR="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
     'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
 
 help () {
@@ -64,7 +64,7 @@ _main () {
 
     trap '
         excode=$?; trap - EXIT;
-        rm -rf '"$TEMP_DIR"'
+        rm -rf '"$TEMP"'
         exit $excode
     ' INT TERM EXIT
 
@@ -82,7 +82,7 @@ _main () {
     done
     shift $(( OPTIND - 1 ))
 
-    mkdir -p -m 700 "$TEMP_DIR"
+    mkdir -p -m 700 "$TEMP"
 
     cmd="${1:?"No command given.
 
