@@ -72,18 +72,6 @@ setl comments=
 
 " Better indention/ hierarchy
 " https://www.reddit.com/r/vim/comments/4wmugj/enhance_vim_as_a_writing_environment/d68sfgj
-" Optional leading whitespace
-" Start class
-" |  Optionally match opening punctuation
-" |  Start group
-" |  |  A number
-" |  |  Roman numerals
-" |  |  A single letter
-" |  End group
-" |  Closing punctuation
-" End class
-" One or more spaces
-" Or bullet points
 let formatlistpat='
     \^\s*
     \[
