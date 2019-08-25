@@ -34,3 +34,8 @@ nmap <leader>qi f{\js,i{vi{!sort<cr>\jj,i{k2J2J\fg
 " Auto-namespace action constants.
 nmap <leader>qn f:wa<c-r>=expand('%:t:r')<cr>/<esc>gui'
 nmap <leader>qN vi{:norm <leader>qn<cr>
+
+" Reformat a line of CSS as appropriate for a JavaScript object (CSS-in-JS).
+" (Req's my Caser and surround mappings.)
+" Use :norm to run this on multiple lines.
+nmap <leader>qc 0w\wct:ww\s'$hxpr,<cr>
