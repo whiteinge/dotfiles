@@ -40,7 +40,7 @@ _all_funcs () {
 _main () {
     # ## Usage
     #
-    # `${NAME} [<flags>] (command [<arg>, <name=value>...])`
+    # `NAME [<flags>] (command [<arg>, <name=value>...])`
     #
     #     NAME -h              # Short, usage help text.
     #     NAME help command    # Command-specific help text.
@@ -53,7 +53,7 @@ _main () {
     # -h   | Show this screen.
     # -x   | Enable xtrace debug logging.
     #
-    # Flags _must_ be the first argument to `${NAME}`, before `command`.
+    # Flags _must_ be the first argument to `NAME`, before `command`.
 
     local opt
     local OPTARG
