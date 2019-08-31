@@ -9,4 +9,5 @@ pick <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs -I{} tmu
 	Present     --auto --output eDP1 --scale-from 1024x768
 	Reset       --auto --output eDP1 --transform none
 	Work        --auto --output DP1 --rotate left --output eDP1 --off
+	Underscan   --output DP1 --transform 0.80,0,-35,0,1.04,-19,0,0,1
 EOF
