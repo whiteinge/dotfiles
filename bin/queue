@@ -1,0 +1,72 @@
+#!/usr/bin/env sh
+# A lightweight job queue using tail and xargs
+
+NAME=$(basename "$0")
+QUEUE="${PWD}/__queue_jobs"
+MAXJOBS=1
+
+help () {
+    # Extract contiguous lines of comments in a function as help text
+
+    awk -v cmd="${1:?'Command name required.'}" -v NAME="$NAME" '
+    $0 ~ "^" cmd "\\s*\\(\\)\\s*{" { is_found=1; next }
+    is_found && !NF { exit }
+    is_found { gsub(/^\s*#\s?/, ""); gsub(/NAME/, NAME); print; }
+    ' "$0"
+}
+
+_main () {
+    # ## Usage
+    #
+    # `NAME [<flags>] [command to enqueue...]`
+    #
+    # Flag | Description
+    # ---- | -----------
+    # -h   | Show this screen.
+    # -x   | Enable xtrace debug logging.
+    # -n   | Delete the queue file before starting.
+    # -P   | Max number of jobs to run in parallel.
+    #
+    # Flags _must_ be the first argument to `NAME`.
+    #
+    # ### Examples:
+    #
+    # Start processing the queue, three current jobs at a time:
+    #
+    #     NAME -P3
+    #
+    # Add new jobs to the queue:
+    #
+    #     NAME 'sleep 5 && echo done'
+    #     NAME sleep 5 \&\& echo done
+    #     NAME echo hi
+    #     NAME curl -L -C - 'http://example.com/somedownload.tar.gz' -o myfile.tar.gz
+
+    local opt
+    local OPTARG
+    local OPTIND
+
+    while getopts hP:nx opt; do
+        case $opt in
+        h) help _main
+           printf '\n'
+           exit;;
+        P) MAXJOBS="$OPTARG";;
+        n) rm -f "$QUEUE";;
+        x) set -x;;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
+    touch "$QUEUE"
+
+    if [ $# -eq 0 ]; then
+        printf 'Watching queue for jobs...\n'
+
+        tail -n+0 -f "$QUEUE" | xargs -I{} -P "$MAXJOBS" sh -c '{}'
+    else
+        printf '%s\n' "$*" >> "$QUEUE"
+    fi
+}
+
+_main "$@"
