@@ -1,6 +1,8 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env sh
+# Output an xrandr command for a common configuration;
+# Doesn't execute the command though so it can be edited beforehand.
 
-pick <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs xrandr
+pick <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs -I{} tmux send xrandr Space {}
 	Auto        --auto
 	Desktop     --auto --output eDP1 --off
 	Notebook    --auto --output eDP1 --scale 0.4x0.4 --rotate right
