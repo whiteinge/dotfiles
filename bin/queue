@@ -31,7 +31,7 @@ _main () {
     #
     # ### Examples:
     #
-    # Start processing the queue, three current jobs at a time:
+    # Start processing the queue, three concurrent jobs at a time:
     #
     #     NAME -P3
     #
