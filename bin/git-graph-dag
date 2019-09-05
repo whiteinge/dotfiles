@@ -7,10 +7,26 @@
 # Largely stolen from https://git.wiki.kernel.org/index.php/ExampleScripts
 #
 # Accepts any range or arguments that git rev-list accepts.
+#
+# The -c flag will also output the commit message. These should probably be
+# extremely short for it to not make the graph awful.
 
 set -e
 
 main() {
+    local commit_msg=""
+
+    local opt
+    local OPTARG
+    local OPTIND
+
+    while getopts c opt; do
+        case $opt in
+        c) commit_msg=" %f";;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
     if [[ -z $@ ]] ; then
         echo -e "Usage: git graph-dag HEAD~10.. | dot -Tpng | display -antialias"
         echo -e "Usage: git graph-dag HEAD~10.. | dot -Tpng | open -a Preview.app -f"
@@ -28,7 +44,7 @@ main() {
         done
 
     # Make pretty labels with the short sha1 and any refs
-    git rev-list --pretty=format:"%H %h %d" "$@" | awk '
+    git rev-list --pretty=format:"%H %h %d${commit_msg}" "$@" | awk '
     BEGIN {
         command = "git fsck --unreachable --no-reflogs | cut -d\" \" -f3"
         while (command | getline unr) unreachable[unr] = 1
@@ -36,9 +52,15 @@ main() {
     }
 
     !/^commit/ {
-        refs = ""
-        for (i=3; i<=NF; i++) refs = refs " " $i
-        sub(/ -> /, ", ", refs)
+        refs = " ("
+        sep = ""
+        for (i=3; i<=NF; i++) {
+            sub("\\(", "", $i); sub("\\)", "", $i); sub("->", "", $i);
+            if ($i != "") { refs = refs sep $i }
+            sep = ", "
+        }
+        refs = refs ")"
+        if (refs == " ()") { refs = "" }
 
         unreachable[$1] == 1 ? isunr = 1 : isunr = 0
 
@@ -46,7 +68,9 @@ main() {
             $1, \
             isunr == 1 ? "dashed" : "filled", \
             $2, \
-            refs == "" ? "" : refs
+            refs
+
+        refs = ""
     }'
 
     printf '}\n'
