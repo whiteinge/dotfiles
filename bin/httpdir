@@ -19,9 +19,20 @@ http() {
     local HTTP_PATH
     local HTTP_VERSION
 
-    read -r HTTP_METHOD HTTP_PATH HTTP_VERSION
-    local rpath="$PWD$HTTP_PATH"
+    local crlf=$(printf '\r\n')
+    local accept_compressed=0
 
+    read -r HTTP_METHOD HTTP_PATH HTTP_VERSION
+    while IFS=": " read -r hdr val; do
+        # stdin never closes in a socat exec so stop after the headers end.
+        [ "$hdr" = "$crlf" ] && break
+
+        case "$hdr" in
+            Accept-Encoding) accept_compressed=1;;
+        esac
+    done
+
+    local rpath="$PWD$HTTP_PATH"
     if [[ "$rpath" = *..* ]]; then
         printf '' | rep 400
         exit
@@ -37,18 +48,25 @@ http() {
     fi
 
     if [[ -r "$rpath" ]]; then
-        local clen="$(wc -c < "$rpath")"
         local ctype=""
-
         case "$rpath" in
             *.js) ctype='application/javascript';;
             *.json) ctype='application/json';;
             *) ctype="$(file -b --mime-type "$rpath")";;
         esac
 
+        local content_encoding
+        if [ "$accept_compressed" -eq 1 ] && [ -r "${rpath}.gz" ]; then
+            content_encoding="Content-Encoding: gzip"
+            rpath="${rpath}.gz"
+        fi
+
+        local clen="$(wc -c < "$rpath")"
+
         cat "$rpath" | rep 200 \
             "Content-Type: ${ctype}" \
-            "Content-Length: ${clen}"
+            "Content-Length: ${clen}" \
+            ${content_encoding:+"$content_encoding"}
         exit
     fi
 
