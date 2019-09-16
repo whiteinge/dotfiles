@@ -38,6 +38,9 @@ http() {
         exit
     fi
 
+    # Remove query strings.
+    rpath="${rpath%%\?*}"
+
     if [ -r "${rpath}/index.html" ]; then
         rpath="${rpath}/index.html"
     fi
