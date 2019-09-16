@@ -15,7 +15,6 @@ rep() {
         printf '%s\r\n' "$hdr"
     done
     printf '\r\n'
-    cat
 }
 
 http() {
@@ -34,7 +33,7 @@ http() {
 
     local rpath="$PWD$HTTP_PATH"
     if [[ "$rpath" = *..* ]]; then
-        printf '' | rep 400
+        rep 400
         exit
     fi
 
@@ -46,7 +45,8 @@ http() {
     fi
 
     if [[ -d "$rpath" ]]; then
-        ls -Fa "$rpath" | sort | rep 200
+        rep 200
+        ls -Fa "$rpath" | sort
         exit
     fi
 
@@ -67,14 +67,16 @@ http() {
 
         local clen="$(wc -c < "$rpath")"
 
-        cat "$rpath" | rep 200 \
+        rep 200 \
             "Content-Type: ${ctype}" \
             "Content-Length: ${clen}" \
             ${content_encoding:+"$content_encoding"}
+        cat "$rpath"
         exit
     fi
 
-    printf '' | rep 404
+    rep 404
+    exit
 }
 
 mk_cert() {
