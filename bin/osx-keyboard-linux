@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+# Make an OS X keyboard work like a PC keyboard.
+# Type `setxkbmap` without options to reset.
+
+# Swap left command and alt:
+setxkbmap -option ctrl:nocaps,altwin:swap_lalt_lwin
+
+# Use f-keys without holding fn key:
+echo "2" > /sys/module/hid_apple/parameters/fnmode
