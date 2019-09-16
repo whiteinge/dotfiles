@@ -53,6 +53,7 @@ http() {
     if [[ -r "$rpath" ]]; then
         local ctype=""
         case "$rpath" in
+            *.css) ctype='text/css';;
             *.js) ctype='application/javascript';;
             *.json) ctype='application/json';;
             *) ctype="$(file -b --mime-type "$rpath")";;
