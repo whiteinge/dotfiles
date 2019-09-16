@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env sh
 # Run `git fetch` on all repos under the current dir in parallel
 #
 # Usage:
@@ -23,8 +23,14 @@ function _wait_for_ssh () {
 
     local ssh="${1?:ssh hostname required}"
 
+    trap '
+        excode=$?; trap - EXIT;
+        break
+        exit $excode
+    ' INT TERM EXIT
+
     printf 'Connecting to "%s".\n' "$ssh"
-    while ! ssh -O check ${ssh} &>/dev/null true; do
+    while ! ssh -O check ${ssh} 1>/dev/null 2>/dev/null true; do
         printf '.' ; sleep 0.5;
     done
     printf '\nConnected!\n'
@@ -36,11 +42,15 @@ function fetchall () {
 }
 
 function ssh_fetchall () {
-    setopt LOCAL_OPTIONS NO_MONITOR
     local SSH_URI="${1:?SSH connection string required.}"
 
     # Start a connection and wait for it; exit when we're done
-    trap 'ssh -O exit '${SSH_URI} SIGINT SIGTERM EXIT
+    trap '
+        excode=$?; trap - EXIT;
+        ssh -O exit '"$SSH_URI"'
+        exit $excode
+    ' INT TERM EXIT
+
     ssh -N ${SSH_URI} &
     _wait_for_ssh ${SSH_URI}
 
