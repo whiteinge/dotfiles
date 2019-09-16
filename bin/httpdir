@@ -1,6 +1,10 @@
 #!/usr/bin/env sh
 # Serve a local directory via HTTP (via socat).
 
+HTTP_METHOD=''
+HTTP_PATH=''
+HTTP_VERSION=''
+
 rep() {
     local status="${1:?Status is required.}"
     shift 1
@@ -15,10 +19,6 @@ rep() {
 }
 
 http() {
-    local HTTP_METHOD
-    local HTTP_PATH
-    local HTTP_VERSION
-
     local crlf=$(printf '\r\n')
     local accept_compressed=0
 
