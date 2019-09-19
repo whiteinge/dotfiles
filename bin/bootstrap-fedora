@@ -13,12 +13,14 @@ udevadm control --reload-rules
 # Permanently set the fn key to on for Apple keyboards.
 printf 'options hid_apple fnmode=2\n' > /etc/modprobe.d/hid_apple.conf
 
-# Enable RPM Fusion repo.
-dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-dnf install -y rpmfusion-free-release-tainted
+# Enable a few third-party repos.
+dnf install -y \
+    https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+    https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
+    https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
+    https://prerelease.keybase.io/keybase_amd64.rpm
 
-# Enable Google Chrome repo.
-dnf install -y https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+dnf install -y rpmfusion-free-release-tainted
 
 # Install baseline packages.
 xargs dnf install -y < $HOME/src/dotfiles/tmp/config/packages-fedora
@@ -32,5 +34,5 @@ systemctl set-default graphical.target
 systemctl --user enable pulseaudio.socket
 
 # Of course.
-curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
-chmod +x /usr/local/bin/youtube-dl
+curl -L https://yt-dl.org/downloads/latest/youtube-dl -o $HOME/bin/youtube-dl
+chmod +x $HOME/bin/youtube-dl

@@ -2,7 +2,8 @@
 # Bootstrap a new Pocket 2 machine.
 # Mostly thanks to https://github.com/joshskidmore/gpd-pocket-2-arch-guide
 
-dnf install -y iwl7260-firmware xorg-x11-drv-intel
+cat $HOME/shouse/tmp/config/{packages-fedora,packages-pocket2} \
+    | xargs dnf install -y
 
 # Add Yubikey detection.
 cat > /etc/udev/rules.d/70-u2f.rules <<'EOF'
