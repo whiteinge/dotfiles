@@ -4,7 +4,7 @@
 # Usage: osx-brew-cull < packages-whitelist
 
 cut -d' ' -f 1 \
-    | xargs -r -I{} sh -c 'echo {}; brew deps {}' \
+    | xargs -r sh -c 'printf '\''%s\n'\'' "$@"; brew deps --union "$@" -' \
     | sort -u \
     | comm -23 <(brew list -1 | sort -u) - \
     | xargs -r -p brew uninstall
