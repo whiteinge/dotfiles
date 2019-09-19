@@ -282,6 +282,21 @@ function nnnn() {
 }
 
 # }}}
+# phist Search the Zsh history with pick {{{1
+
+function phist() {
+    print -z $(pick < $HOME/.zsh_history \
+        | awk 'sub(/[^;]*;/, "", $0)')
+}
+
+# }}}
+# pman Search available manpages with pick. {{{1
+
+function pman() {
+    man -k . | pick | awk '{ print $1 }' | xargs -r man
+}
+
+# }}}
 
 # Run precmd functions
 precmd_functions=( precmd_prompt )
