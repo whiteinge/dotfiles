@@ -12,6 +12,7 @@ ffmpeg
 figlet
 findutils
 flow
+fzy
 gawk
 git
 gnu-sed
@@ -39,7 +40,6 @@ openssh
 openssl
 p7zip
 pandoc
-pick
 pinentry-mac
 readline
 rlwrap

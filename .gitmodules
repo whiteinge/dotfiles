@@ -28,9 +28,6 @@
 [submodule ".vim/pack/foo/start/undotree"]
 	path = .vim/pack/foo/start/undotree
 	url = https://github.com/mbbill/undotree.git
-[submodule "tmp/repos/pick"]
-	path = tmp/repos/pick
-	url = https://github.com/mptre/pick.git
 [submodule "tmp/repos/xsct"]
 	path = tmp/repos/xsct
 	url = https://github.com/faf0/sct.git
@@ -52,3 +49,6 @@
 [submodule ".nodenv"]
 	path = .nodenv
 	url = https://github.com/nodenv/nodenv.git
+[submodule "tmp/repos/fzy"]
+	path = tmp/repos/fzy
+	url = https://github.com/jhawthorn/fzy.git
