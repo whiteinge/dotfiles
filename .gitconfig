@@ -24,6 +24,12 @@
     sh = show --summary --stat --pretty=fuller --patch
     st = status -s -b
     stat = diff --stat
+    sl = stash list --name-status --pretty='format:%gd [%ar]: %s'
+    ss = "!_() { git stash show -p stash@{${1:-0}}; };_"
+    sd = "!_() { git stash drop stash@{${1:-0}}; };_"
+    which = "!_() { git config --global --get alias.$1; };_"
+    churn = !git log --all -M -C --name-only --format='format:' "$@" | grep . | sort | uniq -c | sort -n -r
+    whoami = !git var GIT_COMMITTER_IDENT | sed 's/>.*/>/'
 
     # Checkout a branch or tag using pick to fuzzy-find a match.
     # Usage:
@@ -200,6 +206,7 @@
     lt = $PAGER -F
     b = $PAGER -F
     branch = $PAGER -F
+    sl = $PAGER -F
 
 [rerere]
     enabled = true

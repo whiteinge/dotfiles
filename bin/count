@@ -1,0 +1,5 @@
+#!/bin/sh
+# count - count different lines
+# http://leahneukirchen.org/dotfiles/bin/count
+
+sort "$@" | uniq -c | sort -n -r

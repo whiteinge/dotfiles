@@ -1,0 +1,6 @@
+#!/bin/sh
+# emails - output all email addresses
+# http://leahneukirchen.org/dotfiles/bin/emails
+
+# Good enough
+grep -P -o '([\w+%\-].?)+@[A-Za-z\d\-]+(\.[A-Za-z]+)*\.[A-Za-z]+'

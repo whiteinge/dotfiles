@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# read markdown with less
+# http://leahneukirchen.org/dotfiles/.zshrc
+
+pandoc -s -f gfm -t man "${1?:'Missing file'}" | man -l -

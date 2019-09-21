@@ -1,0 +1,11 @@
+#!/bin/sh
+# git-attic [-M] [PATH] - list deleted files of Git repositories
+#
+# Use -M to not show renamed files, and other git-log options as you like.
+#
+# http://leahneukirchen.org/dotfiles/bin/git-attic
+
+git log --raw --no-renames --date=short --format="%h %cd" "$@" |
+  awk '/^[0-9a-f]/ { commit=$1; date=$2 }
+       /^:/ && $5 == "D" { print date, commit "^:" $6 }' |
+  less

@@ -209,6 +209,10 @@ alias filesmissing='find . -maxdepth 2 -xtype l'
 # Quickly ssh through a bastian host without having to hard-code in ~/.ssh/config
 alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
 
+# mkdir and cd at once
+mkcd() { mkdir -p -- "$1" && cd -- "$1" }
+compdef mkcd=mkdir
+
 # Useful for working with Git remotes; e.g., ``git log IN``, ``git diff OUT``.
 alias -g IN='..@{u}'
 alias -g IIN='...@{u}'

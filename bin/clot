@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# fill screen with garbage, as visual separator
+# http://leahneukirchen.org/dotfiles/.zshrc
+
+head -c $((LINES*COLUMNS)) </dev/urandom | \
+  LC_ALL=C tr '\0-\377' ${(l:256::.*o@:)} | \
+  fold -w $COLUMNS

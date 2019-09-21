@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# display github keys
+# http://leahneukirchen.org/dotfiles/.zshrc
+
+curl https://github.com/${1:?'Missing username'}.keys

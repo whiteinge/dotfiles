@@ -1,0 +1,6 @@
+#!/bin/sh
+# total - sum up numbers in a column
+# http://leahneukirchen.org/dotfiles/bin/total
+
+expr "$1" : -F >/dev/null && F=$1 && shift
+exec awk $F -v f=${1:-1} '{s+=$f} END{print s}'

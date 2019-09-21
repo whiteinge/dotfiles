@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+# limit lines to terminal size
+# See also: less -S (toggle in a running less by just typing -S)
+# http://leahneukirchen.org/dotfiles/.zshrc
+
+cut -c-${COLUMNS:-80}
