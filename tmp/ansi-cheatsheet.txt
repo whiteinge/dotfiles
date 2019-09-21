@@ -1,0 +1,36 @@
+# ANSI Codes
+
+Prefix with escape code:
+- printf: `\e`
+- awk: `\033`
+
+## Common movement
+
+```
+Cursor up: [{n}A
+Cursor down: [{n}B
+Cursor right: [{n}C
+Cursor left: [{n}D
+
+Next line: [{n}E
+Prev line: [{n}F
+
+Set column: [{x}G
+Set position: [{x};{y}H
+
+Clear screen: [{n}J
+    n=0 from cursor until end of screen,
+    n=1 from cursor to beginning of screen
+    n=2 entire screen
+
+Clear line: [{n}K
+    n=0 from cursor to end of line
+    n=1 from cursor to start of line
+    n=2 entire line
+
+Save position: [s
+Restore position: [u
+
+Hide: [?25l
+Show: [?25h
+```
