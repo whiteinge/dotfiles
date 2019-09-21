@@ -2,7 +2,8 @@
 # A lightweight job queue using tail and xargs
 
 NAME=$(basename "$0")
-QUEUE="${PWD}/__queue_jobs"
+QUEUE_DIR="${PWD}/__queue_jobs"
+QUEUE="${QUEUE_DIR}/queue"
 MAXJOBS=1
 
 help () {
@@ -52,18 +53,44 @@ _main () {
            printf '\n'
            exit;;
         P) MAXJOBS="$OPTARG";;
-        n) rm -f "$QUEUE";;
+        n) rm -rf "$QUEUE_DIR";;
         x) set -x;;
         esac
     done
     shift $(( OPTIND - 1 ))
 
+    mkdir -p -m 700 "$QUEUE_DIR"
     touch "$QUEUE"
 
     if [ $# -eq 0 ]; then
-        printf 'Watching queue for jobs...\n'
+        printf 'Watching queue for jobs...\n\n'
 
-        tail -n+0 -f "$QUEUE" | xargs -I{} -P "$MAXJOBS" sh -c '{}'
+        tail -z -n+0 -f "$QUEUE" \
+            | xargs -0 -r -I{} -P "$MAXJOBS" sh -c \
+                'echo Start $$
+                printf '\''%s\n'\'' "{}" > '"$QUEUE_DIR"'/job-$$.out
+                printf '\''%s\n'\'' "{}" > '"$QUEUE_DIR"'/job-$$.err
+                {} 1>'"$QUEUE_DIR"'/job-$$.out 2>'"$QUEUE_DIR"'/job-$$.err
+                echo Done $$ $?' \
+            | awk '
+                /^Start/ { jobs[$2] = "X" }
+                /^Done/ { jobs[$2] = $3 }
+                {
+                    printf("\033[s") # save pos
+                    printf("\033[0J") # clear to end of screen
+                    printf("\033[1E") # next line
+                    printf("%-8s%-15s%-15s\n",
+                        "PID", "Is running", "Exit code")
+                    for (i in jobs) {
+                        printf("%-8s%-15s%-15s\n",
+                        i,
+                        jobs[i] == "X" ? "X" : "",
+                        jobs[i] == "X" ? "" : jobs[i])
+                    }
+                    printf("\nTotal jobs: %s\n", length(jobs))
+                    printf("\033[u") # restore pos
+                }
+            '
     else
         printf '%s\n' "$*" >> "$QUEUE"
     fi
