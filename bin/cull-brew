@@ -3,8 +3,7 @@
 # the whitelist). Will prompt for confirmation before removal.
 # Usage: osx-brew-cull < packages-whitelist
 
-cut -d' ' -f 1 \
-    | xargs -r sh -c 'printf '\''%s\n'\'' "$@"; brew deps --union "$@" -' \
+xargs -r sh -c 'printf '\''%s\n'\'' "$@"; brew deps --union "$@"' - \
     | sort -u \
     | comm -23 <(brew list -1 | sort -u) - \
     | xargs -r -p brew uninstall
