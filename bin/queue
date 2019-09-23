@@ -92,7 +92,12 @@ _main () {
                 }
             '
     else
-        printf '%s\n' "$*" >> "$QUEUE"
+        # Try to mimic Bash's printf '%q':
+        printf '%s\0' "$*" \
+            | sed \
+                -e "s/'/'\\\\''/g" \
+                -e 's/[|&;<>()$`\\"\*\?\[#~=%\t\n]/\\&/g' \
+            >> "$QUEUE"
     fi
 }
 
