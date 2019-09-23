@@ -34,7 +34,7 @@ if [[ $LINES -lt 5 ]] ; then
 else
     zstyle ":pr_nethack:" mode compact
 fi
-zstyle ':pr_nethack:*' hooks pwd usr vcs venv jobs prompt
+zstyle ':pr_nethack:*' hooks pwd incog usr vcs venv jobs prompt
 zstyle ':pr_nethack:*' pet "d" # A domestic animal, the _tame dog_ (_Canis familiaris_)
 zstyle ':pr_nethack:*' pwd "%~"
 zstyle ':pr_nethack:*' usr "%n"
@@ -113,7 +113,7 @@ function +pr-mode-full() {
     infoline[-1]=( ${filler} ${infoline[-1]} )
 
     [[ -n ${pr_com[jobs]} ]] && pline+=( ${pr_com[jobs]} )
-    pline+=( ${pr_com[prompt]} )
+    pline+=( ${pr_com[incog]}${pr_com[prompt]} )
 
     # Assemble all prompt lines
     lines=(
@@ -147,7 +147,7 @@ function +pr-mode-compact() {
     zstyle ':pr_nethack:*' pwd "%1~" # only last segment of cwd
     zstyle ':vcs_info:git*+set-message:*' hooks git-st git-st-compact git-untracked git-stash-compact
 
-    pr_llines=( "${SSH_CLIENT+${pr_com[usr]} }${pr_com[pwd]} ${pr_com[jobs]} ${pr_com[prompt]}" )
+    pr_llines=( "${SSH_CLIENT+${pr_com[usr]} }${pr_com[pwd]} ${pr_com[jobs]} ${pr_com[incog]}${pr_com[prompt]}" )
 
     [[ -n ${pr_com[vcs]} ]] && pr_rlines=(
         ${pr_com[vcs]}
@@ -159,7 +159,7 @@ function +pr-mode-compact() {
 #
 # %
 function +pr-mode-bare() {
-    pr_llines=( "${pr_com[jobs]} ${pr_com[prompt]}" )
+    pr_llines=( "${pr_com[jobs]} ${pr_com[incog]}${pr_com[prompt]}" )
 }
 
 # Show the cwd in green if writable, yellow otherwise
@@ -171,6 +171,13 @@ function +pr-pwd() {
     v_pwd+=( ${i_pwd} )
     v_pwd+=( ${reset} )
     pr_com[pwd]=${(j::)v_pwd}
+}
+
+function +pr-incog() {
+    local i_incog
+    [[ "$HISTFILE" = '/dev/null' ]] && i_incog="!!"
+
+    pr_com[incog]=${i_incog}
 }
 
 # Show the current user, also show the host if SSH'ed in from somewhere

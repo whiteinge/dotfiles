@@ -195,6 +195,7 @@ alias fetchall-gl='fetchall "git@gitlab.com"'
 
 # Aliases that make new things:
 alias ducks='du -cks * | sort -rn | head -15'
+alias incognito=' export HISTFILE=/dev/null'
 alias osx_openports='lsof -iTCP -sTCP:LISTEN -P'
 alias clip='xclip -selection clipboard'
 alias rs='rsync -avhzC --progress'
