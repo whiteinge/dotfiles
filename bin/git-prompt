@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+# Output a succinct, one-line Git status
+#
+# E.g.:
+# 1ac744a5522d UUAM? master+1-5 origin/master
+
+git status --porcelain=v2 --branch | awk '
+    /^# branch\.oid/ { sha=substr($3, 0, 12) }
+    /^# branch\.head/ { branch=$3 }
+    /^# branch\.upstream/ { upstream=$3 }
+    /^# branch\.ab/ {
+        a = $3 != "+0" ? $3 : ""
+        b = $4 != "-0" ? $4 : ""
+    }
+    /^\?/ { untracked="?" }
+    /^1 .M/ { modified="M" }
+    /^1 AM/ { added="A" }
+    /^u UU/ { conflicts="UU" }
+
+    END {
+        print sha, conflicts added modified untracked, branch a b, upstream
+    }
+'
