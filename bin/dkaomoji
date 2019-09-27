@@ -7,13 +7,8 @@
 # https://github.com/kxxoling/kaomoji/raw/master/data/jp.json
 
 # GNU cut doesn't grok UTF-8.
-EMOJI=$(sed '1,/^exit/d' $0 | dmenu -i -l 10 -fn Symbola:size=20 | grep -Po '^[^\t]*')
-if [ "$EMOJI" ]; then
-	printf %s "$EMOJI" | xclip -i
-	sleep 0.1
-	xdotool click 2
-	exit $?
-fi
+sed '1,/^exit/d' $0 | pick | grep -Po '^[^\t]*'
+
 exit 1
 ( ≧Д≦)	#angry
 o(-`д´- ｡)	#angry
