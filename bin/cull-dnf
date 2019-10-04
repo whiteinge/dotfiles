@@ -6,4 +6,4 @@
 
 sort -u \
     | comm -23 <(dnf repoquery --userinstalled --qf '%{name}' | sort -u) - \
-    | xargs -r -p dnf remove
+    | xargs -r -p dnf remove -y
