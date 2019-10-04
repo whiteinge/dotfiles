@@ -1,0 +1,12 @@
+#!/bin/sh
+# Generate a README for all $DOTFILES/bin scripts
+
+find bin -type f -print0 | xargs -0 -r -L1 awk '
+        FILENAME ~ "README" { next }
+        /^#?[a-zA-Z ]+/ {
+            sub(/^# /, "", $0)
+            print substr(FILENAME, 5) " -- " $0
+            exit
+        }
+    ' \
+    | sort
