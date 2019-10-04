@@ -303,8 +303,26 @@ function pman() {
 
 # }}}
 
+function refresh_tmux() {
+    tmux refresh -S
+}
+
+_last_cmd_was_git=0
+function last_command_was_git() {
+    [[ "$1" == git* ]] && _last_cmd_was_git=1
+}
+
+function refresh_tmux_on_git() {
+    if [[ "$_last_cmd_was_git" -eq 1 ]]; then
+        _last_cmd_was_git=0
+        tmux refresh -S
+    fi
+}
+
 # Run precmd functions
-precmd_functions=( precmd_prompt )
+preexec_functions=( last_command_was_git )
+chpwd_functions=( refresh_tmux )
+precmd_functions=( precmd_prompt refresh_tmux_on_git )
 
 # Allow OS or environment specific overrides:
 if [[ -r "$HOME/.zsh_customize" ]]; then
