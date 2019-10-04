@@ -2,22 +2,87 @@
 # Output a succinct, one-line Git status
 #
 # E.g.:
-# 1ac744a5522d UUAM? master+1-5 origin/master
+#     reponame/  1ac744a5522d UUAM? master+1-5 origin/master
+#
+# Usage:
+#     git prompt
+#     git-prompt /path/to/repo
 
-git status --porcelain=v2 --branch | awk '
-    /^# branch\.oid/ { sha=substr($3, 0, 12) }
-    /^# branch\.head/ { branch=$3 }
-    /^# branch\.upstream/ { upstream=$3 }
-    /^# branch\.ab/ {
-        a = $3 != "+0" ? $3 : ""
-        b = $4 != "-0" ? $4 : ""
-    }
-    /^\?/ { untracked="?" }
-    /^1 .M/ { modified="M" }
-    /^1 AM/ { added="A" }
-    /^u UU/ { conflicts="UU" }
+color=""
+while getopts c: opt; do
+    case $opt in
+    c) color="$OPTARG";;
+    esac
+done
+shift $(( OPTIND - 1 ))
 
-    END {
-        print sha, conflicts added modified untracked, branch a b, upstream
-    }
-'
+repo="${1:-$PWD}"
+
+if [ ! -d "$repo" ]; then
+    exit 1
+fi
+
+test ! -O "$repo"
+is_owned=$?
+
+dirname="$(basename "$repo")"
+if [ "$dirname" = "$(basename "$HOME")" ]; then
+    dirname="~"
+fi
+
+{
+    printf '%s\n' "$dirname";
+
+    if [ -d "${repo}/.git" ]; then
+        git \
+            --git-dir="${repo}/.git" \
+            --work-tree="$repo" \
+            --no-optional-locks \
+            status \
+            --porcelain=v2 \
+            --branch
+    fi;
+} | awk \
+        -v color="$color" \
+        -v is_owned="$is_owned" \
+    '
+        BEGIN {
+            if (color == "ansi") {
+                _black = ""
+                _red = "\033[31m"
+                _green = "\033[32;1m"
+                _yellow = "\033[33;1m"
+            } else if (color == "tmux") {
+                _black = "#[fg=white,bg=black]"
+                _red = "#[fg=red]"
+                _green = "#[fg=green,bold]"
+                _yellow = "#[fg=yellow,bold]"
+            }
+        }
+
+        NR == 1 { repo=$0; next }
+        /^# branch\.oid/ { sha=substr($3, 0, 12) }
+        /^# branch\.head/ { branch=$3 }
+        /^# branch\.upstream/ { upstream=$3 }
+        /^# branch\.ab/ {
+            a = $3 != "+0" ? $3 : ""
+            b = $4 != "-0" ? $4 : ""
+        }
+        /^\?/ { untracked="?" }
+        /^1 \.M/ || /^1 MM/ { modified="M" }
+        /^1 M\./ || /^1 MM/ { added="A" }
+        /^u UU/ { conflicts="UU" }
+
+        END {
+            print ((is_owned ? _green : _yellow) repo "  " \
+                _black sha,
+                _red conflicts \
+                _green added \
+                _red modified \
+                _yellow untracked ,
+                _black branch \
+                _green a \
+                _red b,
+                _black)
+        }
+    '
