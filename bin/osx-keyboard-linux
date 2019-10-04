@@ -4,6 +4,7 @@
 
 # Swap left command and alt:
 setxkbmap -option ctrl:nocaps,altwin:swap_lalt_lwin
+pkill xcape && xcape
 
 # Use f-keys without holding fn key:
 echo "2" > /sys/module/hid_apple/parameters/fnmode
