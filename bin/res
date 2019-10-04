@@ -4,11 +4,11 @@
 
 pick <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs -I{} tmux send xrandr Space {}
 	Auto        --auto
-	Desktop     --auto --output eDP1 --off
-	Livingroom  --auto --output eDP1 --off --output DP1 --mode 1360x768
+	Desktop     --output DP1 --preferred --output eDP1 --off
+	Livingroom  --output eDP1 --off --output DP1 --mode 1360x768
 	Notebook    --auto --output eDP1 --scale 0.4x0.4 --rotate right
-	Present     --auto --output eDP1 --scale-from 1024x768
-	Reset       --auto --output eDP1 --transform none
+	Present     --output eDP1 --scale-from 1024x768
+	Reset       --auto --output eDP1 --preferred --transform none
 	Underscan   --output DP1 --transform 0.80,0,-35,0,1.04,-19,0,0,1
-	Work        --auto --output DP1 --rotate left --output eDP1 --off
+	Work        --output DP1 --preferred --rotate left --output eDP1 --off
 EOF
