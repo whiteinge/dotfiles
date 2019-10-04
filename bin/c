@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Wrap curl to always output headers and timing (to stderr).
+# Wrap curl to always output headers and timing (to stderr)
 #
 # NOTE: Appends an artificial newline to the response body in order to flush
 # stdout before writing timing infos to stderr.

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Make an OS X keyboard work like a PC keyboard.
+# Make an OS X keyboard work like a PC keyboard
 # Type `setxkbmap` without options to reset.
 
 # Swap left command and alt:

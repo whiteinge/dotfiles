@@ -1,5 +1,5 @@
 #!/bin/sh
-# emails - output all email addresses
+# Output all matched email addresses
 # http://leahneukirchen.org/dotfiles/bin/emails
 
 # Good enough

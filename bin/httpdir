@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Serve a local directory via HTTP (via socat).
+# Serve a local directory via HTTP (via socat)
 
 HTTP_METHOD=''
 HTTP_PATH=''

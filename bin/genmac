@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Generate a locally-assigned (starts with 02) mac address from a salt.
+# Generate a locally-assigned (starts with 02) mac address from a salt
 # http://serverfault.com/a/299563
 # Usage: FQDN="example.com" genmac
 

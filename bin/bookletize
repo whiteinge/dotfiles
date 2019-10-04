@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Converts a PDF to a fold-able booklet sized PDF
+# Convert a PDF to a fold-able booklet sized PDF
 # Print it double-sided and fold in the middle
 
 main () {

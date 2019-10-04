@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# ffind (filtering find) - A wrapper around find to ignore noise directories
+# (filtering find) - A wrapper around find to ignore noise directories
 #
 # Obtains files/directories to ignore from reading the following files:
 #

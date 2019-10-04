@@ -1,5 +1,5 @@
 #!/bin/sh
-# urls - output all urls
+# Output all matched URLs
 # http://leahneukirchen.org/dotfiles/bin/urls
 
 grep -P -o '(?:https?://|ftp://|news://|mailto:|file://|\bwww\.)[a-zA-Z0-9\-\@;\/?:&=%\$_.+!*\x27,~#]*(\([a-zA-Z0-9\-\@;\/?:&=%\$_.+!*\x27,~#]*\)|[a-zA-Z0-9\-\@;\/?:&=%\$_+*~])+' "$@"

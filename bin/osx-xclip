@@ -1,8 +1,9 @@
 #!/usr/local/bin/zsh
-# An xclip-like wrapper to pbcopy/pbpaste so I don't need a ton of OS-specific
-# conditionals littering my dotfiles in order to work on OSX. This wrapper is
-# NOT comprehensive and generally only covers the functionality actually used
-# in my dotfiles.
+# An xclip-like wrapper to pbcopy/pbpaste
+#
+# This is so I don't need a ton of OS-specific conditionals littering my
+# dotfiles in order to work on OSX. This wrapper is NOT comprehensive and
+# generally only covers the functionality actually used in my dotfiles.
 
 local opts direction
 

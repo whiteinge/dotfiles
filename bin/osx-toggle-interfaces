@@ -1,4 +1,6 @@
 #!/usr/bin/env zsh
+# Toggle wifi/ethernet on/off when the physical connection changes
+#
 # When connection status changes:
 # turn wifi off if connected to ethernet;
 # turn wifi on if not connected to ethernet.

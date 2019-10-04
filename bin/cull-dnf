@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Remove any user-installed packages not on a whitelist.
+# Remove any user-installed packages not on a whitelist
 # Prompts before removal.
 #
 # Usage: cull-dnf < /path/to/packages-whitelist

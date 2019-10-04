@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Bootstrap a new OS X machine.
+# Bootstrap a new OS X machine
 
 # Install xcode CLI tools.
 xcode-select --install

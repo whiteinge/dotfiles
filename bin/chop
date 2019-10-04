@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# limit lines to terminal size
+# Chop lines to available terminal width
 # See also: less -S (toggle in a running less by just typing -S)
 # http://leahneukirchen.org/dotfiles/.zshrc
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-# dkaomoji - dmenu based kaomoji picker
+# dmenu based kaomoji picker
 # http://leahneukirchen.org/dotfiles/bin/dkaomoji
 
 # sources:

@@ -1,7 +1,11 @@
 #!/bin/sh
-# align CHAR - align tabular data at CHAR
-# useful in vi: !align =
+# Align tabular data at CHAR
 # http://leahneukirchen.org/dotfiles/bin/align
+#
+# (Useful in Vim.)
+#
+# Usage (align on the = character):
+#     !align =
 
 CHAR=$1; shift
 exec column -t -s "$CHAR" -o "$CHAR" "$@"

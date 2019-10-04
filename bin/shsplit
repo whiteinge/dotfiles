@@ -1,17 +1,19 @@
 #!/usr/bin/env python
 '''
-Reformat a one-line shell command:
+Reformat a one-line shell command as a multiline shell command
+
+From:
 
     someshellcommand.sh -f --foo 'this is a --string do not split'
 
-As a multiline shell command:
+To:
 
     someshellcommand.sh \
         -f  \
         --foo 'this is a --string do not split'
 
-This is useful for taking the "Copy as CURL" from the Chrome developer tools
-network tab and making it readable.
+This is useful for, among other things, taking the "Copy as CURL" from the
+Chrome developer tools network tab and making it readable.
 '''
 import shlex
 import sys

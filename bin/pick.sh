@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# WIP: A POSIX sh implementation of pick
 # set -x
 
 local input=''

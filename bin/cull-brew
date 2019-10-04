@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
-# Remove any brew packages that are not on a whitelist (or deps of something on
-# the whitelist). Will prompt for confirmation before removal.
+# Remove any brew packages that are not on a whitelist
+#
+# (Or deps of something on the whitelist.)
+# Will prompt for confirmation before removal.
 # Usage: osx-brew-cull < packages-whitelist
 
 xargs -r sh -c 'printf '\''%s\n'\'' "$@"; brew deps --union "$@"' - \

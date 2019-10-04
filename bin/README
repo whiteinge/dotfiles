@@ -1,0 +1,68 @@
+align -- Align tabular data at CHAR
+bookletize -- Convert a PDF to a fold-able booklet sized PDF
+bootstrap-fedora -- Bootstrap a minimal Fedora install
+bootstrap-osx -- Bootstrap a new OS X machine
+bootstrap-pocket2 -- Bootstrap a new Pocket 2 machine
+caffeine -- Prevent the screensaver from activating or the screen from sleeping
+chop -- Chop lines to available terminal width
+cloc-git -- Temporarily clone a repository and run cloc on it
+clot -- Fill screen with garbage as visual separator
+count -- Count occurrences of the same line in a file
+countdown -- A simple countdown timer
+cull-brew -- Remove any brew packages that are not on a whitelist
+cull-dnf -- Remove any user-installed packages not on a whitelist
+curlretry -- Repeatedly download & resume from a URL until finished
+c -- Wrap curl to always output headers and timing (to stderr)
+diffconflicts -- A better vimdiff mergetool for Git
+diff-to-quickfix -- Convert a diff into Vim's quickfix format
+dkaomoji -- dmenu based kaomoji picker
+dmoji -- dmenu based emoji picker
+echol -- Like echo but delimit with newlines instead of spaces
+echoserver -- Start an echo HTTP server
+emails -- Output all matched email addresses
+explode_path -- Take a path and output all child paths as absolute paths
+extract_clip -- Extract a clip from a larger video file
+fetchall -- Run `git fetch` on all repos under the current dir in parallel
+ffind -- (filtering find) - A wrapper around find to ignore noise directories
+genmac -- Generate a locally-assigned (starts with 02) mac address from a salt
+genpass -- Generate a cryptographically inadequate(!) password
+gext -- A wrapper for find/grep to parallelize and search by extension
+ghkeys -- Display GitHub public keys for a user
+git-attic -- List deleted files in a Git repository
+git-graph-dag -- Draw a graphviz diagram of the Git DAG
+git-pagediffs -- Open the full diff for a range of commits as separate pages in $PAGER
+git-prompt -- Output a succinct, one-line Git status
+httpdir -- Serve a local directory via HTTP (via socat)
+joinpdf -- Merges, or joins multiple PDF files into "joined.pdf"
+lndir.sh -- Create a shadow directory of symbolic links to another directory tree
+luksimg -- Wrappers around cryptsetup to create/mount/unmount encrypted images
+mdless -- View rendered Markdown files with $MANPAGER
+new-sh -- Quickly create and edit a new shell script, already marked as executable
+npm-deps-report -- Output how many sub-dependencies each npm dependencies has
+osx-keyboard-linux -- Make an OS X keyboard work like a PC keyboard
+osx-notify-send -- A notify-send-like wrapper to OSX's notify applescript thingie
+osx-proxy -- Toggle the OSX HTTP/HTTPS proxies on for the primary interface
+osx-toggle-interfaces -- Toggle wifi/ethernet on/off when the physical connection changes
+osx-xclip -- An xclip-like wrapper to pbcopy/pbpaste
+pick.sh -- WIP: A POSIX sh implementation of pick
+pysmtp -- Start a echoing SMTP server
+qb.sh -- Qutebrowser helpers
+queue -- A lightweight job queue using tail and xargs
+readme-gen -- Generate a README for all $DOTFILES/bin scripts
+res -- Output an xrandr command for common configurations
+revproxy-pipe -- A reverse proxy that pipes the HTTP response through a shell command
+screencast -- Record a screencast on X11 using ffmpeg
+shsplit -- Reformat a one-line shell command as a multiline shell command
+status -- Collect various system stats for feeding into a status bar
+tailsplit -- Run a command and open two tmux panes to tail stdout and stderr separately
+timer -- Output seconds elapsed
+tmux-tiled -- Make a bunch of tiled tmux panes via find -exec or xargs
+total -- Sum (total) numbers in a column
+t -- Store a todo list in any Git repository
+urldecode -- Decode urlencoded stdin
+urlencode -- Urlencode stdin
+urls -- Output all matched URLs
+vipe -- Use $EDITOR to edit text inside a pipeline
+watch-changes -- A simple polling file/directory watcher
+zombies -- List all zombie processes and their parents (to kill)
+zshrun -- Invoke a Terminal.app window and block until it closes

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Quick wrapper to make a bunch of tiled tmux panes
+# Make a bunch of tiled tmux panes via find -exec or xargs
 #
 # Needed because select-layout is needed after each split-window to retain
 # a tiled layout. Toggle remain-on-exit beforehand as desired.

@@ -1,8 +1,9 @@
 #!/usr/local/bin/zsh
-# A notify-send-like wrapper to OSX's notify applescript thingie so I don't
-# need a ton of OS-specific conditionals littering my dotfiles in order to work
-# on OSX. This wrapper is NOT comprehensive and generally only covers the
-# functionality actually used in my dotfiles.
+# A notify-send-like wrapper to OSX's notify applescript thingie
+#
+# This is so I don't need a ton of OS-specific conditionals littering my
+# dotfiles in order to work on OSX. This wrapper is NOT comprehensive and
+# generally only covers the functionality actually used in my dotfiles.
 #
 # notify-send --hint=int:transient:1 -u %(urgency)s -i %(icon)s "%(safe_chan)s" "%(safe_msg)s"
 

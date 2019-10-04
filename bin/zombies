@@ -1,5 +1,5 @@
 #!/bin/sh
-# zombies - list all zombies and their parents to kill
+# List all zombie processes and their parents (to kill)
 # http://leahneukirchen.org/dotfiles/bin/zombies
 
 ps f -eo state,pid,ppid,comm | awk '

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Output how many sub-dependencies each main dependencies has.
+# Output how many sub-dependencies each npm dependencies has
 # Usage: npm ls | npm-deps-report
 
 awk '

@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# gext - A wrapper for find/grep to parallelize and search by extension
+# A wrapper for find/grep to parallelize and search by extension
 
 gext() {
     local spath search ext help is_icase

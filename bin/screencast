@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Record a screencast on X11 using ffmpeg.
+# Record a screencast on X11 using ffmpeg
 #
 # Usage:
 # screencast [--window]

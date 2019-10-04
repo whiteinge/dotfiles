@@ -1,5 +1,5 @@
 #!/bin/sh
-# dmoji - dmenu based emoji picker
+# dmenu based emoji picker
 # http://leahneukirchen.org/dotfiles/bin/dmoji
 
 # GNU cut doesn't grok UTF-8.

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-# Output an xrandr command for a common configuration;
-# Doesn't execute the command though so it can be edited beforehand.
+# Output an xrandr command for common configurations
+# Only outputs, not executes, the command so it can be edited beforehand.
 
 pick <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs -I{} tmux send xrandr Space {}
 	Auto        --auto

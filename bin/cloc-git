@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Temporarily clone a repository and run cloc on it.
+# Temporarily clone a repository and run cloc on it
 # https://stackoverflow.com/a/29012789
 
 git clone --depth 1 "$1" temp-linecount-repo &&

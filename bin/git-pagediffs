@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Given a range of commits, open the full diff of each commit separately
+# Open the full diff for a range of commits as separate pages in $PAGER
 #
 # Examples:
 #

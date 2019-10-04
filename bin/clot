@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# fill screen with garbage, as visual separator
+# Fill screen with garbage as visual separator
 # http://leahneukirchen.org/dotfiles/.zshrc
 
 head -c $((LINES*COLUMNS)) </dev/urandom | \
