@@ -46,7 +46,12 @@ http() {
 
     if [[ -d "$rpath" ]]; then
         rep 200
-        ls -Fa "$rpath" | sort
+        tree "$rpath" \
+            -H '' \
+            -a \
+            -h -F -D \
+            -L 1 -x -i \
+            -T "$rpath"
         exit
     fi
 
