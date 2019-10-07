@@ -1,0 +1,24 @@
+#!/bin/sh
+# Output the spectrum and each number for 256 palette
+# https://github.com/minond/dots/blob/master/bin/colors-waterfall
+
+trap '
+    tput sgr0
+    printf '\''\n'\''
+' INT TERM EXIT
+
+{
+    for i in {0..15}; do
+        tput setaf $i
+        printf '%02d\n' "$i"
+    done;
+} | column -c 80
+
+printf '\n'
+
+{
+    for i in {16..255}; do
+        tput setaf $i
+        printf '%03d\n' "$i"
+    done;
+} | column

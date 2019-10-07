@@ -7,6 +7,7 @@ caffeine -- Prevent the screensaver from activating or the screen from sleeping
 chop -- Chop lines to available terminal width
 cloc-git -- Temporarily clone a repository and run cloc on it
 clot -- Fill screen with garbage as visual separator
+colors-waterfall -- Output the spectrum and each number for 256 palette
 count -- Count occurrences of the same line in a file
 countdown -- A simple countdown timer
 cull-brew -- Remove any brew packages that are not on a whitelist
