@@ -6,9 +6,10 @@ pick <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs -I{} tmu
 	Auto        --auto
 	Desktop     --output DP1 --preferred --output eDP1 --off
 	Livingroom  --output eDP1 --off --output DP1 --mode 1360x768
-	Notebook    --auto --output eDP1 --scale 0.4x0.4 --rotate right
+	Notebook    --auto --output eDP1 --transform none --rotate right
+	Netbook     --auto --output eDP1 --scale 0.4x0.4 --rotate right
 	Present     --output eDP1 --scale-from 1024x768
-	Reset       --auto --output eDP1 --preferred --transform none
+	Reset       --auto --output eDP1 --preferred --transform none --rotate normal
 	Underscan   --output DP1 --transform 0.80,0,-35,0,1.04,-19,0,0,1
 	Work        --output DP1 --preferred --rotate left --output eDP1 --off
 EOF
