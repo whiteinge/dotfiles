@@ -1,132 +1,79 @@
-" Open Pick in a :terminal and invoke a callback with the picked result
-" Reads input from a buffer to avoid escaping issues.
+" Open a CLI fuzzy-finder in :term and invoke a callback with the result
 "
-" pick#Pick({x -> x}, 1)
-" pick#Pick({x -> x}, 1)
-" pick#Pick('SomeCallbackFunc', 1)
-fu! pick#Pick(cb, inbuf)
-    let l:Cb = function(a:cb)
-    " Hack: xargs filters ansi escapes we get from the alt screen.
-    let l:tbuf = term_start([$SHELL, '-c', 'pick | xargs'], {
-        \ 'in_buf': a:inbuf, 'in_io': 'buffer',
+" The workflow for building a new mapping is:
+" 1.  Create a new scratch buffer.
+" 2.  Populate the buffer however is best for the data you want to filter.
+" 3.  Start the terminal which will consume the buffer contents as stdin and
+"     take the place of the buffer window with the terminal UI.
+" 4.  Once finished the callback will be invoked with the last stdout produced.
+"
+" Examples:
+"
+" " Fuzzy-find and edit files under the current directory.
+" nnoremap <silent><leader>fz :call pick#NewScratchBuf()
+"     \\|:.!ffind . '(' -type f -o -type l ')' -print<cr>
+"     \\|:call pick#Pick({x -> execute('edit '. x)})<cr>
+"
+" " Fuzzy find :ls and edit the selected buffer.
+" nnoremap <silent><leader>fx :call pick#NewScratchBuf()
+"     \\|redir @m \| silent ls \| redir END
+"     \\|:1put m
+"     \\|:call pick#Pick({x -> execute('b '. matchstr(x, '[0-9]\+'))})<cr>
+
+fu! pick#NewScratchBuf()
+    below new
+    setl buftype=nofile bufhidden=hide nobuflisted
+endfu
+
+fu! pick#Pick(Cb)
+    let l:scrBuf = bufnr('%')
+    let l:lastmsg = ""
+
+    let l:tbuf = term_start('pick', {
+        \ 'in_buf': bufnr('%'), 'in_io': 'buffer',
         \ 'curwin': 1, 'norestore': 1,
-        \ 'eof_chars': 'exit',
-        \ 'out_cb': 'SaveMsg', 'exit_cb': 'LastMsg',
-        \ 'term_finish': 'close', 'term_name': 'buffers-pick',
+        \ 'out_cb': 'SaveMsg', 'term_finish': 'close', 'exit_cb': 'CallCb',
     \ })
 
-    let l:lastmsg = ""
-    fu! SaveMsg(channel, msg) closure
-        " Ignore stdout while in an altscreen. We just want the end result.
+    fu! CallCb(job, status) closure
+        call term_wait(l:tbuf)
+
+        " Nuke the scratch buffer.
+        execute(l:scrBuf .'bw')
+        if (a:status == 0)
+            call a:Cb(trim(l:lastmsg))
+        endif
+    endfu
+
+    fu! SaveMsg(chan, msg) closure
+        " Ignore stdout while in an altscreen.
         if (! term_getaltscreen(l:tbuf))
             let l:lastmsg = a:msg
         endif
     endfu
-    fu! LastMsg(...) closure
-        call term_wait(l:tbuf)
-        call l:Cb(l:lastmsg)
-    endfu
 endfu
 
-" Helper for switching to a new file/buffer.
-fu! pick#SwitchBuf(in, ...)
-    let l:GetData = function(a:in)
-    let l:SwitchBuf = a:0 >= 1 ? function(a:1) : {x -> x}
-    let l:FmtRet = a:0 >= 2 ? function(a:2) : {x -> x}
+" FIXME: how should you actually use tags?
+" " Select a tag and jump to that.
+" fu! pick#Tag()
+"     let l:cmd_holder = ""
 
-    let l:curwin = win_getid()
-    let l:curbuf = bufnr('%')
-    let l:curalt = bufnr('#')
-    below new
-    setl buftype=nofile bufhidden=hide nobuflisted
-    let l:inbuf = bufnr('%')
-    call l:GetData()
-    " Uncomment for a full-window picker instead.
-    " close
+"     fu! GetData()
+"         1put = taglist('.*')
+"             \ ->map({i, x -> x.cmd .' --- '. x.filename})
+"         1delete
+"     endfu
 
-    " Switch (or restore) buffer and alternate buffers.
-    fu! BufCb(ret) closure
-        call win_gotoid(l:curwin)
-        let l:newbuf = l:FmtRet(trim(a:ret))
+"     fu! FmtRet(ret) closure
+"         let l:ret = split(a:ret, ' --- ')
+"         let l:cmd_holder = l:ret[0]
+"         return l:ret[1]
+"     endfu
 
-        if (l:newbuf == l:curbuf || l:newbuf == '')
-            return
-        endif
+"     fu! SwitchBuf(fname) closure
+"         exe 'e '. a:fname
+"         exe ':'. search(l:cmd_holder)
+"     endfu
 
-        call l:SwitchBuf(l:newbuf)
-        silent! let @# = l:curbuf
-        exe l:inbuf .'bwipeout'
-    endfu
-
-    call pick#Pick('BufCb', l:inbuf)
-endfu
-
-" Open the current buffer list (:ls) in Pick.
-fu! pick#Buf()
-    let l:reg_backup = @m
-    redir @m | silent ls | redir END
-
-    fu! GetData()
-        1put m
-        1,2delete
-    endfu
-
-    fu! FmtRet(ret)
-        return substitute(a:ret, '^ *\([0-9]\+\).*$', '\1', '')
-    endfu
-
-    fu! SwitchBuf(newbuf)
-        exe 'b '. a:newbuf
-    endfu
-
-    call pick#SwitchBuf('GetData', 'SwitchBuf', 'FmtRet')
-    let @m = l:reg_backup
-endfu
-
-" Run a shell command, open the results in Pick, then edit the picked file.
-" Usage: pick#Shell("git ls-files")
-fu! pick#Shell(shellin)
-    fu! GetData() closure
-        exe 'read !'. a:shellin
-    endfu
-
-    fu! SwitchBuf(newbuf)
-        exe 'e '. a:newbuf
-    endfu
-
-    call pick#SwitchBuf('GetData', 'SwitchBuf')
-endfu
-
-" Use Pick to select an option from the most-recently-used buffer list.
-fu! pick#MRU()
-    fu! GetData()
-        1put = mru#MRU()
-        1delete
-    endfu
-
-    fu! FmtRet(ret)
-        return substitute(a:ret, '^ *\([0-9]\+\).*$', '\1', '')
-    endfu
-
-    fu! SwitchBuf(newbuf)
-        exe 'e #<'. a:newbuf
-    endfu
-
-    call pick#SwitchBuf('GetData', 'SwitchBuf', 'FmtRet')
-endfu
-
-" Select and edit an entry in the quickfix list.
-fu! pick#Qf()
-    fu! GetData()
-        1put = getqflist()
-            \ ->map({i, x -> bufname(x.bufnr)})
-            \ ->uniq()
-        1delete
-    endfu
-
-    fu! SwitchBuf(newbuf)
-        exe 'e '. a:newbuf
-    endfu
-
-    call pick#SwitchBuf('GetData', 'SwitchBuf')
-endfu
+"     call pick#SwitchBuf('GetData', 'SwitchBuf', 'FmtRet')
+" endfu

@@ -258,8 +258,9 @@ if has("autocmd") && exists("+omnifunc")
 endif
 
 " Edit a file from a list of files under the current directory.
-nmap <silent> <leader>ff :call pick#Shell(
-    \"ffind . '(' -type f -o -type l ')' -print")<cr>
+nnoremap <silent><leader>ff :call pick#NewScratchBuf()
+    \\|:.!ffind . '(' -type f -o -type l ')' -print<cr>
+    \\|:call pick#Pick({x -> execute('edit '. x)})<cr>
 
 " }}}
 " Window Layout {{{
@@ -308,7 +309,10 @@ set showtabline=1               " Display the tabbar if there are multiple tabs.
 set hidden                      " Allows opening a new buffer in place of an existing one without first saving the existing one
 
 " Type <F1> to open a fuzzy-finder of available buffers.
-map <F1> :call pick#Buf()<cr>
+map <F1> :call pick#NewScratchBuf()
+    \\|redir @m \| silent ls \| redir END
+    \\|:1put m
+    \\|:call pick#Pick({x -> execute('b '. matchstr(x, '[0-9]\+'))})<cr>
 
 " Quickly jump to a tag if there's only one match, otherwise show the list
 map <F3> :tj<space>
@@ -349,6 +353,11 @@ nmap <silent> <leader>fa :call fp#Pipe([
     \ {xs -> map(xs, {i, x -> execute('$argadd #'. x.bufnr)})},
 \ ])(getqflist())<cr>
 
+" Fuzzy-find and edit an entry in the quickfix list.
+nnoremap <silent><leader>fw :call pick#NewScratchBuf()
+    \\|:1put = getqflist() ->map({i, x -> bufname(x.bufnr)}) ->uniq()
+    \\|:call pick#Pick({x -> execute('e '. x)})<cr>
+
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
 nmap <silent> <leader>dm :call difftoggle#DiffToggle(2)<cr>
@@ -376,6 +385,21 @@ command! -nargs=* Gext grep <args>
 
 " Also look for the tags file inside the Git directory.
 set tags+=.git/tags;
+
+" Fuzzy-find a tag and jump to it.
+nnoremap <silent><leader>ft :call pick#NewScratchBuf()
+    \\|:1put = taglist('.*') ->map({i, x -> x.cmd .' --- '. x.filename})
+    \\|:call pick#Pick({x -> x
+        \ ->split(' --- ')
+        \ ->{xs -> 'edit +'. escape(xs[0], ' #') .' '. xs[1]}()
+        \ ->execute()})<cr>
+
+" Fuzzy-find entries in Vim's help files.
+" A much faster alternative to :help <char><tab><tab><tab>
+" TODO: add third-party 'someplugin/doc/tag' files too...
+nnoremap <silent><leader>fh :call pick#NewScratchBuf()
+    \\|:read $VIMRUNTIME/doc/tags
+    \\|:call pick#Pick({x -> execute('help '. matchstr(x, '[^\t]\+'))})<cr>
 
 " }}}
 " X11 Integration {{{
@@ -461,7 +485,9 @@ command! -nargs=* Scratch call scratch#Scratch(<f-args>)
 
 """ Diff unstaged changes.
 nmap <silent> <leader>cc :call stagediff#StageDiff()<cr>
-nmap <silent> <leader>cf :call pick#Shell("git ls-files")<cr>
+nmap <silent> <leader>cf :call pick#NewScratchBuf()
+    \\|:.!git ls-files<cr>
+    \\|:call pick#Pick({x -> execute('edit '. x)})<cr>
 nmap <silent> <leader>cs :term ++close git add %<cr>
 nmap <silent> <leader>ci :term ++close git commit<cr>
 nmap <silent> <leader>ca :term ++close git commit --amend --no-edit<cr>
@@ -496,7 +522,10 @@ vmap <silent> <leader>s( :<C-U>call
 let g:caser_prefix = mapleader .'w'
 
 """ MRU mappings
-nnoremap <leader>fe :call pick#MRU()<cr>
+" Fuzzy-find and open a file from the most-recently-used buffer list.
+nnoremap <leader>fe :call pick#NewScratchBuf()
+    \\|:1put = mru#MRU()
+    \\|:call pick#Pick({x -> execute('e #<'. matchstr(x, '[0-9]\+'))})<cr>
 
 """ Diff two registers
 command! -nargs=* DiffRegs call diffregs#DiffRegsFunc(<f-args>)
