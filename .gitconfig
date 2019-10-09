@@ -34,11 +34,9 @@
     # Usage:
     #   git cc
     #   git cc <initialquery>
-    cc = "!sh -c '{ \
-        git branch --all --format=\"%(refname:short)\"; \
-        git tag; \
-    } | \
-    pick ${1:+-q \"$1\"} | xargs -r git checkout' -"
+    cc = "!_() { git show-ref \
+        | awk '{ sub(\"refs\\\\/(heads|tags)\\\\/\", \"\", $2); print $2 }' \
+        | pick ${1:+-q \"$1\"} | xargs -r git checkout ; };_"
 
     # Fetch all or one remote: git f; git f upstream
     f = "!sh -c 'git fetch --tags ${1:-\"--all\"}' -"
