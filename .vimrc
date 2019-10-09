@@ -136,6 +136,17 @@ map <F2> :reg "0123456789-*+:/<cr>
 " Toggle between line numbers and relative line numbers
 nnoremap <silent> <leader>u :exe "set " . (&rnu == 1 ? "nornu" : "rnu")<cr>
 
+" Change j and k to add movements to the jump list.
+nnoremap <expr> k (v:count > 1 ? "m'". v:count : '') . 'gk'
+nnoremap <expr> j (v:count > 1 ? "m'". v:count : '') . 'gj'
+
+" Clear the jump list on startup.
+" I have never once remembered the jumplist between multiple Vim sessions.
+" Starting from a zero state each session lets me rewind/fast-forward through
+" the current session movements without accidentally entering a previous and
+" long-forogtten session.
+au VimEnter * clearjumps
+
 " Displays tabs with :set list & displays when a line runs off-screen
 set listchars=tab:>-,trail:\ ,precedes:<,extends:>,eol:$,nbsp:%
 
