@@ -30,14 +30,6 @@
     churn = !git log --all -M -C --name-only --format='format:' "$@" | grep . | sort | uniq -c | sort -n -r
     whoami = !git var GIT_COMMITTER_IDENT | sed 's/>.*/>/'
 
-    # Checkout a branch or tag using pick to fuzzy-find a match.
-    # Usage:
-    #   git cc
-    #   git cc <initialquery>
-    cc = "!_() { git show-ref \
-        | awk '{ sub(\"refs\\\\/(heads|tags)\\\\/\", \"\", $2); print $2 }' \
-        | pick ${1:+-q \"$1\"} | xargs -r git checkout ; };_"
-
     # Fetch all or one remote: git f; git f upstream
     f = "!sh -c 'git fetch --tags ${1:-\"--all\"}' -"
 

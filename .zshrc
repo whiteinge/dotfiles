@@ -263,45 +263,107 @@ if [[ -n "$ZSHRUN" ]]; then
 fi
 
 # }}}
-# ...() Open fuzzy-finder of parent directory names {{{1
+# Use a fuzzy-finder for common CLI tasks {{{1
 
 alias ..='cd ..'
 
+# cd to a parent directory.
 function ...() {
     explode_path | tail -n +2 | pick | read -d -r new_dir
     cd "$new_dir"
 }
 
-# }}}
-# cdd() Open fuzzy-finder of child directory names {{{1
-
-function cdd() {
-    ffind . -type d | pick | read -d -r new_dir
-    cd "$new_dir"
-}
-
-# Same thing but open with nnn instead of cd'ing.
-function nnnn() {
-    ffind "${1:-$PWD}" -type d | pick | read -d -r new_dir
-    nnn "$new_dir"
-}
-
-# }}}
-# phist Search the Zsh history with pick {{{1
-
+# Search and replay a command from the shell history.
+# (Will output the command but not execute.)
 function phist() {
     print -z $(pick < $HOME/.zsh_history \
         | awk 'sub(/[^;]*;/, "", $0)')
 }
 
-# }}}
-# pman Search available manpages with pick. {{{1
-
-function pman() {
-    man -k . | pick | awk '{ print $1 }' | xargs -r man
+# Complete hostnames from ~/.ssh/config.
+function _fzy_ssh() {
+    < $HOME/.ssh/config awk '/^Host [0-9a-zA-Z\.-_]+/ {
+        for (i = 2; i <= NF; i += 1) print $i
+    }' | fzy -p "SSH Hosts > " | xargs printf '%s %s\n' "$cmd"
 }
 
+# Complete available manpages.
+function _fzy_man() {
+    man -k . | fzy -p 'Manpages > ' | awk -v cmd="$1" '{
+        len=length($1)
+        print cmd, substr($1, len - 1, 1), substr($1, 0, len - 3)
+    }'
+}
+
+# Complete Git refs.
+function _fzy_git() {
+    git show-ref \
+        | awk '{ sub(/refs\/(heads|tags)\//, "", $2); print $2 }' \
+        | pick -p 'Git refs > ' | xargs printf '%s %s' "$*"
+}
+
+# Complete directories and open nnn at that location.
+function _fzy_nnn() {
+    ffind "${2:-$PWD}" -type d | fzy -p "Directories > " \
+        | xargs printf '%s %s\n' "$1"
+}
+
+# Complete directories under a path and cd to the result.
+function _fzy_cd() {
+    ffind "${2:-$PWD}" -type d | fzy -p "Directories > " \
+        | xargs printf '%s %s\n' "$1"
+}
+
+# A completion fallback if something more specific isn't available.
+function _fzy_generic_find() {
+    ffind "${2:-$PWD}" | fzy -p "Generic file > "
+}
+
+# Start typing a CLI command then invoke a fuzzy-finder to complete the rest
+# (This idea is stolen from fzf.)
+#
+# Usage: type a command name and then manually invoke completion with ctrl-f.
+#
+# New completions can be added for a <cmd> by adding a shell function or
+# a shell script on PATH with the pattern _fzy_<cmd>. The script will be
+# invoked with the command name and any arguments as ARGV and should print the
+# full resulting command and any additions to stdout.
+pick-completion() {
+    setopt localoptions noshwordsplit noksh_arrays noposixbuiltins
+
+    local tokens=(${(z)LBUFFER})
+    if [ ${#tokens} -lt 1 ]; then
+        return
+    fi
+    local cmd=${tokens[1]}
+
+    # Filter (:#) the arrays of the names ((k)) Zsh function and scripts on
+    # PATH and remove ((M)) entries that don't match "_fzy_<cmdname>":
+    local cmd_fzy_match=${(M)${(k)functions}:#_fzy_${cmd}}
+    if [[ ${#cmd_fzy_match} -eq 0 ]]; then
+        cmd_fzy_match=${(M)${(k)commands}:#_fzy_${cmd}}
+        if [[ ${#cmd_fzy_match} -eq 0 ]]; then
+            cmd_fzy_match=( '_fzy_generic_find' )
+        fi
+    fi
+    cmd_fzy_match=${cmd_fzy_match}
+
+    local result=$($cmd_fzy_match "${tokens[@]}")
+    if [[ $? -eq 0 ]]; then
+        LBUFFER="$result"
+    else
+        LBUFFER="${LBUFFER}"
+    fi
+
+    zle reset-prompt
+}
+
+zle     -N   pick-completion
+bindkey '^F' pick-completion
+
 # }}}
+# Manually refresh the tmux status infos {{{1
+# Needed to immediate update the Git status display.
 
 function refresh_tmux() {
     tmux refresh -S
@@ -318,6 +380,8 @@ function refresh_tmux_on_git() {
         tmux refresh -S
     fi
 }
+
+# }}}
 
 # Run precmd functions
 preexec_functions=( last_command_was_git )
