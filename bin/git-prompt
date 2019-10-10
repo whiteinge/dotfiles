@@ -69,8 +69,8 @@ fi
             b = $4 != "-0" ? $4 : ""
         }
         /^\?/ { untracked="?" }
-        /^1 \.M/ || /^1 MM/ { modified="M" }
-        /^1 M\./ || /^1 MM/ { added="A" }
+        /^[0-9] [A-Z]. / { added="A" }
+        /^[0-9] .[A-Z] / { modified="M" }
         /^u UU/ { conflicts="UU" }
 
         END {
