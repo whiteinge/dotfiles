@@ -314,6 +314,11 @@ function _fzy_cd() {
         | xargs printf '%s %s\n' "$1"
 }
 
+function _fzy_kill() {
+    ps -ef | sed 1d | pick -p 'Processes > ' \
+        | awk -v cmd="$1" '{ print cmd, $2 }'
+}
+
 # A completion fallback if something more specific isn't available.
 function _fzy_generic_find() {
     ffind "${2:-$PWD}" | fzy -p "Generic file > "
