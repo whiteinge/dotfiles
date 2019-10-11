@@ -335,7 +335,7 @@ function _fzy_generic_find() {
 # invoked with the command name and any arguments as ARGV and should print the
 # full resulting command and any additions to stdout.
 pick-completion() {
-    setopt localoptions noshwordsplit noksh_arrays noposixbuiltins
+    setopt localoptions localtraps noshwordsplit noksh_arrays noposixbuiltins
 
     local tokens=(${(z)LBUFFER})
     if [ ${#tokens} -lt 1 ]; then
@@ -352,19 +352,18 @@ pick-completion() {
             cmd_fzy_match=( '_fzy_generic_find' )
         fi
     fi
-    cmd_fzy_match=${cmd_fzy_match}
 
-    local result=$($cmd_fzy_match "${tokens[@]}")
-    if [[ $? -eq 0 ]]; then
-        LBUFFER="$result"
-    else
-        LBUFFER="${LBUFFER}"
-    fi
+    zle -M "Gathering suggestions..."
+    zle -R
+
+    local result
+    $cmd_fzy_match "${tokens[@]}" | read -d -r result
+    LBUFFER="$result"
 
     zle reset-prompt
 }
 
-zle     -N   pick-completion
+zle -N pick-completion
 bindkey '^F' pick-completion
 
 # }}}
