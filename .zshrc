@@ -321,7 +321,8 @@ function _fzy_kill() {
 
 # A completion fallback if something more specific isn't available.
 function _fzy_generic_find() {
-    ffind "${2:-$PWD}" | fzy -p "Generic file > "
+    ffind "$PWD" 2>/dev/null | pick \
+        | xargs printf '%s %s\n' "$*"
 }
 
 # Start typing a CLI command then invoke a fuzzy-finder to complete the rest
