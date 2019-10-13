@@ -1,3 +1,18 @@
+# Start from scratch.
+unbind-key all
+
+# Restore a few default bindings.
+bind-key M-Down window-lower
+bind-key M-Up window-raise
+bind-key CM-n window-menu-label
+bind-key M-Tab window-cycle-ingroup
+bind-key MS-Tab window-rcycle-ingroup
+bind-key CM-m window-maximize
+bind-key CM-x window-delete
+bind-key CM-s window-stick
+bind-key CMS-r restart
+bind-key CMS-q quit
+
 # Media keys.
 bind-key XF86AudioLowerVolume "/usr/bin/pactl set-sink-volume 0 -5%"
 bind-key XF86AudioRaiseVolume "/usr/bin/pactl set-sink-volume 0 +5%"
@@ -6,8 +21,8 @@ bind-key XF86MonBrightnessUp "/bin/xbacklight -inc 10"
 bind-key XF86MonBrightnessDown "/bin/xbacklight -dec 10"
 bind-key CM-r "/bin/xrandr --auto"
 bind-key CM-q "xscreensaver-command -lock"
-bind-key C-slash "dswitcher"
-bind-key M-slash "dmenu_run"
+bind-key C-space "dswitcher"
+bind-key M-space "dmenu_run"
 # For keyboards without media keys:
 bind-key CMS-Up "/bin/xdotool key --clearmodifiers XF86AudioRaiseVolume"
 bind-key CMS-Down "/bin/xdotool key --clearmodifiers XF86AudioLowerVolume"
@@ -56,3 +71,5 @@ sticky yes
 # Colors.
 color activeborder darkblue
 color inactiveborder lightgrey
+color groupborder red
+color ungroupborder lightred
