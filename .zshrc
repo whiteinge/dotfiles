@@ -276,8 +276,8 @@ function ...() {
 # Search and replay a command from the shell history.
 # (Will output the command but not execute.)
 function phist() {
-    print -z $(pick < $HOME/.zsh_history \
-        | awk 'sub(/[^;]*;/, "", $0)')
+    print -z $(tac $HOME/.zsh_history | fzy -p 'History > ' \
+        | awk '{ print substr($0, index($0, ";") + 1) }')
 }
 
 # Complete hostnames from ~/.ssh/config.
