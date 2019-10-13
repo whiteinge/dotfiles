@@ -1,0 +1,6 @@
+# These settings are copied from .Xresources
+Xft/Antialias 1
+Xft/HintStyle "hintslight"
+Xft/Hinting 1
+Xft/RGBA "rbg"
+Xft/lcdfilter "lcddefault"
