@@ -68,6 +68,8 @@ xterm*trimSelection: true
 ! Change font size with ctrl-+/-/= (or mousewheel).
 ! Add a few alt- shortcuts for quick access to special characters
 xterm*vt100.Translations: #override \n\
+    Shift Ctrl <Key> v: insert-selection(CLIPBOARD, CUT_BUFFER1) \n\
+    Meta Shift Ctrl <Key> v: insert-selection(PRIMARY, CUT_BUFFER0) \n\
     ~Shift~Ctrl<Btn2Up>: insert-selection(PRIMARY, CUT_BUFFER0) \n\
     Shift~Ctrl<Btn2Up>: insert-selection(CLIPBOARD, CUT_BUFFER1) \n\
     ~Shift<BtnUp>: select-end(PRIMARY, CUT_BUFFER0) \n\
