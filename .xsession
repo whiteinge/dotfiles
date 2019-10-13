@@ -42,5 +42,5 @@ xscreensaver -no-splash &
 
 $HOME/bin/status &
 xcape &
-qterminal &
+uxterm &
 exec cwm

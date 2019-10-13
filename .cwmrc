@@ -17,8 +17,8 @@ bind-key CMS-Left "/bin/xdotool key --clearmodifiers XF86AudioPrev"
 bind-key CMS-space "/bin/xdotool key --clearmodifiers XF86AudioPlay"
 
 # Application keys.
-bind-key CM-t "qterminal"
-bind-key CMS-t "qterminal"
+bind-key CM-t "uxterm"
+bind-key CMS-t "uxterm -fs 16 -bg white -fg black"
 
 # Workspace keys.
 bind-key M-F1 group-only-1
@@ -36,18 +36,18 @@ bind-mouse M-1    window-move
 bind-mouse M-3    window-resize
 
 # Layout settings.
-fontname "Hasklig:pixelsize=14"
+fontname "Monaco:pixelsize=12"
 snapdist 20
 gap 20 0 0 0        # Leave space for status bar
 
 # Application menu
-command qterminal qterminal
+command uxterm uxterm
 command firefox firefox
 command chrome google-chrome
 command qutebrowser qutebrowser
 
 # Predefined groups (get from xprop).
-autogroup 1     "qterminal"
+autogroup 1     "uxterm"
 autogroup 2     "Navigator,Firefox,google-chrome,Google-chrome,qutebrowser"
 
 # Inherit current selected group.
