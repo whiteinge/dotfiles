@@ -289,10 +289,10 @@ function _fzy_ssh() {
 
 # Complete available manpages.
 function _fzy_man() {
-    man -k . | fzy -p 'Manpages > ' | awk -v cmd="$1" '{
-        len=length($1)
-        print cmd, substr($1, len - 1, 1), substr($1, 0, len - 3)
-    }'
+man -k . | fzy -p 'Manpages > ' | awk -F' - ' -v cmd="$1" '{
+    sec = match($1, / ?\([0-9]/)
+    print cmd, substr($1, sec + 2, 1), substr($1, 0, sec)
+}'
 }
 
 # Complete Git refs.
