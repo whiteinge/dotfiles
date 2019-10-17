@@ -357,9 +357,10 @@ pick-completion() {
     zle -M "Gathering suggestions..."
     zle -R
 
-    local result
-    $cmd_fzy_match "${tokens[@]}" | read -d -r result
-    LBUFFER="$result"
+    local result=$($cmd_fzy_match "${tokens[@]}")
+    if [ -n "$result" ]; then
+        LBUFFER="$result"
+    fi
 
     zle reset-prompt
 }
