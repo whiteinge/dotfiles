@@ -299,7 +299,8 @@ man -k . | fzy -p 'Manpages > ' | awk -F' - ' -v cmd="$1" '{
 function _fzy_git() {
     git show-ref \
         | awk '{ sub(/refs\/(heads|tags)\//, "", $2); print $2 }' \
-        | pick -p 'Git refs > ' | xargs printf '%s %s' "$*"
+        | fzy -p 'Git refs > ' \
+        | xargs printf '%s %s' "$*"
 }
 
 # Complete directories and open nnn at that location.
