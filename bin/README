@@ -20,11 +20,11 @@ dkaomoji -- dmenu based kaomoji picker
 dmoji -- dmenu based emoji picker
 echol -- Like echo but delimit with newlines instead of spaces
 echoserver -- Start an echo HTTP server
-emails -- Output all matched email addresses
 explode_path -- Take a path and output all child paths as absolute paths
 extract_clip -- Extract a clip from a larger video file
 fetchall -- Run `git fetch` on all repos under the current dir in parallel
 ffind -- (filtering find) - A wrapper around find to ignore noise directories
+_fzy_npm -- Use a fuzzy-finder for npm scripts
 genmac -- Generate a locally-assigned (starts with 02) mac address from a salt
 genpass -- Generate a cryptographically inadequate(!) password
 gext -- A wrapper for find/grep to parallelize and search by extension
@@ -37,6 +37,9 @@ httpdir -- Serve a local directory via HTTP (via socat)
 joinpdf -- Merges, or joins multiple PDF files into "joined.pdf"
 lndir.sh -- Create a shadow directory of symbolic links to another directory tree
 luksimg -- Wrappers around cryptsetup to create/mount/unmount encrypted images
+match-emails -- Output all matched email addresses
+match-ips -- Output all matched IP addresses
+match-urls -- Output all matched URLs
 mdless -- View rendered Markdown files with $MANPAGER
 new-sh -- Quickly create and edit a new shell script, already marked as executable
 npm-deps-report -- Output how many sub-dependencies each npm dependencies has
@@ -62,7 +65,6 @@ total -- Sum (total) numbers in a column
 t -- Store a todo list in any Git repository
 urldecode -- Decode urlencoded stdin
 urlencode -- Urlencode stdin
-urls -- Output all matched URLs
 vipe -- Use $EDITOR to edit text inside a pipeline
 watch-changes -- A simple polling file/directory watcher
 zombies -- List all zombie processes and their parents (to kill)
