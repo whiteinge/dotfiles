@@ -18,12 +18,8 @@ shift $(( OPTIND - 1 ))
 
 repo="${1:-$PWD}"
 
-if [ ! -d "$repo" ]; then
-    exit 1
-fi
-
-test ! -O "$repo"
-is_owned=$?
+test ! -r "$repo"
+is_readable=$?
 
 dirname="$(basename "$repo")"
 if [ "$dirname" = "$(basename "$HOME")" ]; then
@@ -44,7 +40,7 @@ fi
     fi;
 } | awk \
         -v color="$color" \
-        -v is_owned="$is_owned" \
+        -v is_readable="$is_readable" \
     '
         BEGIN {
             if (color == "ansi") {
@@ -74,7 +70,7 @@ fi
         /^u UU/ { conflicts="UU" }
 
         END {
-            print ((is_owned ? _green : _yellow) repo "  " \
+            print ((is_readable ? _green : _yellow) repo "  " \
                 _black sha,
                 _red conflicts \
                 _green added \
