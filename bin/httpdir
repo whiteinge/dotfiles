@@ -31,6 +31,11 @@ http() {
         esac
     done
 
+    if [ "$HTTP_PATH" = '/favicon.ico' ]; then
+        rep 200
+        exit
+    fi
+
     local rpath="$PWD$HTTP_PATH"
     if [[ "$rpath" = *..* ]]; then
         rep 400
