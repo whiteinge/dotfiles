@@ -40,9 +40,6 @@
 [submodule "tmp/repos/cwm"]
 	path = tmp/repos/cwm
 	url = https://github.com/leahneukirchen/cwm.git
-[submodule "tmp/repos/click"]
-	path = tmp/repos/click
-	url = https://github.com/minond/click.git
 [submodule "tmp/repos/ghcup"]
 	path = tmp/repos/ghcup
 	url = https://gitlab.haskell.org/haskell/ghcup.git

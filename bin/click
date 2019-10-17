@@ -1,1 +1,13 @@
-../tmp/repos/click/click
+#!/usr/bin/env sh
+# Use a fuzzy-finder to open URLs found in the scrollback buffer
+# Inspired by the excellent https://github.com/minond/click
+
+open_cmd=$(command -v 'xdg-open')
+test "$?" -eq 0 || open_cmd=$(command -v 'open')
+test "$?" -eq 0 || open_cmd='echo'
+
+tmux capture-pane -pJS -1000 \
+    | tac \
+    | match-urls \
+    | fzy -p 'Open URL > ' \
+    | xargs -r "$open_cmd"
