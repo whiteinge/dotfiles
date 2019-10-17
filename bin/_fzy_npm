@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder for npm scripts
+
+# Only complete npm run scripts.
+if [ ! "$2" = 'run' ] && [ ! "$2" = 'run-script' ]; then
+    exit 1
+fi
+
+npm run | awk '
+    /^ {2}[^ ]/ { printf("%s\t", $0) }
+    /^ {4}[^ ]/ { printf("%s\n", $0) }
+    ' \
+        | fzy -p 'npm run > ' \
+        | cut -f1 \
+        | xargs printf '%s %s' "$*"
