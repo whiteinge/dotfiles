@@ -34,12 +34,6 @@ chsh -s /usr/local/bin/zsh
 # Install script that toggles Wifi on and off.
 $HOME/src/dotfiles/bin/osx-toggle-interfaces install_plist
 
-# Hide the Terminal.app scrollbar.
-defaults write com.apple.Terminal AppleShowScrollBars -string WhenScrolling
-# This will probably be overwritten when Terminal.app exits.
-# You probably need to do this via Finder.
-cp $HOME/tmp/config/com.apple.Terminal.plist $HOME/Library/Preferences/com.apple.Terminal.plist
-
 printf '
 All set (hopefully).
 Install your font of choice and all the unscriptable OSX apps and settings.
