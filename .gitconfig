@@ -216,3 +216,4 @@
 
 [diff]
     tool = vimdiff
+    colorMoved = true
