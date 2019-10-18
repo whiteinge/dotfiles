@@ -1,0 +1,22 @@
+#!/usr/bin/env -S awk -f
+# Output the line numbers for lines added and removed in a unified diff
+
+# Skip lines between diff and @@.
+/^@@/ { skip = 0 }
+skip == 1 { next }
+/^diff/ { skip = 1 }
+
+
+/^diff/ { print $0; next }
+/^@@/ { cur_line = substr($3, 2); sub(/,.*$/, "", cur_line); next }
+/^-/ || /^\+/ {
+    add_or_rm = substr($0, 1, 1)
+    print cur_line, add_or_rm "\t" substr($0, 2)
+    if (add_or_rm != "-") { cur_line += 1 }
+    next
+}
+
+{
+    print "Generate diff with -U0. Got context line:\n" $0 > "/dev/stderr"
+    exit 1
+}
