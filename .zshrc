@@ -280,46 +280,6 @@ function phist() {
         | awk '{ print substr($0, index($0, ";") + 1) }')
 }
 
-# Complete hostnames from ~/.ssh/config.
-function _fzy_ssh() {
-    < $HOME/.ssh/config awk '/^Host [0-9a-zA-Z\.-_]+/ {
-        for (i = 2; i <= NF; i += 1) print $i
-    }' | fzy -p "SSH Hosts > " | xargs printf '%s %s\n' "$cmd"
-}
-
-# Complete available manpages.
-function _fzy_man() {
-man -k . | fzy -p 'Manpages > ' | awk -F' - ' -v cmd="$1" '{
-    sec = match($1, / ?\([0-9]/)
-    print cmd, substr($1, sec + 2, 1), substr($1, 0, sec)
-}'
-}
-
-# Complete Git refs.
-function _fzy_git() {
-    git show-ref \
-        | awk '{ sub(/refs\/(heads|tags)\//, "", $2); print $2 }' \
-        | fzy -p 'Git refs > ' \
-        | xargs printf '%s %s' "$*"
-}
-
-# Complete directories and open nnn at that location.
-function _fzy_nnn() {
-    ffind "${2:-$PWD}" -type d | fzy -p "Directories > " \
-        | xargs printf '%s %s\n' "$1"
-}
-
-# Complete directories under a path and cd to the result.
-function _fzy_cd() {
-    ffind "${2:-$PWD}" -type d | fzy -p "Directories > " \
-        | xargs printf '%s %s\n' "$1"
-}
-
-function _fzy_kill() {
-    ps -ef | sed 1d | pick -p 'Processes > ' \
-        | awk -v cmd="$1" '{ print cmd, $2 }'
-}
-
 # A completion fallback if something more specific isn't available.
 function _fzy_generic_find() {
     ffind "$PWD" 2>/dev/null | pick \

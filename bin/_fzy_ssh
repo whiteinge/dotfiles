@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder for hostnames in ~/.ssh/config
+
+< $HOME/.ssh/config awk '/^Host [0-9a-zA-Z\.-_]+/ {
+    for (i = 2; i <= NF; i += 1) print $i
+}' | fzy -p "SSH Hosts > " | xargs printf '%s %s\n' "$cmd"

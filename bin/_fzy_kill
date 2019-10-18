@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to complete process names
+
+ps -ef | sed 1d | pick -p 'Processes > ' \
+    | awk -v cmd="$1" '{ print cmd, $2 }'

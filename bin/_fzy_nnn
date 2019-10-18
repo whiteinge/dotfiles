@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to complete child directories and open nnn
+
+ffind "${2:-$PWD}" -type d | fzy -p "Directories > " \
+    | xargs printf '%s %s\n' "$1"

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to complete manpage names
+
+man -k . | fzy -p 'Manpages > ' | awk -F' - ' -v cmd="$1" '{
+    sec = match($1, / ?\([0-9]/)
+    print cmd, substr($1, sec + 2, 1), substr($1, 0, sec)
+}'

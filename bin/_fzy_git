@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to complete Git refs
+
+git show-ref \
+    | awk '{ sub(/refs\/(heads|tags)\//, "", $2); print $2 }' \
+    | fzy -p 'Git refs > ' \
+    | xargs printf '%s %s' "$*"
