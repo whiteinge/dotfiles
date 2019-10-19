@@ -578,6 +578,11 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 """ Disable concealing for vim-json
 let g:vim_json_syntax_conceal = 0
 
+""" Autocommands for when to place signs
+au BufReadPost * call signs#GitChanges()
+au BufWritePost * call signs#GitChanges()
+au QuickFixCmdPost * call signs#QfList()
+
 """ Mapping to call DetectIndent
 nmap <silent> <leader>i :1verbose DetectIndent<cr>
 
