@@ -405,10 +405,11 @@ nmap <silent>[L :lfirst<cr>
 nmap <silent>]L :llast<cr>
 
 " Toggle the quickfix and location list windows.
-let IsQfOpen = {-> len(filter(getwininfo(),
-    \ 'v:val.quickfix && !v:val.loclist'))}
-let IsLocOpen = {-> len(filter(getwininfo(), {i,v ->
-    \ bufnr('%') == bufnr(get(v.variables, 'quickfix_title', '__gndn'))}))}
+let IsQfOpen = {-> getwininfo()
+    \ ->filter({i, x -> x.quickfix && !x.loclist}) ->len()}
+let IsLocOpen = {-> getwininfo() ->filter({i,v ->
+    \ bufnr('%') == get(v.variables, 'quickfix_title', '_gndn')
+    \ ->bufnr()}) ->len()}
 nmap <silent> <leader>fq :exe IsQfOpen()
     \? ':cclose' : ':botright copen \| :wincmd p'<cr>
 nmap <silent> <leader>fl :exe IsLocOpen(getwininfo())
@@ -416,12 +417,11 @@ nmap <silent> <leader>fl :exe IsLocOpen(getwininfo())
 
 " Open all files referenced in the quickfix list as args.
 " Sometimes you just want to step through the files and not all the changes.
-nmap <silent> <leader>fa :call fp#Pipe([
-    \ {xs -> filter(xs, {i, x -> bufname(x.bufnr) != ''})},
-    \ {xs -> sort(xs)},
-    \ {xs -> uniq(xs)},
-    \ {xs -> map(xs, {i, x -> execute('$argadd #'. x.bufnr)})},
-\ ])(getqflist())<cr>
+nmap <silent> <leader>fa :call getqflist()
+    \ ->filter({i, x -> bufname(x.bufnr) != ''})
+    \ ->sort()
+    \ ->uniq()
+    \ ->map({i, x -> execute('$argadd #'. x.bufnr)})<cr>
 
 " Fuzzy-find and edit an entry in the quickfix list.
 nnoremap <silent><leader>fw :call pick#NewScratchBuf()
