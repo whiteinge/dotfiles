@@ -20,8 +20,10 @@ nm <silent> <leader>n :silent noh<cr>
 " Display the number of matches for the last search
 nm <leader># :%s///gn<cr>
 
-" Highlight arbitrary text, separately from searching, accepts a count and
-" highlights the text under the cursor. E.g.: 3\hh
+" Highlight arbitrary text (separately from searching); accepts a count and
+" highlights the text under the cursor. Ranges from 1-9; see the corresponding
+" highlights in the Colors section below.
+" Usage: 1\hh or 2\hh or 3\hh, etc.
 nn <leader>hh :<c-u>call matchadd('Match'. v:count1, expand('<cword>'), v:count1)<cr>
 nn <leader>hn :call clearmatches()<cr>
 
@@ -190,13 +192,11 @@ map <leader>ct :tabnew <C-R>=expand("%:p:h") . "/" <cr>
 " Read a file starting in the same dir as the current file
 map <leader>cr :r <C-R>=expand("%:p:h") . "/" <cr>
 
-if has("autocmd")
-    " Helps if you have to use another editor on the same file
-    au FileChangedShell * echo "File has been changed outside of Vim."
-endif
+" Helps if you have to use another editor on the same file
+au FileChangedShell * echo "File has been changed outside of Vim."
 
 " Restore last cursor position in file
-autocmd BufReadPost *
+au BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal g`\"" |
     \ endif
@@ -244,6 +244,7 @@ set complete-=t,i           " Remove tags and included files from default insert
 inoremap <nul> <C-X><C-O>
 
 " Maps file completion relative to current file path.
+" Usage: ./<ctrl-f>[navigate up/down completions]<tab><tab>[etc]<ctrl-y>
 inoremap <C-F>
     \ <C-O>:let b:oldpwd = getcwd() <bar>
     \ lcd %:p:h<cr><C-X><C-F>
