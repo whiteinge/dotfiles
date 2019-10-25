@@ -275,9 +275,9 @@ function ...() {
 
 # Search and replay a command from the shell history.
 # (Will output the command but not execute.)
-function phist() {
-    print -z $(tac $HOME/.zsh_history | fzy -p 'History > ' \
-        | awk '{ print substr($0, index($0, ";") + 1) }')
+function _fzy_history() {
+    tac $HOME/.zsh_history | fzy -p 'History > ' \
+        | awk '{ print substr($0, index($0, ";") + 1) }'
 }
 
 # A completion fallback if something more specific isn't available.
@@ -286,10 +286,14 @@ function _fzy_generic_find() {
         | xargs printf '%s %s\n' "$*"
 }
 
-# Start typing a CLI command then invoke a fuzzy-finder to complete the rest
+# Invoke a fuzzy-finder to complete history, file paths, or command arguments
+# Press ctrl-f to start completion.
 # (This idea is stolen from fzf.)
 #
-# Usage: type a command name and then manually invoke completion with ctrl-f.
+# Usage:
+#   <[empty cli]> - complete from shell history.
+#   <cmd> - complete from _fzy_<cmd> script or funciton output.
+#   <cmd> - falls back to generic file path completion.
 #
 # New completions can be added for a <cmd> by adding a shell function or
 # a shell script on PATH with the pattern _fzy_<cmd>. The script will be
@@ -299,18 +303,20 @@ pick-completion() {
     setopt localoptions localtraps noshwordsplit noksh_arrays noposixbuiltins
 
     local tokens=(${(z)LBUFFER})
-    if [ ${#tokens} -lt 1 ]; then
-        return
-    fi
     local cmd=${tokens[1]}
+    local cmd_fzy_match
 
-    # Filter (:#) the arrays of the names ((k)) Zsh function and scripts on
-    # PATH and remove ((M)) entries that don't match "_fzy_<cmdname>":
-    local cmd_fzy_match=${(M)${(k)functions}:#_fzy_${cmd}}
-    if [[ ${#cmd_fzy_match} -eq 0 ]]; then
-        cmd_fzy_match=${(M)${(k)commands}:#_fzy_${cmd}}
+    if [[ ${#tokens} -lt 1 ]]; then
+        cmd_fzy_match=( '_fzy_history' )
+    else
+        # Filter (:#) the arrays of the names ((k)) Zsh function and scripts on
+        # PATH and remove ((M)) entries that don't match "_fzy_<cmdname>":
+        cmd_fzy_match=${(M)${(k)functions}:#_fzy_${cmd}}
         if [[ ${#cmd_fzy_match} -eq 0 ]]; then
-            cmd_fzy_match=( '_fzy_generic_find' )
+            cmd_fzy_match=${(M)${(k)commands}:#_fzy_${cmd}}
+            if [[ ${#cmd_fzy_match} -eq 0 ]]; then
+                cmd_fzy_match=( '_fzy_generic_find' )
+            fi
         fi
     fi
 
