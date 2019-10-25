@@ -601,8 +601,10 @@ let g:vim_json_syntax_conceal = 0
 """ Autocommands for when to place signs
 au BufReadPost * call signs#GitChanges()
 au BufWritePost * call signs#GitChanges()
-au QuickFixCmdPost * call signs#QfList()
-au User ALELintPost call timer_start(500, 'signs#Loclist')
+
+call fp#StartQfWatchers()
+au User LlChanged call signs#Loclist()
+au User QfChanged call signs#QfList()
 
 """ Mapping to call DetectIndent
 nmap <silent> <leader>i :1verbose DetectIndent<cr>
