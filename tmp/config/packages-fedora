@@ -99,6 +99,7 @@ wine
 winetricks
 wireless-tools
 wmctrl
+wordnet
 wpa_supplicant
 x11vnc
 xbacklight
@@ -126,4 +127,3 @@ xsettingsd
 yank
 zip
 zsh
-wordnet
