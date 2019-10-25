@@ -487,7 +487,7 @@ set clipboard=                  " Disable automatic X11 clipboard crossover
 au ColorScheme * hi SpecialKey ctermfg=7 ctermbg=1
 
 " Grey-out the statusbar non-current windows.
-hi StatusLineNC term=reverse cterm=bold ctermbg=8
+au ColorScheme * hi StatusLineNC term=reverse cterm=bold ctermbg=8
 
 " A nice, minimalistic tabline.
 au ColorScheme * hi TabLine cterm=bold,underline ctermfg=8 ctermbg=none
@@ -497,6 +497,7 @@ au ColorScheme * hi TabLineFill cterm=bold ctermbg=none
 " Makes the current line stand out with bold and in the numberline
 au ColorScheme * hi CursorLine cterm=bold
 au ColorScheme * hi LineNr cterm=bold ctermfg=0 ctermbg=none
+au ColorScheme * hi CursorLineNr cterm=none
 
 " Set the ColorColumn for toggling via set list.
 au ColorScheme * hi ColorColumn ctermbg=7
@@ -512,10 +513,6 @@ au ColorScheme * hi SignColumn cterm=bold ctermfg=0 ctermbg=none
 let g:matchparen_insert_timeout = 5
 set synmaxcol=500               " Stop syntax highlighting on very long lines
 
-syntax enable
-colorscheme desert
-set background=dark
-
 " Don't distinguish between delete, add, and change using bright colors. The
 " type of change is obvious -- add and delete appear opposite filler markers,
 " and changed lines have the changed portion highlighted.
@@ -527,6 +524,10 @@ au VimEnter,ColorScheme * hi DiffChange ctermbg=0
 " The drawback of using reverse is there is no consistent color to highlight
 " the changes, but reverse is still fairly easy to spot.
 au VimEnter,ColorScheme * hi DiffText cterm=reverse ctermbg=none
+
+syntax enable
+colorscheme desert
+set background=dark
 
 " Add MatchN highlights for highlighting arbitrary text matches legibly.
 call map(range(1, 9), {k, v ->
