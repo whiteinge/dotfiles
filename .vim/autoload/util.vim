@@ -2,7 +2,7 @@
 "
 " /path/to/file.js -> /p/t/file.js
 " /home/path/to/file.js -> ~/p/t/file.js
-fu! fp#ShortPath(path)
+fu! util#ShortPath(path)
     let l:sep = '/'
 
     let l:file = fnamemodify(a:path, ':t')
@@ -19,7 +19,7 @@ endfu
 " Vim only has quickfix/loclist autocommands that trigger when specific
 " commands are run and not when the actual contents change. This makes it hard
 " to react to changes that happen behind the scenes (e.g., setqflist()).
-fu! fp#OnChanged(Fn, Cb)
+fu! util#OnChanged(Fn, Cb)
     let l:lastret = v:null
     let l:Fn = a:Fn
     let l:Cb = a:Cb
@@ -35,12 +35,12 @@ fu! fp#OnChanged(Fn, Cb)
     return funcref('Wrapper')
 endfu
 
-let s:QfChanged = fp#OnChanged({-> getqflist({'changedtick': 1, 'id': 0})},
+let s:QfChanged = util#OnChanged({-> getqflist({'changedtick': 1, 'id': 0})},
     \ {-> execute('silent doautocmd <nomodeline> User QfChanged')})
-let s:LlChanged = fp#OnChanged({-> getloclist(0, {'changedtick': 1, 'id': 0})},
+let s:LlChanged = util#OnChanged({-> getloclist(0, {'changedtick': 1, 'id': 0})},
     \ {-> execute('silent doautocmd <nomodeline> User LlChanged')})
 
-fu! fp#StartQfWatchers()
+fu! util#StartQfWatchers()
     call timer_start(1000, s:QfChanged, {'repeat': -1})
     call timer_start(1000, s:LlChanged, {'repeat': -1})
 endfu

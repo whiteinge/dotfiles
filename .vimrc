@@ -648,7 +648,7 @@ let g:vim_json_syntax_conceal = 0
 au BufReadPost * call signs#GitChanges()
 au BufWritePost * call signs#GitChanges()
 
-call fp#StartQfWatchers()
+call util#StartQfWatchers()
 au User LlChanged call signs#Loclist()
 au User QfChanged call signs#QfList()
 
