@@ -7,9 +7,6 @@
 [submodule ".zsh-syntax-highlighting"]
 	path = .zsh-syntax-highlighting
 	url = git://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule ".vim/bundle/vim-filebeagle"]
-	path = .vim/pack/foo/start/vim-filebeagle
-	url = https://github.com/jeetsukumaran/vim-filebeagle.git
 [submodule ".vim/pack/foo/start/ale"]
 	path = .vim/pack/foo/start/ale
 	url = https://github.com/w0rp/ale.git

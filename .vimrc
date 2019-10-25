@@ -551,6 +551,10 @@ set modelines=0
 " Make mapleader default explicit
 let mapleader = '\'
 
+""" newrw settings.
+" Hide the newrw banner by default. 'I' to toggle.
+let g:netrw_banner = 0
+
 """ Easily make a buffer into a scratch buffer:
 nmap <silent> <leader>S :call scratch#Scratch()<cr>
 command! -nargs=* Scratch call scratch#Scratch(<f-args>)
@@ -650,9 +654,5 @@ au User QfChanged call signs#QfList()
 
 """ Mapping to call DetectIndent
 nmap <silent> <leader>i :1verbose DetectIndent<cr>
-
-""" filebeagle settings
-let g:filebeagle_show_hidden = 1
-let g:filebeagle_check_gitignore = 1
 
 " }}}
