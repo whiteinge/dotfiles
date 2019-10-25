@@ -276,6 +276,7 @@ nnoremap <silent><leader>ff :call pick#NewScratchBuf()
 
 set encoding=utf-8
 set relativenumber              "rnu:   show line numbers relative to the current line; <leader>u to toggle
+set signcolumn=yes              "scl:   always show the sign column so it doesn't flap on and off
 set number                      "nu:    show the actual line number for the current line in relativenumber
 set showmode                    "smd:   shows current vi mode in lower left
 set cursorline                  "cul:   highlights the current line
@@ -294,6 +295,7 @@ if &columns < 88
     " If we can't fit at least 80-cols, don't display these screen hogs
     set nonumber
     set foldcolumn=0
+    set signcolumn=auto
 endif
 
 " Slight variant of standard statusline with 'ruler', file infos, and alt file.
