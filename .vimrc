@@ -335,6 +335,25 @@ if !empty($TMUX)
     map <silent> <C-w>l :call vimortmux#VimOrTmuxNav('l')<cr>
 endif
 
+" Arrange Vim windows in tmux-esque layouts. Keeps the current buffer focused.
+fu! MainVert()
+    let l:winids = win_findbuf(bufnr('%'))
+    windo wincmd K
+    call win_gotoid(l:winids[0])
+    wincmd H
+endfu
+fu! MainHorz()
+    let l:winids = win_findbuf(bufnr('%'))
+    windo wincmd H
+    call win_gotoid(l:winids[0])
+    wincmd K
+endfu
+nnoremap <leader>lh :call MainVert()<cr>
+nnoremap <leader>lk :call MainHorz()<cr>
+
+" Toggle folds in all windows.
+nnoremap <leader>lf :windo norm zi<cr>
+
 " }}}
 " Multi-buffer/window/tab editing {{{
 
