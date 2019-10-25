@@ -357,7 +357,6 @@ nnoremap <leader>lf :windo norm zi<cr>
 " }}}
 " Multi-buffer/window/tab editing {{{
 
-set switchbuf=usetab            " Jumps to first tab or window that contains specified buffer instead of duplicating an open window
 set showtabline=1               " Display the tabbar if there are multiple tabs. Use :tab ball or invoke Vim with -p
 set hidden                      " Allows opening a new buffer in place of an existing one without first saving the existing one
 
