@@ -5,6 +5,9 @@ call sign_define([
     \ {'name' : 'QfErr', 'text' : 'E', 'texthl': 'WarningMsg'},
     \ {'name' : 'QfWarn', 'text' : 'W', 'texthl': 'WarningMsg'},
     \ {'name' : 'QfGen', 'text' : '>', 'texthl': 'Normal'},
+    \ {'name' : 'LlErr', 'text' : 'E', 'texthl': 'WarningMsg'},
+    \ {'name' : 'LlWarn', 'text' : 'W', 'texthl': 'WarningMsg'},
+    \ {'name' : 'LlGen', 'text' : '>', 'texthl': 'Normal'},
 \ ])
 
 " Return modified/deleted lines from Git.
@@ -47,7 +50,6 @@ endfu
 " Add any quickfix entries for the current file.
 fu! signs#QfList()
     let l:curbuf = bufnr('%')
-    let l:curfile = expand('%')
     let l:group = 'signs#qf'
 
     call sign_unplace(l:group)
@@ -58,6 +60,24 @@ fu! signs#QfList()
             \ 'group': l:group,
             \ 'lnum': x.lnum,
             \ 'name': get({'E': 'QfErr', 'W': 'QfWarn'}, x.type, 'QfGen'),
+        \ }})
+
+    call sign_placelist(l:signs_array)
+endfu
+
+" Add any location list entries
+fu! signs#Loclist(...)
+    let l:curbuf = bufnr('%')
+    let l:group = 'signs#loclist'
+
+    call sign_unplace(l:group, {'buffer' : l:curbuf})
+
+    let l:signs_array = getloclist(0)
+        \ ->map({i, x -> {
+            \ 'buffer': x.bufnr,
+            \ 'group': l:group,
+            \ 'lnum': x.lnum,
+            \ 'name': get({'E': 'LlErr', 'W': 'LlWarn'}, x.type, 'LlGen'),
         \ }})
 
     call sign_placelist(l:signs_array)

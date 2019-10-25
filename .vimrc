@@ -602,6 +602,7 @@ let g:vim_json_syntax_conceal = 0
 au BufReadPost * call signs#GitChanges()
 au BufWritePost * call signs#GitChanges()
 au QuickFixCmdPost * call signs#QfList()
+au User ALELintPost call timer_start(500, 'signs#Loclist')
 
 """ Mapping to call DetectIndent
 nmap <silent> <leader>i :1verbose DetectIndent<cr>
