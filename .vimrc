@@ -287,6 +287,7 @@ set scrolloff=1                 "so:    places a line between the current line a
 set sidescrolloff=2             "siso:  places a couple columns between the current column and the screen edge
 set laststatus=2                "ls:    makes the status bar always visible
 set ttyfast                     "tf:    improves redrawing for newer computers
+set notitle                     "       don't update xterm (or tmux pane) titles
 set history=200                 "hi:    number of search patterns and ex commands to remember
                                 "       (also used by viminfo below for /, :, and @ options)
 set viminfo='200                "vi:    For a nice, huuuuuge viminfo file
