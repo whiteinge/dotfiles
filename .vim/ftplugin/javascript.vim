@@ -5,7 +5,7 @@ if exists("+omnifunc")
     setl omnifunc=javascriptcomplete#CompleteJS
 endif
 
-setl keywordprg=sh\ -c\ 'lynx\ https://developer.mozilla.org/en-US/search\?q=\$1\ '\ --
+setl keywordprg=sh\ -c\ 'xdg-open\ https://devdocs.io/\\#q=\$1\ '\ --
 
 let b:ale_fixers = ['prettier']
 let b:ale_linters_ignore = ['prettier']
