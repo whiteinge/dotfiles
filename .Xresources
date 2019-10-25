@@ -33,7 +33,6 @@ xterm*scrollBar: false
 xterm*background: grey9
 xterm*foreground: white
 xterm*cursorColor: red
-xterm*cursorUnderline: true
 xterm*cursorBlink: true
 xterm*color4: DodgerBlue1
 xterm*color12: SteelBlue1
