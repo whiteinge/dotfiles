@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+# Configure flags for Vim
+
+./configure \
+    --with-compiledby=whiteinge \
+    --prefix=$HOME \
+    --with-features=huge \
+    --enable-multibyte \
+    --with-tlib=ncurses \
+    --enable-cscope \
+    --enable-terminal=no \
+    --enable-gui=no \
+    --with-x \
+    --enable-cscope \
+    --enable-luainterp
