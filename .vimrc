@@ -132,9 +132,6 @@ nnoremap <leader>v `[v`]
 map <leader>o :set paste<cr>m`o<esc>``:set nopaste<cr>
 map <leader>O :set paste<cr>m`O<esc>``:set nopaste<cr>
 
-" A shortcut to show the numbered register contents
-map <F2> :reg "0123456789-*+:/<cr>
-
 " Toggle between line numbers and relative line numbers
 nnoremap <silent> <leader>u :exe "set " . (&rnu == 1 ? "nornu" : "rnu")<cr>
 
