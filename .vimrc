@@ -298,9 +298,32 @@ if &columns < 88
     set signcolumn=auto
 endif
 
-" Slight variant of standard statusline with 'ruler', file infos, and alt file.
+" Maybe return a string if the first arg is not empty.
 let M = {x, y -> x == '' ? '' : y . x}
-set statusline=%t\ %<%{M(expand('#:t'),'#')}\
+
+" If we have multiple files open with the same name then also include the
+" immdiate parent. (Shakes fist at Redux.)
+fu! Nm(fname)
+    let l:fpath = expand(a:fname)
+    let l:fname = fnamemodify(l:fpath, ':t')
+
+    if l:fpath == '' || l:fpath == l:fname
+        return l:fpath
+    endif
+
+    let l:similar_list = getwininfo()
+        \ ->map({i, x -> bufname(x.bufnr)})
+        \ ->filter({i, x -> fnamemodify(x, ':t') == l:fname})
+
+    return len(l:similar_list) == 1 ? l:fname : l:fpath
+        \ ->fnamemodify(':h')
+        \ ->fnamemodify(':t')
+        \ ->{y -> [y, l:fname]}()
+        \ ->join('/')
+endfu
+
+" Slight variant of standard statusline with 'ruler', file infos, and alt file.
+set statusline=%{Nm('%')}\ %<%{M(Nm('#'),'#')}\
     \ %h%m%r%w\ %y\ %{&fileencoding},%{&fileformat}\
     \ %q%=\ %-14.(%l,%c%V%)\ %P
 
