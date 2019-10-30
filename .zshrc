@@ -282,7 +282,7 @@ function _fzy_history() {
 
 # A completion fallback if something more specific isn't available.
 function _fzy_generic_find() {
-    ffind "$PWD" 2>/dev/null | pick \
+    ffind "$PWD" 2>/dev/null | fzy -p 'Files > ' \
         | xargs printf '%s %s\n' "$*"
 }
 
