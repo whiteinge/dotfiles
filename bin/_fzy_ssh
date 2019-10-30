@@ -3,4 +3,4 @@
 
 < $HOME/.ssh/config awk '/^Host [0-9a-zA-Z\.-_]+/ {
     for (i = 2; i <= NF; i += 1) print $i
-}' | fzy -p "SSH Hosts > " | xargs printf '%s %s\n' "$cmd"
+}' | fzy -p "SSH Hosts > " | xargs printf '%s %s\n' "$1"
