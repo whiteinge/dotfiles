@@ -1,36 +1,48 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env sh
 # Record a screencast on X11 using ffmpeg
 #
-# Usage:
-# screencast [--window]
+# screencast [<flags>]
 #
-# The window flag will prompt you to click an existing window and the recording
-# will be limited to the coordinates and size of that window.
+# Flag | Description
+# ---- | -----------
+# -w   | Will prompt to click on existing window;
+#      | recording will be limited to coordinates of that window.
+# -a   | Do not record audio.
+# -r   | Change the default framerate of 30.
+# -h   | Show this help.
 
-function main() {
-    local now target size offset
-    local -a win wininfo
-    zparseopts -E -D -- w=win -window=win
+target='root'
+framerate=30
+now=$(date --rfc-3339=date)
 
-    zformat -f target "%(c.root.frame)" c:${#win}
-    now=$(date --rfc-3339=date)
+while getopts war:h opt; do
+    case $opt in
+    w) target='frame';;
+    a) noaudio=1;;
+    r) framerate="$OPTARG";;
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 2) }' $0; exit;;
+    esac
+done
+shift $(( OPTIND - 1 ))
 
-    wininfo=( $(xwininfo -stats -${target} | awk -F":" '
+xwininfo -stats "-${target}" \
+    | awk -F':' '
         /Absolute.*X/ { x=$2 }
         /Absolute.*Y/ { y=$2 }
         /Width/ { w=$2 }
         /Height/ { h=$2 }
-        END { print w, h, x, y }') )
+        END { print w, h, x, y }' \
+    | while read -r sizex sizey offsetx offsety; do
+        ffmpeg -f pulse -ac 2 -i default \
+            -f x11grab -r "$framerate" \
+            -s "${sizex}x${sizey}" \
+            -i "${DISPLAY}+${offsetx},${offsety}" \
+            ${noaudio:+-an} \
+            -c:v libvpx-vp9 -crf 30 -b:v 0 \
+            -y "${HOME}/screencast-${now}.webm"
 
-    size=${(j:x:)${wininfo[1,2]}}
-    offset=${(j:,:)${wininfo[3,4]}}
-
-    ffmpeg -f pulse -ac 2 -i default \
-        -f x11grab -r 30 -s ${size} -i ${DISPLAY}+${offset} \
-        -acodec pcm_s16le -vcodec libx264 \
-        -threads 0 -y $HOME/screencast-${now}.avi
-
-    return $?
-}
-
-main "$@"
+            # webm or h264?
+            # -acodec pcm_s16le ${noaudio:+-an} \
+            # -vcodec libx264 -preset ultrafast \
+            # -y "${HOME}/screencast-${now}.mkv"
+    done
