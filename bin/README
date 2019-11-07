@@ -41,6 +41,7 @@ git-attic -- List deleted files in a Git repository
 git-graph-dag -- Draw a graphviz diagram of the Git DAG
 git-pagediffs -- Open the full diff for a range of commits as separate pages in $PAGER
 git-prompt -- Output a succinct, one-line Git status
+hr -- Print a line of characters
 httpdir -- Serve a local directory via HTTP (via socat)
 joinpdf -- Merges, or joins multiple PDF files into "joined.pdf"
 lndir.sh -- Create a shadow directory of symbolic links to another directory tree

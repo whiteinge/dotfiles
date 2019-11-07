@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+# Print a line of characters
+
+char='-'
+width=$(tput cols)
+while getopts w:c: opt; do
+    case $opt in
+    c) char="$OPTARG";;
+    w) width="$OPTARG";;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+printf '%*s\n' "$width" | tr ' ' "$char"
