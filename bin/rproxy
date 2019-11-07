@@ -1,0 +1,146 @@
+#!/usr/bin/env sh
+# A reverse proxy that pipes the HTTP response through a shell command
+#
+# Note, the command given cannot perform input buffering. The stdbuf program
+# from coreutils can modify that if the program itself cannot. E.g.:
+# stdbuf -oL -eL tr '[:lower:]' '[:upper:]'
+
+export NAME=$(basename "$0")
+LPORT='8081'
+RHOST='example.com'
+RPORT='80'
+
+toupper_tr () {
+    # Example of using tr to uppercase the entire response
+    # (Avoid buffering via stdbuf.)
+
+    socat STDIO "TCP:${RHOST}:${RPORT}" \
+        | stdbuf -oL -eL tr '[:lower:]' '[:upper:]'
+}
+
+toupper_awk () {
+    # Example of using awk to uppercase the entire response
+    # (Avoid buffering natively.)
+
+    socat STDIO "TCP:${RHOST}:${RPORT}" \
+        | awk '{ print toupper($0); system("") }'
+}
+
+delay () {
+    # Insert a random delay up to 5 seconds before each request
+
+    # Not portable. Alternatives?
+    waittime=$(seq 0 1 5 | shuf -n 1)
+    sleep "$waittime"
+    socat STDIO "TCP:${RHOST}:${RPORT}"
+}
+
+add_cors () {
+    # Add (simple) CORS headers to the response
+
+    socat STDIO "TCP:${RHOST}:${RPORT}" \
+        | awk '
+            !is_body && /^\r$/ {
+                is_body=1
+                printf("Access-Control-Allow-Origin: *\r\n")
+            }
+            { print }
+        '
+}
+
+script_request () {
+    # Pre-process the request with a shell script before sending
+    #
+    # Usage:
+    #
+    #     NAME script_request /path/to/change_host.sh
+    #
+    # Where change_host.sh looks like:
+    #
+    #     #!/usr/bin/env sh
+    #     stdbuf -oL -eL sed -e 's/Host:.*/Host: example.com/'
+    #
+    # Then:
+    #
+    #     curl -sSi localhost:8081
+
+    "$@" | socat -v STDIO "TCP:${RHOST}:${RPORT}"
+}
+
+log () {
+    # Log the full request/response to stdout
+
+    socat -v STDIO "TCP:${RHOST}:${RPORT}"
+}
+
+_help () {
+    # Extract contiguous lines of comments in a function as help text
+
+    awk -v cmd="${1:?'Command name required.'}" -v NAME="$NAME" '
+    $0 ~ "^" cmd "\\s*\\(\\)\\s*{" { is_found=1; next }
+    is_found && !NF { exit }
+    is_found { gsub(/^\s*#\s?/, ""); gsub(/NAME/, NAME); print; }
+    ' "$0"
+}
+
+_all_funcs () {
+    # List all public function names in the current file
+
+    awk '$1 !~ /^_/ && /^[a-zA-Z0-9_]+\s*\(\)/ { print $1 }' "$0"
+}
+
+_main () {
+    # ## Usage
+    #
+    # `NAME [<flags>] (command [<arg>, <name=value>...])`
+    #
+    #     NAME -h              # Short, usage help text.
+    #     NAME -H command      # Command-specific help text.
+    #     NAME command         # Run a command without and with args:
+    #     NAME command foo bar
+    #
+    #     NAME add_cors
+    #     NAME delay
+    #     NAME script_request /path/to/script
+    #
+    # Flag | Description
+    # ---- | -----------
+    # -h   | Show this screen.
+    # -H   | Show command-specific docs.
+    # -x   | Enable xtrace debug logging.
+    # -p   | What local port for the reverse proxy to listen on.
+    # -r   | The remote host to proxy to.
+    # -o   | The port on the remote host.
+    #
+    # Flags _must_ be the first argument to `NAME`, before `command`.
+
+    while getopts xhH:p:r:o:S opt; do
+        case $opt in
+        x) xtrace=1; set -x;;
+        h) _help _main
+           printf '\nAvailable commands:\n\n'
+           _all_funcs | sort
+           printf '\n'
+           exit;;
+        H) _help "$OPTARG"; exit;;
+        p) LPORT="$OPTARG";;
+        r) RHOST="$OPTARG";;
+        o) RPORT="$OPTARG";;
+        S) is_sub=1;;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
+    cmd="${1:?"No command given. Available commands:
+$(_all_funcs | sort | xargs)"}"
+    shift
+
+    if [ -n "$is_sub" ]; then
+        "$cmd" "$@"
+    else
+        socat TCP-L:"$LPORT",fork,reuseaddr \
+            SYSTEM:"${0} ${xtrace:+-x} -S -r ${RHOST} -o ${RPORT} ${cmd} ${@}"
+    fi
+}
+
+_main "$@"
