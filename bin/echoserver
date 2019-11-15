@@ -1,5 +1,13 @@
 #!/usr/bin/env sh
 # Start an echo HTTP server
 
-socat -v -T0.05 TCP-L:8080,reuseaddr,fork \
+port='8000'
+while getopts p: opt; do
+    case $opt in
+    p) port="$OPTARG";;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+socat -v -T0.05 TCP-L:"$port",reuseaddr,fork \
     system:'cat $HOME/tmp/http-preamble -'
