@@ -1,0 +1,62 @@
+#!/usr/bin/env -S awk -f
+# Calculate a xsct value for the current time to gradually red-shift via cron
+#
+# Run every minute between 7pm and 6am.
+# DISPLAY=:0.0
+# */1 19-23 * * * $HOME/bin/nightmode
+# */1 00-06 * * * $HOME/bin/nightmode
+#
+# Test to see all values for all times:
+# seq -f '%04g' 0 2359 | xargs -L1 nightmode
+
+# Return evenly spaced numbers over a specified interval.
+# (A linearly spaced vector)
+function linspace(result, start, stop, num, i) {
+    for (i = 0; i < num; i += 1) {
+        result[sprintf("%02d", i)] = \
+            sprintf("%.0f", start + i * (stop - start) / (num - 1))
+    }
+}
+
+BEGIN {
+    xsct_min = 1700
+    xsct_max = 10000
+
+    fade_in_start = 1900
+    fade_in_end = 1959
+    fade_out_start = 500
+    fade_out_end = 559
+
+    if (ARGV[1] != "") {
+        now = ARGV[1]
+    } else {
+        date = "date +%k%M"
+        date | getline now
+        close(date)
+    }
+
+    mins = substr(now, length(now) - 1)
+
+    if (now >= fade_in_start && now <= fade_in_end) {
+        # Fading in
+        linspace(mins_lookup, xsct_min, xsct_max, 60)
+        r_mins = sprintf("%02d", 60 - mins - 1)
+        value =  mins_lookup[r_mins]
+    } else if (now >= fade_out_start && now <= fade_out_end) {
+        # Fading out
+        linspace(mins_lookup, xsct_min, xsct_max, 60)
+        value =  mins_lookup[mins]
+    } else if (now > fade_in_end || now < fade_out_start) {
+        # On
+        value =  xsct_min
+    } else if (now > fade_out_end || now < fade_in_start) {
+        # Off
+        value =  ""
+    }
+
+    if (ARGV[1] != "") {
+        print now, value
+    } else {
+        system("xsct " value)
+    }
+}

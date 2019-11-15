@@ -52,6 +52,7 @@ match-ips -- Output all matched IP addresses
 match-urls -- Output all matched URLs
 mdless -- View rendered Markdown files with $MANPAGER
 new-sh -- Quickly create and edit a new shell script, already marked as executable
+nightmode -- Calculate a xsct value for the current time to gradually red-shift via cron
 npm-deps-report -- Output how many sub-dependencies each npm dependencies has
 osx-keyboard-linux -- Make an OS X keyboard work like a PC keyboard
 osx-notify-send -- A notify-send-like wrapper to OSX's notify applescript thingie
