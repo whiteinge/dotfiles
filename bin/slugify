@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+# Output a string as a slug
+# https://github.com/Mayeu/slugify/blob/master/slugify
+#
+# Usage:
+#   printf 'Foo bar baz' | slugify -d _
+
+delim='-'
+while getopts d: opt; do
+    case $opt in
+    d) delim="$OPTARG";;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+LANG=POSIX LC_ALL=POSIX sed -e 's/[^[:alnum:]]/'"$delim"'/g' \
+    | tr -s "$delim" \
+    | tr A-Z a-z \
+    | sed -e 's/'"$delim"'$//'
