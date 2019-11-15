@@ -1,0 +1,58 @@
+#!/usr/bin/env sh
+# Show a summary of the commits, authors, and files in a Git repo
+
+git log --no-renames --numstat \
+        --format='XXX%x09%h%x09%an%x09%ae%x09%cn%x09%ce%x09%ai%x09%cr' \
+    | awk -v FS='\t' -v OFS='\t' '
+    /^$/ { next }
+
+    /^XXX/ {
+        sha=$2
+        author=$3 " <" $4 ">"
+        committer=$5 " <" $6 ">"
+        auth_date=substr($7, 1, index($7, " ") - 1)
+        reldate=$8
+
+        commit_count += 1
+        author_list[author] += 1
+        committer_list[committer] += 1
+        active_days[auth_date] = 1
+    }
+
+    NR == 1 { last_date=auth_date; last_reldate=reldate; last_sha=sha }
+
+    !/^XXX/ {
+        added=$1
+        removed=$2
+        filename=$3
+
+        file_list[filename] += 1
+        lines_changed_count += added - removed
+    }
+
+    END {
+        print "First commit:", sha " - " auth_date " (" reldate ")"
+        print "Last commit:", last_sha " - " last_date " (" last_reldate ")"
+        print "Total commits:", commit_count
+        print "Active days:", length(active_days)
+        print "Total files:", length(file_list)
+        print "Lines changed:", lines_changed_count
+        print "Authors:", length(author_list)
+        print "Committers:", length(committer_list)
+
+        printf("\nTop authors:\n\n")
+        topcom_cmd = "sort -n -r | head -10"
+        for (i in author_list) {
+            printf("%s\t%.1f%%\t%s\n",
+                author_list[i],
+                (author_list[i] / commit_count) * 100,
+                i) | topcom_cmd
+        }
+        close(topcom_cmd)
+
+        printf("\nTop files:\n\n")
+        topfil_cmd = "sort -n -r | head -10"
+        for (i in file_list) print file_list[i], i | topfil_cmd
+        close(topfil_cmd)
+    }
+    '
