@@ -1,0 +1,44 @@
+# Custom values for GNU units
+#
+# Usage:
+#     units -t1 '16 billion dollars' 'instagrams'
+
+# Monetary units
+instagrams 1 billion dollars
+
+# Pop culture units
+lordoftherings 673 minutes
+thehobbit 498 minutes
+tolkien_marathons lordoftherings + thehobbit
+
+iron_man 2 hours + 6 minutes
+the_incredible_hulk 1 hour + 52 minutes
+iron_man_2 2 hours + 5 minutes
+thor 1 hour + 54 minutes
+captain_america_the_first_avenger 2 hours + 4 minutes
+the_avengers 2 hours + 23 minutes
+iron_man_3 2 hours + 11 minutes
+thor_the_dark_world 1 hour + 52 minutes
+captain_america_the_winter_soldier 2 hours + 16 minutes
+guardians_of_the_galaxy 2 hours + 2 minutes
+avengers_age_of_ultron 2 hours + 21 minutes
+ant_man 1 hour + 57 minutes
+captain_america_civil_war 2 hours + 27 minutes
+doctor_strange 1 hour + 55 minutes
+guardians_of_the_galaxy_vol_2 2 hours + 17 minutes
+spider_man_homecoming 2 hours + 13 minutes
+thor_ragnarok 2 hours + 10 minutes
+black_panther 2 hours + 14 minutes
+avengers_infinity_war 2 hours + 40 minutes
+ant_man_the_wasp 2 hours + 5 minutes
+captain_marvel 2 hours + 5 minutes
+avengers_endgame 3 hours + 2 minutes
+
+mcu_marathons iron_man + the_incredible_hulk + iron_man_2 + thor + captain_america_the_first_avenger + the_avengers + iron_man_3 + thor_the_dark_world + captain_america_the_winter_soldier + guardians_of_the_galaxy + avengers_age_of_ultron + ant_man + captain_america_civil_war + doctor_strange + guardians_of_the_galaxy_vol_2 + spider_man_homecoming + thor_ragnarok + black_panther + avengers_infinity_war + ant_man_the_wasp + captain_marvel + avengers_endgame
+
+# Sizes
+olympic_pools 50 meter
+
+# Weights
+suvs 4300 pounds
+elephants 3 tons
