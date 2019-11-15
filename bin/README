@@ -58,6 +58,7 @@ osx-proxy -- Toggle the OSX HTTP/HTTPS proxies on for the primary interface
 osx-toggle-interfaces -- Toggle wifi/ethernet on/off when the physical connection changes
 osx-xclip -- An xclip-like wrapper to pbcopy/pbpaste
 pick.sh -- WIP: A POSIX sh implementation of pick
+play-somafm -- Select a SomaFM stream with a fuzy-finder and play via mpv
 pysmtp -- Start a echoing SMTP server
 qb.sh -- Qutebrowser helpers
 queue -- A lightweight job queue using tail and xargs

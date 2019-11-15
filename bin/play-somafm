@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# Select a SomaFM stream with a fuzy-finder and play via mpv
+
+curl -sS https://somafm.com/channels.json \
+    | jq -r '.channels[]
+        | "\(.title) - \(.description)\t\(.playlists[]
+        | limit(1;select(.quality == "low"))
+        | .url)"' \
+    | fzy -p 'SomaFM > ' \
+    | cut -f2 \
+    | xargs mpv
