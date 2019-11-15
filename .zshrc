@@ -185,7 +185,6 @@ alias info='info --vi-keys'
 alias wtf='wtf -o'
 alias nnn='nnn -S'
 alias ocaml='rlwrap ocaml'
-alias mplayer='mplayer -af scaletempo -speed 1'
 alias R='R --no-save'
 
 # Aliases around scripts in $HOME/bin:
@@ -221,7 +220,7 @@ alias -g OUT='@{u}..'
 alias -g OOUT='@{u}...'
 alias -g UP='@{u}'
 
-# Selects a random file: ``mplayer RANDOM``
+# Selects a random file: ``mpv RANDOM``
 alias -g RANDOM='"$(shuf -e -n1 *)"'
 
 # Output stderr in red. Usage: somecomand RED

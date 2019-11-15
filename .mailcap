@@ -1,8 +1,8 @@
-audio/*; mplayer %s
+audio/*; mpv %s
 image/gif; sxiv %s
 image/jpeg; sxiv %s
 image/jpg; sxiv %s
 image/png; sxiv %s
 text/html; echo && lynx --dump %s; nametemplate=%s.html; copiousoutput
-video/*; mplayer %s
-video/mpeg; mplayer %s
+video/*; mpv %s
+video/mpeg; mpv %s

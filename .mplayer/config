@@ -1,3 +1,0 @@
-heartbeat-cmd="xscreensaver-command -deactivate 1> /dev/null 2> /dev/null"
-vo=gl
-# monitor-orientation=1
