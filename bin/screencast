@@ -37,8 +37,8 @@ xwininfo -stats "-${target}" \
             -f x11grab -r "$framerate" \
             -s "${sizex}x${sizey}" \
             -i "${DISPLAY}+${offsetx},${offsety}" \
+            -c:v libvpx -minrate 1M -maxrate 1M -b:v 1M -c:a libvorbis \
             ${noaudio:+-an} \
-            -c:v libvpx-vp9 -crf 30 -b:v 0 \
             -y "${HOME}/screencast-${now}.webm"
 
             # webm or h264?
