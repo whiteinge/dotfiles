@@ -512,6 +512,9 @@ au ColorScheme * hi ColorColumn ctermbg=7
 " disable highlighting inside the selection.
 au ColorScheme * hi Visual cterm=bold ctermfg=7 ctermbg=8
 
+" Show search matches in simple reverse.
+au ColorScheme * hi Search cterm=reverse ctermfg=none ctermbg=none
+
 " Match the Sign column to the number column
 au ColorScheme * hi SignColumn cterm=bold ctermfg=0 ctermbg=none
 
