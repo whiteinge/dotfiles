@@ -24,8 +24,11 @@ nm <leader># :%s///gn<cr>
 " highlights the text under the cursor. Ranges from 1-9; see the corresponding
 " highlights in the Colors section below.
 " Usage: 1\hh or 2\hh or 3\hh, etc.
-nn <leader>hh :<c-u>call matchadd('Match'. v:count1, expand('<cword>'), v:count1)<cr>
-nn <leader>hn :call clearmatches()<cr>
+nn <leader>hh :<c-u>call matchadd('Match'. v:count1, expand('<cword>'),
+    \ v:count1, v:count1 + 10)<cr>
+" Clear individual matches: 1\hn or 2\hn or 3\hn, etc.
+nn <leader>hn :<c-u>call matchdelete(v:count1 + 10)<cr>
+nn <leader>ha :call clearmatches()<cr>
 
 " Grep for the word under the cursor.
 nn <leader>gr :silent grep . <cword><cr>:redraw!<cr>
