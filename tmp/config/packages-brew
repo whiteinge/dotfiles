@@ -17,6 +17,7 @@ gawk
 git
 gnu-sed
 gnu-tar
+gnu-units
 gnu-which
 gnupg
 graphviz
@@ -51,7 +52,6 @@ terminal-notifier
 tidy-html5
 tmux
 tree
-units
 unzip
 vim
 watch

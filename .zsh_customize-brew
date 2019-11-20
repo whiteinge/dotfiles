@@ -8,6 +8,7 @@ paths=(
     "/usr/local/opt/findutils/libexec/gnubin" \
     "/usr/local/opt/gnu-sed/libexec/gnubin" \
     "/usr/local/opt/gnu-tar/libexec/gnubin" \
+    "/usr/local/opt/gnu-units/libexec/gnubin" \
     "/usr/local/opt/gnu-which/libexec/gnubin" \
     "/usr/local/opt/grep/libexec/gnubin" \
     "/usr/local/opt/make/libexec/gnubin" \
@@ -20,6 +21,7 @@ manpaths=(
     "/usr/local/opt/findutils/libexec/gnuman" \
     "/usr/local/opt/gnu-sed/libexec/gnuman" \
     "/usr/local/opt/gnu-tar/libexec/gnuman" \
+    "/usr/local/opt/gnu-units/libexec/gnuman" \
     "/usr/local/opt/gnu-which/libexec/gnuman" \
     "/usr/local/opt/grep/libexec/gnuman" \
     "/usr/local/opt/make/libexec/gnuman" \
