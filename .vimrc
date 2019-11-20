@@ -356,8 +356,9 @@ endfu
 nnoremap <leader>lh :call MainVert()<cr>
 nnoremap <leader>lk :call MainHorz()<cr>
 
-" Toggle folds in all windows.
+" Toggle folds and line wrapping in all windows.
 nnoremap <leader>lf :windo norm zi<cr>
+nnoremap <leader>lp :windo :set nowrap!<cr>:set nowrap?<cr>
 
 " }}}
 " Multi-buffer/window/tab editing {{{
