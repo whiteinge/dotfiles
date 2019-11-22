@@ -37,8 +37,8 @@ fi
 
 xsettingsd &
 xscreensaver -no-splash &
-# xscreensaver-command -watch \
-#     | while read a; do echo $a | grep '^LOCK' && mpc stop; done &
+xscreensaver-command -watch \
+    | while read a; do echo $a | grep '^LOCK' && ssh-add -D; done &
 
 $HOME/bin/status &
 xcape &
