@@ -1,7 +1,15 @@
 #!/usr/bin/env sh
 # Show a summary of the commits, authors, and files in a Git repo
 
-git log --no-renames --numstat \
+show_files=1
+while getopts f opt; do
+    case $opt in
+    f) unset show_files;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+git log --no-renames ${show_files:+--numstat} \
         --format='XXX%x09%h%x09%an%x09%ae%x09%cn%x09%ce%x09%ai%x09%cr' \
     | awk -v FS='\t' -v OFS='\t' '
     /^$/ { next }
@@ -50,9 +58,11 @@ git log --no-renames --numstat \
         }
         close(topcom_cmd)
 
-        printf("\nTop files:\n\n")
-        topfil_cmd = "sort -n -r | head -10"
-        for (i in file_list) print file_list[i], i | topfil_cmd
-        close(topfil_cmd)
+        if (file_list) {
+            printf("\nTop files:\n\n")
+            topfil_cmd = "sort -n -r | head -10"
+            for (i in file_list) print file_list[i], i | topfil_cmd
+            close(topfil_cmd)
+        }
     }
     '
