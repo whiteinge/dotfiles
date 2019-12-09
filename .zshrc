@@ -286,7 +286,7 @@ alias ..='cd ..'
 
 # cd to a parent directory.
 function ...() {
-    explode_path | tail -n +2 | pick | read -d -r new_dir
+    explode_path | tail -n +2 | fzy -p 'Parents > ' | read -d -r new_dir
     cd "$new_dir"
 }
 
@@ -316,7 +316,7 @@ function _fzy_generic_find() {
 # a shell script on PATH with the pattern _fzy_<cmd>. The script will be
 # invoked with the command name and any arguments as ARGV and should print the
 # full resulting command and any additions to stdout.
-pick-completion() {
+fzy-completion() {
     setopt localoptions localtraps noshwordsplit noksh_arrays noposixbuiltins
 
     local tokens=(${(z)LBUFFER})
@@ -348,8 +348,8 @@ pick-completion() {
     zle reset-prompt
 }
 
-zle -N pick-completion
-bindkey '^F' pick-completion
+zle -N fzy-completion
+bindkey '^F' fzy-completion
 
 # }}}
 # Manually refresh the tmux status infos {{{1

@@ -7,7 +7,7 @@
 # https://github.com/kxxoling/kaomoji/raw/master/data/jp.json
 
 # GNU cut doesn't grok UTF-8.
-sed '1,/^exit/d' $0 | pick | grep -Po '^[^\t]*'
+sed '1,/^exit/d' $0 | fzy | grep -Po '^[^\t]*'
 
 exit 1
 ( ≧Д≦)	#angry

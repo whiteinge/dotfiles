@@ -3,7 +3,7 @@
 # http://leahneukirchen.org/dotfiles/bin/dmoji
 
 # GNU cut doesn't grok UTF-8.
-sed '1,/^exit/d' $0 | pick | grep -Po '^[^ ]*'
+sed '1,/^exit/d' $0 | fzy | grep -Po '^[^ ]*'
 
 # made with: curl -sL https://raw.githubusercontent.com/milesj/emojibase/master/packages/data/en/raw.json | jq -r '.[] | .emoji + "  " + .name + "  " + (.tags | map("#" + .) | join(" "))'
 exit 1

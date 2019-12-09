@@ -2,7 +2,7 @@
 # Output an xrandr command for common configurations
 # Only outputs, not executes, the command so it can be edited beforehand.
 
-pick <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs -I{} tmux send xrandr Space {}
+fzy <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs -I{} tmux send xrandr Space {}
 	Auto        --auto
 	Desktop     --output DP1 --preferred --output eDP1 --off
 	Livingroom  --output eDP1 --off --output DP1 --mode 1360x768

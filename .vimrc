@@ -271,9 +271,9 @@ if has("autocmd") && exists("+omnifunc")
 endif
 
 " Fuzzy-find a file from files under the current directory and edit it.
-nnoremap <silent><leader>ff :call pick#NewScratchBuf()
+nnoremap <silent><leader>ff :call fzy#NewScratchBuf()
     \\|:.!ffind . '(' -type f -o -type l ')' -print<cr>
-    \\|:call pick#Pick() ->{x -> 'edit '. x}() ->execute()<cr>
+    \\|:call fzy#Fzy() ->{x -> 'edit '. x}() ->execute()<cr>
 
 " }}}
 " Window Layout {{{
@@ -367,27 +367,27 @@ set showtabline=1               " Display the tabbar if there are multiple tabs.
 set hidden                      " Allows opening a new buffer in place of an existing one without first saving the existing one
 
 " Type <F1> to open a fuzzy-finder of available buffers.
-map <F1> :call pick#NewScratchBuf()
+map <F1> :call fzy#NewScratchBuf()
     \\|redir @m \| silent ls \| redir END
     \\|:1put m
-    \\|:call pick#Pick()
+    \\|:call fzy#Fzy()
         \ ->matchstr('[0-9]\+') ->{x -> 'b '. x}() ->execute()<cr>
 
 " Open a fuzzy-finder of available buffers and jump to the first window
 " containing the selected buffer.
 " FIXME: handle when the buffer isn't displayed in a window.
-map <F2> :call pick#NewScratchBuf()
+map <F2> :call fzy#NewScratchBuf()
     \\|redir @m \| silent ls \| redir END
     \\|:1put m
-    \\|:call pick#Pick()
+    \\|:call fzy#Fzy()
         \ ->matchstr('[0-9]\+') ->win_findbuf() ->{x -> win_gotoid(x[0])}()
     \ <cr>
 
 " Use a fuzzy-finder to unload loaded buffers.
-map <leader>bw :call pick#NewScratchBuf()
+map <leader>bw :call fzy#NewScratchBuf()
     \\|redir @m \| silent ls \| redir END
     \\|:1put m
-    \\|:call pick#Pick()
+    \\|:call fzy#Fzy()
         \ ->matchstr('[0-9]\+') ->{x -> 'bw '. x}() ->execute()<cr>
 
 " Quickly jump to a tag if there's only one match, otherwise show the list
@@ -430,9 +430,9 @@ nmap <silent> <leader>fa :call getqflist()
     \ ->map({i, x -> execute('$argadd #'. x.bufnr)})<cr>
 
 " Fuzzy-find and edit an entry in the quickfix list.
-nnoremap <silent><leader>fw :call pick#NewScratchBuf()
+nnoremap <silent><leader>fw :call fzy#NewScratchBuf()
     \\|:1put = getqflist() ->map({i, x -> bufname(x.bufnr)}) ->uniq()
-    \\|:call pick#Pick() ->{x -> 'e '. x}() ->execute()<cr>
+    \\|:call fzy#Fzy() ->{x -> 'e '. x}() ->execute()<cr>
 
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
@@ -463,9 +463,9 @@ command! -nargs=* Gext grep <args>
 set tags+=.git/tags;
 
 " Fuzzy-find a tag and jump to it.
-nnoremap <silent><leader>ft :call pick#NewScratchBuf()
+nnoremap <silent><leader>ft :call fzy#NewScratchBuf()
     \\|:1put = taglist('.*') ->map({i, x -> x.cmd .' --- '. x.filename})
-    \\|:call pick#Pick()
+    \\|:call fzy#Fzy()
         \ ->split(' --- ')
         \ ->{xs -> 'edit +'. escape(xs[0], ' #{}[]<>/$.^') .' '. xs[1]}()
         \ ->execute()<cr>
@@ -473,9 +473,9 @@ nnoremap <silent><leader>ft :call pick#NewScratchBuf()
 " Fuzzy-find entries in Vim's help files.
 " A much faster alternative to :help <char><tab><tab><tab>
 " TODO: add third-party 'someplugin/doc/tag' files too...
-nnoremap <silent><leader>fh :call pick#NewScratchBuf()
+nnoremap <silent><leader>fh :call fzy#NewScratchBuf()
     \\|:read $VIMRUNTIME/doc/tags
-    \\|:call pick#Pick() ->matchstr('[^\t]\+')
+    \\|:call fzy#Fzy() ->matchstr('[^\t]\+')
         \ ->{x -> 'help '. x}() ->execute()<cr>
 
 " }}}
@@ -570,9 +570,9 @@ command! -nargs=* Scratch call scratch#Scratch(<f-args>)
 
 """ Diff unstaged changes.
 nmap <silent> <leader>cc :call stagediff#StageDiff()<cr>
-nmap <silent> <leader>cf :call pick#NewScratchBuf()
+nmap <silent> <leader>cf :call fzy#NewScratchBuf()
     \\|:.!git ls-files<cr>
-    \\|:call pick#Pick() ->{x -> execute('edit '. x)}()<cr>
+    \\|:call fzy#Fzy() ->{x -> execute('edit '. x)}()<cr>
 nmap <silent> <leader>cs :term ++close git add %<cr>
 nmap <silent> <leader>ci :term ++close git commit<cr>
 nmap <silent> <leader>ca :term ++close git commit --amend --no-edit<cr>
@@ -608,9 +608,9 @@ let g:caser_prefix = mapleader .'w'
 
 """ MRU mappings
 " Fuzzy-find and open a file from the most-recently-used buffer list.
-nnoremap <leader>fe :call pick#NewScratchBuf()
+nnoremap <leader>fe :call fzy#NewScratchBuf()
     \\|:1put = mru#MRU()
-    \\|:call pick#Pick() ->matchstr('[0-9]\+')
+    \\|:call fzy#Fzy() ->matchstr('[0-9]\+')
         \ ->{x -> 'e #<'. x}() ->execute()<cr>
 
 """ Diff two registers

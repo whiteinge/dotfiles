@@ -11,23 +11,23 @@
 " Examples:
 "
 " " Fuzzy-find and edit files under the current directory.
-" nnoremap <silent><leader>fz :call pick#NewScratchBuf()
+" nnoremap <silent><leader>fz :call fzy#NewScratchBuf()
 "     \\|:.!ffind . '(' -type f -o -type l ')' -print<cr>
-"     \\|:call pick#Pick() ->{x -> 'edit '. x}() ->execute()<cr>
+"     \\|:call fzy#Fzy() ->{x -> 'edit '. x}() ->execute()<cr>
 "
 " " Fuzzy find :ls and edit the selected buffer.
-" nnoremap <silent><leader>fx :call pick#NewScratchBuf()
+" nnoremap <silent><leader>fx :call fzy#NewScratchBuf()
 "     \\|redir @m \| silent ls \| redir END
 "     \\|:1put m
-"     \\|:call pick#Pick()
+"     \\|:call fzy#Fzy()
 "         \ ->matchstr('[0-9]\+') ->{x -> 'b '. x}() ->execute()<cr>
 
-fu! pick#NewScratchBuf()
+fu! fzy#NewScratchBuf()
     below new
     setl buftype=nofile bufhidden=hide nobuflisted
 endfu
 
-fu! pick#Pick()
+fu! fzy#Fzy()
     let l:scrBuf = bufnr('%')
     let l:lastmsg = ""
 
