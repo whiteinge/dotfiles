@@ -1,0 +1,21 @@
+#!/usr/bin/env osascript
+# Resize the most recent window in a specific app to specific dimensions
+
+set theApp to "Firefox"
+set appWidth to 1024
+set appHeight to 768
+
+tell application "Finder"
+	set screenResolution to bounds of window of desktop
+end tell
+
+set screenWidth to item 3 of screenResolution
+set screenHeight to item 4 of screenResolution
+
+tell application theApp
+	activate
+	reopen
+	set yAxis to (screenHeight - appHeight) / 2 as integer
+	set xAxis to (screenWidth - appWidth) / 2 as integer
+	set the bounds of the first window to {xAxis, yAxis, appWidth + xAxis, appHeight + yAxis}
+end tell

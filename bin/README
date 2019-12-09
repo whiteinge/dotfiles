@@ -57,6 +57,7 @@ npm-deps-report -- Output how many sub-dependencies each npm dependencies has
 osx-keyboard-linux -- Make an OS X keyboard work like a PC keyboard
 osx-notify-send -- A notify-send-like wrapper to OSX's notify applescript thingie
 osx-proxy -- Toggle the OSX HTTP/HTTPS proxies on for the primary interface
+osx-resize-window -- Resize the most recent window in a specific app to specific dimensions
 osx-toggle-interfaces -- Toggle wifi/ethernet on/off when the physical connection changes
 osx-xclip -- An xclip-like wrapper to pbcopy/pbpaste
 pick.sh -- WIP: A POSIX sh implementation of pick
