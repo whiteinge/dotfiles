@@ -142,11 +142,29 @@ bindkey '^Y' yank
 
 # Set up prompt
 if [[ ! -n "$ZSHRUN" ]]; then
-    source $HOME/.zsh_shouse_prompt
+    autoload -U colors && colors
 
-    # Fish shell like syntax highlighting for Zsh:
-    # git clone git://github.com/nicoulaj/zsh-syntax-highlighting.git \
-    #   $HOME/.zsh-syntax-highlighting/
+    promptseg=( \
+        # In incognito mode?
+        '%{${fg[yellow]}%}' \
+        '$(test ${+HISTFILE} -eq 0 && echo !!)' \
+        '%{${reset_color}%}' \
+
+        # Any background jobs?
+        '%(1j.%j .)' \
+
+        # Last command failed?
+        '%(0?.%{${fg[white]}%}.%{${fg[red]}%})' \
+        '%#' \
+        '%{${reset_color}%}' \
+
+        # Breathe.
+        ' ' \
+    )
+    PS1=${(j::)promptseg}
+
+    # Fish-like syntax highlighting for Zsh:
+    # git://github.com/nicoulaj/zsh-syntax-highlighting.git \
     if [[ -d $HOME/.zsh-syntax-highlighting/ ]]; then
         source $HOME/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
         ZSH_HIGHLIGHT_HIGHLIGHTERS+=( brackets pattern )
@@ -194,7 +212,7 @@ alias fetchall-gl='fetchall "git@gitlab.com"'
 
 # Aliases that make new things:
 alias ducks='du -cks * | sort -rn | head -15'
-alias incognito=' export HISTFILE=/dev/null'
+alias incognito=' unset HISTFILE'
 alias osx_openports='lsof -iTCP -sTCP:LISTEN -P'
 alias clip='xclip -selection clipboard'
 alias rs='rsync -avhzC --progress'
@@ -358,7 +376,7 @@ function refresh_tmux_on_git() {
 # Run precmd functions
 preexec_functions=( last_command_was_git )
 chpwd_functions=( refresh_tmux )
-precmd_functions=( precmd_prompt refresh_tmux_on_git )
+precmd_functions=( refresh_tmux_on_git )
 
 # Allow OS or environment specific overrides:
 if [[ -r "$HOME/.zsh_customize" ]]; then
