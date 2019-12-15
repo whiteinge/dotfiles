@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to traverse the file system and print a file name
+
+trap '
+    excode=$?; trap - EXIT;
+    break;
+    exit $excode
+' INT TERM EXIT
+
+old_path="${1:-"$PWD"}"
+
+case "$old_path" in
+    /*) old_path="$old_path";;
+    *) old_path="${PWD}/${old_path}";;
+esac
+
+while true; do
+    new_path=$(ls -F -a --group-directories-first "$old_path" |
+        fzy -l 50 -p "${old_path} > ")
+    test $? -ne 0 && break;
+    new_path="${old_path}/${new_path}"
+    if [ -d "$new_path" ]; then
+        old_path="$(cd "$new_path"; printf '%s' "$PWD")"
+        continue
+    else
+        printf '%s\n' "$new_path"
+        break
+    fi
+done
