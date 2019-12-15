@@ -6,6 +6,7 @@
 # stdbuf -oL -eL tr '[:lower:]' '[:upper:]'
 
 export NAME=$(basename "$0")
+LISTEN="TCP-LISTEN"
 LPORT='8081'
 RHOST='example.com'
 RPORT='80'
@@ -83,6 +84,17 @@ _help () {
     ' "$0"
 }
 
+mk_cert() {
+    openssl req -x509 \
+        -newkey rsa:4096 \
+        -days 365 \
+        -nodes \
+        -subj "/C=US/ST=Utah/L=Ogden/O=ACME, Inc./OU=Org/CN=localhost" \
+        -keyout "/tmp/${NAME}.key" \
+        -out "/tmp/${NAME}.crt" \
+        2>/dev/null
+}
+
 _all_funcs () {
     # List all public function names in the current file
 
@@ -111,10 +123,11 @@ _main () {
     # -p   | What local port for the reverse proxy to listen on.
     # -r   | The remote host to proxy to.
     # -o   | The port on the remote host.
+    # -s   | Generate a self-signed cert and listen for SSL traffic.
     #
     # Flags _must_ be the first argument to `NAME`, before `command`.
 
-    while getopts xhH:p:r:o:S opt; do
+    while getopts xhH:p:r:o:Ss opt; do
         case $opt in
         x) xtrace=1; set -x;;
         h) _help _main
@@ -127,6 +140,10 @@ _main () {
         r) RHOST="$OPTARG";;
         o) RPORT="$OPTARG";;
         S) is_sub=1;;
+        s) mk_cert;
+            ssl=",cert=/tmp/${NAME}.crt,key=/tmp/${NAME}.key,verify=0";
+            LISTEN="OPENSSL-LISTEN";
+            ;;
         esac
     done
     shift $(( OPTIND - 1 ))
@@ -138,8 +155,8 @@ $(_all_funcs | sort | xargs)"}"
     if [ -n "$is_sub" ]; then
         "$cmd" "$@"
     else
-        socat TCP-L:"$LPORT",fork,reuseaddr \
-            SYSTEM:"${0} ${xtrace:+-x} -S -r ${RHOST} -o ${RPORT} ${cmd} ${@}"
+        socat "${LISTEN}:${LPORT},fork,reuseaddr${ssl}" \
+            SYSTEM:"${0} ${xtrace:+-x} ${ssl:+-s} -S -r ${RHOST} -o ${RPORT} ${cmd} ${@}"
     fi
 }
 
