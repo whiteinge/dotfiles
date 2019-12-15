@@ -171,6 +171,20 @@ if [[ ! -n "$ZSHRUN" ]]; then
     fi
 fi
 
+# Are we inside a Vim 8 :terminal?
+if [[ -n "$VIM_TERMINAL" ]]; then
+
+    # Cause the running Vim to open a given file.
+    # Usage (from within Vim):
+    #   :term ++close
+    #   vim-open somefile.txt
+    function vim-open() {
+        fname="${1:?File name missing}"
+        printf '\e]51;["drop","%s"]\a' "$fname"
+        exit
+    }
+fi
+
 # }}}
 # {{{ aliases
 
