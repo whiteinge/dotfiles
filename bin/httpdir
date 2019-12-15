@@ -95,8 +95,8 @@ mk_cert() {
         -days 365 \
         -nodes \
         -subj "/C=US/ST=Utah/L=Ogden/O=ACME, Inc./OU=Org/CN=localhost" \
-        -keyout /tmp/httpdirkey.pem \
-        -out /tmp/httpdircert.pem \
+        -keyout "/tmp/${NAME}.key" \
+        -out "/tmp/${NAME}.crt" \
         2>/dev/null
 }
 
@@ -112,7 +112,7 @@ main() {
         case $opt in
         p) port="$OPTARG";;
         s) mk_cert;
-            ssl=",cert=/tmp/httpdircert.pem,key=/tmp/httpdirkey.pem,verify=0";
+            ssl=",cert=/tmp/${NAME}.crt,key=/tmp/${NAME}.key,verify=0";
             listen="OPENSSL-LISTEN";
             ;;
         esac
