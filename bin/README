@@ -68,6 +68,7 @@ readme-gen -- Generate a README for all $DOTFILES/bin scripts
 res -- Output an xrandr command for common configurations
 rproxy -- A reverse proxy that pipes the HTTP response through a shell command
 screencast -- Record a screencast on X11 using ffmpeg
+scrollback -- Output the tmux scrollback for the current pane in reverse order
 shsplit -- Reformat a one-line shell command as a multiline shell command
 slugify -- Output a string as a slug
 status -- Collect various system stats for feeding into a status bar

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# Output the tmux scrollback for the current pane in reverse order
+#
+# Meant as a shortcut for making ad-hoc pipelines. E.g.,
+# git fetch; scrollback | match-git-range | fzy | xargs git log --oneline
+
+tmux capture-pane -pJS -1000 | tac
