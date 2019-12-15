@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Output all matched Git SHA ranges (e.g., 123456..654321)
+
+grep -oE '[0-9a-fA-F]+\.\.\.?[0-9a-fA-F]+'

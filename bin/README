@@ -47,6 +47,7 @@ joinpdf -- Merges, or joins multiple PDF files into "joined.pdf"
 lndir.sh -- Create a shadow directory of symbolic links to another directory tree
 luksimg -- Wrappers around cryptsetup to create/mount/unmount encrypted images
 match-emails -- Output all matched email addresses
+match-git-range -- Output all matched Git SHA ranges (e.g., 123456..654321)
 match-ips -- Output all matched IP addresses
 match-urls -- Output all matched URLs
 mdless -- View rendered Markdown files with $MANPAGER
