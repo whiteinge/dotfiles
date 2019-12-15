@@ -61,7 +61,6 @@ NetworkManager-tui
 NetworkManager-wifi
 nmap
 nmap-ncat
-nnn
 onboard
 openssh
 pandoc

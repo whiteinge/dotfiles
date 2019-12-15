@@ -8,7 +8,6 @@ jq
 make
 man
 mpv
-nnn
 openssh
 proot
 readline
