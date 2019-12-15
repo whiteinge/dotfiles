@@ -49,6 +49,24 @@ add_cors () {
         '
 }
 
+rewrite_location () {
+    # Rewrite the response location header to the current scheme and port
+
+    socat STDIO "TCP:${RHOST}:${RPORT}" \
+        | awk -v listen="$LISTEN" '
+            !is_body && /^\r$/ { is_body=1 }
+            !is_body && /Location: / {
+                if (listen == "TCP-LISTEN") {
+                    sub("https://", "http://", $0)
+                } else if (listen == "OPENSSL-LISTEN") {
+                    sub("http://", "https://", $0)
+                }
+                sub(":" LPORT, ":" RPORT, $0)
+            }
+            { print }
+        '
+}
+
 script_request () {
     # Pre-process the request with a shell script before sending
     #
@@ -72,6 +90,12 @@ log () {
     # Log the full request/response to stdout
 
     socat -v STDIO "TCP:${RHOST}:${RPORT}"
+}
+
+passthrough () {
+    # Don't do anything to the request/response.
+
+    socat STDIO "TCP:${RHOST}:${RPORT}"
 }
 
 _help () {
