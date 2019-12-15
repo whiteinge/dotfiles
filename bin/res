@@ -6,7 +6,7 @@ fzy <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs -I{} tmux
 	Auto        --auto
 	Desktop     --output DP1 --preferred --output eDP1 --off
 	Livingroom  --output eDP1 --off --output DP1 --mode 1360x768
-	Bedroom     --output eDP1 --off --output DP1 --mode 1440x900
+	Bedroom     --output eDP1 --off --output DP1 --mode 1920x1080
 	Notebook    --auto --output eDP1 --transform none --rotate right
 	Netbook     --auto --output eDP1 --scale 0.4x0.4 --rotate right
 	Present     --output eDP1 --scale-from 1024x768
