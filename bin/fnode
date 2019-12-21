@@ -48,7 +48,7 @@ awk -v os="$(uname)" -v arch="$(uname -m)" '
     xargs -r printf '%s/%s\n' "$NODE_MIRROR" |
     xargs -r curl -sS -C - -O -w '%{filename_effective}\n' |
     {
-        vfile="$(</dev/stdin)"
+        read -r vfile
         ver=$(basename "$vfile" '.tar.gz')
         vdir="${NODE_DIR}/versions/${ver}"
 
