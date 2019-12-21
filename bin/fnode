@@ -1,0 +1,62 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to select and install a NodeJS version
+#
+# Previous downloads and installs are available in NODE_DIR and can be manually
+# modified or removed there. Tries to only show valid downloads for the current
+# platform and tries to avoid downloading or decompressing versions that are
+# already available.
+#
+# Usage:
+#
+#     export PATH="$PATH:$HOME/.nodejs/nodejs/bin"
+#     NODE_MIRROR='https://nodejs.org/dist' NODE_DIR="$HOME/.nodejs" fnode
+
+NODE_MIRROR="${NODE_MIRROR:-"https://nodejs.org/dist"}"
+NODE_DIR="${NODE_DIR:-"${HOME}/.nodejs"}"
+
+mkdir -p "$NODE_DIR/"{versions,downloads}
+cd "$NODE_DIR/downloads"
+
+curl -sS "${NODE_MIRROR}/index.tab" |
+awk -v os="$(uname)" -v arch="$(uname -m)" '
+    BEGIN {
+        os = tolower(os)
+        if (arch == "x86_64") arch = "x64"
+        else if (arch == "i386") arch = "x86"
+        else if (arch == "aarch64") arch = "arm64"
+
+        release = (os == "darwin" ? "osx" : os) "-" arch
+    }
+
+    function printrel(v, n) {
+        print n "\t" v "/node-" v "-" os "-" arch ".tar.gz"
+    }
+
+    NR == 1 { next }
+
+    !latest && $10 == "-" { latest = $1 }
+    !lts && $10 != "-" { lts = $1 }
+
+    $3 ~ release {
+        if ($1 == latest) printrel($1, "latest")
+        if ($1 == lts) printrel($1, "LTS")
+        printrel($1, ($10 ~ "-" ? "" : $10))
+    }
+' |
+    fzy -p 'Node > ' |
+    cut -f 2 |
+    xargs -r printf '%s/%s\n' "$NODE_MIRROR" |
+    xargs -r curl -sS -C - -O -w '%{filename_effective}\n' |
+    {
+        vfile="$(</dev/stdin)"
+        ver=$(basename "$vfile" '.tar.gz')
+        vdir="${NODE_DIR}/versions/${ver}"
+
+        if [ ! -d "$vdir" ]; then
+            mkdir -p "$vdir"
+            tar --strip-components=1 -C "$vdir" -xf "$vfile"
+        fi
+
+        ln -sfn "$vdir" "${NODE_DIR}/nodejs"
+        node --version;
+    }

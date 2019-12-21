@@ -26,6 +26,7 @@ explode_path -- Take a path and output all child paths as absolute paths
 extract_clip -- Extract a clip from a larger video file
 fetchall -- Run `git fetch` on all repos under the current dir in parallel
 ffind -- (filtering find) - A wrapper around find to ignore noise directories
+fnode -- Use a fuzzy-finder to select and install a NodeJS version
 ftree -- Use a fuzzy-finder to traverse the file system and print a file name
 _fzy_cd -- Use a fuzzy-finder to complete child directories
 _fzy_git -- Use a fuzzy-finder to complete Git refs
