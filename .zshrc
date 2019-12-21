@@ -41,8 +41,6 @@ umask 027
 
 extra_path=(
     $HOME/bin \
-    $HOME/.nodenv/bin \
-    $HOME/.nodenv/shims/ \
     $HOME/.cabal/bin \
     $HOME/.ghcup/bin \
     $HOME/.local/bin \
@@ -84,26 +82,6 @@ export WINEDEBUG=-all
 export WINEARCH=win32
 
 export PYTHONSTARTUP=$HOME/.pythonrc.py
-
-# Inline nodenv init to shave ~10ms more off the startup time.
-# eval "$(nodenv init -)"
-export NODENV_SHELL=zsh
-command nodenv rehash 2>/dev/null
-nodenv() {
-    local command
-    command="${1:-}"
-    if [ "$#" -gt 0 ]; then
-        shift
-    fi
-
-    case "$command" in
-        rehash|shell)
-            eval "$(nodenv "sh-$command" "$@")";;
-        *)
-            command nodenv "$command" "$@";;
-    esac
-}
-source "$HOME/.nodenv/libexec/../completions/nodenv.zsh"
 
 # }}}
 # {{{ completions
