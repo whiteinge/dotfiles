@@ -58,7 +58,7 @@ git log --no-renames ${show_files:+--numstat} \
         }
         close(topcom_cmd)
 
-        if (file_list) {
+        if (length(file_list)) {
             printf("\nTop files:\n\n")
             topfil_cmd = "sort -n -r | head -10"
             for (i in file_list) print file_list[i], i | topfil_cmd
