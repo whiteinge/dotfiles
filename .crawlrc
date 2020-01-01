@@ -1,0 +1,46 @@
+include = advanced_optioneering.txt
+
+name = Harrigan
+char_set = ascii
+
+rest_wait_both = true
+explore_auto_rest = true
+auto_butcher = true
+auto_eat_chunks = true
+
+assign_item_slot = backward
+pickup_menu_limit = -1
+item_stack_summary_minimum = 1
+
+default_manual_training = true
+autopickup_starting_ammo = true
+
+{
+
+local need_skills_opened = true
+
+function ready()
+
+-- Skill menu at game start by rwbarton
+  if you.turns() == 0 and need_skills_opened then
+    need_skills_opened = false
+    crawl.sendkeys("m")
+  end
+
+end
+
+}
+
+msc := message_colour
+msc += mute:You swap places
+
+msc ^= mute:is lightly (damaged|wounded)
+msc ^= mute:is moderately (damaged|wounded)
+msc ^= mute:is heavily (damaged|wounded)
+msc ^= mute:is severely (damaged|wounded)
+msc ^= mute:is almost (dead|destroyed)
+
+msc += mute:You continue butchering
+msc += mute:This raw flesh tastes terrible
+
+msc += mute:Trog accepts your kill
