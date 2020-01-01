@@ -73,6 +73,7 @@ _main () {
                 {} 1>'"$QUEUE_DIR"'/job-$$.out 2>'"$QUEUE_DIR"'/job-$$.err
                 echo Done $$ $?' \
             | awk '
+                function alen(a, i) { for (i in a); return i; }
                 /^Start/ { jobs[$2] = "X" }
                 /^Done/ { jobs[$2] = $3 }
                 {
@@ -87,7 +88,7 @@ _main () {
                         jobs[i] == "X" ? "X" : "",
                         jobs[i] == "X" ? "" : jobs[i])
                     }
-                    printf("\nTotal jobs: %s\n", length(jobs))
+                    printf("\nTotal jobs: %s\n", alen(jobs))
                     printf("\033[u") # restore pos
                 }
             '
