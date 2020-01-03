@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+# Blur a section of video based on an image mask
+#
+# The mask image should be the same size as the video; white in the blurred
+# areas and black everywhere else. Duration is start,stop in seconds.
+#
+# Usage:
+#
+#     ffmpeg-blur ./input.mp4 ./mask.png 10,20
+
+input="${1:?'Video input required.'}"
+mask="${2:?'Mask image required.'}"
+duration="${3:?'start,end duration required.'}"
+
+ffmpeg \
+    -i "$input" \
+    -i "$mask" \
+    -filter_complex "[0:v][1:v]alphamerge,boxblur=10[alf];[0:v][alf]overlay=enable='between(t,${duration})'[v]" \
+    -map "[v]" \
+    -map 0:a \
+    -c:v libx264 \
+    -c:a copy \
+    -movflags +faststart \
+    "blurred-${input}"
