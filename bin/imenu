@@ -1,0 +1,62 @@
+#!/usr/bin/env zsh
+# Select multiple items from stdin via abc's like the inventory menu in Nethack
+#
+# Usage (alpha keys toggle selection; Enter prints selected):
+#
+#     printf '%s\n' foo bar baz qux | imenu | xargs
+
+input="$(< /dev/stdin)"
+sel=""
+
+# Unhide cursor and clear output on fast exit.
+trap '
+    excode=$?; trap - EXIT;
+    printf '\''\e[u\e[0J\e[?25h'\'' >/dev/tty
+    exit
+' INT TERM
+
+# Hide cursor and save pos.
+printf '\e[?25l\e[s' >/dev/tty
+
+show_list () {
+    printf '%s\n' "$input" | awk -v sel="$sel" -v fin="$1" '
+    BEGIN {
+        split("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", cs, "")
+    }
+
+    { is_sel = index(sel, cs[NR]) != 0 }
+    !fin { print cs[NR], is_sel ? "+" : "-", $0 }
+    fin && is_sel { ret[cs[NR]] = $0 }
+
+    END {
+        if (!fin) exit
+        split(sel, xs, "")
+        for (i in xs) print ret[xs[i]]
+    }
+    '
+}
+
+_main () {
+    while true; do
+        show_list >/dev/tty
+
+        read -r -k1 c
+        if [[ "$c" =~ "[a-zA-Z]" ]]; then
+            if [[ "$sel" =~ "$c" ]]; then
+                sel="${sel/${c}/}"
+            else
+                sel="${sel}${c}"
+            fi
+        elif [[ '#c' -eq '##\n' || '#c' -eq '##\r' ]]; then
+            # Restore pos, clear output, & unhide.
+            printf '\e[u\e[0J\e[?25h' >/dev/tty
+            show_list 1
+            break
+        fi
+
+        # Restore pos and clear output.
+        printf '\e[u\e[0J' >/dev/tty
+    done
+}
+
+_main "$@"
