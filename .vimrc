@@ -665,3 +665,4 @@ au User QfChanged call signs#QfList()
 nmap <silent> <leader>i :1verbose DetectIndent<cr>
 
 " }}}
+" EOF
