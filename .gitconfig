@@ -22,6 +22,7 @@
     short = rev-parse --short
     sh = show --summary --stat --pretty=fuller --patch
     st = status -s -b
+    sti = status -s -b --ignored
     stat = diff --stat
     sl = stash list --name-status --pretty='format:%gd [%ar]: %s'
     ss = "!_() { git stash show -p stash@{${1:-0}}; };_"
