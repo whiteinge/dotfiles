@@ -1,13 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env sh
 # Urlencode stdin
 #
 # Usage:
 #   printf 'foo bar' | urlencode
 
-import sys
-if sys.version.startswith('3'):
-    import urllib.parse
-    print(urllib.parse.quote(sys.stdin.read()))
-else:
-    import urllib2
-    print(urllib2.quote(sys.stdin.read().encode('utf8')))
+curl http://localhost:1235 -w '%{url_effective}\n' -G --data-urlencode @- \
+    2>/dev/null | sed -e 's/[^?]*?//'
