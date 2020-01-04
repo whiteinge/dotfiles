@@ -14,9 +14,11 @@ readline
 rlwrap
 termux-api
 termux-exec
+tidy
 tigervnc
 tmux
 tree
 vim
 x11-repo
+xmlstarlet
 zsh
