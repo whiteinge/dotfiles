@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+# Use xmlstarlet with html by converting to xhtml via tidy
+#
+# Usage:
+#
+#     curl -sS example.com | htmlstar el -v
+#     curl -sS example.com | htmlstar sel -t -v "//_:p/_:a/@href"
+#
+# Remember to use `_:` to match the xhtml namespaces.
+
+command -v tidy 1>/dev/null
+test $? -eq 0 || { printf 'tidy required\n' 1>&2; exit 1; }
+
+command -v xmlstarlet 1>/dev/null
+if [ $? -eq 0 ]; then
+    xmlstarprg='xmlstarlet'
+else
+    command -v xmlstar 1>/dev/null
+    test $? -eq 0 || { printf 'xmlstarlet required\n' 1>&2; exit 1; }
+    xmlstarprg='xmlstar'
+fi
+
+tidy -q -asxhtml -utf8 | "$xmlstarprg" "$@"
