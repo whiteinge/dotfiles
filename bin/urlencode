@@ -4,5 +4,9 @@
 # Usage:
 #   printf 'foo bar' | urlencode
 
-curl http://localhost:1235 -w '%{url_effective}\n' -G --data-urlencode @- \
-    2>/dev/null | sed -e 's/[^?]*?//'
+{
+    printf '<foo><![CDATA['
+    cat
+    printf ']]></foo>\n';
+} \
+    | xmlstarlet sel -T -t -v 'str:encode-uri(//foo, true)'
