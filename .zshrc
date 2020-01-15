@@ -76,7 +76,6 @@ export EDITOR='vim'
 export VISUAL=$EDITOR
 export LESS='-imJMWR'
 export PAGER="less $LESS"
-export MANPAGER=$PAGER
 export BROWSER='firefox'
 
 export WINEDEBUG=-all
@@ -222,6 +221,11 @@ alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
 # mkdir and cd at once
 mkcd() { mkdir -p -- "$1" && cd -- "$1" }
 compdef mkcd=mkdir
+
+# Wrap man to use Vim as MANPAGER.
+# FIXME: setting $MANPAGER works on OSX but Fedora gets ANSI escape codes. The
+# wrapper below works on both but it would be nice to track down the source.
+function man() { command man "$@" | col -b | vim -M +MANPAGER - }
 
 # Useful for working with Git remotes; e.g., ``git log IN``, ``git diff OUT``.
 alias -g IN='..@{u}'

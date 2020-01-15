@@ -627,6 +627,11 @@ nmap <expr> <leader>jjj opfuncwrapper#WrapOpfunc('joinsplit#JoinItems', 1,
 """ Enable builtin matchit plugin
 runtime macros/matchit.vim
 
+""" Enable builtin manpage viewer plugin
+runtime ftplugin/man.vim
+let g:ft_man_no_sect_fallback = 1
+let g:ft_man_folding_enable = 1
+
 """ undotree settings
 nnoremap <F6> :UndotreeToggle<cr>
 
