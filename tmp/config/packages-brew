@@ -9,9 +9,7 @@ curl
 diffutils
 entr
 ffmpeg
-figlet
 findutils
-flow
 fzy
 gawk
 git
@@ -57,5 +55,6 @@ watch
 wget
 wordnet
 wtf
+xmlstarlet
 yank
 zsh
