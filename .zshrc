@@ -223,6 +223,9 @@ alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
 mkcd() { mkdir -p -- "$1" && cd -- "$1" }
 compdef mkcd=mkdir
 
+# Override GNU info to open info pages in less instead.
+function info() { command info "$@" | less }
+
 # Wrap man to use Vim as MANPAGER.
 # FIXME: setting $MANPAGER works on OSX but Fedora gets ANSI escape codes. The
 # wrapper below works on both but it would be nice to track down the source.
