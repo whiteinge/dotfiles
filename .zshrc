@@ -193,6 +193,7 @@ alias less='less -imJMW'
 alias tree="tree -FC --charset=ascii"
 alias info='info --vi-keys'
 alias wtf='wtf -o'
+alias csi='rlwrap csi -quiet'
 alias ocaml='rlwrap ocaml'
 alias R='R --no-save'
 
