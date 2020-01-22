@@ -197,9 +197,6 @@
     smtpuser = whiteinge@gmail.com
     smtpserverport = 587
 
-[commit]
-  template = ~/.gitmessage
-
 [pager]
     # Don't paginate the oneline log output if less than one page.
     l = $PAGER -F
