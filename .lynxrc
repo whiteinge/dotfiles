@@ -1,0 +1,22 @@
+# Lynx browser config options. See also ~/.lynx/lynx.cfg
+# Set these options from within Lynx interactively with the 'o' key.
+
+accept_all_cookies=on
+
+case_sensitive_searching=off
+keypad_mode=LINKS_AND_FIELDS_ARE_NUMBERED
+lineedit_mode=Bash-like Bindings
+user_mode=ADVANCED
+
+dir_list_style=DIRECTORIES_FIRST
+show_dotfiles=on
+
+# Capital 'H', 'J' and 'K will still activate help, jump shortcuts,
+# and the keymap display.
+vi_keys=on
+emacs_keys=off
+file_editor=vi
+
+character_set=UNICODE (UTF-8)
+preferred_charset=UTF-8
+preferred_language=en
