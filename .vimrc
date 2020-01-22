@@ -332,14 +332,6 @@ set statusline=%{Nm('%')}\ %<%{M(Nm('#'),'#')}\
     \ %h%m%r%w\ %y\ %{&fileencoding},%{&fileformat}\
     \ %q%=\ %-14.(%l,%c%V%)\ %P
 
-" Intercept default window movement keys when inside a tmux session.
-if !empty($TMUX)
-    map <silent> <C-w>h :call vimortmux#VimOrTmuxNav('h')<cr>
-    map <silent> <C-w>j :call vimortmux#VimOrTmuxNav('j')<cr>
-    map <silent> <C-w>k :call vimortmux#VimOrTmuxNav('k')<cr>
-    map <silent> <C-w>l :call vimortmux#VimOrTmuxNav('l')<cr>
-endif
-
 " Arrange Vim windows in tmux-esque layouts. Keeps the current buffer focused.
 fu! MainVert()
     let l:winids = win_findbuf(bufnr('%'))
