@@ -15,6 +15,7 @@ cull-brew -- Remove any brew packages that are not on a whitelist
 cull-dnf -- Remove any user-installed packages not on a whitelist
 curlretry -- Repeatedly download & resume from a URL until finished
 c -- Wrap curl to always output headers and timing (to stderr)
+devdocs-local -- Select docs from devdocs.io using a fuzzy-finder for display at the CLI
 diffconflicts -- A better vimdiff mergetool for Git
 diff-to-line-numbers -- Output the line numbers for lines added and removed in a unified diff
 diff-to-quickfix -- Convert a diff into Vim's quickfix format

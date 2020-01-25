@@ -1,40 +1,118 @@
-#!/usr/bin/env bash
-# Select docs from devdocs.io using a fuzzy-finder for display in Lynx
+#!/usr/bin/env sh
+# Select docs from devdocs.io using a fuzzy-finder for display at the CLI
+#
+# Deps: tidy, xmlstarlet, jq, lynx, fzy, curl, POSIX
+# (This uses a few shell scripts from $HOME/bin. Look there for reference.)
+#
+# Usage:
+#
+#     devdocs-local download
+#     devdocs-local
 
-curl -Ss https://devdocs.io |
-    htmlstar sel -t -v '//_:script[contains(@src, "docs-")]/@src' \
-        2>/dev/null |
-    xargs printf 'http:%s\n' |
-    xargs curl -sS |
-    awk '
-        /^slug: / {
-            match($2, /".*"/)
-            slug = substr($2, RSTART + 1, RLENGTH - 2)
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+
+DEVDOCS_DIR="${DEVDOCS_DIR-"${HOME}/tmp/docs/devdocs.io"}"
+mkdir -p "$DEVDOCS_DIR"
+
+list () {
+    # Find the docs JavaScript and try to extract the slug and mtime values.
+
+    curl -sS https://devdocs.io |
+        htmlstar sel -t -v '//_:script[contains(@src, "docs-")]/@src' \
+            2>/dev/null |
+        xargs printf 'http:%s\n' |
+        xargs curl -sS |
+        awk '
+            /^slug: / {
+                match($2, /".*"/)
+                slug = substr($2, RSTART + 1, RLENGTH - 2)
+            }
+            /^mtime: / {
+                mtime = substr($2, 1, length($2) - 1)
+                print slug, mtime
+            }
+        '
+}
+
+download () {
+    # Download the docsets to a deterministic location.
+
+    # TODO: add multiple selection
+    list |
+        fzy -p 'Choose a docset > ' | {
+            while read -r slug mtime; do
+                test -n "$slug" || return
+
+                ddir="${DEVDOCS_DIR}/${slug}"
+
+                mkdir -p "$ddir"
+                cd "$ddir"
+
+                if [ -r "${ddir}/mtime" ]; then
+                    old_mtime=$(< "${ddir}/mtime")
+
+                    if [ "$old_mtime" -ge "$mtime" ]; then
+                        printf '%s already installed.\n' "$slug" 1>&2
+                        return
+                    fi
+                fi
+
+                printf '%s\n' "$mtime" > mtime
+
+                curl -sS -o index.json "https://devdocs.io/docs/${slug}/index.json?${mtime}"
+                curl -sS -o db.json "https://docs.devdocs.io/${slug}/db.json?${mtime}"
+            done;
         }
-        /^mtime: / {
-            mtime = substr($2, 1, length($2) - 1)
-            print slug, mtime
-        }
-    ' | fzy -p 'Choose a docset > ' | {
-        read -r slug mtime
-        printf 'https://devdocs.io/docs/%s/index.json?%s\n' "$slug" "$mtime" |
-            xargs curl -sS |
-            jq -r '.entries[] | "\(.name) \(.path) (\(.type))"' |
+}
+
+doc () {
+    find "$DEVDOCS_DIR" -mindepth 1 -type d -printf '%f\n' |
+        fzy -p 'Choose docs > ' | {
+            read -r slug
+            test -n "$slug" || return
+
+            jq -r '.entries[] | "\(.name) --- \(.path) --- (\(.type))"' \
+                "${DEVDOCS_DIR}/${slug}/index.json" |
             fzy -p 'Choose a topic > ' |
-            awk '{
+            awk -F " --- " '{
                 h = index($2, "#")
-                print substr($2, 1, h - 1), substr($2, h)
+                if (h == 0) {
+                    print $2
+                } else {
+                    print substr($2, 1, h - 1), substr($2, h)
+                }
             }' | {
-                read -r path frag
+                read -r dpath frag
+                test -n "$dpath" || return
 
-                printf 'https://docs.devdocs.io/%s/db.json?%s\n' "$slug" "$mtime" |
-                    xargs curl -sS |
-                        jq -r ".${path}" |
-                            lynx -assume_charset=utf-8 -stdin -cmd_script=<({
-                                printf ':GOTO' | fold -w1
-                                printf '\n^J\n'
-                                printf '%s' "$frag" | fold -w1
-                                printf '\n^J\n';
-                            } | awk '$0="key " $0');
+                jq -r ".\"${dpath}\"" \
+                    < "${DEVDOCS_DIR}/${slug}/db.json" \
+                    > "${TEMP}/index.html"
+
+                lynx -assume_charset=utf-8 \
+                    "file://localhost/${TEMP}/index.html${frag}"
             };
-    }
+        }
+}
+
+main () {
+    trap '
+        excode=$?; trap - EXIT;
+        rm -rf '"$TEMP"'
+        exit $excode
+    ' INT TERM EXIT
+    mkdir -p -m 700 "$TEMP"
+
+    if [ $# -eq 0 ]; then
+        doc
+    else
+        cmd=$1
+        shift
+
+        "$cmd" "$@"
+    fi
+}
+
+main "$@"
