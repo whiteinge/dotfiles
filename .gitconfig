@@ -204,6 +204,7 @@
     b = $PAGER -F
     branch = $PAGER -F
     sl = $PAGER -F
+    stat = $PAGER -F
 
 [rerere]
     enabled = true
