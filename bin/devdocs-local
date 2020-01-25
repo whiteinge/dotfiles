@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Select docs from devdocs.io using a fuzzy-finder for display in Lynx
+
+curl -Ss https://devdocs.io |
+    htmlstar sel -t -v '//_:script[contains(@src, "docs-")]/@src' \
+        2>/dev/null |
+    xargs printf 'http:%s\n' |
+    xargs curl -sS |
+    awk '
+        /^slug: / {
+            match($2, /".*"/)
+            slug = substr($2, RSTART + 1, RLENGTH - 2)
+        }
+        /^mtime: / {
+            mtime = substr($2, 1, length($2) - 1)
+            print slug, mtime
+        }
+    ' | fzy -p 'Choose a docset > ' | {
+        read -r slug mtime
+        printf 'https://devdocs.io/docs/%s/index.json?%s\n' "$slug" "$mtime" |
+            xargs curl -sS |
+            jq -r '.entries[] | "\(.name) \(.path) (\(.type))"' |
+            fzy -p 'Choose a topic > ' |
+            awk '{
+                h = index($2, "#")
+                print substr($2, 1, h - 1), substr($2, h)
+            }' | {
+                read -r path frag
+
+                printf 'https://docs.devdocs.io/%s/db.json?%s\n' "$slug" "$mtime" |
+                    xargs curl -sS |
+                        jq -r ".${path}" |
+                            lynx -assume_charset=utf-8 -stdin -cmd_script=<({
+                                printf ':GOTO' | fold -w1
+                                printf '\n^J\n'
+                                printf '%s' "$frag" | fold -w1
+                                printf '\n^J\n';
+                            } | awk '$0="key " $0');
+            };
+    }
