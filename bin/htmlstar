@@ -4,7 +4,9 @@
 # Usage:
 #
 #     curl -sS example.com | htmlstar el -v
-#     curl -sS example.com | htmlstar sel -t -v "//_:p/_:a/@href"
+#     curl -sS example.com | htmlstar sel -t -v '//_:p/_:a/@href'
+#     curl -LsS devdocs.io |
+#         htmlstar sel -t -v '//_:script[contains(@src, "docs-")]/@src'
 #
 # Remember to use `_:` to match the xhtml namespaces.
 
