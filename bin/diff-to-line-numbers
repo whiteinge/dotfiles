@@ -7,6 +7,9 @@ skip == 1 { next }
 /^diff/ { skip = 1 }
 
 
+# Skip "\ No newline at end of file"
+/^\\/ { next }
+
 /^diff/ { print $0; next }
 /^@@/ { cur_line = substr($3, 2); sub(/,.*$/, "", cur_line); next }
 /^-/ || /^\+/ {
