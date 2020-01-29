@@ -1,0 +1,51 @@
+#!/usr/bin/env sh
+# Silly functions to make a terminal look busy like in a movie
+
+# https://www.commandlinefu.com/commands/view/6732/pretend-to-be-busy-in-office-to-enjoy-a-cup-of-coffee
+hex () {
+    while [ true ]; do
+        head -n 100 /dev/urandom
+        sleep .1
+    done | hexdump -C | grep 'ca fe'
+}
+
+progress () {
+    local cur=0
+    local tot=23
+    local rem="$tot"
+    local pct=0
+    local skip=0
+
+    printf '\e[?25l'
+
+    printf '|-%*s| ' "$tot"
+    printf '%3s%%' "$pct"
+    while
+        printf '\e[%sG=' $(( cur + 2 ))
+        printf '\e[%sG%3s%% ' $(( tot + 5 )) "$pct"
+        printf '\e[%sG%s\e[0K' $(( tot + 10 )) \
+            "$(shuf -n $(echol 1 2 3 | shuf -n1) \
+                /usr/share/dict/words | paste - - - -d' ')"
+
+        [ "$cur" -eq "$tot" ] && break
+
+        skip=$(( skip + 1 )) # make the text go faster than the progress
+        if [ "$skip" -eq 3 ]; then
+            skip=0
+            cur=$(( cur + 1 ))
+            rem=$(( rem - 1 ))
+            pct=$(( 100 * cur / tot + (1000 * cur / tot % 10 >= 5 ? 1 : 0) ))
+        fi
+        sleep 0.05
+    do :; done
+
+    printf '\e[?25h\n'
+}
+
+_main () {
+    cmd="${1:?'Missing command.'}"
+    shift 1
+    "$cmd" "$@"
+}
+
+_main "$@"
