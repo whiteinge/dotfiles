@@ -84,7 +84,7 @@ tailsplit -- Run a command and open two tmux panes to tail stdout and stderr sep
 timer -- Output seconds elapsed
 tmux-tiled -- Make a bunch of tiled tmux panes via find -exec or xargs
 total -- Sum (total) numbers in a column
-t -- Store a todo list in any Git repository
+todo -- Store a todo list in any Git repository
 urldecode -- Decode urlencoded stdin
 urlencode -- Urlencode stdin
 vipe -- Use $EDITOR to edit text inside a pipeline
