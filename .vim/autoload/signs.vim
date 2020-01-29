@@ -18,7 +18,7 @@ fu! signs#GitChanges()
 
     call sign_unplace(l:group, {'buffer' : l:curbuf})
 
-    let l:lines_changed = systemlist('git diff --check -U0 -- '.
+    let l:lines_changed = systemlist('git diff -U0 -- '.
             \ shellescape(l:curfile) .' 2>/dev/null '
             \ .'| diff-to-line-numbers | tail -n +2 | cut -f1')
         \ ->map({i, x -> split(x, ' ')})
