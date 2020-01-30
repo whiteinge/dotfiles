@@ -4,9 +4,14 @@
 # Deps: tidy, xmlstarlet, jq, lynx, fzy, curl, POSIX
 # (This uses a few shell scripts from $HOME/bin. Look there for reference.)
 #
-# Usage:
+# Download docsets:
 #
-#     devdocs-local download
+#     devdocs-local choose
+#     devdocs-local choose lodash~4 rxjs
+#     devdocs-local choose_from /path/to/devdocs-prefs-export.json
+#
+# Query downloaded docsets:
+#
 #     devdocs-local
 
 NAME=$(basename "$0")
@@ -39,32 +44,51 @@ list () {
 download () {
     # Download the docsets to a deterministic location.
 
-    # TODO: add multiple selection
-    list |
-        fzy -p 'Choose a docset > ' | {
-            while read -r slug mtime; do
-                test -n "$slug" || return
+    while read -r slug mtime; do
+        test -n "$slug" || return
 
-                ddir="${DEVDOCS_DIR}/${slug}"
+        ddir="${DEVDOCS_DIR}/${slug}"
 
-                mkdir -p "$ddir"
-                cd "$ddir"
+        mkdir -p "$ddir"
+        cd "$ddir"
 
-                if [ -r "${ddir}/mtime" ]; then
-                    old_mtime=$(< "${ddir}/mtime")
+        printf 'Installing %s\n' "$slug" 1>&2
 
-                    if [ "$old_mtime" -ge "$mtime" ]; then
-                        printf '%s already installed.\n' "$slug" 1>&2
-                        return
-                    fi
-                fi
+        if [ -r "${ddir}/mtime" ]; then
+            old_mtime=$(< "${ddir}/mtime")
 
-                printf '%s\n' "$mtime" > mtime
+            if [ "$old_mtime" -ge "$mtime" ]; then
+                printf '%s already installed.\n' "$slug" 1>&2
+                return
+            fi
+        fi
 
-                curl -sS -o index.json "https://devdocs.io/docs/${slug}/index.json?${mtime}"
-                curl -sS -o db.json "https://docs.devdocs.io/${slug}/db.json?${mtime}"
-            done;
-        }
+        printf '%s\n' "$mtime" > mtime
+
+        curl -sS -o index.json "https://devdocs.io/docs/${slug}/index.json?${mtime}"
+        curl -sS -o db.json "https://docs.devdocs.io/${slug}/db.json?${mtime}"
+    done;
+}
+
+choose () {
+    if [ $# -eq 0 ]; then
+        list | fzy -p 'Choose a docset > ' | download
+    else
+        list | awk '
+            BEGIN {
+                for (i = 1; i < length(ARGV); i += 1) {
+                    docs[ARGV[i]] = 1; ARGV[i] = ""
+                }
+            }
+
+            docs[$1] { print $0 }
+        ' "$@" | download
+    fi;
+}
+
+choose_from () {
+    jq -r '.docs | split("/")[]' "${1:?Missing Devdocs Prefs export JSON}" |
+        xargs "$0" choose
 }
 
 doc () {
