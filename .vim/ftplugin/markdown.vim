@@ -19,11 +19,7 @@ let b:ale_enabled=0
 
 setl foldnestmax=1
 
-let g:markdown_fenced_languages = ['html', 'python', 'sh',
+let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'sh',
     \'js=javascript', 'ts=typescript', 'hs=haskell', 'math=tex']
 
 setl textwidth=79
-setl conceallevel=2
-
-" Vim highlights conceals as white on gray by default?
-hi! link Conceal Operator
