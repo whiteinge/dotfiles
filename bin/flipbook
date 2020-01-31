@@ -1,0 +1,50 @@
+#!/usr/bin/env sh
+# A flipbook loop for ascii drawings
+#
+# http://www.ascii-art.de/ascii/s/stickman.txt
+# -----------------
+#        o,    o__        
+#       </     [\/        
+#    (`-/-------/----')   
+# ~~~~~@~~~~~~~@~~~~~~~~~~
+# -----------------
+#       o_/|   o_.        
+#       [\_|   [\_\       
+#    (`----|-------\-')   
+# ~~~~~~~~~@~~~~~~~~@~~~~~
+
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+
+trap '
+    excode=$?; trap - EXIT;
+    printf '\''\e[u\e[0J\e[?25h'\''
+    rm -rf '"$TEMP"'
+    exit $excode
+' INT TERM EXIT
+
+if [ $# -eq 0 ]; then
+    mkdir -p -m 700 "$TEMP"
+    awk '/^$/ { exit } { print substr($0, 3) }' "$0" > "${TEMP}/anim.txt"
+    script="${TEMP}/anim.txt"
+else
+    script="$1"
+fi
+
+printf '\e[s\e[?25l'
+while true; do
+    frame=0
+    while IFS= read -r line; do
+        if [ "$line" = '-----------------' ]; then
+            frame=$(( frame + 1 ))
+            sleep 0.3
+            printf '\e[u\e[0J'
+            continue
+        elif [ "$frame" -eq 0 ]; then
+            continue
+        else
+            printf '%s\n' "$line"
+        fi
+    done < "$script"
+done
