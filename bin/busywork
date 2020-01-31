@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 # Silly functions to make a terminal look busy like in a movie
 
-# https://www.commandlinefu.com/commands/view/6732/pretend-to-be-busy-in-office-to-enjoy-a-cup-of-coffee
 hex () {
-    while [ true ]; do
+    # https://www.commandlinefu.com/commands/view/6732/pretend-to-be-busy-in-office-to-enjoy-a-cup-of-coffee
+    while true; do
         head -n 100 /dev/urandom
         sleep .1
     done | hexdump -C | grep 'ca fe'
@@ -18,7 +18,7 @@ progress () {
 
     printf '\e[?25l'
 
-    printf '|-%*s| ' "$tot"
+    printf '[-%*s] ' "$tot"
     printf '%3s%%' "$pct"
     while
         printf '\e[%sG=' $(( cur + 2 ))
