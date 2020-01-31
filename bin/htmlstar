@@ -1,17 +1,12 @@
 #!/usr/bin/env sh
-# Use xmlstarlet with html by converting to xhtml via tidy
+# Use xmlstarlet with html
 #
 # Usage:
 #
 #     curl -sS example.com | htmlstar el -v
-#     curl -sS example.com | htmlstar sel -t -v '//_:p/_:a/@href'
+#     curl -sS example.com | htmlstar sel -t -v '//p/a/@href'
 #     curl -LsS devdocs.io |
-#         htmlstar sel -t -v '//_:script[contains(@src, "docs-")]/@src'
-#
-# Remember to use `_:` to match the xhtml namespaces.
-
-command -v tidy 1>/dev/null
-test $? -eq 0 || { printf 'tidy required\n' 1>&2; exit 1; }
+#         htmlstar sel -t -v '//script[contains(@src, "docs-")]/@src'
 
 command -v xmlstarlet 1>/dev/null
 if [ $? -eq 0 ]; then
@@ -22,4 +17,4 @@ else
     xmlstarprg='xmlstar'
 fi
 
-tidy -q -asxhtml -utf8 | "$xmlstarprg" "$@"
+"$xmlstarprg" fo -H -R 2>/dev/null | "$xmlstarprg" "$@"

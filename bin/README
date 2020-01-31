@@ -48,7 +48,7 @@ git-pagediffs -- Open the full diff for a range of commits as separate pages in 
 git-prompt -- Output a succinct, one-line Git status
 git-summary -- Show a summary of the commits, authors, and files in a Git repo
 hr -- Print a line of characters
-htmlstar -- Use xmlstarlet with html by converting to xhtml via tidy
+htmlstar -- Use xmlstarlet with html
 httpdir -- Serve a local directory via HTTP (via socat)
 imenu -- Select multiple items from stdin via abc's like the inventory menu in Nethack
 joinpdf -- Merges, or joins multiple PDF files into "joined.pdf"
