@@ -42,6 +42,91 @@ progress () {
     printf '\e[?25h\n'
 }
 
+spinner () {
+    local anim="$1"
+    local pad=1
+    while true; do
+        case "$anim" in
+            balloon)
+                set -- '.' 'o' 'O' '@' '*'
+                ;;
+            ball)
+                set -- '_' 'o' 'O' 'o'
+                ;;
+            bounce)
+                set -- \
+                    '(*----)' \
+                    '(-*---)' \
+                    '(--*--)' \
+                    '(---*-)' \
+                    '(----*)' \
+                    '(---*-)' \
+                    '(--*--)' \
+                    '(-*---)'
+                pad=7
+                ;;
+            blink)
+                set -- \
+                    $(yes '(o)(o) ' | head -n 30 | tr -d '\n') \
+                    '(-)(-)' \
+                    '(_)(_)' \
+                    '(-)(-)'
+                pad=6
+                ;;
+            hypnotoad)
+                set -- \
+                    '(O)(o)' \
+                    '(o)(O)'
+                pad=6
+                ;;
+            fish)
+                set -- \
+                    '><{{{*>' \
+                    '|<{{{*>'
+                pad=7
+                ;;
+            ansi)
+                set -- '┤' '┘' '┴' '└' '├' '┌' '┬' '┐'
+                ;;
+            vee)
+                set -- '<' '^' '>' 'v'
+                ;;
+            dots)
+                set -- '.' '..' '...' '....'
+                pad=4
+                ;;
+            cells)
+                set -- 'o' '0' '8' 'oo' '00' '88'
+                pad=2
+                ;;
+            plus)
+                set -- 'x' '+'
+                ;;
+            db)
+                set -- 'd' '|' 'b' '|'
+                ;;
+            qp)
+                set -- 'q' '|' 'p' '|'
+                ;;
+            alpha)
+                set -- a b c d e f g h i j k l m n o p q r s t u v w x y z
+                ;;
+            tminus)
+                set -- 9 8 7 6 5 4 3 2 1 0
+                ;;
+            spin|*)
+                set -- '/' '-' '\' '|'
+                ;;
+        esac
+
+        while [ $# -gt 0 ]; do
+            printf '\e[%sD%-'"$pad"'s' "$pad" "$1"
+            shift
+            sleep 0.1
+        done
+    done
+}
+
 _main () {
     cmd="${1:?'Missing command.'}"
     shift 1
