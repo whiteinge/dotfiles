@@ -11,7 +11,12 @@ skip == 1 { next }
 /^\\/ { next }
 
 /^diff/ { print $0; next }
-/^@@/ { cur_line = substr($3, 2); sub(/,.*$/, "", cur_line); next }
+/^@@/ {
+    cur_line = substr($3, 2)
+    sub(/,.*$/, "", cur_line)
+    if (cur_line < 1) cur_line = 1
+    next
+}
 /^-/ || /^\+/ {
     add_or_rm = substr($0, 1, 1)
     print cur_line, add_or_rm "\t" substr($0, 2)
