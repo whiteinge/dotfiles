@@ -45,6 +45,7 @@ extra_path=(
     $HOME/.cabal/bin \
     $HOME/.ghcup/bin \
     $HOME/.local/bin \
+    $HOME/.luarocks/bin/ \
     /sbin \
     /usr/sbin \
     /usr/local/bin \
