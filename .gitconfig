@@ -15,6 +15,7 @@
     co = checkout
     d = diff --summary --stat --patch
     dc = diff --cached
+    ff = merge --ff-only
     m = merge --no-ff
     mt = mergetool
     p = push
