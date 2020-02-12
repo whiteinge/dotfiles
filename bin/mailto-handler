@@ -1,0 +1,8 @@
+#!/bin/sh
+# A mailto: handler for opening an arbitrary webmail link in Firefox
+
+if [ $# -gt 0 ]; then
+    params="$(printf '%s\n' "$*" | sed -e 's/^mailto:/\&to=/' -e 's/\?/\&/')"
+fi
+
+firefox "https://zimbra.xmission.com/zimbra/h/search?action=compose${params}"
