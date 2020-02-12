@@ -52,6 +52,7 @@ htmlstar -- Use xmlstarlet with html
 httpdir -- Serve a local directory via HTTP (via socat)
 imenu -- Select multiple items from stdin via abc's like the inventory menu in Nethack
 joinpdf -- Merges, or joins multiple PDF files into "joined.pdf"
+join-strings -- Join strings together with a delimiter
 lndir.sh -- Create a shadow directory of symbolic links to another directory tree
 luksimg -- Wrappers around cryptsetup to create/mount/unmount encrypted images
 match-emails -- Output all matched email addresses
@@ -81,6 +82,7 @@ screencast -- Record a screencast on X11 using ffmpeg
 scrollback -- Output the tmux scrollback for the current pane in reverse order
 shsplit -- Reformat a one-line shell command as a multiline shell command
 slugify -- Output a string as a slug
+split-strings -- Split a string on a common delimiter
 status -- Collect various system stats for feeding into a status bar
 tailsplit -- Run a command and open two tmux panes to tail stdout and stderr separately
 timer -- Output seconds elapsed

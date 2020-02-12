@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# Split a string on a common delimiter
+#
+# Usage:
+#
+#   printf 'foo, bar, baz\n' | split-strings
+#   printf '%s\n' foo bar baz | join-strings '-' | split-strings '-'
+
+awk -v delim="${1:-, }" '
+    BEGIN { FS=delim }
+    { for (i = 1; i <= NF; i += 1) print $i }
+'
