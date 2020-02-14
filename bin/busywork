@@ -127,6 +127,47 @@ spinner () {
     done
 }
 
+green_matrix () {
+    # https://www.commandlinefu.com/commands/view/4352/another-matrix-style-implementation
+    printf '\e[?25l'
+    COL=$(( $(tput cols) / 2 ))
+    clear
+    tput setaf 2
+    while :; do
+        tput cup $((RANDOM%COL)) $((RANDOM%COL))
+        printf "%$((RANDOM%COL))s" $((RANDOM%2))
+        sleep 0.005
+    done
+    printf '\e[?25h'
+}
+
+hexdump () {
+    # https://www.commandlinefu.com/commands/view/11904/generate-30-x-30-matrix
+    hexdump -v -e '"%u"' </dev/urandom|fold -60|head -n 30|sed 's/\(.\{2\}\)/\1 /g'
+}
+
+_shuf () {
+    # Reservoir sampling to choose random items in one pass.
+    awk -v K="${1:?'Missing count'}" -v seed="$(date +%N)" '
+    BEGIN { srand(seed) }
+    {
+        n = NR - 1
+        if (n < K) { results[n] = $0 }
+        else {
+            s = int(rand() * n)
+            if (s < K) { results[s] = $0 }
+        }
+    }
+    END { for (i in results) print results[i] }
+    '
+}
+
+_rand () {
+    awk -v end="${1:?'Missing end'}" -v start="${2:-1}" -v seed="$(date +%N)" '
+    BEGIN { srand(seed); print int(start + rand() * (end - start + 1)) }
+    '
+}
+
 _main () {
     cmd="${1:?'Missing command.'}"
     shift 1
