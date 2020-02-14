@@ -4,10 +4,13 @@
 " take an input, modify it, and return the replacement text.
 "
 " Usage:
+"
 " fu! MyFunc(text, is_inline, foo, bar) | return 'sometext' | endfu
 " nmap <expr> <leader>mf opfuncwrapper#WrapOpfunc('MyFunc', 1, 'foo', 'bar'))
 " vmap <silent> <leader>mf :<C-U>call opfuncwrapper#WrapOpfunc(
 "       \'MyFunc', 0, 'foo', 'bar')<cr>
+"
+" Return -1 to avoid changing the file.
 
 fu! opfuncwrapper#WrapOpfunc(fnStr, is_map, ...)
     let l:Fn = function(a:fnStr)
@@ -35,7 +38,9 @@ fu! opfuncwrapper#WrapOpfunc(fnStr, is_map, ...)
 
         " Call fn on the yank register, reselect, then paste new results.
         let @@ = call(l:Fn, [@@, l:is_inline] + l:args)
-        normal! gvp
+        if @@ != -1
+            normal! gvp
+        endif
 
         " -- Restore vv
         let @@ = l:reg_backup
