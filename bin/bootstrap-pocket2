@@ -18,7 +18,7 @@ sed -i -e '/GRUB_CMDLINE_LINUX/ s/quiet"$/fbcon=rotate:1 quiet"/' /etc/default/g
 grub2-mkconfig -o /boot/grub2/grub.cfg
 
 # Set up X server for the unique display.
-# cat > /etc/xorg.conf.d/20-intel.conf <<'EOF'
+cat > /etc/X11/xorg.conf.d/20-intel.conf <<'EOF'
 Section "Device"
 	Identifier "Intel Graphics"
 	Driver "intel"
@@ -27,9 +27,9 @@ Section "Device"
         # Use DRI 2 to avoid a severe rendering flicker in Chrome.
 	Option "DRI" "2"
 EndSection
-# EOF
+EOF
 
-cat > /etc/xorg.conf.d/30-display.conf <<'EOF'
+cat > /etc/X11/xorg.conf.d/30-display.conf <<'EOF'
 Section "Monitor"
 	Identifier "eDP1"
 	Option "Rotate" "right"
@@ -40,7 +40,7 @@ Section "Monitor"
 EndSection
 EOF
 
-cat > /etc/xorg.conf.d/99-touchscreen.conf <<'EOF'
+cat > /etc/X11/xorg.conf.d/99-touchscreen.conf <<'EOF'
 Section "InputClass"
 	Identifier "calibration"
 	MatchProduct "Goodix Capacitive TouchScreen"
