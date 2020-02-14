@@ -22,9 +22,6 @@
 [submodule ".vim/pack/foo/start/undotree"]
 	path = .vim/pack/foo/start/undotree
 	url = https://github.com/mbbill/undotree.git
-[submodule "tmp/repos/xsct"]
-	path = tmp/repos/xsct
-	url = https://github.com/faf0/sct.git
 [submodule "tmp/repos/xcape"]
 	path = tmp/repos/xcape
 	url = https://github.com/alols/xcape.git
