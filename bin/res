@@ -4,7 +4,7 @@
 
 fzy <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs -I{} tmux send xrandr Space {}
 	Auto        --auto
-	Desktop     --output DP1 --preferred --output eDP1 --off
+	Desktop     --output DP1 --preferred --rotate normal --output eDP1 --off
 	Livingroom  --output eDP1 --off --output DP1 --mode 1360x768
 	Bedroom     --output eDP1 --off --output DP1 --mode 1920x1080
 	Notebook    --auto --output eDP1 --transform none --rotate right
