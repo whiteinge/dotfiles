@@ -547,6 +547,17 @@ set printfont=Monaco:h8         " face-type (not size) ignored in PostScript out
 set printencoding=utf-8
 
 " }}}
+" Named macros {{{
+"   Gives an auto-complete-able name to macros. This is an alternative to
+"   having to create key bindings for every little thing. Especially nice for
+"   macros that aren't used very often.
+"
+" Invoke via @=<tab><tab><etc><cr>
+" E.g.: @=_upp<tab><cr>
+
+let _uppercase_word = "gUw"
+
+" }}}
 " Plugin settings {{{
 
 " I stopped using modelines and they can be a security risk, best to disable.
