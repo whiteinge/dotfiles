@@ -580,9 +580,9 @@ nmap <silent> <leader>cc :call stagediff#StageDiff()<cr>
 nmap <silent> <leader>cf :call fzy#NewScratchBuf()
     \\|:.!git ls-files<cr>
     \\|:call fzy#Fzy() ->{x -> execute('edit '. x)}()<cr>
-nmap <silent> <leader>cs :term ++close git add %<cr>
-nmap <silent> <leader>ci :term ++close git commit<cr>
-nmap <silent> <leader>ca :term ++close git commit --amend --no-edit<cr>
+nmap <silent> <leader>cs :!git add %<cr>
+nmap <silent> <leader>ci :!git commit<cr>
+nmap <silent> <leader>ca :!git commit --amend --no-edit<cr>
 " nmap <silent> <leader>cb :vert term ++close git blame -c --date=relative -- %<cr>
 nmap <silent> <leader>cb <bar>
     \ :55vnew <bar>
