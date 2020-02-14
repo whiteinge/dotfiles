@@ -79,6 +79,7 @@ readme-gen -- Generate a README for all $DOTFILES/bin scripts
 res -- Output an xrandr command for common configurations
 rgb2hex -- Convert 16-bit RGB values to hexadecimal
 rproxy -- A reverse proxy that pipes the HTTP response through a shell command
+rtimemachine -- Use rsync as a drop-in replacement for OSX Time Machine
 screencast -- Record a screencast on X11 using ffmpeg
 scrollback -- Output the tmux scrollback for the current pane in reverse order
 shsplit -- Reformat a one-line shell command as a multiline shell command

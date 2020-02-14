@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+# Use rsync as a drop-in replacement for OSX Time Machine
+# (It's just missing the GUI.)
+#
+# Have cron run this every hour or two.
+#
+# Start a dry-run to see what it will do:
+#
+#   rtimemachine --dry-run -vh
+
+BACKUP_DIR="/mnt/timemachine/${USER}"
+LAST_BACKUP=$(find "$BACKUP_DIR" -type d | tail -1)
+NEXT_BACKUP=$(date '+%FT%R')
+
+if [ "$LAST_BACKUP" = '.' ]; then has_prev=1; fi
+
+rsync -a --delete "$@" \
+    ${has_prev:+--link-dest="${BACKUP_DIR}/${LAST_BACKUP}"} \
+    "${HOME}/" "${BACKUP_DIR}/${NEXT_BACKUP}"
