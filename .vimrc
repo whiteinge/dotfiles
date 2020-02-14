@@ -107,8 +107,12 @@ set nojoinspaces                " Prevents inserting two spaces after punctuatio
 set lazyredraw                  " Will not redraw the screen while running macros (goes faster)
 set pastetoggle=<F9>            " Useful so auto-indenting doesn't mess up code when pasting
 
-set virtualedit=block           " Let cursor move past the last char in <C-V> mode
 set nostartofline               " Avoid moving cursor to BOL when jumping around
+set virtualedit=block           " Let cursor move past the last char in <C-V> mode
+
+" Toggle virtualedit
+" Useful for ascii art and for transposing columns with a visual selection.
+nnoremap <silent> <leader>aa :exe "set ve=". (&ve == "all" ? "block" : "all")<cr>
 
 set cryptmethod=blowfish2       " Use (much) stronger blowfish encryption
 
