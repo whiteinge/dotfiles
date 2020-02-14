@@ -188,6 +188,9 @@ map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
 " Change directory to the path of the current file
 map <leader>cd :cd %:p:h<cr>
 
+" Make necessary directories to be able to write the current file
+map <leader>cm :!mkdir -p %:h<cr>
+
 " Edit a new file starting in the same dir as the current file
 map <leader>ce :e <C-R>=expand("%:p:h") . "/" <cr>
 map <leader>cs :sp <C-R>=expand("%:p:h") . "/" <cr>
