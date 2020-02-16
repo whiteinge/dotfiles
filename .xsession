@@ -24,7 +24,11 @@ if [ -f "$usermodmap" ]; then
     xmodmap "$usermodmap"
 fi
 
+# Swap ctrl with caps lock.
 setxkbmap -option ctrl:nocaps
+
+# Disable key repeating.
+xset r off
 
 # start some nice programs
 
@@ -35,8 +39,12 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     unset f
 fi
 
+# Alternative to gnome-settings-daemon for font antialiasing & hinting.
 xsettingsd &
+
 xscreensaver -no-splash &
+
+# Remove ssh identities from the running agent when the screensaver activates.
 xscreensaver-command -watch \
     | while read a; do echo $a | grep '^LOCK' && ssh-add -D; done &
 
