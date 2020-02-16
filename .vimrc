@@ -634,6 +634,11 @@ nmap <expr> <leader>jj, opfuncwrapper#WrapOpfunc('joinsplit#JoinItems', 1, ', ')
 nmap <expr> <leader>jjj opfuncwrapper#WrapOpfunc('joinsplit#JoinItems', 1,
     \input("Join on what chars? ", ", "))
 
+""" Fold everything _except_ a given range of lines
+nmap <expr> <leader>zf opfuncwrapper#WrapOpfunc('foldaround#FoldAround', 1)
+vmap <silent> <leader>zf :<C-U>call
+    \ opfuncwrapper#WrapOpfunc('foldaround#FoldAround', 0)<cr>
+
 """ Enable builtin matchit plugin
 runtime macros/matchit.vim
 
