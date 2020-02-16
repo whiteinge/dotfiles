@@ -20,8 +20,6 @@ devdocs-local -- Select docs from devdocs.io using a fuzzy-finder for display at
 diffconflicts -- A better vimdiff mergetool for Git
 diff-to-line-numbers -- Output the line numbers for lines added and removed in a unified diff
 diff-to-quickfix -- Convert a diff into Vim's quickfix format
-dkaomoji -- dmenu based kaomoji picker
-dmoji -- dmenu based emoji picker
 echol -- Like echo but delimit with newlines instead of spaces
 echoserver -- Start an echo HTTP server
 explode_path -- Take a path and output all child paths as absolute paths
@@ -73,7 +71,6 @@ osx-xclip -- An xclip-like wrapper to pbcopy/pbpaste
 pick.sh -- WIP: A POSIX sh implementation of pick
 play-somafm -- Select a SomaFM stream with a fuzy-finder and play via mpv
 pysmtp -- Start a echoing SMTP server
-qb.sh -- Qutebrowser helpers
 queue -- A lightweight job queue using tail and xargs
 readme-gen -- Generate a README for all $DOTFILES/bin scripts
 res -- Output an xrandr command for common configurations
