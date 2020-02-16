@@ -6,8 +6,7 @@ open_cmd=$(command -v 'xdg-open')
 test "$?" -eq 0 || open_cmd=$(command -v 'open')
 test "$?" -eq 0 || open_cmd='echo'
 
-tmux capture-pane -pJS -1000 \
-    | tac \
+scrollback \
     | match-urls \
     | fzy -p 'Open URL > ' \
     | xargs -r "$open_cmd"
