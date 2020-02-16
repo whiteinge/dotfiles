@@ -22,9 +22,13 @@ fu! opfuncwrapper#WrapOpfunc(fnStr, is_map, ...)
         let &selection = "inclusive"
         " -- Backup ^^
 
+        let l:begin = line("'[")
+        let l:end = line("']")
         if a:0  " Invoked from Visual mode, use '< and '> marks.
             let l:is_inline = 0
             silent exe "normal! `<" . a:type . "`>y"
+            let l:begin = line("'<")
+            let l:end = line("'>")
         elseif a:type == 'line' " Line
             let l:is_inline = 0
             silent exe "normal! '[V']y"
@@ -37,7 +41,7 @@ fu! opfuncwrapper#WrapOpfunc(fnStr, is_map, ...)
         endif
 
         " Call fn on the yank register, reselect, then paste new results.
-        let @@ = call(l:Fn, [@@, l:is_inline] + l:args)
+        let @@ = call(l:Fn, [@@, l:is_inline] + l:args + [l:begin, l:end])
         if @@ != -1
             normal! gvp
         endif

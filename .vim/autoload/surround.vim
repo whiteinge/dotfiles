@@ -2,7 +2,7 @@
 "
 " Surround('foo', 1, '<')   // => <foo>
 
-fu! surround#Surround(text, is_inline, surround_char)
+fu! surround#Surround(text, is_inline, surround_char, ...)
     let l:common_pairs = {
         \'{': '}', '}': '{',
         \'(': ')', ')': '(',

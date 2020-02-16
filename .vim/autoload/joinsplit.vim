@@ -24,7 +24,7 @@
 " 4.    Finally join again using the same text-object. Choose ", " as the
 "       delimeter to join with (the default).
 
-fu! joinsplit#SplitItems(text, is_inline, char)
+fu! joinsplit#SplitItems(text, is_inline, char, ...)
     return a:text
         \ ->{x -> a:is_inline ? split(x, a:char) : split(x, "\n")}()
         \ ->map({i, x -> trim(x, " \r\n\t". a:char)})
@@ -32,7 +32,7 @@ fu! joinsplit#SplitItems(text, is_inline, char)
         \ ->{x -> a:is_inline ? x ."\n" : x}()
 endfu
 
-fu! joinsplit#JoinItems(text, is_inline, char)
+fu! joinsplit#JoinItems(text, is_inline, char, ...)
     return a:text
         \ ->split("\n")
         \ ->join(a:char)
