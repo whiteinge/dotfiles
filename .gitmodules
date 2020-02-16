@@ -37,6 +37,3 @@
 [submodule "tmp/repos/fzy"]
 	path = tmp/repos/fzy
 	url = https://github.com/jhawthorn/fzy.git
-[submodule ".vim/pack/foo/start/vim-vinegar"]
-	path = .vim/pack/foo/start/vim-vinegar
-	url = https://github.com/tpope/vim-vinegar.git

@@ -573,6 +573,7 @@ let mapleader = '\'
 """ newrw settings.
 " Hide the newrw banner by default. 'I' to toggle.
 let g:netrw_banner = 0
+nmap <silent> - :Explore<cr>
 
 """ Easily make a buffer into a scratch buffer:
 nmap <silent> <leader>S :call scratch#Scratch()<cr>
