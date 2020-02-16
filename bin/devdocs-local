@@ -25,7 +25,7 @@ list () {
     # Find the docs JavaScript and try to extract the slug and mtime values.
 
     curl -sS https://devdocs.io |
-        htmlstar sel -t -v '//_:script[contains(@src, "docs-")]/@src' \
+        htmlstar sel -t -v '//script[contains(@src, "docs-")]/@src' \
             2>/dev/null |
         xargs printf 'http:%s\n' |
         xargs curl -sS |
