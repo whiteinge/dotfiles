@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # Silly functions to make a terminal look busy like in a movie
 
-hex () {
+hexstream () {
     # https://www.commandlinefu.com/commands/view/6732/pretend-to-be-busy-in-office-to-enjoy-a-cup-of-coffee
     while true; do
         head -n 100 /dev/urandom
@@ -141,7 +141,7 @@ green_matrix () {
     printf '\e[?25h'
 }
 
-hexdump () {
+hexgrid () {
     # https://www.commandlinefu.com/commands/view/11904/generate-30-x-30-matrix
     hexdump -v -e '"%u"' </dev/urandom|fold -60|head -n 30|sed 's/\(.\{2\}\)/\1 /g'
 }
