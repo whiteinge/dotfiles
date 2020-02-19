@@ -28,16 +28,12 @@ let g:tagbar_type_javascript = {
     \ ],
 \ }
 
-" Persistent macro to sort ES6 imports.
-nmap <leader>qi f{\js,i{vi{!sort<cr>\jj,i{k2J2J\fg
+" (Req's my split/join plugin & mappings.)
+let _sort_es6_imports = 'f{\js,i{vi{!sort\jj,i{kJJ'
 
-" Auto-namespace action constants.
-nmap <leader>qn f:wa<c-r>=expand('%:t:r')<cr>/<esc>gui'
-nmap <leader>qN vi{:norm <leader>qn<cr>
+let _namespace_action = 'f:wa=expand("%:t:r")/gui'
+let _namespace_all_actions = 'vi{:QQ g:_namespace_action'
 
-" Reformat a line of CSS as appropriate for a JavaScript object (CSS-in-JS);
-" or a line of CSS-in-JS as CSS.
 " (Req's my Caser and surround mappings.)
-" Use :norm to run this on multiple lines.
-nmap <leader>qc 0w\wct:ww\s'$hxpr,<cr>
-nmap <leader>qC w\wkwf'xf'xr;<cr>
+let _css_to_js = '0w\wct:ww\s''$hxpr,'
+let _js_to_css = 'w\wkwf''xf''xr;'

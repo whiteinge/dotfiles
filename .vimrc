@@ -553,12 +553,21 @@ set printencoding=utf-8
 " Named macros {{{
 "   Gives an auto-complete-able name to macros. This is an alternative to
 "   having to create key bindings for every little thing. Especially nice for
-"   macros that aren't used very often.
+"   macros that aren't used very often. Runs the macro on each line in a range.
 "
-" Invoke via @=<tab><tab><etc><cr>
-" E.g.: @=_upp<tab><cr>
+"   Usage: record a macro as normal, open an ftplugin or .vimrc and paste the
+"   macro, assign that to a single-quoted string (or double-quoted if you want
+"   to replace non-printable chars with printable chars (see :norm)), then
+"   invoke qq and press tab to cycle through available macro variables.
 
-let _uppercase_word = "gUw"
+fu! QQ(varname)
+    exe "norm ". a:varname
+endfu
+com -nargs=1 -range -complete=var QQ <line1>,<line2>call QQ(<args>)
+nmap <leader>qq :QQ _
+vmap <leader>qq :QQ _
+
+let _uppercase_word = 'gUw'
 
 " }}}
 " Plugin settings {{{
