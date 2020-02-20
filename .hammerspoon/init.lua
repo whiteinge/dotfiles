@@ -69,3 +69,19 @@ if caffeine then
     caffeine:setClickCallback(caffeineClicked)
     setCaffeineDisplay(hs.caffeinate.get("displayIdle"))
 end
+
+-------------------------------------------------------------------------------
+-- hs.caffeinate.watcher.screensaverDidStart
+
+function screensaverActivatedCallback(etype)
+    if
+            etype == hs.caffeinate.watcher.screensaverDidStart or
+            etype == hs.caffeinate.watcher.screensDidSleep or
+            etype == hs.caffeinate.watcher.screensDidLock or
+            etype == hs.caffeinate.watcher.systemWillSleep then
+        os.execute("ssh-add -D")
+    end
+end
+
+screensaverWatcher = hs.caffeinate.watcher.new(screensaverActivatedCallback)
+screensaverWatcher:start()
