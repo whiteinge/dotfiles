@@ -168,6 +168,66 @@ _rand () {
     '
 }
 
+git_ff () {
+    # prefixes="/usr /usr/include /usr/local /usr/share /usr/local/include /usr/local/share"
+    # suffixes=".o .h .rb .py .lock .c"
+
+    count="$(shuf -i 1-100 -n 1)"
+    printf 'Updating %s\nFast-forward\n' \
+        "$(hexdump -n 8 -v -e '"%02x" ".." "%02x"' /dev/urandom)"
+
+    shuf -n "$count" /usr/share/dict/words |
+        awk -v seed="$(date +%N)" -v cols="$(tput cols)" '
+    function count(arr) {
+        for (i in arr) c += 1
+        return c
+    }
+    function r(min, max, addtl_seed) {
+        srand(seed + addtl_seed)
+        return int(min + rand() * (max - min + 1))
+    }
+
+    BEGIN { num_items = r(1, 4) }
+
+    num_items != 0 {
+        items = items sep tolower($0)
+        num_items -= 1
+        sep = "/"
+    }
+    num_items == 0 {
+        git_files[NR] = items
+        len = length(items)
+        if (len > longest_item) longest_item = len
+
+        num_items = r(1, 4, NR)
+        items = ""
+        sep = ""
+    }
+
+    END {
+        rem = cols - longest_item - 9
+        for (i in git_files) {
+            printf(" %-" longest_item "s | ", git_files[i])
+
+            added = r(0, rem, i + 1)
+            tot_added += added
+            a=sprintf("%" added "s",""); gsub(/ /,"+",a)
+            removed = r(0, rem - added, i - 1)
+            tot_removed += removed
+            d=sprintf("%" removed "s",""); gsub(/ /,"-",d)
+            printf("%3s \033[0;32m%s\033[0;31m%s\033[0m", \
+                added + removed, a, d)
+
+            printf("\n")
+        }
+
+        print count(git_files), "files changed,", \
+            tot_added, "insertions(+),", \
+            tot_removed, "deletions(-)"
+    }
+    '
+}
+
 _main () {
     cmd="${1:?'Missing command.'}"
     shift 1
