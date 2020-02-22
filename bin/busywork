@@ -168,6 +168,10 @@ _rand () {
     '
 }
 
+git_range() {
+    hexdump -n 8 -e '4/1 "%02x" ".." 4/1 "%02x" "\n"' /dev/urandom
+}
+
 git_ff () {
     # prefixes="/usr /usr/include /usr/local /usr/share /usr/local/include /usr/local/share"
     # suffixes=".o .h .rb .py .lock .c"
