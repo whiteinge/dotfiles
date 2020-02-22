@@ -69,7 +69,6 @@ osx-proxy -- Toggle the OSX HTTP/HTTPS proxies on for the primary interface
 osx-resize-window -- Resize the most recent window in a specific app to specific dimensions
 osx-toggle-interfaces -- Toggle wifi/ethernet on/off when the physical connection changes
 osx-xclip -- An xclip-like wrapper to pbcopy/pbpaste
-pick.sh -- WIP: A POSIX sh implementation of pick
 play-somafm -- Select a SomaFM stream with a fuzy-finder and play via mpv
 pysmtp -- Start a echoing SMTP server
 queue -- A lightweight job queue using tail and xargs
@@ -87,8 +86,8 @@ status -- Collect various system stats for feeding into a status bar
 tailsplit -- Run a command and open two tmux panes to tail stdout and stderr separately
 timer -- Output seconds elapsed
 tmux-tiled -- Make a bunch of tiled tmux panes via find -exec or xargs
-total -- Sum (total) numbers in a column
 todo -- Store a todo list in any Git repository
+total -- Sum (total) numbers in a column
 urldecode -- Decode urlencoded stdin
 urlencode -- Urlencode stdin
 vipe -- Use $EDITOR to edit text inside a pipeline
