@@ -9,7 +9,7 @@
 #   printf '%s\n' foo bar baz | join-strings
 #   printf '%s\n' foo bar baz | join-strings '-'
 
-awk -v delim="${1:-, }" '
+awk -v delim="${1-, }" '
     BEGIN { isep = "" }
     { printf("%s%s", isep, $0); isep=delim }
     END { printf("\n") }
