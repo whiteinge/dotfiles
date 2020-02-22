@@ -1,0 +1,22 @@
+#!/usr/bin/env -S awk -f
+# Print each input character on a new line
+#
+# Usage:
+#
+#   echoc 'This is a test.'
+#   printf 'This is a test.\n' | echoc
+
+function pl(input,      i) {
+    for (i = 1; i <= length(input); i += 1)
+        print substr(input, i, 1)
+}
+
+BEGIN {
+    for (i = 1; i < length(ARGV); i += 1) {
+        pl(ARGV[i]); ARGV[i] = ""
+    }
+
+    if (ARGC > 1) exit
+}
+
+{ pl($0) }

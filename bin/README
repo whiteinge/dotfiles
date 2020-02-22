@@ -20,6 +20,7 @@ devdocs-local -- Select docs from devdocs.io using a fuzzy-finder for display at
 diffconflicts -- A better vimdiff mergetool for Git
 diff-to-line-numbers -- Output the line numbers for lines added and removed in a unified diff
 diff-to-quickfix -- Convert a diff into Vim's quickfix format
+echoc -- Print each input character on a new line
 echol -- Like echo but delimit with newlines instead of spaces
 echoserver -- Start an echo HTTP server
 explode_path -- Take a path and output all child paths as absolute paths
