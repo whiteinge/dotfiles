@@ -456,7 +456,7 @@ nmap <silent> <leader>6 <c-^><cr>
 " Use gext script instead of grep; make command to avoid confusion since the
 " options are different.
 set grepprg=gext
-command! -nargs=* Gext grep <args>
+command! -nargs=* -complete=file Gext grep <args>
 
 " Also look for the tags file inside the Git directory.
 set tags+=.git/tags;
