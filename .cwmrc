@@ -47,8 +47,10 @@ bind-key CMS-F4 window-movetogroup-4
 
 # Mouse keys.
 unbind-mouse all    # Remove the click menus
-bind-mouse M-1    window-move
-bind-mouse M-3    window-resize
+bind-mouse M-1      window-move
+bind-mouse M-3      window-resize
+bind-mouse "1"      menu-window
+bind-mouse "3"      menu-cmd
 
 # Layout settings.
 fontname "Monaco:pixelsize=12"
