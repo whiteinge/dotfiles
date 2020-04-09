@@ -693,5 +693,14 @@ au User QfChanged call signs#QfList()
 """ Mapping to call DetectIndent
 nmap <silent> <leader>i :1verbose DetectIndent<cr>
 
+""" Jqplay Settings
+let g:jqplay = {
+    \ 'opts': '-r',
+    \ 'autocmds': ['TextChanged', 'TextChangedI']
+\ }
+
+au FileType json
+    \ if bufname('%')[:11] ==# 'jq-output://' | syntax clear | endif
+
 " }}}
 " EOF
