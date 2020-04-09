@@ -21,6 +21,6 @@ let g:tagbar_type_rst = {
 noremap <Leader>h <Esc>:norm yypVr
 
 " Use a skeleton template when editing a new file named 'presentation.rst'
-if bufname('%') == 'presentation.rst'
+if bufname('%') =~? 'presentation\.rst$'
     let b:ftskeleton="~/.vim/ftplugin/rst/skeleton/rst2beamer.rst"
 endif
