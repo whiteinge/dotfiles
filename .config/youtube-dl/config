@@ -1,0 +1,14 @@
+--restrict-filenames
+--output='%(playlist_title)s.s00.e%(playlist_index)02d-%(title)s.%(ext)s'
+
+--prefer-free-formats
+
+# Explicitly pass a playlist URL instead of a video in a plalist.
+--no-playlist
+
+# Embed subtitles and metadata if available.
+--write-sub
+--embed-subs
+--add-metadata
+
+--user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"
