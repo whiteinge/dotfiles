@@ -2,7 +2,12 @@
 
 --langdef=markdown
 --langmap=markdown:.md
---regex-markdown=/^(#+)[ \t]+([^#]*)/\1 \2/h,header,Markdown Headers/
+--regex-markdown=/^#[ \t]+(.*)/\1/h,header,Markdown Headers/
+--regex-markdown=/^##[ \t]+(.*)/|-- \1/h,header,Markdown Headers/
+--regex-markdown=/^###[ \t]+(.*)/|   |-- \1/h,header,Markdown Headers/
+--regex-markdown=/^####[ \t]+(.*)/|   |   |-- \1/h,header,Markdown Headers/
+--regex-markdown=/^#####[ \t]+(.*)/|   |   |   |-- \1/h,header,Markdown Headers/
+--regex-markdown=/^######[ \t]+(.*)/|   |   |   |   |-- \1/h,header,Markdown Headers/
 --regex-markdown=/\[([^\[]+)\]\(([^\)]+)\)/\1/l,link,Markdown Links/
 --regex-markdown=/!\[\]\(.*[\/ ](.*\.[a-z]{3})\)/\1/i,image,Markdown Image/
 

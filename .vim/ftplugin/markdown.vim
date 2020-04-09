@@ -2,8 +2,8 @@ let g:tagbar_type_markdown = {
     \ 'ctagstype' : 'markdown',
     \ 'kinds' : [
         \ 'h:headings',
-        \ 'l:links',
-        \ 'i:images'
+        \ 'l:links:1',
+        \ 'i:images:1'
     \ ],
     \ "sort" : 0
 \ }
