@@ -85,3 +85,26 @@ end
 
 screensaverWatcher = hs.caffeinate.watcher.new(screensaverActivatedCallback)
 screensaverWatcher:start()
+
+-------------------------------------------------------------------------------
+-- Multimedia keybindings that mimic my CWM bindings (for non-mac keyboards)
+
+function systemKey(key)
+    return function()
+        hs.eventtap.event.newSystemKeyEvent(string.upper(key), true):post()
+        hs.eventtap.event.newSystemKeyEvent(string.upper(key), false):post()
+    end
+end
+
+media_key_binds = {
+    up = 'SOUND_UP',
+    down = 'SOUND_DOWN',
+    left = 'PREVIOUS',
+    right = 'NEXT',
+    space = 'PLAY',
+    ['return'] = 'MUTE',
+}
+
+for key, value in pairs(media_key_binds) do
+    hs.hotkey.bind({'cmd', 'shift', 'ctrl'}, key, nil, systemKey(value))
+end
