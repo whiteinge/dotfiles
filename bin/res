@@ -4,13 +4,13 @@
 
 fzy <<- EOF | awk '{ $1 = ""; sub(/^\s+/, "", $0); print $0 }' | xargs -I{} tmux send xrandr Space {}
 	Auto        --auto
-	Desktop     --output DP1 --preferred --rotate normal --output eDP1 --off
-	Livingroom  --output eDP1 --off --output DP1 --mode 1360x768
-	Bedroom     --output eDP1 --off --output DP1 --mode 1920x1080
+	Desktop     --output eDP1 --off --output DP1 --primary --preferred --rotate normal
+	Livingroom  --output eDP1 --off --output DP1 --primary --mode 1360x768
+	Bedroom     --output eDP1 --off --output DP1 --primary --mode 1920x1080
 	Notebook    --auto --output eDP1 --transform none --rotate right
-	Netbook     --auto --output eDP1 --scale 0.5x0.5 --rotate right
-	Present     --output eDP1 --scale-from 1024x768
-	Reset       --auto --output eDP1 --preferred --transform none --rotate normal
+	Netbook     --auto --output eDP1 --primary --preferred --scale 0.5x0.5 --rotate right
+	Present     --output DP1 --mode 1024x768 --output eDP1 --scale-from 1024x768
+	Reset       --auto --output eDP1 --primary --preferred --transform none --rotate normal
 	Underscan   --output DP1 --transform 0.80,0,-35,0,1.04,-19,0,0,1
-	Work        --output DP1 --preferred --rotate left --output eDP1 --off
+	Work        --output eDP1 --off --output DP1 --primary --preferred --rotate left
 EOF
