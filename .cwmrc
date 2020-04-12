@@ -14,9 +14,9 @@ bind-key CMS-r restart
 bind-key CMS-q quit
 
 # Media keys.
-bind-key XF86AudioLowerVolume "/usr/bin/pactl set-sink-volume 0 -5%"
-bind-key XF86AudioRaiseVolume "/usr/bin/pactl set-sink-volume 0 +5%"
-bind-key XF86AudioMute "/usr/bin/pactl set-sink-mute 0 toggle"
+bind-key XF86AudioLowerVolume "/usr/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%"
+bind-key XF86AudioRaiseVolume "/usr/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%"
+bind-key XF86AudioMute "/usr/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle"
 bind-key XF86MonBrightnessUp "/bin/xbacklight -inc 10"
 bind-key XF86MonBrightnessDown "/bin/xbacklight -dec 10"
 bind-key CM-r "/bin/xrandr --auto"
