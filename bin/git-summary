@@ -10,7 +10,7 @@ done
 shift $(( OPTIND - 1 ))
 
 git log --no-renames ${show_files:+--numstat} \
-        --format='XXX%x09%h%x09%an%x09%ae%x09%cn%x09%ce%x09%ai%x09%cr' \
+        --format='XXX%x09%h%x09%an%x09%ae%x09%cn%x09%ce%x09%aD%x09%cr' \
     | awk -v FS='\t' -v OFS='\t' '
     /^$/ { next }
 
@@ -18,13 +18,30 @@ git log --no-renames ${show_files:+--numstat} \
         sha=$2
         author=$3 " <" $4 ">"
         committer=$5 " <" $6 ">"
-        auth_date=substr($7, 1, index($7, " ") - 1)
         reldate=$8
+
+        split($7, cal_segs, " ")
+
+        weekday=cal_segs[1]
+        weekday=substr(weekday, 1, length(weekday) - 1)
+
+        day=cal_segs[2]
+        month=cal_segs[3]
+        year=cal_segs[4]
+
+        hour=cal_segs[5]
+        hour=substr(hour, 1, index(hour, ":") - 1)
+
+        tz=cal_segs[6]
+
+        auth_date=month ", " day " " year
 
         commit_count += 1
         author_list[author] += 1
         committer_list[committer] += 1
         active_days[auth_date] = 1
+        top_hours[hour] += 1
+        top_weekdays[weekday] += 1
     }
 
     NR == 1 { last_date=auth_date; last_reldate=reldate; last_sha=sha }
@@ -48,20 +65,38 @@ git log --no-renames ${show_files:+--numstat} \
         print "Authors:", length(author_list)
         print "Committers:", length(committer_list)
 
+        printf("\nTop days:\n\n")
+        weekday_cmd = "sort -n -r | cut -f2"
+        for (h in top_weekdays) {
+            wd = top_weekdays[h]
+            printf("%s\t%s %.0f%%\n", wd, h, (wd / commit_count) * 100 ) \
+                | weekday_cmd
+        }
+        close(weekday_cmd)
+
+        printf("\nTop hours:\n\n")
+        hour_cmd = "sort -n -r | cut -f2 | head -6"
+        for (i in top_hours) {
+            hr = top_hours[i]
+            printf("%s\t%s %.0f%%\n", hr, i, (hr / commit_count) * 100 ) \
+                | hour_cmd
+        }
+        close(hour_cmd)
+
         printf("\nTop authors:\n\n")
         topcom_cmd = "sort -n -r | head -10"
-        for (i in author_list) {
+        for (j in author_list) {
             printf("%s\t%.1f%%\t%s\n",
-                author_list[i],
-                (author_list[i] / commit_count) * 100,
-                i) | topcom_cmd
+                author_list[j],
+                (author_list[j] / commit_count) * 100,
+                j) | topcom_cmd
         }
         close(topcom_cmd)
 
         if (length(file_list)) {
             printf("\nTop files:\n\n")
             topfil_cmd = "sort -n -r | head -10"
-            for (i in file_list) print file_list[i], i | topfil_cmd
+            for (k in file_list) print file_list[k], k | topfil_cmd
             close(topfil_cmd)
         }
     }
