@@ -4,6 +4,7 @@ bc
 bind-utils
 bluez
 bluez-tools
+bmon
 busybox
 cloc
 cryptsetup
@@ -46,7 +47,6 @@ nautilus
 ncdu
 ncurses-devel
 nethack
-nethogs
 NetworkManager-tui
 NetworkManager-wifi
 nmap
