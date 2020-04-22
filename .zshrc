@@ -229,9 +229,12 @@ compdef mkcd=mkdir
 function info() { command info "$@" | less }
 
 # Wrap man to use Vim as MANPAGER.
-# FIXME: setting $MANPAGER works on OSX but Fedora gets ANSI escape codes. The
-# wrapper below works on both but it would be nice to track down the source.
-function man() { command man "$@" | col -b | vim -M +MANPAGER - }
+function _man() {
+    [[ $# -eq 0 ]] && return 1
+    MANPAGER='cat' command man "$@" | col -b | vim -M +MANPAGER -
+}
+# Zsh's completion invokes man on tab so avoid a recursive definition.
+alias man='_man'
 
 # Useful for working with Git remotes; e.g., ``git log IN``, ``git diff OUT``.
 alias -g IN='..@{u}'
