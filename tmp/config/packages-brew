@@ -6,6 +6,7 @@ cmake
 coreutils
 ctags
 curl
+datamash
 ffmpeg
 findutils
 fzy
