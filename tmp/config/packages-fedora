@@ -1,5 +1,6 @@
 android-tools
 authselect
+bash
 bc
 bind-utils
 bluez
@@ -7,15 +8,19 @@ bluez-tools
 bmon
 busybox
 cloc
+coreutils
 cryptsetup
 ctags
+curl
 cwm
 datamash
+diffutils
 dmenu
 dosfstools
 dunst
 efibootmgr
 ffmpeg
+findutils
 firefox
 fuse-sshfs
 git
@@ -56,7 +61,6 @@ onboard
 openssh
 pandoc
 patch
-patchutils
 pavucontrol
 pinentry
 pulseaudio
@@ -85,7 +89,6 @@ unrar
 unzip
 util-linux-user
 vlc
-which
 whois
 wireless-tools
 wmctrl

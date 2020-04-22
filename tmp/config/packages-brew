@@ -1,12 +1,12 @@
-awscli
 bash
+bmon
 cataclysm
 cloc
-cmake
 coreutils
 ctags
 curl
 datamash
+diffutils
 ffmpeg
 findutils
 fzy
@@ -17,6 +17,7 @@ gnu-tar
 gnu-units
 gnu-which
 gnupg
+gpatch
 graphviz
 grep
 gzip
@@ -29,6 +30,7 @@ lynx
 make
 mitmproxy
 mpv
+mutt
 ncdu
 nethack
 nmap
