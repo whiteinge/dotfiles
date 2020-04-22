@@ -30,22 +30,33 @@
     ss = "!_() { git stash show -p stash@{${1:-0}}; };_"
     sd = "!_() { git stash drop stash@{${1:-0}}; };_"
     which = "!_() { git config --global --get alias.$1; };_"
-    churn = !git log --all -M -C --name-only --format='format:' "$@" | grep . | sort | uniq -c | sort -n -r
+    churn = !git log --all -M -C --name-only --format='format:' "$@" \
+        | grep . | sort | uniq -c | sort -n -r
     whoami = !git var GIT_COMMITTER_IDENT | sed 's/>.*/>/'
 
-    # Fetch all or one remote: git f; git f upstream
+    # Fetch all or one remote:
+    #   git f
+    #   git f upstream
     f = "!sh -c 'git fetch --tags ${1:-\"--all\"}' -"
 
-    # Interactive rebase against upstream HEAD or ref: git r; git r HEAD~10
+    # Interactive rebase against upstream HEAD or ref:
+    #   git r
+    #   git r HEAD~10
     r = "!sh -c 'git rebase -i ${1:-\"@{u}\"}' -"
 
-    # Rebase against upstream HEAD or ref: git r; git r HEAD~10
+    # Rebase against upstream HEAD or ref:
+    #   git r
+    #   git r HEAD~10
     rup = "!sh -c 'git rebase ${1:-\"@{u}\"}' -"
 
-    # Hard reset to upstream or ref: git re; git rh HEAD~1
+    # Hard reset to upstream or ref:
+    #   git re
+    #   git rh HEAD~1
     rh = "!sh -c 'git reset --hard ${1:-\"@{u}\"}' -"
 
-    # Fast-forward merge upstream or ref: git up; git up myremote/mybranch
+    # Fast-forward merge upstream or ref:
+    #   git up
+    #   git up myremote/mybranch
     up = "!sh -c 'git merge --ff-only ${1:-\"@{u}\"}' -"
 
     # Make a stub commit with file and file contents. Useful for demoing.
@@ -54,33 +65,12 @@
     # Cherry-pick a commit directly into the working directory.
     cherry-patch = "!sh -c 'git show \"${1:?Missing revision}\" | git apply' -"
 
-    # Perform a merge in-memory and output if any conflicts are found (dry-run)
-    # Usage: git mergetest otherbranch
+    # Perform a merge in-memory and output if conflicts are found (dry-run):
+    #   git mergetest otherbranch
     mergetest = "!sh -c 'git merge-tree \
             $(git merge-base ${1:?Missing branch} HEAD) \
         ${1:?Missing branch} HEAD \
         | awk '\\''/<<<<<<</ { print \"Conflicts found\"; exit 1 }'\\''' -"
-
-    # Delete all remote refs that have been merged into the current branch.
-    # Usage: git deleteremote <remote-name>
-    deleteremote = "!sh -c 'git branch -r --merged \
-        | awk -F/ -v remote=${1:?Missing remote name.} \
-            '\\''$0 ~ remote && !/(master|develop)/ { print \"refs/heads/\" $2 }'\\'' \
-        | xargs -p -r git push ${1} --delete' -"
-
-    # Prune any deleted remote branches and also delete any local branches of
-    # the same name. Will prompt before deleting the local branches.
-    # This is useful if branches are squashed when merged since you can't know
-    # which local/remote branches are the same after that.
-    # Usage: git deletepruned origin
-    deletepruned = "!zsh -c ' \
-        comm -12 \
-            <(git remote prune \"${1:?Remote name required.}\" \
-                | awk -v remote=\"$1\" '\\''$0 ~ \".*pruned.*\" remote \"/\" \
-                    { sub(\"^\" remote \"/\", \"\", $3); print $3 }'\\'') \
-            <(git branch --list | sed -e '\\''s/^[ \\*]\\+//g'\\'') \
-        | xargs -p -r git branch -D \
-    ' -"
 
     l = log --format=format:'%C(auto)%h%d%C(reset) %s %C(bold blue)(%an, %ar)%C(reset)'
     ll = log --stat --decorate --abbrev-commit --date=relative
@@ -94,8 +84,8 @@
     rll = reflog --date=relative --stat
     rlll = reflog --date=relative -p --stat --color-moved
 
-    # Show the Git log and automatically shorten & search for a SHA. E.g.:
-    # git lf deb8dff8d8c1ed8acb7d7a2ec1158e7db136aab3
+    # Show the Git log and automatically shorten & search for a SHA:
+    #   git lf deb8dff8d8c1ed8acb7d7a2ec1158e7db136aab3
     lf = "!sh -c 'GIT_PAGER=\"$PAGER -p $(git short $1)\" git l' -"
     ltf = "!sh -c 'GIT_PAGER=\"$PAGER -p $(git short $1)\" git lt' -"
 
@@ -134,32 +124,6 @@
         BASE=$(basename $(git rev-parse --show-toplevel)); \
         git archive --prefix=${BASE}/ -o ${BASE}-$(git describe ${REF}).tar.gz ${REF}' -"
 
-    # Show the correct SHA for merging from FETCH_HEADS
-    showfetchhead = "!awk '!/not-for-merge/ {print $1}' \
-        $(git rev-parse --git-dir)/FETCH_HEAD"
-
-    # Compare local branches to remote branches (without doing a fetch!)
-    # Takes (optional) remote name as an argument; default: "upstream".
-    # FIXME: branches that are ahead of upstream will also be shown.
-    showstale = "!zsh -c 'join -j 2 \
-        <(git show-ref --heads) \
-        <(git ls-remote --heads ${1:-upstream}) \
-        | awk '\\''{ if ($2 != $3) print $1 }'\\''' -"
-
-    # Find the merge-base of an old branch merge.
-    # This is useful for rebasing an old pull request onto a new branch.
-    # The output from this command is used as the <upstream> argument to
-    # ``git rebase --onto <newbase> <upstream> <branch>``
-    # where <branch> is the current branch.
-    #
-    # Specify the branch the pull request was originally merged into.
-    #
-    # Usage: git preqbase upstream/develop
-    #
-    preqbase = "!sh -c 'parent1=$(git rev-list --merges --parents $1 \
-        | awk -v head=\"$(git rev-parse HEAD)\" '\\''$3 == head { print $2 }'\\'');\
-        git merge-base \"$parent1\" HEAD' -"
-
     # Merge a GitHub pull request into the current branch.
     # Usage: git preq <preq>
     # Usage: git preq <preq> [<remote>]
@@ -179,10 +143,6 @@
     addrefspr = "!sh -c 'git config --add \
         remote.${1:?Missing remote}.fetch \"+refs/pull/*/head:refs/remotes/$1/pr/*\"' -"
 
-    permission-reset = "!git diff -p -R --no-color \
-        | grep -E '^(diff|(old|new) mode)' --color=never \
-        | git apply"
-
 [core]
     excludesfile = ~/.gitignore
 
@@ -192,12 +152,6 @@
 [init]
     templatedir = ~/.git_template
 
-[sendemail]
-    smtpencryption = tls
-    smtpserver = smtp.gmail.com
-    smtpuser = whiteinge@gmail.com
-    smtpserverport = 587
-
 [pager]
     # Don't paginate the oneline log output if less than one page.
     l = $PAGER -F
@@ -206,6 +160,7 @@
     branch = $PAGER -F
     sl = $PAGER -F
     stat = $PAGER -F
+    summary = $PAGER -F
 
 [rerere]
     enabled = true
