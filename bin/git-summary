@@ -12,6 +12,8 @@ shift $(( OPTIND - 1 ))
 git log --no-renames ${show_files:+--numstat} \
         --format='XXX%x09%h%x09%an%x09%ae%x09%cn%x09%ce%x09%aD%x09%cr' \
     | awk -v FS='\t' -v OFS='\t' '
+    function alen(a, i, c) { for (i in a) c += 1; return c; }
+
     /^$/ { next }
 
     /^XXX/ {
@@ -58,27 +60,33 @@ git log --no-renames ${show_files:+--numstat} \
     END {
         print "First commit:", sha " - " auth_date " (" reldate ")"
         print "Last commit:", last_sha " - " last_date " (" last_reldate ")"
-        print "Total commits:", commit_count
-        print "Active days:", length(active_days)
-        print "Total files:", length(file_list)
-        print "Lines changed:", lines_changed_count
-        print "Authors:", length(author_list)
-        print "Committers:", length(committer_list)
+        print ""
 
-        printf("\nTop days:\n\n")
-        weekday_cmd = "sort -n -r | cut -f2"
+        transpose_cmd = "datamash transpose"
+        print "Commits\t" commit_count \
+            "\nFiles\t" alen(file_list) \
+            "\nLines\t" lines_changed_count \
+            "\nAuthors\t" alen(author_list) \
+            "\nCommitters\t" alen(committer_list) | transpose_cmd
+        close(transpose_cmd)
+
+        print ""
+
+        print "Active days:", alen(active_days)
+        printf("Top days:\n\n")
+        weekday_cmd = "sort -n -r | cut -f2,3 | datamash transpose"
         for (h in top_weekdays) {
             wd = top_weekdays[h]
-            printf("%s\t%s %.0f%%\n", wd, h, (wd / commit_count) * 100 ) \
+            printf("%s\t%s\t%.0f%%\n", wd, h, (wd / commit_count) * 100 ) \
                 | weekday_cmd
         }
         close(weekday_cmd)
 
         printf("\nTop hours:\n\n")
-        hour_cmd = "sort -n -r | cut -f2 | head -6"
+        hour_cmd = "sort -n -r | cut -f2,3 | head -6 | datamash transpose"
         for (i in top_hours) {
             hr = top_hours[i]
-            printf("%s\t%s %.0f%%\n", hr, i, (hr / commit_count) * 100 ) \
+            printf("%s\t%s\t%.0f%%\n", hr, i, (hr / commit_count) * 100 ) \
                 | hour_cmd
         }
         close(hour_cmd)
@@ -93,7 +101,7 @@ git log --no-renames ${show_files:+--numstat} \
         }
         close(topcom_cmd)
 
-        if (length(file_list)) {
+        if (alen(file_list)) {
             printf("\nTop files:\n\n")
             topfil_cmd = "sort -n -r | head -10"
             for (k in file_list) print file_list[k], k | topfil_cmd

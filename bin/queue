@@ -73,7 +73,7 @@ _main () {
                 {} 1>'"$QUEUE_DIR"'/job-$$.out 2>'"$QUEUE_DIR"'/job-$$.err
                 echo Done $$ $?' \
             | awk '
-                function alen(a, i) { for (i in a); return i; }
+                function alen(a, i, c) { for (i in a) c += 1; return c; }
                 /^Start/ { jobs[$2] = "X" }
                 /^Done/ { jobs[$2] = $3 }
                 {
