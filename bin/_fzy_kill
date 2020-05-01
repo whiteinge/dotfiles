@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 # Use a fuzzy-finder to complete process names
 
-ps -ef | sed 1d | fzy -p 'Processes > ' \
-    | awk -v cmd="$1" '{ print cmd, $2 }'
+cmd="$1"; shift 1
+ps -ef | sed 1d | fzy -p 'Processes > ' -q "$*" \
+    | awk -v cmd="$cmd" '{ print cmd, $2 }'

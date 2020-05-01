@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 # Use a fuzzy-finder to complete manpage names
 
-man -k . | fzy -p 'Manpages > ' | awk -F, -v cmd="$1" '
+cmd="$1"; shift 1
+man -k . | fzy -p 'Manpages > ' -q "$*" | awk -F, -v cmd="$cmd" '
 function ltrim(s) { sub(/^[ \t\r\n]+/, "", s); return s }
 {
     sub(/\s+- .*$/, "", $0)

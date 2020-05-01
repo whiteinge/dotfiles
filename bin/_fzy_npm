@@ -6,10 +6,11 @@ if [ ! "$2" = 'run' ] && [ ! "$2" = 'run-script' ]; then
     exit 1
 fi
 
+cmd="$1 $2"; shift 2
 npm run | awk '
     /^ {2}[^ ]/ { printf("%s\t", $0) }
     /^ {4}[^ ]/ { printf("%s\n", $0) }
     ' \
-        | fzy -p 'npm run > ' \
+        | fzy -p 'npm run > ' -q "$*" \
         | cut -f1 \
-        | xargs printf '%s %s' "$*"
+        | xargs printf '%s %s' "$cmd"

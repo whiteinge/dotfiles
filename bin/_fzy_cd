@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 # Use a fuzzy-finder to complete child directories
 
-ffind "${2:-$PWD}" -type d | fzy -p "Directories > " \
-    | xargs printf '%s %s\n' "$1"
+cmd="$1"; shift 1
+ffind "${2:-$PWD}" -type d | fzy -p "Directories > " -q "$*" \
+    | xargs printf '%s %s\n' "$cmd"
