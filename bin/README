@@ -73,6 +73,7 @@ play-somafm -- Select a SomaFM stream with a fuzy-finder and play via mpv
 pysmtp -- Start a echoing SMTP server
 queue -- A lightweight job queue using tail and xargs
 readme-gen -- Generate a README for all $DOTFILES/bin scripts
+replace-link -- Replace a symlink with a copy of the thing it points to
 res -- Output an xrandr command for common configurations
 rgb2hex -- Convert 16-bit RGB values to hexadecimal
 rproxy -- A reverse proxy that pipes the HTTP response through a shell command

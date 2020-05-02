@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+# Replace a symlink with a copy of the thing it points to
+#
+# (Req's coreutils.)
+
+if [ -L "$1" ]; then
+    cp --remove-destination "$(readlink "$1")" "$1"
+else
+    exit 1
+fi
