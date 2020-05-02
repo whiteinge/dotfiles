@@ -2,6 +2,12 @@
 # Output the tmux scrollback for the current pane in reverse order
 #
 # Meant as a shortcut for making ad-hoc pipelines. E.g.,
-# git fetch; scrollback | match-git-range | fzy | xargs git log --oneline
+#
+#   git fetch; scrollback | match-git-range | fzy | xargs git log --oneline
+#
+# View the scrollback for another pane:
+#
+#   scrollback 1 | grep foo
+#   scrollback %12 | grep foo
 
-tmux capture-pane -pJS -1000 | tac
+tmux capture-pane ${1:+-t "$1"} -pJS -1000 | tac
