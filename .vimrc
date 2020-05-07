@@ -278,9 +278,10 @@ if has("autocmd") && exists("+omnifunc")
 endif
 
 " Fuzzy-find a file from files under the current directory and edit it.
-nnoremap <silent><leader>ff :call fzy#NewScratchBuf()
-    \\|:.!ffind . '(' -type f -o -type l ')' -print<cr>
-    \\|:call fzy#Fzy() ->{x -> 'edit '. x}() ->execute()<cr>
+nnoremap <silent><leader>ff
+    \ :call systemlist("ffind . '(' -type f -o -type l ')' -print")
+    \ ->util#SysR('fzy')
+    \ ->{x -> 'edit '. x}() ->execute()<cr>
 
 " }}}
 " Window Layout {{{
@@ -365,29 +366,24 @@ nnoremap <leader>lp :windo :set nowrap!<cr>:set nowrap?<cr>
 set showtabline=1               " Display the tabbar if there are multiple tabs. Use :tab ball or invoke Vim with -p
 set hidden                      " Allows opening a new buffer in place of an existing one without first saving the existing one
 
-" Type <F1> to open a fuzzy-finder of available buffers.
-map <F1> :call fzy#NewScratchBuf()
-    \\|redir @m \| silent ls \| redir END
-    \\|:1put m
-    \\|:call fzy#Fzy()
-        \ ->matchstr('[0-9]\+') ->{x -> 'b '. x}() ->execute()<cr>
+" Replace the current window from open buffers:
+map <F1>
+    \ :redir => _redir \| silent ls \| redir END
+    \ \|:call util#SysR(_redir, 'fzy')
+    \ ->matchstr('[0-9]\+') ->{x -> 'b '. x}() ->execute()<cr>
 
-" Open a fuzzy-finder of available buffers and jump to the first window
-" containing the selected buffer.
-" FIXME: handle when the buffer isn't displayed in a window.
-map <F2> :call fzy#NewScratchBuf()
-    \\|redir @m \| silent ls \| redir END
-    \\|:1put m
-    \\|:call fzy#Fzy()
-        \ ->matchstr('[0-9]\+') ->win_findbuf() ->{x -> win_gotoid(x[0])}()
-    \ <cr>
+" Move to an existing window containing a selected buffer:
+map <F2>
+    \ :redir => _redir \| silent ls \| redir END
+    \ \|:call util#SysR(_redir, 'fzy')
+    \ ->matchstr('[0-9]\+') ->win_findbuf()
+    \ ->{x -> win_gotoid(get(x, 0, bufnr('%')))}()<cr>
 
 " Use a fuzzy-finder to unload loaded buffers.
-map <leader>bw :call fzy#NewScratchBuf()
-    \\|redir @m \| silent ls \| redir END
-    \\|:1put m
-    \\|:call fzy#Fzy()
-        \ ->matchstr('[0-9]\+') ->{x -> 'bw '. x}() ->execute()<cr>
+map <leader>bw
+    \ :redir => _redir \| silent ls \| redir END
+    \ \|:call util#SysR(_redir, 'fzy')
+    \ ->matchstr('[0-9]\+') ->{x -> 'bw '. x}() ->execute()<cr>
 
 " Quickly jump to a tag if there's only one match, otherwise show the list
 map <F3> :tj<space>
@@ -429,9 +425,9 @@ nmap <silent> <leader>fa :call getqflist()
     \ ->map({i, x -> execute('$argadd #'. x.bufnr)})<cr>
 
 " Fuzzy-find and edit an entry in the quickfix list.
-nnoremap <silent><leader>fw :call fzy#NewScratchBuf()
-    \\|:1put = getqflist() ->map({i, x -> bufname(x.bufnr)}) ->uniq()
-    \\|:call fzy#Fzy() ->{x -> 'e '. x}() ->execute()<cr>
+nnoremap <silent><leader>fw
+    \ :call getqflist() ->map({i, x -> bufname(x.bufnr)}) ->uniq()
+    \ ->util#SysR('fzy') ->{x -> 'e '. x}() ->execute()<cr>
 
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
@@ -462,20 +458,21 @@ command! -nargs=* -complete=file Gext grep <args>
 set tags+=.git/tags;
 
 " Fuzzy-find a tag and jump to it.
-nnoremap <silent><leader>ft :call fzy#NewScratchBuf()
-    \\|:1put = taglist('.*') ->map({i, x -> x.cmd .' --- '. x.filename})
-    \\|:call fzy#Fzy()
-        \ ->split(' --- ')
-        \ ->{xs -> 'edit +'. escape(xs[0], ' #{}[]<>/$.^') .' '. xs[1]}()
-        \ ->execute()<cr>
+nnoremap <silent><leader>ft
+    \ :call taglist('.*') ->map({i, x -> x.cmd .' --- '. x.filename})
+    \ ->util#SysR('fzy')
+    \ ->split(' --- ')
+    \ ->{xs -> 'edit +'. escape(xs[0], ' #{}[]<>/$.^') .' '. xs[1]}()
+    \ ->execute()<cr>
 
 " Fuzzy-find entries in Vim's help files.
 " A much faster alternative to :help <char><tab><tab><tab>
 " TODO: add third-party 'someplugin/doc/tag' files too...
-nnoremap <silent><leader>fh :call fzy#NewScratchBuf()
-    \\|:read $VIMRUNTIME/doc/tags
-    \\|:call fzy#Fzy() ->matchstr('[^\t]\+')
-        \ ->{x -> 'help '. x}() ->execute()<cr>
+nnoremap <silent><leader>fh
+    \ :call readfile($VIMRUNTIME .'/doc/tags')
+    \ ->util#SysR('fzy') ->matchstr('[^\t]\+')
+    \ ->{x -> 'help '. x}() ->execute()<cr>
+
 
 " }}}
 " X11 Integration {{{
@@ -590,9 +587,9 @@ command! -nargs=* Scratch call scratch#Scratch(<f-args>)
 
 """ Diff unstaged changes.
 nmap <silent> <leader>cc :call stagediff#StageDiff()<cr>
-nmap <silent> <leader>cf :call fzy#NewScratchBuf()
-    \\|:.!git ls-files<cr>
-    \\|:call fzy#Fzy() ->{x -> execute('edit '. x)}()<cr>
+nmap <silent> <leader>cf :call systemlist('git ls-files')
+    \ ->util#SysR('fzy')
+    \ ->{x -> execute('edit '. x)}()<cr>
 nmap <silent> <leader>cs :!git add %<cr>
 nmap <silent> <leader>ci :!git commit<cr>
 nmap <silent> <leader>ca :!git commit --amend --no-edit<cr>
@@ -628,10 +625,20 @@ let g:caser_prefix = mapleader .'w'
 
 """ MRU mappings
 " Fuzzy-find and open a file from the most-recently-used buffer list.
-nnoremap <leader>fe :call fzy#NewScratchBuf()
-    \\|:1put = mru#MRU()
-    \\|:call fzy#Fzy() ->matchstr('[0-9]\+')
-        \ ->{x -> 'e #<'. x}() ->execute()<cr>
+nnoremap <leader>fe :call copy(v:oldfiles)
+    \ ->map({idx, val -> {'idx': idx + 1, 'path': val}})
+    \ ->filter({idx, val -> filereadable(expand(val['path']))
+        \ && val['path'] !~ '__Tagbar__'
+        \ && val['path'] !~ '__Gundo_'
+        \ && val['path'] !~ '.git/'
+        \ && val['path'] !~ 'vim/vim81/doc/'
+        \ && val['path'] !~ '/dev/fd'
+        \ && val['path'] !~ '/var/folders'
+    \ })
+    \ ->map({idx, val -> val.idx ."\t". val.path})[:20]
+    \ ->util#SysR('fzy') ->matchstr('[0-9]\+')
+    \ ->{x -> 'e #<'. x}() ->execute()<cr>
+
 
 """ Diff two registers
 command! -nargs=* DiffRegs call diffregs#DiffRegsFunc(<f-args>)

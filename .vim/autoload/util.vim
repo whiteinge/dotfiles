@@ -44,3 +44,12 @@ fu! util#StartQfWatchers()
     call timer_start(1000, s:QfChanged, {'repeat': -1})
     call timer_start(1000, s:LlChanged, {'repeat': -1})
 endfu
+
+" Call system() and then call :redraw!
+" Pass args as data-first to allow use as a method.
+" Check v:shell_error if you need to know the exit code.
+fu! util#SysR(arr, cmd)
+    let l:ret = system(a:cmd, a:arr)
+    redraw!
+    return l:ret
+endfu
