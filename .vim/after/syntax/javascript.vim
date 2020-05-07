@@ -8,7 +8,7 @@ syn include @XMLSyntax syntax/xml.vim
 syn region jsxAttr
     \ start=+{+ end=+}+
     \ contained
-    \ contains=@Spell,javaScriptEmbededExpr,javaScriptComment
+    \ contains=@Spell,javaScriptEmbededExpr,javaScriptComment,jsxRegion
     \ display
 
 syn region jsxRegion
