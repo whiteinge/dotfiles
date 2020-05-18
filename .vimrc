@@ -362,6 +362,9 @@ nnoremap <leader>lk :call MainHorz()<cr>
 nnoremap <leader>lf :windo norm zi<cr>
 nnoremap <leader>lp :windo :set nowrap!<cr>:set nowrap?<cr>
 
+" Open a new tab of the current buffer and cursor position ("tmux-esque zoom")
+nmap <leader>zz :exe 'tabnew +'. line('.') .' %'<cr>
+
 " }}}
 " Multi-buffer/window/tab editing {{{
 
