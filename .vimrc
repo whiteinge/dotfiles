@@ -14,6 +14,8 @@ nn <silent> * :let @/ = '\<' .  expand('<cword>') . '\>'
   \\| if &hlsearch != 0 \| set hlsearch \| endif
   \\| echo '/' . @/ . '/='<cr>
 
+nn <silent> <leader>* :Gext . <cword><cr>
+
 " Use leader-n to unhighlight search results in normal mode:
 nm <silent> <leader>n :silent noh<cr>
 
