@@ -55,7 +55,7 @@ fu! signs#QfList()
     call sign_unplace(l:group)
 
     let l:signs_array = getqflist()
-        \ ->filter({i, x -> bufexists(x.bufnr)})
+        \ ->filter({i, x -> bufexists(x.bufnr) && x.lnum != 0 && x.bufnr != 0})
         \ ->map({i, x -> {
             \ 'buffer': x.bufnr,
             \ 'group': l:group,
