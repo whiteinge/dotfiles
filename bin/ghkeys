@@ -3,3 +3,5 @@
 # http://leahneukirchen.org/dotfiles/.zshrc
 
 curl https://github.com/${1:?'Missing username'}.keys
+printf '\n'
+curl https://github.com/${1:?'Missing username'}.gpg
