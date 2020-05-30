@@ -50,13 +50,16 @@ http() {
     fi
 
     if [[ -d "$rpath" ]]; then
+        local bpath="${rpath##$PWD}"
+        local bpath="${bpath%/}"
+        local base="//localhost:${SOCAT_SOCKPORT}${bpath}"
         rep 200
         tree "$rpath" \
-            -H '' \
+            -H "$base" \
             -a \
             -h -F -D \
             -L 1 -x -i \
-            -T "$rpath"
+            -T "$base"
         exit
     fi
 
