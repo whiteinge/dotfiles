@@ -7,6 +7,10 @@ set ignorecase                  " Ignores case when pattern matching
 set smartcase                   " Ignores ignorecase when pattern contains uppercase characters
 set hlsearch                    " Highlights search results
 
+" Map n/N to always move in the same direction.
+nn <expr> n 'Nn'[v:searchforward]
+nn <expr> N 'nN'[v:searchforward]
+
 " Search for the word under the cursor (but don't advance to the first match)
 " https://www.reddit.com/r/vim/comments/vzd0q/how_do_i_set_the_search_pattern_without_moving/c5a5m4z
 nn <silent> * :let @/ = '\<' .  expand('<cword>') . '\>'
