@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+# Use jq to flatten a JSON structure for easy use with awk/grep/etc
+#
+# Borrows the idea from the excellent, lightweight, and suckless json2tsv
+# <https://codemadness.org/json2tsv.html>.
+# (I still need jq for deterministic JSON reformatting.)
+#
+# Example:
+#
+#     % printf '{
+#       "foo": "Foo!",
+#       "bar": null,
+#       "baz": [{"qux": 1}, {"quux": true}]
+#     }' | jflatten
+#     foo     string  Foo!
+#     bar     null
+#     baz     array
+#     baz.0   object
+#     baz.0.qux       number  1
+#     baz.1   object
+#     baz.1.quux      boolean true
+
+jq -r '
+paths as $path
+| getpath($path) as $val
+| ($val | type) as $type
+| (if $type == "object" or $type == "array" then "" else $val end) as $out
+| [$path | join("."), $type, $out]
+| @tsv
+'
