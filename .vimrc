@@ -18,10 +18,12 @@ nn <silent> * :let @/ = '\<' .  expand('<cword>') . '\>'
   \\| if &hlsearch != 0 \| set hlsearch \| endif
   \\| echo '/'. @/ .'/=' execute('%s///gn')<cr>
 
+" Grep for the word under the cursor.
 nn <silent> <leader>* :Gext . <cword><cr>
 
 " Use leader-n to unhighlight search results in normal mode:
 nm <silent> <leader>n :silent noh<cr>
+nm <silent> <leader>N :set hls<cr>
 
 " Display the number of matches for the last search
 nm <leader># :%s///gn<cr>
@@ -36,9 +38,6 @@ nn <leader>hh :<c-u>call matchadd('Match'. v:count1, expand('<cword>'),
 nn <leader>hn :<c-u>call matchdelete(v:count1 + 10)<cr>
 " Clear all matches:
 nn <leader>ha :call clearmatches()<cr>
-
-" Grep for the word under the cursor.
-nn <leader>gr :silent grep . <cword><cr>:redraw!<cr>
 
 " }}}
 " Line Wrap {{{
@@ -62,9 +61,6 @@ set undofile                    " Persist the undo tree to a file; dir below wil
 set backupdir=$HOME/.vim/backupdir,.
 set undodir=$HOME/.vim/undodir,.
 set directory=$HOME/.vim/swapdir,.
-
-" Searches the current directory as well as subdirectories with commands like :find, :grep, etc.
-set path=.,**
 
 set autoindent
 set smartindent
@@ -246,10 +242,8 @@ set foldcolumn=4                "fdc:   creates a small left-hand gutter for dis
 " }}}
 " Menu completion {{{
 
-set suffixes+=.pyc,.pyo         " Don't autocomplete these filetypes
 set wildmenu                    "wmnu:  enhanced ex command completion
 set wildmode=longest:full,list:full  "wim:   helps wildmenu auto-completion
-set wildignore+=*/node_modules/**
 
 set dictionary=spell        " Complete words from the spelling dict.
 set complete-=t,i           " Remove tags and included files from default insert completion
@@ -602,7 +596,6 @@ nmap <silent> <leader>cf :call systemlist('git ls-files')
 nmap <silent> <leader>cs :!git add %<cr>
 nmap <silent> <leader>ci :!git commit<cr>
 nmap <silent> <leader>ca :!git commit --amend --no-edit<cr>
-" nmap <silent> <leader>cb :vert term ++close git blame -c --date=relative -- %<cr>
 nmap <silent> <leader>cb <bar>
     \ :55vnew <bar>
     \ :call scratch#Scratch() <bar>
