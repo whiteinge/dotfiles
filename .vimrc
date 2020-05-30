@@ -16,7 +16,7 @@ nn <expr> N 'nN'[v:searchforward]
 nn <silent> * :let @/ = '\<' .  expand('<cword>') . '\>'
   \\| call histadd('/', @/)
   \\| if &hlsearch != 0 \| set hlsearch \| endif
-  \\| echo '/' . @/ . '/='<cr>
+  \\| echo '/'. @/ .'/=' execute('%s///gn')<cr>
 
 nn <silent> <leader>* :Gext . <cword><cr>
 
