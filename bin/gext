@@ -31,7 +31,7 @@ gext() {
 
     # set -x
     ffind "${spath}" \
-        '(' -type f -o -type l ')' \
+        -xtype f \
         ${ext:+-name} \
         ${ext:+$ext} \
         -print0 \
