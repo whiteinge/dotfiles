@@ -37,3 +37,6 @@
 [submodule ".vim/pack/foo/start/vim-jqplay"]
 	path = .vim/pack/foo/start/vim-jqplay
 	url = https://github.com/bfrg/vim-jqplay.git
+[submodule ".vim/pack/foo/start/vimux"]
+	path = .vim/pack/foo/start/vimux
+	url = https://github.com/benmills/vimux.git
