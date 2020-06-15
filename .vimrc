@@ -63,7 +63,6 @@ set undodir=$HOME/.vim/undodir,.
 set directory=$HOME/.vim/swapdir,.
 
 set autoindent
-set smartindent
 
 set formatoptions=
 set formatoptions+=t            " Wrap when using textwidth
