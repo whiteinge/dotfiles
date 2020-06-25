@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+# View and manage SSH ControlMaster socket connections in bulk
+#
+# Usage:
+#
+#   control-master
+#   control-master check
+#   control-master exit
+#   control-master stop
+
+SOCKET_HOME="${HOME}/.ssh"
+
+list () {
+    find "$SOCKET_HOME" -type s -name 'master-*' -printf '%f\n'
+}
+
+_ctrlmaster_cmd () {
+    ctl_cmd="${1:?'Missing SSH multiplex ctl_cmd.'}"
+    list | imenu | xargs -r -I{} ssh -S "$SOCKET_HOME/{}" -O "$ctl_cmd" gndn
+}
+
+_main () {
+    [ $# -eq 0 ] && cmd='list' || cmd='_ctrlmaster_cmd'
+    "$cmd" "$@"
+}
+
+_main "$@"
