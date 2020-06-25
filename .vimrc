@@ -709,5 +709,8 @@ let g:jqplay = {
 au FileType json
     \ if bufname('%')[:11] ==# 'jq-output://' | syntax clear | endif
 
+""" vimux
+com Makevimux au BufWritePost <buffer> call VimuxRunCommand(" clear; make")
+
 " }}}
 " EOF
