@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+# Monitor current bandwidth usage by watching /proc/net/dev
+
+interval="5"
+
+while
+    cp -f /proc/net/dev /tmp/net-dev-old
+    sleep "$interval"
+do
+    awk -v interval="$interval" '
+    $1 ~ ":$" {
+        if (NR == FNR) {
+            o_recv[$1] = $2; o_send[$1] = $10
+        } else {
+            n_recv[$1] = $2; n_send[$1] = $10
+        }
+    }
+    END {
+        for (i in o_recv) {
+            recv = (n_recv[i] - o_recv[i]) / interval / 1024
+            send = (n_send[i] - o_send[i]) / interval / 1024
+            printf("%s %.0f / %.0f KB/s\n", i, recv, send)
+        }
+        printf("\n")
+    }
+    ' /tmp/net-dev-old /proc/net/dev
+done

@@ -95,5 +95,6 @@ urldecode -- Decode urlencoded stdin
 urlencode -- Urlencode stdin
 vipe -- Use $EDITOR to edit text inside a pipeline
 watch-changes -- A simple polling file/directory watcher
+watch-net -- Monitor current bandwidth usage by watching /proc/net/dev
 zombies -- List all zombie processes and their parents (to kill)
 zshrun -- Invoke a Terminal.app window and block until it closes
