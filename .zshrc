@@ -197,6 +197,7 @@ alias wtf='wtf -o'
 alias csi='rlwrap csi -quiet'
 alias ocaml='rlwrap ocaml'
 alias R='R --no-save'
+alias ifstat='ifstat -S -n -z 5'
 
 # Aliases around scripts in $HOME/bin:
 alias tea-timer="countdown 120 && notify-send 'Tea!' 'Tea is done.'"

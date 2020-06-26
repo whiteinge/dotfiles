@@ -1,5 +1,4 @@
 bash
-bmon
 cataclysm
 cloc
 coreutils
@@ -22,6 +21,7 @@ graphviz
 grep
 gzip
 htop
+ifstat
 jo
 jq
 less

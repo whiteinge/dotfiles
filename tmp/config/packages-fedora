@@ -5,7 +5,6 @@ bc
 bind-utils
 bluez
 bluez-tools
-bmon
 busybox
 clamav
 clamav-update
@@ -38,6 +37,7 @@ grub2-pc
 grub2-tools
 HandBrake
 HandBrake-gui
+ifstat
 imake
 inkscape
 java-latest-openjdk
