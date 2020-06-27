@@ -3,11 +3,15 @@
 
 interval="5"
 
+printf '\e[s' # save cur pos
 while
     cp -f /proc/net/dev /tmp/net-dev-old
     sleep "$interval"
 do
+    printf '\e[u' # restore cur pos
+    date
     awk -v interval="$interval" '
+    $1 ~ "lo:" { next }
     $1 ~ ":$" {
         if (NR == FNR) {
             o_recv[$1] = $2; o_send[$1] = $10
@@ -16,12 +20,12 @@ do
         }
     }
     END {
+        printf("%-25s %-15s %-15s\n", "iface", "recv (KB/s)", "send (KB/s)")
         for (i in o_recv) {
             recv = (n_recv[i] - o_recv[i]) / interval / 1024
             send = (n_send[i] - o_send[i]) / interval / 1024
-            printf("%s %.0f / %.0f KB/s\n", i, recv, send)
+            printf("%-25s %-15.1f %-15.1f\n", i, recv, send)
         }
-        printf("\n")
     }
     ' /tmp/net-dev-old /proc/net/dev
 done
