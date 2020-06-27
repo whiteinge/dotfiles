@@ -474,6 +474,12 @@ nnoremap <silent><leader>fh
     \ ->util#SysR('fzy') ->matchstr('[^\t]\+')
     \ ->{x -> 'help '. x}() ->execute()<cr>
 
+" Change a Vim inconsistency. :w always writes and :up only writes if changed,
+" however :wa only writes if changed and there is no :upa.
+cabbrev wa bufdo :w
+
+" Add multi-buffer :update command.
+cabbrev upa wall
 
 " }}}
 " X11 Integration {{{
