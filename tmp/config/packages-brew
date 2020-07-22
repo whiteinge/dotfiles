@@ -43,7 +43,6 @@ rlwrap
 rsync
 socat
 sqlite
-terminal-notifier
 tidy-html5
 tmux
 tree

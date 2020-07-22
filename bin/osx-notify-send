@@ -14,4 +14,12 @@ zparseopts -E -D -a opts -- -hint: u: i:
 title="${1:=Alert}"
 message="${2:=Message}"
 
-terminal-notifier -title "${title}" -message "${message}"
+osascript -l JavaScript -e '
+    var app = Application.currentApplication()
+    app.includeStandardAdditions = true
+
+    app.displayNotification("'"$message"'", {
+        withTitle: "'"$title"'",
+        soundName: "Frog"
+    })
+'
