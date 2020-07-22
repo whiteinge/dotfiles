@@ -26,8 +26,12 @@ fu! util#OnChanged(Fn, Cb)
 
     fu! Wrapper(...) closure
         let l:newret = l:Fn(a:000)
-        if l:lastret isnot v:null && l:lastret != l:newret
+        if l:lastret is v:null " First run.
             call l:Cb(l:lastret, a:000)
+        else
+            if l:lastret != l:newret
+                call l:Cb(l:lastret, a:000)
+            endif
         endif
         let l:lastret = l:newret
     endfu
