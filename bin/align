@@ -1,11 +1,40 @@
 #!/bin/sh
-# Align tabular data at CHAR
-# http://leahneukirchen.org/dotfiles/bin/align
+# Align columns at CHAR
 #
 # (Useful in Vim.)
 #
-# Usage (align on the = character):
+# Usage (align stdin on the = character):
 #     !align =
 
-CHAR=$1; shift
-exec column -t -s "$CHAR" -o "$CHAR" "$@"
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+
+trap '
+    excode=$?; trap - EXIT;
+    rm -rf '"$TEMP"'
+    exit $excode
+' INT TERM EXIT
+
+mkdir -p -m 700 "$TEMP"
+tmpfile="${TEMP}/tmpfile"
+cat > "$tmpfile"
+
+awk -v sep="${1:?'Missing seperator character.'}" '
+BEGIN { FS=sep }
+
+NR == FNR {
+    for (i = 1; i <= NF; i += 1) {
+        l = length($i)
+        if (w[i] < l) w[i] = l
+    }
+}
+
+NR != FNR {
+    for (i = 1; i <= NF; i++) {
+        printf("%*s%s", w[i], $i, i != NF ? sep : "")
+    }
+    printf("\n")
+}
+
+' "$tmpfile" "$tmpfile"
