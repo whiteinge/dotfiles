@@ -1,4 +1,5 @@
-filetype plugin indent on
+filetype plugin on
+filetype indent off
 
 " Search {{{
 
