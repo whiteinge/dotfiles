@@ -162,6 +162,7 @@
     sl = $PAGER -F
     stat = $PAGER -F
     summary = $PAGER -F
+    rl = $PAGER -F
 
 [rerere]
     enabled = true
