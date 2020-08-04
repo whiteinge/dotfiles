@@ -3,21 +3,14 @@
 if exists("b:current_syntax")
     unlet b:current_syntax
 endif
-syn include @XMLSyntax syntax/xml.vim
 
-syn region jsxAttr
-    \ start=+{+ end=+}+
+" TODO: what happens if I load XML first and JavaScript second?
+runtime! syntax/xml.vim
+hi def link xmlError NONE
+
+syn region jsxString
+    \ start=+{+ms=s+2 end=+}+me=s-2
     \ contained
-    \ contains=@Spell,javaScriptEmbededExpr,javaScriptComment,jsxRegion
-    \ display
-
-syn region jsxRegion
-    \ start=+\%(<\|\w\)\@<!<\z([a-zA-Z_][a-zA-Z0-9:\-.]*\>[:,]\@!\)\([^>]*>(\)\@!+
-    \ skip=+<!--\_.\{-}-->+
-    \ end=+</\z1\_\s\{-}>+
-    \ end=+/>+
-    \ contains=@Spell,@XMLSyntax,jsxRegion,jsxAttr
-    \ keepend
-    \ extend
-
-hi def link jsxRegion Special
+    \ containedin=xmlTag
+    \ contains=TOP
+    \ contains=@Spell,@javaScriptEmbededExpr,javaScriptBraces,javaScriptComment,javaScriptLineComment,xmlTag
