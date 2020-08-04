@@ -95,6 +95,16 @@ vdesktop () {
     '
 }
 
+temp () {
+    for tzone in /sys/class/thermal/*; do
+        if [ -r "${tzone}/temp" ]; then echo \
+            "$(cat "${tzone}/type"):" \
+            "$(cat "${tzone}/temp" 2>/dev/null \
+                | xargs -r -I{} units -t1 '{} milli degC' degF)°"
+        fi
+    done
+}
+
 all () {
     printf '[%s, %s]' "$(vdesktop)" "$(window_count)"
     printf '  '
