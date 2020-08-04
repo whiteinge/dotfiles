@@ -22,6 +22,7 @@
     pushnoci = push -o ci.skip
     pg = pagediffs
     short = rev-parse --short
+    ref = rev-parse --symbolic-full-name
     sh = show --summary --stat --pretty=fuller --patch
     st = status -s -b
     sti = status -s -b --ignored
