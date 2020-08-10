@@ -170,7 +170,7 @@ green_matrix () {
 
 hexgrid () {
     # https://www.commandlinefu.com/commands/view/11904/generate-30-x-30-matrix
-    hexdump -v -e '"%u"' </dev/urandom|fold -60|head -n 30|sed 's/\(.\{2\}\)/\1 /g'
+    hexdump -v -e '"%u"' </dev/urandom|fold -50|head -n 20|sed 's/\(.\{2\}\)/\1 /g'
 }
 
 _shuf () {
