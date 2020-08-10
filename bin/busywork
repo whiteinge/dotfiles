@@ -114,8 +114,12 @@ spinner () {
             tminus)
                 set -- 9 8 7 6 5 4 3 2 1 0
                 ;;
-            spin|*)
+            spin)
                 set -- '/' '-' '\' '|'
+                ;;
+            *)
+                printf 'Not found\n' 1>&2
+                exit 1
                 ;;
         esac
 
@@ -125,6 +129,29 @@ spinner () {
             sleep 0.1
         done
     done
+}
+
+spinner_demo () {
+    tmux neww
+    printf 'balloon
+    ball
+    bounce
+    blink
+    hypnotoad
+    fish
+    ansi
+    vee
+    dots
+    cells
+    plus
+    db
+    qp
+    alpha
+    tminus
+    spin
+    ' | xargs -n1 tmux splitw -t 0 -l 1 "$0" spinner
+
+    tmux selectp -t 0
 }
 
 green_matrix () {
@@ -322,8 +349,20 @@ git_ff () {
     '
 }
 
+_demo () {
+    tmux neww
+    tmux splitw -h -l 79 busywork hexstream
+    tmux splitw -t 1 -l 8 busywork green_matrix
+    tmux splitw -t 1 -l 3 'while true; do busywork progress; sleep 3; done'
+    tmux splitw -t 1 -l 12 'while true; do busywork hexgrid; sleep 5; done'
+    tmux splitw -t 0 'while true; do busywork git_ff; sleep 3; done'
+    tmux splitw -t 0 'while true; do busywork git_fetch; sleep 3; done'
+    tmux selectp -t 0
+    tmux killp -t 0
+}
+
 _main () {
-    cmd="${1:?'Missing command.'}"
+    cmd="${1:-_demo}"
     shift 1
     "$cmd" "$@"
 }
