@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to complete container IDs
+
+cmd="$1"; shift 1
+
+if [ $# -gt 0 ]; then
+    subcmd="$1"; shift 1
+fi
+
+if [ "$subcmd" = 'stop' ]; then
+    podman ps | sed 1d | fzy -p 'Containers > ' -q "$*" \
+        | cut -f1 -d' ' | xargs printf '%s %s %s\n' "$cmd" "$subcmd"
+fi
