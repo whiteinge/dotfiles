@@ -584,6 +584,8 @@ let mapleader = '\'
 """ newrw settings.
 " Hide the newrw banner by default. 'I' to toggle.
 let g:netrw_banner = 0
+" Don't use file list as alternate buffer.
+let g:netrw_altfile = 1
 nmap <silent> - :Explore<cr>
 
 """ Easily make a buffer into a scratch buffer:
