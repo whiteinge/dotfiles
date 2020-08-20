@@ -62,6 +62,7 @@ create() {
     cryptsetup -vy luksFormat "$img" || exit 1
     open "$img" "$name" || exit 1
     sudo "mkfs.${fstype}" "/dev/mapper/${name}"
+    close "$img"
 }
 
 check() {
