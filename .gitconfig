@@ -75,9 +75,7 @@
 
     l = log --format=format:'%C(auto)%h%d%C(reset) %s %C(bold blue)(%an, %ar)%C(reset)'
     ll = log --stat --decorate --abbrev-commit --date=relative
-    lll = log -p --stat --decorate --abbrev-commit --date=relative --color-moved
-    llll = "!sh -c 'git lll $@ \
-        | gvim - -R -v -c \"set ft=git\" -c \"set fdm=syntax\"' -"
+    lll = log -p --stat --decorate --color-moved --pretty=fuller
     lt = log --topo-order --format=format:'%C(auto)%h%d%C(reset) %s %C(bold blue)(%an, %ar)%C(reset)'
     lm = log --oneline --decorate --topo-order --merges --ancestry-path
 
