@@ -4,7 +4,21 @@
 # NOTE: Appends an artificial newline to the response body in order to flush
 # stdout before writing timing infos to stderr.
 
-curl -sS -D /dev/stderr -w "
+case "$0" in
+    */c)
+        # defaults:
+        # no show_timing
+        # no json_reqrep
+        ;;
+    */cj)
+        json_reqrep=1
+        ;;
+    */ct)
+        show_timing=1
+        ;;
+esac
+
+curl -sS -D /dev/stderr ${json_reqrep:+-H 'Content-Type: application/json'} ${show_timing:+-w "
 %{stderr}
 ----------
 curl timing report
@@ -17,4 +31,11 @@ redirect:       %{time_redirect}
 starttransfer:  %{time_starttransfer}
 ----------
 total:          %{time_total}
-" "$@"
+"} "$@" | {
+    if [ -n "$json_reqrep" ]; then
+        rep=$(< /dev/stdin)
+        printf '%s\n' "$rep" | jq || printf '%s\n' "$rep"
+    else
+        cat
+    fi
+}
