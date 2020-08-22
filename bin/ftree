@@ -16,8 +16,13 @@ esac
 
 while true; do
     new_path=$(ls -F -a --group-directories-first "$old_path" |
-        fzy -l 50 -p "${old_path} > ")
-    test $? -ne 0 && break;
+        fzy -p "${old_path} > ") || break
+
+    if [ "$new_path" = './' ]; then
+        printf '%s\n' "$old_path"
+        break
+    fi
+
     new_path="${old_path}/${new_path}"
     if [ -d "$new_path" ]; then
         old_path="$(cd "$new_path"; printf '%s' "$PWD")"
