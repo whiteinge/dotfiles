@@ -7,7 +7,11 @@ if [ $# -gt 0 ]; then
     subcmd="$1"; shift 1
 fi
 
-if [ "$subcmd" = 'stop' ]; then
-    podman ps | sed 1d | fzy -p 'Containers > ' -q "$*" \
-        | cut -f1 -d' ' | xargs printf '%s %s %s\n' "$cmd" "$subcmd"
+if [ "$subcmd" = 'stop' ] || [ "$subcmd" = 'exec' ]; then
+    # Variable number of args.
+    fmtstr=$(printf '%*s' "$#" | sed -e 's/ /%s/g')
+
+    podman ps | sed 1d | fzy -p 'Containers > ' \
+        | cut -f1 -d' ' \
+        | xargs printf "%s %s %s %s ${fmtstr}\n" "$cmd" "$subcmd" "$*"
 fi
