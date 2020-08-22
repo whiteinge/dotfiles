@@ -17,7 +17,7 @@ skip == 1 { next }
     if (cur_line < 1) cur_line = 1
     next
 }
-/^-/ || /^\+/ {
+/^\s*-/ || /^\s*\+/ {
     add_or_rm = substr($0, 1, 1)
     print cur_line, add_or_rm "\t" substr($0, 2)
     if (add_or_rm != "-") { cur_line += 1 }
