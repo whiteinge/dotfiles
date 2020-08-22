@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
-# Wrap curl to always output headers and timing (to stderr)
-#
-# NOTE: Appends an artificial newline to the response body in order to flush
-# stdout before writing timing infos to stderr.
+# Wrap curl for easy headers, json, timing input/output
 
 case "$0" in
     */c)
@@ -15,10 +12,14 @@ case "$0" in
         ;;
     */ct)
         show_timing=1
+        # NOTE: Appends an artificial newline to the response body in order to
+        # flush stdout before writing timing infos to stderr.
         ;;
 esac
 
-curl -sS -D /dev/stderr ${json_reqrep:+-H 'Content-Type: application/json'} ${show_timing:+-w "
+curl -sS -D /dev/stderr \
+    ${json_reqrep:+-H 'Content-Type: application/json'} \
+    ${show_timing:+-w "
 %{stderr}
 ----------
 curl timing report
@@ -34,7 +35,7 @@ total:          %{time_total}
 "} "$@" | {
     if [ -n "$json_reqrep" ]; then
         rep=$(< /dev/stdin)
-        printf '%s\n' "$rep" | jq || printf '%s\n' "$rep"
+        printf '%s\n' "$rep" | jq -C || printf '%s\n' "$rep"
     else
         cat
     fi

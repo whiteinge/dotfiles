@@ -1,4 +1,4 @@
-align -- Align tabular data at CHAR
+align -- Align columns at CHAR
 bookletize -- Convert a PDF to a fold-able booklet sized PDF
 bootstrap-fedora -- Bootstrap a minimal Fedora install
 bootstrap-osx -- Bootstrap a new OS X machine
@@ -16,7 +16,7 @@ countdown -- A simple countdown timer
 cull-brew -- Remove any brew packages that are not on a whitelist
 cull-dnf -- Remove any user-installed packages not on a whitelist
 curlretry -- Repeatedly download & resume from a URL until finished
-c -- Wrap curl to always output headers and timing (to stderr)
+c -- Wrap curl for easy headers, json, timing input/output
 devdocs-local -- Select docs from devdocs.io using a fuzzy-finder for display at the CLI
 diffconflicts -- A better vimdiff mergetool for Git
 diff-to-line-numbers -- Output the line numbers for lines added and removed in a unified diff
@@ -37,6 +37,7 @@ _fzy_git -- Use a fuzzy-finder to complete Git refs
 _fzy_kill -- Use a fuzzy-finder to complete process names
 _fzy_man -- Use a fuzzy-finder to complete manpage names
 _fzy_npm -- Use a fuzzy-finder for npm scripts
+_fzy_podman -- Use a fuzzy-finder to complete container IDs
 _fzy_ssh -- Use a fuzzy-finder for hostnames in ~/.ssh/config
 genmac -- Generate a locally-assigned (starts with 02) mac address from a salt
 genpass -- Generate a cryptographically inadequate(!) password
