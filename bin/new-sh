@@ -8,6 +8,11 @@
 script="${1:?Script name required.}"
 lang=${2:-sh}
 
+if [ -e "$script" ]; then
+    printf 'Script "%s" already exists.\n' "$script" 1>&2
+    exit 1
+fi
+
 printf "#!/usr/bin/env $lang\n" > "$script"
 chmod +x "$script"
 
