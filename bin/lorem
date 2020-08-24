@@ -1,0 +1,89 @@
+#!/usr/bin/env sh
+# Output paragraphs of lorem ipsum placeholder text
+#
+# Usage:
+#
+#   lorem
+#   lorem 5
+#   lorem 5 | fmt
+#   lorem 5 0
+
+paragraphs="${1:-1}"
+preamble_show="${2:-1}"
+
+while
+    # Continually output random arrangements of words until the reader exits.
+    printf '%s\n' \
+        consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore\
+        et dolore magna aliqua ut enim ad minim veniam quis nostrud\
+        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat\
+        duis aute irure dolor in reprehenderit in voluptate velit esse cillum\
+        dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non\
+        proident sunt in culpa qui officia deserunt mollit anim id est laborum\
+    | shuf
+    # https://en.wikipedia.org/wiki/Lorem_ipsum
+do :; done | awk \
+    -v paragraphs="$paragraphs" \
+    -v seed="$(date +%N)" \
+    -v preamble_show="$preamble_show" \
+'
+function _rand(start, end) { return int(start + rand() * (end - start + 1)) }
+function _words() { return _rand(4, 10) } # words per sentence
+function _sentences() { return _rand(4, 6) } # sentences per paragraph
+
+# Typical, awk-as-disorganized-state-machine. Reads one word at a time,
+# outputs it, and decrements various counters to decide if we have yet output
+# the desired number of paragraphs, sentences, and words. Then loops. Might be
+# easier to read from the bottom-up. :-P
+BEGIN {
+    srand(seed)
+
+    if (preamble_show) {
+        printf("Lorem ipsum dolor sit amet")
+        preamble_trunc = 3
+        wsep = " "
+    } else {
+        cap_next = 1
+        wsep = ""
+    }
+
+    words = _words() - preamble_trunc
+    sentences = _sentences()
+}
+
+# Exit when done.
+paragraphs == 0 { exit }
+
+# Refill vars when empty.
+sentences == 0 && paragraphs > 0 { sentences = _sentences() }
+words == 0 && sentences > 0 { words = _words() }
+
+# Words.
+{
+    if (cap_next) {
+        w = toupper(substr($0, 1, 1)) substr($0, 2)
+        cap_next = 0
+    } else {
+        w = $0
+    }
+
+    printf("%s%s", wsep, w)
+    words -= 1
+    wsep = " "
+}
+
+# Sentences.
+words == 0 {
+    printf(".")
+    sentences -= 1
+    cap_next = 1
+}
+
+# Paragraphs.
+sentences == 0 {
+    if (paragraphs > 1) printf("\n\n")
+    else printf("\n")
+    paragraphs -= 1
+    wsep = ""
+}
+'
