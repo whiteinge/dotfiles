@@ -363,7 +363,7 @@ _demo () {
 
 _main () {
     cmd="${1:-_demo}"
-    shift 1
+    [ $# -gt 0 ] && shift 1
     "$cmd" "$@"
 }
 
