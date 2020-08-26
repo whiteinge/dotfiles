@@ -13,12 +13,13 @@
 #   <date>
 #   <hours>
 #   <description>
-#   <...description continued>
 #
 #   <date>
 #   <hours>
 #   <description>
-#   <...description continued>
+#
+# The same date can be repeated for multiple entries.
+# The description can span multiple lines.
 #
 # The job metadata file is in the form of:
 #
@@ -30,6 +31,7 @@
 #   m4_divert(0)m4_dnl
 #
 # for each of the values listed below.
+# _Do not_ put blank lines above or below the divert lines.
 
 _gen_timesheet () {
     awk -v rate="${1:?'Rate required'}" '
