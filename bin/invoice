@@ -19,6 +19,17 @@
 #   <hours>
 #   <description>
 #   <...description continued>
+#
+# The job metadata file is in the form of:
+#
+#   m4_divert(-1)
+#
+#   m4_define(`xVALUE', `Value here')
+#   m4_define(`xRATE', 10)
+#
+#   m4_divert(0)m4_dnl
+#
+# for each of the values listed below.
 
 _gen_timesheet () {
     awk -v rate="${1:?'Rate required'}" '
