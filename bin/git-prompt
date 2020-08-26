@@ -2,7 +2,7 @@
 # Output a succinct, one-line Git status
 #
 # E.g.:
-#     reponame/  1ac744a5522d UUAM? master+1-5 origin/master
+#     1ac744a5522d UUAM? master+1-5 origin/master
 #
 # Usage:
 #     git prompt
@@ -18,65 +18,50 @@ shift $(( OPTIND - 1 ))
 
 tgtdir="${1:-$PWD}"
 
-test ! -r "$tgtdir"
-is_readable=$?
-
-prettydir="$(basename "$tgtdir")"
-if [ "$prettydir" = "$(basename "$HOME")" ]; then
-    prettydir="~"
-fi
-
-{
-    printf '%s\n' "$prettydir";
-
-    git \
-        -C "$tgtdir" \
-        --no-optional-locks \
-        status \
-        --porcelain=v2 \
-        --branch \
-        2>/dev/null
-} | awk \
-        -v color="$color" \
-        -v is_readable="$is_readable" \
-    '
-        BEGIN {
-            if (color == "ansi") {
-                _black = ""
-                _red = "\033[31m"
-                _green = "\033[32;1m"
-                _yellow = "\033[33;1m"
-            } else if (color == "tmux") {
-                _black = "#[fg=white,bg=black]"
-                _red = "#[fg=red]"
-                _green = "#[fg=green,bold]"
-                _yellow = "#[fg=yellow,bold]"
-            }
+git \
+    -C "$tgtdir" \
+    --no-optional-locks \
+    status \
+    --porcelain=v2 \
+    --branch \
+    2>/dev/null \
+| awk -v color="$color" '
+    BEGIN {
+        if (color == "ansi") {
+            _reset = "\033[0m"
+            _red = "\033[31m"
+            _green = "\033[32;1m"
+            _yellow = "\033[33;1m"
+        } else if (color == "tmux") {
+            _reset = "#[fg=terminal]"
+            _red = "#[fg=red]"
+            _green = "#[fg=green,bold]"
+            _yellow = "#[fg=yellow,bold]"
         }
+    }
 
-        NR == 1 { prettydir=$0; next }
-        /^# branch\.oid/ { sha=substr($3, 0, 12) }
-        /^# branch\.head/ { branch=$3 }
-        /^# branch\.upstream/ { upstream=$3 }
-        /^# branch\.ab/ {
-            a = $3 != "+0" ? $3 : ""
-            b = $4 != "-0" ? $4 : ""
-        }
-        /^\?/ { untracked="?" }
-        /^[0-9] [A-Z]. / { added="A" }
-        /^[0-9] .[A-Z] / { modified="M" }
-        /^u UU/ { conflicts="UU" }
+    /^# branch\.oid/ { sha=substr($3, 0, 12) }
+    /^# branch\.head/ { branch=$3 }
+    /^# branch\.upstream/ { upstream=$3 }
+    /^# branch\.ab/ {
+        a = $3 != "+0" ? $3 : ""
+        b = $4 != "-0" ? $4 : ""
+    }
+    /^\?/ { untracked="?" }
+    /^[0-9] [A-Z]. / { added="A" }
+    /^[0-9] .[A-Z] / { modified="M" }
+    /^u UU/ { conflicts="UU" }
 
-        END {
-            print ((is_readable ? _green : _yellow) prettydir "  " \
-                _black sha,
-                _red conflicts \
-                _green added \
-                _red modified \
-                _yellow untracked ,
-                _black branch \
-                _green a \
-                _red b,
-                _black)
-        }
-    '
+    END {
+        print (\
+            _reset sha,
+            _red conflicts \
+            _green added \
+            _red modified \
+            _yellow untracked ,
+            _reset branch \
+            _green a \
+            _red b,
+            _reset)
+    }
+'
