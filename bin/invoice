@@ -1,0 +1,111 @@
+#!/usr/bin/env sh
+# Generate a PDF invoice from a plain text time log using groff and m4
+#
+# Usage:
+#
+#   invoice myjobdata.m4 timesheet1.txt [outfile]
+#
+# Outfile will be derived from the timesheet name if not given.
+# Can also be - for stdout.
+#
+# The timesheet is a text file in the form of:
+#
+#   <date>
+#   <hours>
+#   <description>
+#   <...description continued>
+#
+#   <date>
+#   <hours>
+#   <description>
+#   <...description continued>
+
+_gen_timesheet () {
+    awk -v rate="${1:?'Rate required'}" '
+    BEGIN { RS=""; FS="\n"; }
+
+    {
+        date=$1; hours=$2; total_hours += hours
+
+        printf("%s\tT{\n", prevdate == date ? " " : date)
+        for (i = 3; i <= NF; i += 1) print $i
+        printf("T}\t%s\n", hours)
+
+        prevdate = date
+    }
+
+    END {
+        printf("=\nTotal\t%s hours at $%s per hour\t$%.2f\n",
+            total_hours, rate, (total_hours * rate))
+    }
+    '
+}
+
+_invoice_tmpl () {
+    cat <<'EOF'
+.AUTHOR "xAUTHOR"
+.DOCTYPE LETTER
+.PRINTSTYLE TYPESET
+.START
+.DATE
+xDATE
+.FROM
+.RIGHT
+xFROM
+.TO
+xTO
+.PP
+.TS H
+expand,box;
+cb s s
+l l l
+lb lw55 rb .
+Development Breakdown
+.SP
+Date	Description	Hours
+.TH
+.SP
+m4_divert(2)m4_dnl
+.TE
+.PP
+.HI
+xPAYMENT
+.CLOSING
+xCLOSING
+m4_divert(1)m4_dnl
+EOF
+}
+
+_help () {
+    awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+    printf '\nJob data m4 fields:\n'
+    _invoice_tmpl | grep -P -o 'x[A-Z]+'
+    printf '\n'
+}
+
+_main () {
+    while getopts h opt; do
+        case $opt in
+        h) _help; exit;;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
+    if [ $# -eq 0 ]; then _help; exit; fi
+
+    job_data="${1:?'Job data m4 file required.'}"
+    timesheet="${2:?'Timesheet file required.'}"
+    outfile="${3:-${timesheet%.*}.pdf}"
+
+    rate="$(printf xRATE | m4 -P "$job_data" -)"
+
+    {
+        _invoice_tmpl
+        _gen_timesheet "$rate" < "$timesheet";
+    } \
+        | m4 -P -D xDATE="$(date '+%B %d, %Y')" "$job_data" - \
+        | groff -t -mom -Tps \
+        | ps2pdf - "$outfile"
+}
+
+_main "$@"

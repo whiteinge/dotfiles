@@ -52,6 +52,7 @@ hr -- Print a line of characters
 htmlstar -- Use xmlstarlet with html
 httpdir -- Serve a local directory via HTTP (via socat)
 imenu -- Select multiple items from stdin via abc's like the inventory menu in Nethack
+invoice -- Generate a PDF invoice from a plain text time log using groff and m4
 jflatten -- Use jq to flatten a JSON structure for easy use with awk/grep/etc
 joinpdf -- Merges, or joins multiple PDF files into "joined.pdf"
 join-strings -- Join strings together with a delimiter
