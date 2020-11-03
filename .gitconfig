@@ -172,9 +172,6 @@
     summary = $PAGER -F
     rl = $PAGER -F
 
-[rerere]
-    enabled = true
-
 [merge]
     tool = diffconflicts
 
