@@ -34,6 +34,16 @@
     churn = !git log --all -M -C --name-only --format='format:' "$@" \
         | grep . | sort | uniq -c | sort -n -r
     whoami = !git var GIT_COMMITTER_IDENT | sed 's/>.*/>/'
+    lasttag = describe --abbrev=0
+
+    # Output all the changes since the most recent tag as a Markdown list.
+    changelog = "!_() { \
+        printf 'Changes since %s\n\n' $(git lasttag); \
+        git --no-pager log --reverse --no-merges --oneline \
+            --pretty=format:'- %h %s' \
+            $(git lasttag)...${1:-HEAD}; \
+        printf '\n'; \
+    };_"
 
     # Fetch all or one remote:
     #   git f
