@@ -92,7 +92,7 @@ compinit -C
 zstyle ':completion:*' list-colors "$LS_COLORS"
 
 zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|nc|rsync):*' hosts '
-    reply=( ${=${${(M)${(f)"$(<~/.ssh/config)"}:#Host*}#Host }:#*\**} )'
+    reply=( ${=${${(M)${(f)"$(cat ~/.ssh/config*)"}:#Host*}#Host }:#*\**} )'
 
 # Custom script in $HOME/bin/c
 compdef c=curl
