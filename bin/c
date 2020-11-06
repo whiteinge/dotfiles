@@ -19,6 +19,7 @@ esac
 
 curl -sS -D /dev/stderr \
     ${json_reqrep:+-H 'Content-Type: application/json'} \
+    ${json_reqrep:+-H 'Accept: application/json'} \
     ${show_timing:+-w "
 %{stderr}
 ----------
@@ -35,7 +36,7 @@ total:          %{time_total}
 "} "$@" | {
     if [ -n "$json_reqrep" ]; then
         rep=$(< /dev/stdin)
-        printf '%s\n' "$rep" | jq -C || printf '%s\n' "$rep"
+        printf '%s\n' "$rep" | jq || printf '%s\n' "$rep"
     else
         cat
     fi
