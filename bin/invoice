@@ -62,11 +62,16 @@ _invoice_tmpl () {
 .START
 .DATE
 xDATE
-.FROM
-.RIGHT
-xFROM
-.TO
+Invoice xIID
+.TS
+tab(|),expand;
+l r.
+T{
 xTO
+T}|T{
+xFROM
+T}
+.TE
 .PP
 .TS H
 expand,box;
@@ -97,8 +102,9 @@ _help () {
 }
 
 _main () {
-    while getopts h opt; do
+    while getopts i:h opt; do
         case $opt in
+        i) iid="$OPTARG";;
         h) _help; exit;;
         esac
     done
@@ -116,7 +122,10 @@ _main () {
         _invoice_tmpl
         _gen_timesheet "$rate" < "$timesheet";
     } \
-        | m4 -P -D xDATE="$(date '+%B %d, %Y')" "$job_data" - \
+        | m4 -P \
+            -D xIID="$iid" \
+            -D xDATE="$(date '+%B %d, %Y')" \
+            "$job_data" - \
         | groff -t -mom -Tps \
         | ps2pdf - "$outfile"
 }
