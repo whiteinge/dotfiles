@@ -256,6 +256,12 @@ alias lmk='notify-send "Task in $(basename $(pwd)) is done"\
 # Output names if terminal can handle 256 colors.
 alias 256test='echo -e "\e[38;5;196mred\e[38;5;46mgreen\e[38;5;21mblue\e[0m"'
 
+# Associate an ssh-agent process with the life of a tmux session.
+export TMUX_AUTH_SOCK=$HOME/.ssh/ssh-auth-sock
+alias tm="exec ssh-agent \
+    sh -c 'ln -sfn \$SSH_AUTH_SOCK $TMUX_AUTH_SOCK; \
+    SSH_AUTH_SOCK=$TMUX_AUTH_SOCK exec tmux new-session -A -s 0'"
+
 # }}}
 
 # Miscellaneous Functions:
