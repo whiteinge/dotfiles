@@ -8,12 +8,30 @@
 #
 #   rtimemachine --dry-run -vh
 
-BACKUP_DIR="/mnt/timemachine/${USER}"
-LAST_BACKUP=$(find "$BACKUP_DIR" -type d | tail -1)
+BACKUP_DIR="/timemachine/${USER}"
+
+if [ ! -d "$BACKUP_DIR" ]; then
+    printf 'Backup directory "%s" missing.\n' "$BACKUP_DIR" 1>&2
+    exit 1
+fi
+
+if [ ! -w "$BACKUP_DIR" ]; then
+    printf 'Backup directory "%s" not writable.\n' "$BACKUP_DIR" 1>&2
+    exit 1
+fi
+
+LAST_BACKUP=$(find "$BACKUP_DIR" -maxdepth 1 -type d | sort | tail -1)
 NEXT_BACKUP=$(date '+%FT%R')
 
-if [ "$LAST_BACKUP" = '.' ]; then has_prev=1; fi
+if [ -e "$NEXT_BACKUP" ]; then
+    printf 'Target backup "%s" already exists.\n' "$NEXT_BACKUP" 1>&2
+    exit 1
+fi
 
-rsync -a --delete "$@" \
-    ${has_prev:+--link-dest="${BACKUP_DIR}/${LAST_BACKUP}"} \
-    "${HOME}/" "${BACKUP_DIR}/${NEXT_BACKUP}"
+if [ ! "$LAST_BACKUP" = "$BACKUP_DIR" ]; then has_prev=1; fi
+
+# set -x
+rsync -a --delete --exclude-from=$HOME/.timemachine-exclude "$@" \
+    ${has_prev:+--link-dest="$LAST_BACKUP"} \
+    "${HOME}/" \
+    "${BACKUP_DIR}/${NEXT_BACKUP}"

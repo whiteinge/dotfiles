@@ -1,0 +1,11 @@
+/.cache/
+/.config/google-chrome/
+/.kube/
+/.local/
+/.minikube/
+/.mozilla/
+/.nodejs/
+/.npm/
+/Applications/
+/Games/
+/Videos/
