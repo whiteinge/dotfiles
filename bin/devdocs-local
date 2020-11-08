@@ -24,21 +24,7 @@ mkdir -p "$DEVDOCS_DIR"
 list () {
     # Find the docs JavaScript and try to extract the slug and mtime values.
 
-    curl -sS https://devdocs.io |
-        htmlstar sel -t -v '//script[contains(@src, "docs-")]/@src' \
-            2>/dev/null |
-        xargs printf 'http:%s\n' |
-        xargs curl -sS |
-        awk '
-            /^slug: / {
-                match($2, /".*"/)
-                slug = substr($2, RSTART + 1, RLENGTH - 2)
-            }
-            /^mtime: / {
-                mtime = substr($2, 1, length($2) - 1)
-                print slug, mtime
-            }
-        '
+    curl -sSL https://devdocs.io/docs.json | jq -r '.[] | [.slug, .mtime] | @tsv'
 }
 
 download () {
