@@ -101,7 +101,7 @@
     # Fuzzy-find any Git ranges in the tmux scrollback.
     # Useful after a fetch to see what commits came in.
     # Usage: git fetch && git tl
-    frefs = "!scrollback | match-git-range | sort -u | fzy | xargs -r git l"
+    frefs = "!scrollback | match-git-range | uniq | fzy | xargs -r git l"
 
     # Use fzy to quickly filter available files.
     fzy = "!git ls-files | fzy"
