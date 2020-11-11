@@ -1,13 +1,56 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env sh
 # Generate a cryptographically inadequate(!) password
+#
 # For those times when pwgen isn't available or security doesn't matter.
-# Usage: genpass 10
 
-function main() {
+NAME=$(basename "$0")
+
+_help () {
+    # Extract contiguous lines of comments in a function as help text
+
+    awk -v cmd="${1:?'Command name required.'}" -v NAME="$NAME" '
+    $0 ~ "^" cmd "\\s*\\(\\)\\s*{" { is_found=1; next }
+    is_found && !NF { exit }
+    is_found { gsub(/^\s*#\s?/, ""); gsub(/NAME/, NAME); print; }
+    ' "$0"
+}
+
+main () {
+    # Usage: NAME [<flags>]
+    #
+    # Flag | Description
+    # ---- | -----------
+    # -a   | Alpha (lower) characters.
+    # -A   | Alpha (upper) characters.
+    # -n   | Numeric characters.
+    # -s   | Symbol characters.
+    # -x   | Enable xtrace debug logging.
+
+    local c=''
+    local opt
+    local OPTARG
+    local OPTIND
+
+    while getopts aAnshx opt; do
+        case $opt in
+        a) c="${c}a-z";;
+        A) c="${c}A-Z";;
+        n) c="${c}0-9";;
+        s) c="${c}!@#$%^&*()_+";;
+        h) _help main; exit;;
+        x) set -x;;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
     local len="${1:-20}"
 
+    if [ -z "$c" ]; then
+        c='A-Za-z0-9!@#$%^&*()_+'
+    fi
+
     dd if=/dev/urandom count=1 2>/dev/null |\
-        tr -cd 'A-Za-z0-9!@#$%^&*()_+' | cut "-c-${len}"
+        tr -cd "$c" | cut "-c-${len}"
 }
 
 main "$@"
