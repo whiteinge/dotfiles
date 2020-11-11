@@ -69,7 +69,7 @@ _main () {
 
     trap '
         excode=$?; trap - EXIT;
-        rm -rf '"$TEMP"'
+        rm -rf -- '"$TEMP"'
         exit $excode
     ' INT TERM EXIT
 
