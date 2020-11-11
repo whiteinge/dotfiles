@@ -7,7 +7,17 @@
 # With ssh pipelining:
 #     fetchall "git@github.com"
 
-function _wait_for_ssh () {
+SSH_URI="${1:?SSH connection string required.}"
+REPO_CACHE="${TMPDIR:-/tmp}/_fetchall.txt"
+
+trap '
+    excode=$?; trap - EXIT;
+    __ssh_fetchall
+    __fetchall
+    exit $excode
+' INT TERM EXIT
+
+_wait_for_ssh () {
     # Block until a multiplexed ssh connection is ready
     #
     # Useful for making a single ssh connection that can be reused for many ssh
@@ -23,12 +33,6 @@ function _wait_for_ssh () {
 
     local ssh="${1?:ssh hostname required}"
 
-    trap '
-        excode=$?; trap - EXIT;
-        break
-        exit $excode
-    ' INT TERM EXIT
-
     printf 'Connecting to "%s".\n' "$ssh"
     while ! ssh -O check ${ssh} 1>/dev/null 2>/dev/null true; do
         printf '.' ; sleep 0.5;
@@ -36,29 +40,32 @@ function _wait_for_ssh () {
     printf '\nConnected!\n'
 }
 
-function fetchall () {
+fetchall () {
     find . -type d -name .git -print0 \
+        | tee "$REPO_CACHE" \
         | xargs -t -r -0 -P5 -I@ git --git-dir=@ fetch -a
+
+    < "$REPO_CACHE" xargs -0 -n1 \
+        | wc -l \
+        | xargs printf 'Fetched upstream changes from %s repos.\n'
+}
+__fetchall () {
+    rm -f "$REPO_CACHE"
 }
 
-function ssh_fetchall () {
-    local SSH_URI="${1:?SSH connection string required.}"
-
-    # Start a connection and wait for it; exit when we're done
-    trap '
-        excode=$?; trap - EXIT;
-        ssh -O exit '"$SSH_URI"'
-        exit $excode
-    ' INT TERM EXIT
-
+ssh_fetchall () {
     ssh -N ${SSH_URI} &
     _wait_for_ssh ${SSH_URI}
 
     # Kick off a ton of parallel fetch operations
     time fetchall
+}
+__ssh_fetchall () {
+    # Exit connection when done
 
-    local count=$(find . -type d -name .git -print | wc -l)
-    printf 'Fetched upstream changes for %s repositories.\n' "$count"
+    if [ -n "$SSH_URI" ]; then
+        ssh -O exit "$SSH_URI"
+    fi
 }
 
 main() {
