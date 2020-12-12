@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Open fzy in a new, temporary xterm window
+
+uxterm -e "fzy $* < /proc/$$/fd/0 > /proc/$$/fd/1"
