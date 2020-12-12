@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+# Add simple emoji fuzzy-finder
+#
+# Thanks to the great, parseable list maintained by @b4b4r07
+
+cache="${HOME}/tmp/emoji.cache"
+
+if [ ! -r "$cache" ]; then
+    curl -sSL https://raw.githubusercontent.com/b4b4r07/emoji-cli/master/dict/emoji.json -o "$cache"
+fi
+
+< "$cache" jq -r '.[] | [
+        .emoji, .description, "\(.aliases | @csv)", "\(.tags | @csv)"
+    ] | @tsv
+' | fzy -p 'Search emojis: ' | cut -f1
