@@ -300,9 +300,7 @@ set sidescrolloff=2             "siso:  places a couple columns between the curr
 set laststatus=2                "ls:    makes the status bar always visible
 set ttyfast                     "tf:    improves redrawing for newer computers
 set notitle                     "       don't update xterm (or tmux pane) titles
-set history=200                 "hi:    number of search patterns and ex commands to remember
-                                "       (also used by viminfo below for /, :, and @ options)
-set viminfo='200                "vi:    For a nice, huuuuuge viminfo file
+set history=20                  "hi:    number of search patterns and ex commands to remember
 
 if &columns < 88
     " If we can't fit at least 80-cols, don't display these screen hogs
