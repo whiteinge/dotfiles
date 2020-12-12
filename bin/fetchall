@@ -7,7 +7,7 @@
 # With ssh pipelining:
 #     fetchall "git@github.com"
 
-SSH_URI="${1:?SSH connection string required.}"
+SSH_URI="$1"
 REPO_CACHE="${TMPDIR:-/tmp}/_fetchall.txt"
 
 trap '
@@ -54,6 +54,11 @@ __fetchall () {
 }
 
 ssh_fetchall () {
+    if [ -z "$SSH_URI" ]; then
+        printf 'SSH connection string required.\n' 1>&2
+        exit 1
+    fi
+
     ssh -N ${SSH_URI} &
     _wait_for_ssh ${SSH_URI}
 
