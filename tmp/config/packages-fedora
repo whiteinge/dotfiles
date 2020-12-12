@@ -112,7 +112,6 @@ x11vnc
 xbacklight
 xbindkeys
 xcalc
-xcape
 xclip
 xdotool
 xmlstarlet
@@ -130,7 +129,6 @@ xosd
 xournal
 xpdf
 xscreensaver
-xsettingsd
 yank
 zip
 zsh
