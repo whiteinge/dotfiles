@@ -24,7 +24,6 @@ diff-to-line-numbers -- Output the line numbers for lines added and removed in a
 diff-to-quickfix -- Convert a diff into Vim's quickfix format
 echoc -- Print each input character on a new line
 echol -- Like echo but delimit with newlines instead of spaces
-echoserver -- Start an echo HTTP server
 explode_path -- Take a path and output all child paths as absolute paths
 extract_clip -- Extract a clip from a larger video file
 femoji -- Add simple emoji fuzzy-finder
@@ -53,6 +52,7 @@ git-summary -- Show a summary of the commits, authors, and files in a Git repo
 hr -- Print a line of characters
 htmlstar -- Use xmlstarlet with html
 httpdir -- Serve a local directory via HTTP (via socat)
+httptest -- A local HTTP server with many endpoints to test HTTP request/responses
 imenu -- Select multiple items from stdin via abc's like the inventory menu in Nethack
 invoice -- Generate a PDF invoice from a plain text time log using groff and m4
 jflatten -- Use jq to flatten a JSON structure for easy use with awk/grep/etc
