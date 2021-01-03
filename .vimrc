@@ -3,7 +3,6 @@ filetype indent off
 
 " Search {{{
 
-set incsearch                   " Automatically begins searching as you type
 set ignorecase                  " Ignores case when pattern matching
 set smartcase                   " Ignores ignorecase when pattern contains uppercase characters
 set hlsearch                    " Highlights search results
@@ -43,7 +42,6 @@ nn <leader>ha :call clearmatches()<cr>
 " }}}
 " Line Wrap {{{
 
-set backspace=indent,eol,start  " Allows you to backspace over the listed character types
 set linebreak                   " Causes vim to not wrap text in the middle of a word
 set wrap                        " Wraps lines by default
 
@@ -132,7 +130,6 @@ vnoremap <leader>. :normal .<cr>
 vnoremap <leader>@ :normal @
 
 " Allow undoing individual insert-mode changes with ctrl-u and ctrl-w
-inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 
 " Select most recently edited text.
@@ -205,12 +202,6 @@ map <leader>cr :r <C-R>=expand("%:p:h") . "/" <cr>
 " Helps if you have to use another editor on the same file
 au FileChangedShell * echo "File has been changed outside of Vim."
 
-" Restore last cursor position in file
-au BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-
 " If a ftplugin has defined the b:ftskeleton variable, try to load the
 " skeleton template.
 au BufNewFile * silent! exe "0r ". b:ftskeleton
@@ -242,7 +233,6 @@ set foldcolumn=4                "fdc:   creates a small left-hand gutter for dis
 " }}}
 " Menu completion {{{
 
-set wildmenu                    "wmnu:  enhanced ex command completion
 set wildmode=longest:full,list:full  "wim:   helps wildmenu auto-completion
 
 set dictionary=spell        " Complete words from the spelling dict.
@@ -292,15 +282,12 @@ set signcolumn=yes              "scl:   always show the sign column so it doesn'
 set number                      "nu:    show the actual line number for the current line in relativenumber
 set showmode                    "smd:   shows current vi mode in lower left
 set cursorline                  "cul:   highlights the current line
-set showcmd                     "sc:    shows typed commands
 set cmdheight=2                 "ch:    make a little more room for error messages
 set sidescroll=2                "ss:    only scroll horizontally little by little
-set scrolloff=1                 "so:    places a line between the current line and the screen edge
-set sidescrolloff=2             "siso:  places a couple columns between the current column and the screen edge
+set sidescrolloff=5             "siso:  places a couple columns between the current column and the screen edge
 set laststatus=2                "ls:    makes the status bar always visible
 set ttyfast                     "tf:    improves redrawing for newer computers
 set notitle                     "       don't update xterm (or tmux pane) titles
-set history=20                  "hi:    number of search patterns and ex commands to remember
 
 if &columns < 88
     " If we can't fit at least 80-cols, don't display these screen hogs
