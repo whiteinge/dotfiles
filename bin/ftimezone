@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Fuzzy-find available timezones
+
+cd /usr/share/zoneinfo
+find * | fzy -p 'Timezone > '

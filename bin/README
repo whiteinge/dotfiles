@@ -32,6 +32,7 @@ ffind -- (filtering find) - A wrapper around find to ignore noise directories
 ffmpeg-blur -- Blur a section of video based on an image mask
 flipbook -- A flipbook loop for ascii drawings
 fnode -- Use a fuzzy-finder to select and install a NodeJS version
+ftimezone -- Fuzzy-find available timezones
 ftree -- Use a fuzzy-finder to traverse the file system and print a file name
 _fzy_cd -- Use a fuzzy-finder to complete child directories
 _fzy_git -- Use a fuzzy-finder to complete Git refs
@@ -92,6 +93,7 @@ slugify -- Output a string as a slug
 split-strings -- Split a string on a common delimiter
 status -- Collect various system stats for feeding into a status bar
 tailsplit -- Run a command and open two tmux panes to tail stdout and stderr separately
+timebuddy -- Compare columns of hours in a day across multiple timezones
 timer -- Output seconds elapsed
 tmux-tiled -- Make a bunch of tiled tmux panes via find -exec or xargs
 todo -- Store a todo list in any Git repository
