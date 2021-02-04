@@ -2,4 +2,4 @@
 # Fuzzy-find available timezones
 
 cd /usr/share/zoneinfo
-find * | fzy -p 'Timezone > '
+find -type f | sed 's|^\./||' | fzy -p 'Timezone > '
