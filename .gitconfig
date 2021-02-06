@@ -185,3 +185,14 @@
 [diff]
     tool = vimdiff
     colorMoved = true
+
+# If Git::LoadCPAN is not packaged for your distro:
+# export PERL5LIB=/path/to/git/clone/perl
+# [sendemail]
+#     smtpencryption = tls
+#     smtpserver = server
+#     smtpuser = user
+#     smtpserverport = port
+
+[include]
+    path = ~/.gitemailconfig
