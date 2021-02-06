@@ -18,7 +18,11 @@ ignore *
 unignore Date: From: To: CC: Bcc: Subject:
 hdr_order Subject: Date: From: To: CC: Bcc:
 set index_format = "%{%b %d} %-15.15L [%Z] %s"
-
+set sidebar_visible = yes
+set sidebar_sort_method = alpha
+set sidebar_short_path = yes
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats = yes
 
 # Writing Mail ################################################################
 set markers = no
@@ -45,9 +49,11 @@ source "gpg -qd ~/.mutt/passwords.gpg |"
 
 set copy = yes
 set imap_idle = yes
+set imap_check_subscribed = yes
 set mail_check = 60
 set postponed = "+Drafts"
 set record = "+Sent"
+set trash="+Trash"
 set reverse_alias = yes
 set send_charset = utf-8
 set sort_alias = alias
@@ -64,6 +70,10 @@ color index green default "~O"                      # unread
 color index green default "~U"                      # unread
 color index blue default "~D"                       # deleted
 color index magenta default "~F"                    # flagged
+
+color sidebar_divider brightblack default
+color sidebar_new green default
+color sidebar_flagged red default
 
 color header green default "^To:"
 color header green default "^cc"
@@ -125,14 +135,16 @@ bind index               <Backtab> previous-new-then-unread
 macro index,pager gi "<change-folder>=INBOX<enter>"       "open inbox"
 macro index,pager gd "<change-folder>=Drafts<enter>"      "open drafts"
 macro index,pager gs "<change-folder>=Sent<enter>"        "open sent"
+macro index,pager gl "<change-folder>=Lists<enter>"       "open lists"
+macro index,pager ga "<change-folder>=Activity%20Stream<enter>"       "open activity stream"
 macro index,pager gt "<change-folder>$trash<enter>"       "open trash"
 macro index,pager gf "<change-folder>?"                   "open mailbox..."
 
 # Actions
 # ----------------------------------------------------
 bind  index,pager    a   group-reply
-macro index,pager    dd  "<delete-message><sync-mailbox>"                                 "move message to trash"
-macro index,pager    dat "<delete-thread><sync-mailbox>"                                  "move thread to trash"
+macro index,pager    dd  "<delete-message>"                                 "move message to trash"
+macro index,pager    dat "<delete-thread>"                                  "move thread to trash"
 macro index,pager    ss  ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<save-message>?"                                                                                                                                     "save message to a mailbox"
 macro index          sat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015\"\015<mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix-cond><save-message>?"                                    "save thread to a mailbox"
 macro index          \;s ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<tag-prefix-cond><save-message>?"                                                                                                                    "save tagged messages to a mailbox"
