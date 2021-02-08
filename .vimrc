@@ -54,7 +54,7 @@ nmap <silent> <C-P> :set nowrap!<cr>:set nowrap?<cr>
 
 set showmatch                   " Flashes matching brackets or parentheses
 
-set nobackup                    " Does not write a persistent backup file of an edited file
+set backup                      " Does write a persistent backup file of an edited file
 set writebackup                 " Does keep a backup file while editing a file
 
 set undofile                    " Persist the undo tree to a file; dir below will not be auto-created
