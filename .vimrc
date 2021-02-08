@@ -6,6 +6,7 @@ filetype indent off
 set ignorecase                  " Ignores case when pattern matching
 set smartcase                   " Ignores ignorecase when pattern contains uppercase characters
 set hlsearch                    " Highlights search results
+set shortmess-=S                " Show current/total search matches.
 
 " Map n/N to always move in the same direction.
 nn <expr> n 'Nn'[v:searchforward]
