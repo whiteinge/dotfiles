@@ -13,8 +13,8 @@ KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1050", ATTRS{idProduct
 LABEL="u2f_end"
 EOF
 
-# Rotate the framebuffer by defualt.
-sed -i -e '/GRUB_CMDLINE_LINUX/ s/quiet"$/fbcon=rotate:1 quiet"/' /etc/default/grub
+# Rotate the framebuffer by defualt and disable plymouth (graphical boot).
+sed -i -e '/GRUB_CMDLINE_LINUX/ s/quiet"$/fbcon=rotate:1 rd.plymouth=0 plymouth.enable=0 quiet"/' /etc/default/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
 
 # Set up X server for the unique display.
