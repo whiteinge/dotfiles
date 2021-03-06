@@ -3,6 +3,6 @@
 
 cmd="$1 $2"; shift 2
 git show-ref \
-    | awk '{ sub(/refs\/(heads|tags)\//, "", $2); print $2 }' \
+    | awk '{ sub(/refs\/(heads|tags|remotes)\//, "", $2); print $2 }' \
     | fzy -p 'Git refs > ' -q "$*" \
     | xargs printf '%s %s' "$cmd"
