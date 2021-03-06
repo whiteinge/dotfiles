@@ -181,6 +181,7 @@
 [mergetool "diffconflicts"]
     cmd = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
     trustExitCode = true
+    hideResolved = false
 
 [diff]
     tool = vimdiff
