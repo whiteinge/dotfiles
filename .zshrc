@@ -173,22 +173,17 @@ alias ls='ls -F --color'
 alias la='ls -A'; compdef la=ls
 alias ll='ls -lh'; compdef ll=ls
 
-# Vim:
-alias vi=$EDITOR
-# fast Vim that doesn't load a vimrc or plugins
-alias vv="${EDITOR} -N -u NONE"
-# Loads vimrc but no plugins
-alias vvv="${EDITOR} -N --noplugin"
-
+# Regular Vim
+alias vi=$EDITOR; compdef vi=vim
+# Fast Vim (no vimrc, syntax, ftplugins) for big files
+alias vv="${EDITOR} -N -u NONE"; compdef vv=vim
+# Vim without plugins for debugging weird behavior
+alias vvv="${EDITOR} -N --noplugin"; compdef vvv=vim
+# Vim for profiling slow startup or initialization
 alias vimprof="${EDITOR} \
     --cmd 'profile start vim-profile.log' \
     --cmd 'profile func *' \
-    --cmd 'profile file *'"
-
-compdef vi=vim
-compdef vv=vim
-compdef vvv=vim
-compdef vimprof=vim
+    --cmd 'profile file *'"; compdef vimprof=vim
 
 # Aliases that override default names:
 alias less='less -imJMW'
