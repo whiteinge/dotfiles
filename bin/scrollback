@@ -10,4 +10,4 @@
 #   scrollback 1 | grep foo
 #   scrollback %12 | grep foo
 
-tmux capture-pane ${1:+-t "$1"} -pJS -1000 | tac
+tmux capture-pane ${1:+-t "$1"} -pJS -5000 | tac
