@@ -106,7 +106,7 @@
     # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
     ctags = !.git/hooks/ctags
 
-    # Open all modified (or staged) files into Vim's quickfix.
+    # Open all modified or staged files into Vim's quickfix list.
     # bd1 deletes the initial "[No Name]" buffer since we're using :set hidden
     # E.g.: git editm; git edits
     editm = "!zsh -c '$EDITOR +bd1 -q <(git diff -p -U0 --diff-filter=AM \
@@ -115,9 +115,12 @@
         | diff-to-quickfix)'"
 
     # Open all files changed within either a single commit, or a commit range
-    # into Vim's quickfix. Defaults to HEAD.
+    # into Vim's quickfix list. Defaults to HEAD. Useful for stepping through
+    # changes in one or more commits, or quickly picking back up where you left
+    # off after a WIP commit.
+    # E.g.: git editc
     # E.g.: git editc HEAD~3
-    # E.g.: git editc HEAD~3..
+    # E.g.: git editc @{u}..
     editc = "!zsh -c ' \
         [[ \"$1\" =~ \"\\.\\.\" ]] && dcmd=diff || dcmd=diff-tree ; \
         $EDITOR +bd1 -q <(git $dcmd -p -U0 --diff-filter=AM -r \
