@@ -46,7 +46,7 @@ awk -v os="$(uname)" -v arch="$(uname -m)" '
     fzy -p 'Node > ' |
     cut -f 2 |
     xargs -r printf '%s/%s\n' "$NODE_MIRROR" |
-    xargs -r curl -sS -C - -O -w '%{filename_effective}\n' |
+    xargs -r curl -# -C - -O -w '%{filename_effective}\n' |
     {
         read -r vfile
         if [ -z "$vfile" ]; then
