@@ -68,10 +68,6 @@ REPORTTIME=60
 WATCH=notme
 WATCHFMT='%n %a %l from %m at %T.'
 
-export LANG=en_US.UTF-8
-export LC_ALL=$LANG
-export LC_COLLATE=C
-
 export EDITOR='vim'
 export VISUAL=$EDITOR
 export LESS='-imJMWR'
