@@ -587,7 +587,9 @@ nmap <silent> <leader>cs :!git add %<cr>
 nmap <silent> <leader>ci :!git commit<cr>
 nmap <silent> <leader>ca :!git commit --amend --no-edit<cr>
 nmap <silent> <leader>cb <bar>
+    \ :setl nofoldenable <bar>
     \ :55vnew <bar>
+    \ :setl nofoldenable <bar>
     \ :call scratch#Scratch() <bar>
     \ :setl nowrap <bar>
     \ :exe 'r !git blame -c --date=relative -- '. fnamemodify(expand('#'), ':~:.') <bar>
