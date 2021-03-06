@@ -94,8 +94,9 @@ zstyle ':completion:*' list-colors "$LS_COLORS"
 zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|nc|rsync):*' hosts '
     reply=( ${=${${(M)${(f)"$(cat ~/.ssh/config*)"}:#Host*}#Host }:#*\**} )'
 
-# Custom script in $HOME/bin/c
+# Custom script in $HOME/bin
 compdef c=curl
+compdef cj=curl
 
 # }}}
 # {{{ prompt and theme
