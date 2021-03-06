@@ -45,7 +45,7 @@ Checklist:
 <!--
 Remark cheatsheet:
 
-class: left, center, right, top, middle, bottom
+class: left, center, right, top, middle, bottom, image-slide, image-slide-tall, image-slide-wide
 
 background-image: url(image.jpg)
 background-position: center;
