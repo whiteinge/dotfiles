@@ -213,7 +213,7 @@ compdef rs=rsync
 alias filesunder='find . \( -name .git -type d \) -prune -o -type f -printf "%P\0"'
 alias filesmissing='find . -maxdepth 2 -xtype l'
 
-# Quickly ssh through a bastian host without having to hard-code in ~/.ssh/config
+# Quickly ssh through a bastion host without having to hard-code in ~/.ssh/config
 alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
 
 # mkdir and cd at once
@@ -231,22 +231,18 @@ function _man() {
 # Zsh's completion invokes man on tab so avoid a recursive definition.
 alias man='_man'
 
-# Useful for working with Git remotes; e.g., ``git log IN``, ``git diff OUT``.
+# Useful for working with Git remotes; e.g., `git log IN`, `git diff OUT`.
 alias -g IN='..@{u}'
 alias -g IIN='...@{u}'
 alias -g OUT='@{u}..'
 alias -g OOUT='@{u}...'
 alias -g UP='@{u}'
 
-# Selects a random file: ``mpv RANDOM``
+# Selects a random file: `mpv RANDOM`
 alias -g RANDOM='"$(shuf -e -n1 *)"'
 
 # Output stderr in red. Usage: somecomand RED
 alias -g RED='2> >(while read line; do echo -e "\e[01;31m$line\e[0m" >&2; done)'
-
-# Drop-in for quick notifications. E.g., sleep 10; lmk
-alias lmk='notify-send "Task in $(basename $(pwd)) is done"\
-    "Task in $(basename $(pwd)) is done"'
 
 # Output names if terminal can handle 256 colors.
 alias 256test='echo -e "\e[38;5;196mred\e[38;5;46mgreen\e[38;5;21mblue\e[0m"'
@@ -256,9 +252,11 @@ export TMUX_AUTH_SOCK=$HOME/.ssh/ssh-auth-sock
 alias tm="exec ssh-agent \
     sh -c 'ln -sfn \$SSH_AUTH_SOCK $TMUX_AUTH_SOCK; \
     SSH_AUTH_SOCK=$TMUX_AUTH_SOCK exec tmux new-session -A -E -s 0'"
+# systemd version to prevent getting killed on logout (>_<)
 alias tms="exec ssh-agent \
     sh -c 'ln -sfn \$SSH_AUTH_SOCK $TMUX_AUTH_SOCK; \
-    SSH_AUTH_SOCK=$TMUX_AUTH_SOCK exec systemd-run --scope --user tmux new-session -A -E -s 0'"
+    SSH_AUTH_SOCK=$TMUX_AUTH_SOCK \
+    exec systemd-run --scope --user tmux new-session -A -E -s 0'"
 
 # }}}
 
