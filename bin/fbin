@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# Fuzzy-find scripts in $HOME/bin by description
+
+readme-gen |
+    fzy |
+    awk 'BEGIN { FS=" -- " } { print $1 }' |
+    xargs -I{} tmux send {} Space
