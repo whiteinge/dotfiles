@@ -20,7 +20,7 @@ fu! signs#GitChanges()
 
     let l:lines_changed = systemlist('git diff -U0 -- '.
             \ shellescape(l:curfile) .' 2>/dev/null '
-            \ .'| diff-to-line-numbers | tail -n +2 | cut -f1')
+            \ .'| diff-to-line-numbers 2>/dev/null | tail -n +2 | cut -f1')
         \ ->map({i, x -> split(x, ' ')})
     let l:g_items = {}
     for [i_num, i_type] in l:lines_changed
