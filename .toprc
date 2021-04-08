@@ -14,3 +14,45 @@ Usr	fieldscur=¥¦§¨ª°-3468;<=>?@ACFG¹·ºÄÅML)+,./125BHIJKNOPQRSTUVWXYZ[\]^_`abcdef
 	summclr=3, msgsclr=3, headclr=2, taskclr=3
 Fixed_widest=0, Summ_mscale=1, Task_mscale=0, Zero_suppress=0
 
+# http://www.dowdandassociates.com/blog/content/howto-troubleshoot-with-linux-top-command/
+#
+# %us individual processor utilization (userland processes); % of avail cores.
+#
+# %sy system CPU usage; higher numbers may indicate a problem with kernel
+# configs, a driver issue, etc.
+#
+# %ni percentage of CPU by userland processes that have been niced. Does not
+# overlap with %us which only shows processes using the default priority.
+#
+# %id this is the result of subtracting the previous 3 numbers from 100.0%, and
+# measures idle processing power.
+#
+# %wa iowait percentage. A measure of disk performance. When a process requests
+# data it first checks processor caches, then checks memory, and finally disk.
+# The IO thread waits until the data is read into RAM. Slower disk means higher
+# iowait. Also when system buffers are full and need to be flushed by the kernel
+# -- e.g.: on high-load database servers. iowait consistently over {100 / (number
+# of CPUs * number of processes)}% could mean a storage issue. If you see a high
+# load average check THIS number FIRST. If high then processes are bottlenecking
+# on available disk. Need faster disk or to distribute usage across other
+# hypervisors or disks.
+#
+# %hi hard interrupt. On a circuit board the electrons move through chips in
+# a predictable manner. E.g: when a network card receives a packet, before
+# transferring the information in the packet to the processor via the kernel, it
+# will ask for an interrupt on an interrupt line on the motherboard. The
+# processor reports to the kernel that the network card has information for it
+# and the kernel can decide what to do. A high %hi stat is rare on a virtual
+# machine. High network throughput, USB usage, GPU computations may contribute to
+# %hi.
+#
+# %si soft interrupt. Virtualized interrupts (kernel 2.4+). E.g., a tcpdump on
+# a 1 gig link with high traffic can bring this to about 10%, as tcpdump's
+# allocated memory fills, it requests an interrupt to move the data off its stack
+# and onto the disk, screen, etc.
+#
+# %st iosteal. A measure of how busy the hypervisor is. Virtual CPUs in VMs will
+# schedule work across all physical CPUs in a hopefully balanced/scheduled way.
+# If more than the number of physical CPUs are being used by VMs virtual CPUs
+# iosteal will go up. Consistently high iosteal% (over 15%) may imply the
+# hypervisor is overloaded and some VMs should be moved.
