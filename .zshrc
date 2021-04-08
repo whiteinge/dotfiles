@@ -174,8 +174,8 @@ function _lr () {
     lr \
         -t 'type == f && color 15 || print' \
         -t 'type == p && color 11 || print' \
-        -t 'type == l && color 14 || print' \
         -t 'mode == "+x" && color 10 || print' \
+        -t 'type == l && color 14 || print' \
         -t 'type == d && color 12 || print' \
         "$@"
 }
