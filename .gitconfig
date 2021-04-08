@@ -36,12 +36,15 @@
     whoami = !git var GIT_COMMITTER_IDENT | sed 's/>.*/>/'
     lasttag = describe --abbrev=0
 
-    # Output all the changes since the most recent tag as a Markdown list.
+    # Output all the changes since the most recent tag as a Markdown list:
+    # git changelog
+    # git changelog HEAD~5...
     changelog = "!_() { \
-        printf 'Changes since %s\n\n' $(git lasttag); \
+        range=${1:-$(git lasttag)...HEAD}; \
+        printf 'Changes since %s\n\n' $range; \
         git --no-pager log --reverse --no-merges --oneline \
             --pretty=format:'- %h %s' \
-            $(git lasttag)...${1:-HEAD}; \
+            $range; \
         printf '\n'; \
     };_"
 
