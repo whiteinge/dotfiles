@@ -275,6 +275,11 @@ nnoremap <silent><leader>ff
     \ ->util#SysR('fzy')
     \ ->{x -> 'edit '. x}() ->execute()<cr>
 
+nnoremap <silent><leader>gff
+    \ :call systemlist("ffind . '(' -type f -o -type l ')' -print")
+    \ ->util#SysR('fzy')
+    \ ->{x -> 'tabe '. x}() ->execute()<cr>
+
 " }}}
 " Window Layout {{{
 
