@@ -234,6 +234,7 @@ set foldcolumn=4                "fdc:   creates a small left-hand gutter for dis
 " }}}
 " Menu completion {{{
 
+set wildmenu                    "wmnu:  enhanced ex command completion
 set wildmode=longest:full,list:full  "wim:   helps wildmenu auto-completion
 
 set dictionary=spell        " Complete words from the spelling dict.
@@ -283,9 +284,11 @@ set signcolumn=yes              "scl:   always show the sign column so it doesn'
 set number                      "nu:    show the actual line number for the current line in relativenumber
 set showmode                    "smd:   shows current vi mode in lower left
 set cursorline                  "cul:   highlights the current line
+set showcmd                     "sc:    shows typed commands
 set cmdheight=2                 "ch:    make a little more room for error messages
 set sidescroll=2                "ss:    only scroll horizontally little by little
-set sidescrolloff=5             "siso:  places a couple columns between the current column and the screen edge
+set scrolloff=1                 "so:    places a line between the current line and the screen edge
+set sidescrolloff=2             "siso:  places a couple columns between the current column and the screen edge
 set laststatus=2                "ls:    makes the status bar always visible
 set ttyfast                     "tf:    improves redrawing for newer computers
 set notitle                     "       don't update xterm (or tmux pane) titles
