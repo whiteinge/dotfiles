@@ -104,7 +104,7 @@
     # Fuzzy-find any Git ranges in the tmux scrollback then copy into a tmux
     # save buffer for easy pasting. Useful after fetch to inspect new commits.
     # Usage: git fetch && git frefs
-    frefs = "!scrollback | match-git-range | uniq | fzy | tmux loadb -"
+    frefs = "!scrollback | match-git-range | uniq | fzy | tr -d \\\\n | tmux loadb -"
 
     # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
     ctags = !.git/hooks/ctags
