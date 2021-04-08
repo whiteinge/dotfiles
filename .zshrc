@@ -52,7 +52,7 @@ extra_path=(
 )
 export PATH="${(j|:|)extra_path}:$PATH"
 
-export MANPATH="$HOME/share/man:${MANPATH}"
+export MANPATH="${HOME}/share/man:${HOME}/.local/bin:${MANPATH}"
 
 CDPATH=$CDPATH::$HOME:/usr/local
 
