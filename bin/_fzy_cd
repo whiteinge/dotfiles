@@ -2,5 +2,5 @@
 # Use a fuzzy-finder to complete child directories
 
 cmd="$1"; shift 1
-ffind "${2:-$PWD}" -type d | fzy -p "Directories > " -q "$*" \
+ffind "${2:-.}" -type d | fzy -p "Directories > " -q "$*" \
     | xargs printf '%s %s\n' "$cmd"
