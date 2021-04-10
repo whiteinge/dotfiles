@@ -269,16 +269,20 @@ if has("autocmd") && exists("+omnifunc")
         \ if &omnifunc == "" | setl omnifunc=syntaxcomplete#Complete | endif
 endif
 
-" Fuzzy-find a file from files under the current directory and edit it.
-nnoremap <silent><leader>ff
-    \ :call systemlist("ffind . '(' -type f -o -type l ')' -print")
-    \ ->util#SysR('fzy')
+" Fuzzy-find files under the current directory and open in current window.
+nnoremap <silent><leader>gf
+    \ :call util#SysR('', "ffind . '(' -type f -o -type l ')' -print \| fzy")
     \ ->{x -> 'edit '. x}() ->execute()<cr>
 
-nnoremap <silent><leader>gff
-    \ :call systemlist("ffind . '(' -type f -o -type l ')' -print")
-    \ ->util#SysR('fzy')
+" ...open in a new tab.
+nnoremap <silent><leader>gt
+    \ :call util#SysR('', "ffind . '(' -type f -o -type l ')' -print \| fzy")
     \ ->{x -> 'tabe '. x}() ->execute()<cr>
+
+" ...use the word under the cursor as a starting query.
+nnoremap <silent><leader>gw
+    \ :call util#SysR('', "ffind . '(' -type f -o -type l ')' -print \| fzy -q ". expand('<cword>'))
+    \ ->{x -> 'edit '. x}() ->execute()<cr>
 
 " }}}
 " Window Layout {{{
@@ -575,12 +579,12 @@ set modelines=0
 " Make mapleader default explicit
 let mapleader = '\'
 
-""" newrw settings.
-" Hide the newrw banner by default. 'I' to toggle.
-let g:netrw_banner = 0
-" Don't use file list as alternate buffer.
-let g:netrw_altfile = 1
-nmap <silent> - :Explore<cr>
+""" Fuzzy-finder file explorer (of sorts).
+nmap <silent> -
+    \ :call util#SysR('', 'ftree \| tr -d \\n')
+    \ ->fnameescape()
+    \ ->{x -> isdirectory(x) ? 'cd '. x : 'edit '. x}()
+    \ ->execute()<cr>
 
 """ Easily make a buffer into a scratch buffer:
 nmap <silent> <leader>S :call scratch#Scratch()<cr>
