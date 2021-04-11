@@ -396,6 +396,20 @@ if ! &diff
     au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
 endif
 
+" Always load the Cfilter/Lfilter commands plugin
+packadd cfilter
+
+" Use a fuzzy-finder to switch betweeen quickfix/location-list history entries.
+map <leader>fqh
+    \ :redir => _redir \| silent chistory \| redir END
+    \ \|:call util#SysR(_redir, 'fzy')
+    \ ->matchstr('[0-9]\+') ->{x -> x .'chistory'}() ->execute()<cr>
+
+map <leader>flh
+    \ :redir => _redir \| silent lhistory \| redir END
+    \ \|:call util#SysR(_redir, 'fzy')
+    \ ->matchstr('[0-9]\+') ->{x -> x .'lhistory'}() ->execute()<cr>
+
 " Shortcuts for working with quickfix/location lists
 nmap <silent>]q :cnext<cr>
 nmap <silent>[q :cprev<cr>
