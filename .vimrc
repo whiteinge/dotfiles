@@ -384,7 +384,7 @@ map <F2>
 map <leader>bw
     \ :redir => _redir \| silent ls \| redir END
     \ \|:call util#SysR(_redir, 'fzy')
-    \ ->matchstr('[0-9]\+') ->{x -> 'bw '. x}() ->execute()<cr>
+    \ ->matchstr('[0-9]\+') ->{x -> x == '' ? '' : 'bw '. x}() ->execute()<cr>
 
 " Quickly jump to a tag if there's only one match, otherwise show the list
 map <F3> :tj<space>
