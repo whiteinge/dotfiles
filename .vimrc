@@ -586,6 +586,9 @@ let _uppercase_word = 'gUw'
 " }}}
 " Plugin settings {{{
 
+" Don't remember register contents between sessions.
+set viminfo+=<0
+
 " I stopped using modelines and they can be a security risk, best to disable.
 set nomodeline
 set modelines=0
