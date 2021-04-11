@@ -10,7 +10,6 @@ autoload edit-command-line
 autoload -U compinit
 
 setopt \
-    append_history \
     auto_cd \
     auto_pushd \
     chase_links \
@@ -24,6 +23,7 @@ setopt \
     hist_save_no_dups \
     hist_verify \
     ignore_eof \
+    inc_append_history \
     list_types \
     mark_dirs \
     noclobber \
