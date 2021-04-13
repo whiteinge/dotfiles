@@ -1,0 +1,116 @@
+#!/usr/bin/env sh
+# A wrapper to parallelize grep and optionally filter by filename pattern
+
+NAME=$(basename "$0")
+VERSION='0.9.0'
+
+help () {
+    # Extract contiguous lines of comments in a function as help text
+
+    awk -v cmd="${1:?'Command name required.'}" -v NAME="$NAME" '
+    $0 ~ "^" cmd "\\s*\\(\\)\\s*{" { is_found=1; next }
+    is_found && !NF { exit }
+    is_found { gsub(/^\s*#\s?/, ""); gsub(/NAME/, NAME); print; }
+    ' "$0"
+}
+
+_main () {
+    # ## Usage
+    #
+    # `NAME [<flags>] searchterm [<searchpath> | (<filepath>, <filepath>...)]`
+    #
+    #     NAME -h
+    #     NAME searchterm
+    #     NAME -X '*.js' -X '*.jsx' searchterm
+    #     NAME searchterm ./searchpath
+    #     NAME searchterm file1 file2 file3
+    #
+    # Flag | Description
+    # ---- | -----------
+    # -V   | Show version.
+    # -h   | Usage and help text.
+    # -x   | Enable xtrace debug logging.
+    # -X   | Filename pattern used to filter file results before searching.
+    #      | May be specified multiple times.
+    #
+    # Flags _must_ be the first argument to `NAME`, before `searchterm`.
+    #
+    # Search will be case-sensitive if the search text contains capital
+    # letters.
+    #
+    # If given no search path or a single search path this wrapper will use
+    # ffind to generate the list of files and parallelize grep using xargs.
+    # This list can be additionally filtered by filename pattern using zero or
+    # more -X flags.
+    #
+    # Automatically parallelized:
+    # ggrep searchterm
+    # ggrep searchterm ./searchpath
+    # ggrep -X '*.js' -X '*.jsx' searchterm ./searchpath
+    #
+    # If given more than one file name to search it will instead behave like
+    # regular grep and ffind will not be invoked.
+    #
+    # Not automatically parallelized (but caller can do that manually):
+    # ggrep searchterm [...files]
+    # find . -name '*.foo' -print0 | xargs -0 -P4 ggrep searchterm
+
+    local opt
+    local OPTARG
+    local OPTIND
+
+    local ext
+
+    while getopts VhvxX: opt; do
+        case $opt in
+        V) printf 'Version: %s\n' $VERSION
+           exit;;
+        h) help _main
+           printf '\n'
+           exit;;
+        x) set -x;;
+        X)
+            if [ -n "$ext" ]; then
+                ext="-name ${OPTARG} -o ${ext}"
+            else
+                ext="-name ${OPTARG}"
+            fi
+            ;;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
+    local search="${1:?'Missing "searchterm".'}"; shift
+
+    # Wrap any filename pattern args in parens for find.
+    if [ -n "$ext" ]; then
+        ext="( ${ext} )"
+    fi
+
+    # Check for capital letters in the search pattern.
+    if ! $(printf '%s\n' "$search" | grep -q -E '[A-Z]' 2>/dev/null); then
+        local is_icase=1
+    fi
+
+    # Call grep against supplied filenames, or use find to generate them first.
+    if [[ "$#" -lt 2 ]]; then
+        set -f
+
+        ffind "${1:-.}" \
+            -xtype f \
+            $ext \
+            -print0 \
+        | xargs -0 -P8 \
+            grep --color \
+            ${is_icase:+-i} \
+            -nH -E -e "${search}"
+
+        set +f
+    else
+        grep --color \
+            ${is_icase:+-i} \
+            -nH -E -e "${search}" "$@"
+    fi
+}
+
+_main "$@"

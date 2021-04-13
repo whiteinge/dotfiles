@@ -63,7 +63,7 @@ main() {
 
     # set -x
     find "$spath" \
-        '(' ${(s: :)${(j: -o :)prune}} ')' -prune \
+        '(' ${(z)${(j: -o :)prune}} ')' -prune \
         -o "$@" \
         ${add_print+-print}
 }

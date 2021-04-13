@@ -44,7 +44,7 @@ _fzy_podman -- Use a fuzzy-finder to complete container IDs
 _fzy_ssh -- Use a fuzzy-finder for hostnames in ~/.ssh/config
 genmac -- Generate a locally-assigned (starts with 02) mac address from a salt
 genpass -- Generate a cryptographically inadequate(!) password
-gext -- A wrapper for find/grep to parallelize and search by extension
+ggrep -- A wrapper to parallelize grep and optionally filter by filename pattern
 ghkeys -- Display GitHub public keys for a user
 git-attic -- List deleted files in a Git repository
 git-graph-dag -- Draw a graphviz diagram of the Git DAG
