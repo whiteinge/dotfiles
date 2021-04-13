@@ -207,19 +207,10 @@ nnoremap <silent> <leader>lt
 map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
 
 " Change directory to the path of the current file
-map <leader>cd :cd %:p:h<cr>
+map <leader>cd :lcd %:p:h<cr>
 
 " Make necessary directories to be able to write the current file
-map <leader>cm :!mkdir -p %:h<cr>
-
-" Edit a new file starting in the same dir as the current file
-map <leader>ce :e <C-R>=expand("%:p:h") . "/" <cr>
-map <leader>cs :sp <C-R>=expand("%:p:h") . "/" <cr>
-map <leader>cv :vs <C-R>=expand("%:p:h") . "/" <cr>
-map <leader>ct :tabnew <C-R>=expand("%:p:h") . "/" <cr>
-
-" Read a file starting in the same dir as the current file
-map <leader>cr :r <C-R>=expand("%:p:h") . "/" <cr>
+com! Mkdirwrite call util#SysR('', 'mkdir -p '. expand('%:h')) | execute('w')
 
 " Helps if you have to use another editor on the same file
 au FileChangedShell * echo "File has been changed outside of Vim."
@@ -272,7 +263,7 @@ inoremap <C-F>
 " Restore path when done.
 au CompleteDone *
     \ if exists('b:oldpwd') |
-    \   cd `=b:oldpwd` |
+    \   lcd `=b:oldpwd` |
     \   unlet b:oldpwd |
     \ endif
 " Chain multiple path completions with <tab> key. Selects the first suggestion
@@ -612,11 +603,14 @@ set modelines=0
 " Make mapleader default explicit
 let mapleader = '\'
 
+" Disable netrw.
+let loaded_netrwPlugin = 1
+
 """ Fuzzy-finder file explorer (of sorts).
 nmap <silent> -
-    \ :call util#SysR('', 'ftree \| tr -d \\n')
+    \ :call util#SysR('', 'ftree '. expand('%:p:h') .'\| tr -d \\n')
     \ ->fnameescape()
-    \ ->{x -> isdirectory(x) ? 'cd '. x : 'edit '. x}()
+    \ ->{x -> isdirectory(x) ? 'lcd '. x : 'edit '. x}()
     \ ->execute()<cr>
 
 """ Easily make a buffer into a scratch buffer:
