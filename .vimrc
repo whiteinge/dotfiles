@@ -19,8 +19,29 @@ nn <silent> * :let @/ = '\<' .  expand('<cword>') . '\>'
   \\| if &hlsearch != 0 \| set hlsearch \| endif
   \\| echo '/'. @/ .'/=' execute('%s///gn')<cr>
 
-" Grep for the word under the cursor.
-nn <silent> <leader>* :Gext . <cword><cr>
+set grepprg=ggrep
+
+" grep for the word under the cursor.
+nn <silent> <leader>* :grep <cword><cr>
+
+" grep all files in the arglist.
+com! -nargs=* Greparglist grep <args> ##
+
+" grep across all loaded buffers.
+com! -nargs=* Grepbuflist call range(0, bufnr('$'))
+    \ ->filter({i, x -> buflisted(x)})
+    \ ->map({i, x -> fnameescape(bufname(x))})
+    \ ->join(' ')
+    \ ->{x -> 'grep <args> '. x}()
+    \ ->execute()
+
+" grep all files in the quickfix list.
+com! -nargs=* Grepqflist call getqflist()
+    \ ->map({i, x -> fnameescape(bufname(x.bufnr))})
+    \ ->uniq()
+    \ ->join(' ')
+    \ ->{x -> 'grep <args> '. x}()
+    \ ->execute()
 
 " Use leader-n to unhighlight search results in normal mode:
 nm <silent> <leader>n :silent noh<cr>
@@ -463,11 +484,6 @@ set diffopt+=indent-heuristic
 " Alias for ctrl-^ using leader since some terminal emulators consume that
 " escape sequence. (Terimal.app on OSX and WSL on Windows.)
 nmap <silent> <leader>6 <c-^><cr>
-
-" Use gext script instead of grep; make command to avoid confusion since the
-" options are different.
-set grepprg=gext
-command! -nargs=* -complete=file Gext grep <args>
 
 " Also look for the tags file inside the Git directory.
 set tags+=.git/tags;
