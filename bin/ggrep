@@ -98,7 +98,7 @@ _main () {
         set -f
 
         ffind "${1:-.}" \
-            -xtype f \
+            -type f \
             $ext \
             -print0 \
         | xargs -0 -P8 \
