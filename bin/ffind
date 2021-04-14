@@ -1,71 +1,93 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env sh
 # (filtering find) - A wrapper around find to ignore noise directories
-#
-# Obtains files/directories to ignore from reading the following files:
-#
-# $HOME/.ffind
-# $PWD/.ffind
-# $(git rev-parse --absolute-git-dir)/../.ffind
-#
-# Format (comments use # prefix):
-#
-# -path *.git
-# -path *node_modules
-# -name *.pyc
 
-local -a prune
+NAME=$(basename "$0")
+VERSION='0.9.0'
 
-function read_configs() {
-    local git_dir
-    local rcfile="ffind"
-    local base_opts="${HOME}/.${rcfile}"
-    local proj_opts="${PWD}/.${rcfile}"
-    local git_opts
+help () {
+    # Extract contiguous lines of comments in a function as help text
 
-    if [[ -r "$base_opts" ]] ; then
-        prune+=( ${(f)"$(< "$base_opts")"} )
-    fi
-
-    if [[ -r "$proj_opts" ]] && [[ $PWD != $HOME ]] ; then
-        prune+=( ${${(f)"$(< "$proj_opts")"}:#[#]*} )
-    fi
-
-    if (( $+commands[git] )); then
-        git_dir=$(git rev-parse --absolute-git-dir 2>/dev/null)
-        if (( ! $? )); then
-            git_opts="${git_dir}/../.${rcfile}"
-            if [[ -r "$git_opts" ]] && [[ ! -r "$proj_opts" ]] ; then
-                prune+=( ${(f)"$(< "$git_opts")"} )
-            fi
-        fi
-    fi
+    awk -v cmd="${1:?'Command name required.'}" -v NAME="$NAME" '
+    $0 ~ "^" cmd "\\s*\\(\\)\\s*{" { is_found=1; next }
+    is_found && !NF { exit }
+    is_found { gsub(/^\s*#\s?/, ""); gsub(/NAME/, NAME); print; }
+    ' "$0"
 }
 
-main() {
-    read_configs
-    prune=( ${(M)prune:#-*} ) # Remove lines that don't start with a dash.
+_main() {
+    # A wrapper around find to ignore noise directories
+    #
+    # ## Usage
+    #
+    # `NAME [<flags>] <searchpath> [...other find arguments...]
+    #
+    #     NAME -h
+    #     NAME .
+    #     NAME ./somepath
+    #     NAME . -type d
+    #     NAME . -type f -name '*.js'
+    #
+    # Flag | Description
+    # ---- | -----------
+    # -V   | Show version.
+    # -h   | Usage and help text.
+    # -x   | Enable xtrace debug logging.
+    #
+    # Flags _must_ be the first argument to `NAME`, before `searchterm`.
+    #
+    # Patterns to ignore are obtained from reading the following files:
+    #
+    # - `$HOME/.ffind`
+    # - `$PWD/.ffind`
+    # - `$(git rev-parse --absolute-git-dir)/../.ffind`
+    #
+    # The ignore file format is one entry per line, with an expression that
+    # find can consume. Blank lines and comments (#) are ignored:
+    #
+    #     # This is a comment.
+    #
+    #     -path *.git
+    #     -path *node_modules
+    #     -name *.pyc
 
-    local help="Usage: ffind ./somepath [<find args>]
+    while getopts Vhx opt; do
+        case $opt in
+        V) printf 'Version: %s\n' $VERSION
+           exit;;
+        h) help _main
+           printf '\n'
+           exit;;
+        x) set -x;;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
 
-    ffind .
-    ffind . -name '*.py'
-    "
-
-    # TODO: look into parsing find args that must come before the expression.
-    local spath="$1"
+    local spath="${1:?'Search path missing.'}"
     shift 1
 
-    [[ -n "$spath" ]] || { printf '%s\n' "$help"; return 1; }
+    exec 4>&2 2>/dev/null
+    local prune="$(cat \
+        "${HOME}/.ffind" \
+        "${PWD}/.ffind" \
+        "$(git rev-parse --absolute-git-dir)/../.ffind" |
+        awk '/^-/ { printf("%s%s", sep, $0); sep=" -o " }')"
+    exec 2>&4 4>&-
 
-    if (( ${@[(I)-print*]} == 0 )) && (( ${@[(I)-exec*]} == 0 )); then
-        local add_print=1;
+    if [ -n "$prune" ]; then
+        prune="( ${prune} ) -prune"
     fi
 
-    # set -x
+    case "$@" in
+        *-print|*-print0) ;;
+        *) local add_print=1 ;;
+    esac
+
+    set -f
     find "$spath" \
-        '(' ${(z)${(j: -o :)prune}} ')' -prune \
+        $prune \
         -o "$@" \
         ${add_print+-print}
+    set +f
 }
 
-main "$@"
+_main "$@"

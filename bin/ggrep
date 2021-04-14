@@ -15,6 +15,8 @@ help () {
 }
 
 _main () {
+    # A wrapper to parallelize grep and optionally filter by filename pattern
+    #
     # ## Usage
     #
     # `NAME [<flags>] searchterm [<searchpath> | (<filepath>, <filepath>...)]`
@@ -30,8 +32,7 @@ _main () {
     # -V   | Show version.
     # -h   | Usage and help text.
     # -x   | Enable xtrace debug logging.
-    # -X   | Filename pattern used to filter file results before searching.
-    #      | May be specified multiple times.
+    # -X   | Filter files by pattern before searching; multiple occurences ok.
     #
     # Flags _must_ be the first argument to `NAME`, before `searchterm`.
     #
