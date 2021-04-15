@@ -178,10 +178,11 @@ au VimEnter * clearjumps
 " Displays tabs with :set list & displays when a line runs off-screen
 set listchars=tab:>-,trail:\ ,precedes:<,extends:>,eol:$,nbsp:%
 
-" Show listchars; highlight lines more than 80 chars, trailing spaces, only
-" whitespace.
+" Show listchars and cursorcolumn; highlight lines more than 80 chars, trailing
+" spaces, only whitespace.
 nnoremap <silent> <leader>ll
     \ :set nolist!<cr>:set nolist?<cr> <bar>
+    \ :set cursorcolumn!<cr>:silent set cursorcolumn?<cr> <bar>
     \ :if exists('w:long_line_match') <bar>
     \   silent! call matchdelete(w:long_line_match) <bar>
     \   unlet w:long_line_match <bar>
@@ -190,18 +191,6 @@ nnoremap <silent> <leader>ll
     \ else <bar>
     \   let w:long_line_match = matchadd('ErrorMsg', '\%>80v.\+', -1) <bar>
     \ endif<cr>
-
-" Toggle cursorcolumn.
-nnoremap <silent> <leader>lc
-    \ :silent set cursorcolumn!<cr>:silent set cursorcolumn?<cr> <bar>
-
-" Toggle colorcolumn for the current shiftwidth.
-nnoremap <silent> <leader>lt
-    \ :if &colorcolumn <bar>
-    \   silent! set colorcolumn= <bar>
-    \ else <bar>
-    \   silent! exe("set colorcolumn=". join(range(1, 80, &shiftwidth), ',')) <bar>
-    \ endif<cr> <bar>
 
 " Toggle spell-checking
 map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
