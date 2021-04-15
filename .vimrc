@@ -374,30 +374,35 @@ set hidden                      " Allows opening a new buffer in place of an exi
 " Replace the current window from open buffers:
 map <F1>
     \ :redir => _redir \| silent ls \| redir END
-    \ \|:call util#SysR(_redir, 'fzy')
+    \ \|call util#SysR(_redir, 'fzy -p "Buffers > "')
     \ ->matchstr('[0-9]\+') ->M('b ') ->execute()<cr>
 
+com! Goargs
+    \ call range(0, argc())
+    \ ->map({i, x -> fnameescape(argv(x))})
+    \ ->util#SysR('fzy -p "Arglist > "')
+    \ ->M('b ') ->execute()
+
 " Move to an existing window containing a selected buffer:
-map <F2>
-    \ :redir => _redir \| silent ls \| redir END
-    \ \|:call util#SysR(_redir, 'fzy')
+com! Gowin
+    \ redir => _redir | silent ls | redir END
+    \ | call util#SysR(_redir, 'fzy')
     \ ->matchstr('[0-9]\+') ->win_findbuf()
-    \ ->{x -> win_gotoid(get(x, 0, bufnr('%')))}()<cr>
+    \ ->get(0, bufnr('%')) ->win_gotoid()
 
 " Fuzzy-find a tag and jump to it.
-map <F3>
-    \ :call taglist('.*') ->map({i, x -> x.cmd .' --- '. x.filename})
+com! Gotag
+    \ call taglist('.*') ->map({i, x -> x.cmd .' --- '. x.filename})
     \ ->util#SysR('fzy -q '. expand('<cword>'))
     \ ->split(' --- ')
     \ ->{xs -> empty(xs) ? '' :
         \ 'edit +'. escape(xs[0], ' #{}[]<>/$.^') .' '. xs[1]}()
-    \ ->execute()<cr>
+    \ ->execute()
 
 " Use a fuzzy-finder to unload loaded buffers.
-map <leader>bw
-    \ :redir => _redir \| silent ls \| redir END
-    \ \|:call util#SysR(_redir, 'fzy')
-    \ ->matchstr('[0-9]\+') ->M('bw ') ->execute()<cr>
+com! Delbuf redir => _redir | silent ls | redir END
+    \ | call util#SysR(_redir, 'fzy')
+    \ ->matchstr('[0-9]\+') ->M('bw ') ->execute()
 
 " When restoring a hidden buffer Vim doesn't always keep the same view (like
 " when your view shows beyond the end of the file). (Vim tip 1375)
@@ -450,9 +455,9 @@ com! Qf2Arg call getqflist()
     \ ->map({i, x -> execute('$argadd #'. x.bufnr)})
 
 " Fuzzy-find and edit an entry in the quickfix list.
-nnoremap <silent><leader>fw
+map <F2>
     \ :call getqflist() ->map({i, x -> bufname(x.bufnr)}) ->uniq()
-    \ ->util#SysR('fzy') ->M('e ') ->execute()<cr>
+    \ ->util#SysR('fzy -p "Quickfix > "') ->M('e ') ->execute()<cr>
 
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
