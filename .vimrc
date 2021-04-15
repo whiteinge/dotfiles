@@ -134,7 +134,7 @@ set virtualedit=block           " Let cursor move past the last char in <C-V> mo
 
 " Toggle virtualedit
 " Useful for ascii art and for transposing columns with a visual selection.
-nnoremap <silent> <leader>aa :exe "set ve=". (&ve == "all" ? "block" : "all")<cr>
+com! Drawmode exe "set ve=". (&ve == "all" ? "block" : "all") | echo &ve
 
 set cryptmethod=blowfish2       " Use (much) stronger blowfish encryption
 
@@ -224,7 +224,7 @@ let b:dateformat = ''
 nmap <silent> <leader>dts :exe ':r !date '. escape(b:dateformat, '%')<cr>
 
 " Mapping to write a file using sudo
-cnoremap sudow w !sudo tee % >/dev/null
+com! Sudowrite write !sudo tee % >/dev/null
 
 " Use command mode readline/Emacs shortcut to go to the beginning of the line.
 " I can never remember Vim's default. Where does that ctrl-b come from?
@@ -368,12 +368,10 @@ fu! MainHorz()
     call win_gotoid(l:winids[0])
     wincmd K
 endfu
-nnoremap <leader>lh :call MainVert()<cr>
-nnoremap <leader>lk :call MainHorz()<cr>
 
 " Toggle folds and line wrapping in all windows.
-nnoremap <leader>lf :windo norm zi<cr>
-nnoremap <leader>lp :windo :set nowrap!<cr>:set nowrap?<cr>
+com! AllNofold windo norm zi
+com! AllNowrap windo :set nowrap!<bar>:set nowrap?
 
 " Open a new tab of the current buffer and cursor position ("tmux-esque zoom")
 nmap <leader>zz :exe 'tabnew +'. line('.') .' %'<cr>
@@ -396,6 +394,15 @@ map <F2>
     \ \|:call util#SysR(_redir, 'fzy')
     \ ->matchstr('[0-9]\+') ->win_findbuf()
     \ ->{x -> win_gotoid(get(x, 0, bufnr('%')))}()<cr>
+
+" Fuzzy-find a tag and jump to it.
+map <F3>
+    \ :call taglist('.*') ->map({i, x -> x.cmd .' --- '. x.filename})
+    \ ->util#SysR('fzy -q '. expand('<cword>'))
+    \ ->split(' --- ')
+    \ ->{xs -> empty(xs) ? '' :
+        \ 'edit +'. escape(xs[0], ' #{}[]<>/$.^') .' '. xs[1]}()
+    \ ->execute()<cr>
 
 " Use a fuzzy-finder to unload loaded buffers.
 map <leader>bw
@@ -447,11 +454,11 @@ nmap <silent> <leader>fl :exe IsLocOpen(getwininfo())
 
 " Open all files referenced in the quickfix list as args.
 " Sometimes you just want to step through the files and not all the changes.
-nmap <silent> <leader>fa :call getqflist()
+com! Qf2Arg call getqflist()
     \ ->filter({i, x -> bufname(x.bufnr) != ''})
     \ ->sort()
     \ ->uniq()
-    \ ->map({i, x -> execute('$argadd #'. x.bufnr)})<cr>
+    \ ->map({i, x -> execute('$argadd #'. x.bufnr)})
 
 " Fuzzy-find and edit an entry in the quickfix list.
 nnoremap <silent><leader>fw
@@ -467,8 +474,8 @@ nmap <silent> <leader>du :diffupdate<cr>
 " Toggle ignoring whitespace
 nmap <silent> <leader>dw :call iwhitetoggle#IwhiteToggle()<CR>
 
-" Find merge conflict markers
-map <leader>dc /\v^[<=>]{7}( .*\|$)<cr>
+" grep for conflict markers and add to quickfix list.
+com! FindConflicts grep '^<<<<<' %
 
 " Use a (usually) better diff algorithm.
 set diffopt+=algorithm:patience
@@ -481,19 +488,11 @@ nmap <silent> <leader>6 <c-^><cr>
 " Also look for the tags file inside the Git directory.
 set tags+=.git/tags;
 
-" Fuzzy-find a tag and jump to it.
-nnoremap <silent><leader>ft
-    \ :call taglist('.*') ->map({i, x -> x.cmd .' --- '. x.filename})
-    \ ->util#SysR('fzy')
-    \ ->split(' --- ')
-    \ ->{xs -> 'edit +'. escape(xs[0], ' #{}[]<>/$.^') .' '. xs[1]}()
-    \ ->execute()<cr>
-
 " Fuzzy-find entries in Vim's help files.
 " A much faster alternative to :help <char><tab><tab><tab>
 " TODO: add third-party 'someplugin/doc/tag' files too...
-nnoremap <silent><leader>fh
-    \ :call readfile($VIMRUNTIME .'/doc/tags')
+com! Helpsearch
+    \ call readfile($VIMRUNTIME .'/doc/tags')
     \ ->util#SysR('fzy') ->matchstr('[^\t]\+')
     \ ->M('help ') ->execute()
 
@@ -612,31 +611,21 @@ nmap <silent> -
     \ ->{x -> isdirectory(x) ? 'lcd '. x : 'edit '. x}()
     \ ->execute()<cr>
 
-""" Easily make a buffer into a scratch buffer:
-nmap <silent> <leader>S :call scratch#Scratch()<cr>
-command! -nargs=* Scratch call scratch#Scratch(<f-args>)
+""" Make a buffer into a scratch buffer:
+com! Scratch call scratch#Scratch()
 
 """ Diff unstaged changes.
 nmap <silent> <leader>cc :call stagediff#StageDiff()<cr>
-nmap <silent> <leader>cf :call systemlist('git ls-files')
-    \ ->util#SysR('fzy')
-    \ ->{x -> execute('edit '. x)}()<cr>
-nmap <silent> <leader>cs :!git add %<cr>
-nmap <silent> <leader>ci :!git commit<cr>
-nmap <silent> <leader>ca :!git commit --amend --no-edit<cr>
-nmap <silent> <leader>cb <bar>
-    \ :setl nofoldenable <bar>
-    \ :55vnew <bar>
-    \ :setl nofoldenable <bar>
-    \ :call scratch#Scratch() <bar>
-    \ :setl nowrap <bar>
-    \ :exe 'r !git blame -c --date=relative -- '. fnamemodify(expand('#'), ':~:.') <bar>
-    \ 1delete <bar>
-    \ :setl scrollbind <bar>
-    \ :wincmd p <bar>
-    \ :setl scrollbind <bar>
-    \ :syncbind <bar>
-    \ <cr>
+com! Gcommit !git commit
+com! Gamend !git commit --amend --no-edit
+com! Gadd !git add %
+com! Gblame :55vnew
+    \| :call scratch#Scratch()
+    \| :exe 'r !git blame -c --date=relative -- '. fnamemodify(expand('#'), ':~:.')
+    \| 1delete
+    \| :wincmd p
+    \| :windo setl nofoldenable nowrap scrollbind
+    \| :syncbind
 
 """ Surround a visual selection of opfunc movement with characters.
 " E.g., to surround with parens: \s(iw
@@ -672,7 +661,7 @@ nnoremap <leader>fe :call copy(v:oldfiles)
     \ ->M('e #<') ->execute()<cr>
 
 """ Diff two registers
-command! -nargs=* DiffRegs call diffregs#DiffRegsFunc(<f-args>)
+com! -nargs=* DiffRegs call diffregs#DiffRegsFunc(<f-args>)
 
 """ Join and split items based on a delimeter
 nmap <expr> <leader>js, opfuncwrapper#WrapOpfunc('joinsplit#SplitItems', 1, ', ')
@@ -741,7 +730,7 @@ au FileType json
     \ if bufname('%')[:11] ==# 'jq-output://' | syntax clear | endif
 
 """ vimux
-com Makevimux au BufWritePost <buffer> call VimuxRunCommand(" clear; make")
+com! Makevimux au BufWritePost <buffer> call VimuxRunCommand(" clear; make")
 
 " }}}
 " EOF
