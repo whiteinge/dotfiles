@@ -2,4 +2,4 @@
 # View rendered Markdown files with $MANPAGER
 # http://leahneukirchen.org/dotfiles/.zshrc
 
-pandoc -s -f gfm -t man "${1?:'Missing file'}" | man -l -
+pandoc -s -f gfm -t man "${1:--}" | man -l -
