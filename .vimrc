@@ -32,7 +32,7 @@ com! -nargs=* Grepbuflist call range(0, bufnr('$'))
     \ ->filter({i, x -> buflisted(x)})
     \ ->map({i, x -> fnameescape(bufname(x))})
     \ ->join(' ')
-    \ ->{x -> 'grep <args> '. x}()
+    \ ->M('grep <args> ')
     \ ->execute()
 
 " grep all files in the quickfix list.
@@ -40,7 +40,7 @@ com! -nargs=* Grepqflist call getqflist()
     \ ->map({i, x -> fnameescape(bufname(x.bufnr))})
     \ ->uniq()
     \ ->join(' ')
-    \ ->{x -> 'grep <args> '. x}()
+    \ ->M('grep <args> ')
     \ ->execute()
 
 " Use leader-n to unhighlight search results in normal mode:
@@ -284,17 +284,17 @@ endif
 " Fuzzy-find files under the current directory and open in current window.
 nnoremap <silent><leader>gf
     \ :call util#SysR('', "ffind . '(' -type f -o -type l ')' -print \| fzy")
-    \ ->{x -> 'edit '. x}() ->execute()<cr>
+    \ ->M('edit ') ->execute()<cr>
 
 " ...open in a new tab.
 nnoremap <silent><leader>gt
     \ :call util#SysR('', "ffind . '(' -type f -o -type l ')' -print \| fzy")
-    \ ->{x -> 'tabe '. x}() ->execute()<cr>
+    \ ->M('tabe ') ->execute()<cr>
 
 " ...use the word under the cursor as a starting query.
 nnoremap <silent><leader>gw
     \ :call util#SysR('', "ffind . '(' -type f -o -type l ')' -print \| fzy -q ". expand('<cword>'))
-    \ ->{x -> 'edit '. x}() ->execute()<cr>
+    \ ->M('edit ') ->execute()<cr>
 
 " }}}
 " Window Layout {{{
@@ -322,7 +322,12 @@ if &columns < 88
 endif
 
 " Maybe return a string if the first arg is not empty.
-let M = {x, y -> x == '' ? '' : y . x}
+fu! M(x, y)
+    return a:x == '' ? '' : a:y . a:x
+endfu
+fu! W(x, y)
+    return a:x == '' ? '' : a:x . a:y
+endfu
 
 " If we have multiple files open with the same name then also include the
 " immdiate parent. (Shakes fist at Redux.)
@@ -383,7 +388,7 @@ set hidden                      " Allows opening a new buffer in place of an exi
 map <F1>
     \ :redir => _redir \| silent ls \| redir END
     \ \|:call util#SysR(_redir, 'fzy')
-    \ ->matchstr('[0-9]\+') ->{x -> 'b '. x}() ->execute()<cr>
+    \ ->matchstr('[0-9]\+') ->M('b ') ->execute()<cr>
 
 " Move to an existing window containing a selected buffer:
 map <F2>
@@ -396,10 +401,7 @@ map <F2>
 map <leader>bw
     \ :redir => _redir \| silent ls \| redir END
     \ \|:call util#SysR(_redir, 'fzy')
-    \ ->matchstr('[0-9]\+') ->{x -> x == '' ? '' : 'bw '. x}() ->execute()<cr>
-
-" Quickly jump to a tag if there's only one match, otherwise show the list
-map <F3> :tj<space>
+    \ ->matchstr('[0-9]\+') ->M('bw ') ->execute()<cr>
 
 " When restoring a hidden buffer Vim doesn't always keep the same view (like
 " when your view shows beyond the end of the file). (Vim tip 1375)
@@ -415,12 +417,12 @@ packadd cfilter
 map <leader>fqh
     \ :redir => _redir \| silent chistory \| redir END
     \ \|:call util#SysR(_redir, 'fzy')
-    \ ->matchstr('[0-9]\+') ->{x -> x .'chistory'}() ->execute()<cr>
+    \ ->matchstr('[0-9]\+') ->W('chistory') ->execute()<cr>
 
 map <leader>flh
     \ :redir => _redir \| silent lhistory \| redir END
     \ \|:call util#SysR(_redir, 'fzy')
-    \ ->matchstr('[0-9]\+') ->{x -> x .'lhistory'}() ->execute()<cr>
+    \ ->matchstr('[0-9]\+') ->W('lhistory') ->execute()<cr>
 
 " Shortcuts for working with quickfix/location lists
 nmap <silent>]q :cnext<cr>
@@ -454,7 +456,7 @@ nmap <silent> <leader>fa :call getqflist()
 " Fuzzy-find and edit an entry in the quickfix list.
 nnoremap <silent><leader>fw
     \ :call getqflist() ->map({i, x -> bufname(x.bufnr)}) ->uniq()
-    \ ->util#SysR('fzy') ->{x -> 'e '. x}() ->execute()<cr>
+    \ ->util#SysR('fzy') ->M('e ') ->execute()<cr>
 
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
@@ -493,10 +495,7 @@ nnoremap <silent><leader>ft
 nnoremap <silent><leader>fh
     \ :call readfile($VIMRUNTIME .'/doc/tags')
     \ ->util#SysR('fzy') ->matchstr('[^\t]\+')
-    \ ->{x -> 'help '. x}() ->execute()<cr>
-
-" Add multi-buffer :update command.
-cabbrev upa wall
+    \ ->M('help ') ->execute()
 
 " }}}
 " X11 Integration {{{
@@ -670,8 +669,7 @@ nnoremap <leader>fe :call copy(v:oldfiles)
     \ })
     \ ->map({idx, val -> val.idx ."\t". val.path})[:20]
     \ ->util#SysR('fzy') ->matchstr('[0-9]\+')
-    \ ->{x -> 'e #<'. x}() ->execute()<cr>
-
+    \ ->M('e #<') ->execute()<cr>
 
 """ Diff two registers
 command! -nargs=* DiffRegs call diffregs#DiffRegsFunc(<f-args>)
