@@ -57,9 +57,9 @@ nm <leader># :%s///gn<cr>
 nn <leader>hh :<c-u>call matchadd('Match'. v:count1, expand('<cword>'),
     \ v:count1, v:count1 + 10)<cr>
 " Clear individual matches: 1\hn or 2\hn or 3\hn, etc.
-nn <leader>hn :<c-u>call matchdelete(v:count1 + 10)<cr>
+nn <leader>hH :<c-u>call matchdelete(v:count1 + 10)<cr>
 " Clear all matches:
-nn <leader>ha :call clearmatches()<cr>
+nn <leader>hn :call clearmatches()<cr>
 
 " }}}
 " Line Wrap {{{
