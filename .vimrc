@@ -377,28 +377,6 @@ map <F1>
     \ \|call util#SysR(_redir, 'fzy -p "Buffers > "')
     \ ->matchstr('[0-9]\+') ->M('b ') ->execute()<cr>
 
-com! Goargs
-    \ call range(0, argc())
-    \ ->map({i, x -> fnameescape(argv(x))})
-    \ ->util#SysR('fzy -p "Arglist > "')
-    \ ->M('b ') ->execute()
-
-" Move to an existing window containing a selected buffer:
-com! Gowin
-    \ redir => _redir | silent ls | redir END
-    \ | call util#SysR(_redir, 'fzy')
-    \ ->matchstr('[0-9]\+') ->win_findbuf()
-    \ ->get(0, bufnr('%')) ->win_gotoid()
-
-" Fuzzy-find a tag and jump to it.
-com! Gotag
-    \ call taglist('.*') ->map({i, x -> x.cmd .' --- '. x.filename})
-    \ ->util#SysR('fzy -q '. expand('<cword>'))
-    \ ->split(' --- ')
-    \ ->{xs -> empty(xs) ? '' :
-        \ 'edit +'. escape(xs[0], ' #{}[]<>/$.^') .' '. xs[1]}()
-    \ ->execute()
-
 " Use a fuzzy-finder to unload loaded buffers.
 com! Delbuf redir => _redir | silent ls | redir END
     \ | call util#SysR(_redir, 'fzy')
@@ -436,15 +414,21 @@ nmap <silent>[L :lfirst<cr>
 nmap <silent>]L :llast<cr>
 
 " Toggle the quickfix and location list windows.
-let IsQfOpen = {-> getwininfo()
-    \ ->filter({i, x -> x.quickfix && !x.loclist}) ->len()}
-let IsLocOpen = {-> getwininfo() ->filter({i,v ->
-    \ bufnr('%') == get(v.variables, 'quickfix_title', '_gndn')
-    \ ->bufnr()}) ->len()}
-nmap <silent> <leader>fq :exe IsQfOpen()
-    \? ':cclose' : ':botright copen \| :wincmd p'<cr>
-nmap <silent> <leader>fl :exe IsLocOpen(getwininfo())
-    \? ':lclose' : ':lopen \| :wincmd p'<cr>
+com! ToggleQf
+    \ call getwininfo()
+    \ ->filter({i, x -> x.quickfix && !x.loclist}) ->len()
+    \ ->{x -> x ? ':cclose' : ':botright copen | :wincmd p'}()
+    \ ->execute()
+
+com! ToggleLl
+    \ call getwininfo()
+    \ ->filter({i, v -> bufnr('%') ==
+        \ get(v.variables, 'quickfix_title', '_gndn') ->bufnr()})
+    \ ->{x -> len(x) > 0 ? ':lclose' : ':lopen | :wincmd p'}()
+    \ ->execute()
+
+map <F3> :ToggleQf<cr>
+map <F4> :ToggleLl<cr>
 
 " Open all files referenced in the quickfix list as args.
 " Sometimes you just want to step through the files and not all the changes.
