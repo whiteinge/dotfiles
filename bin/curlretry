@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-# Repeatedly download & resume from a URL until finished
-# Useful for bad connections.
-
-curl -g -L -C - --retry 20 --retry-connrefused "$@"

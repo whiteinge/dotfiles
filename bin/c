@@ -7,6 +7,9 @@ case "$0" in
         # no show_timing
         # no json_reqrep
         ;;
+    */cr)
+        retry=1
+        ;;
     */cj)
         json_reqrep=1
         ;;
@@ -18,6 +21,10 @@ case "$0" in
 esac
 
 curl -sS -D /dev/stderr \
+    ${retry:+-g} \
+    ${retry:+--retry 20} \
+    ${retry:+--retry-connrefused} \
+    ${retry:+--progress-meter} \
     ${json_reqrep:+-H 'Content-Type: application/json'} \
     ${json_reqrep:+-H 'Accept: application/json'} \
     ${show_timing:+-w "
