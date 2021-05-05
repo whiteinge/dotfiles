@@ -609,6 +609,7 @@ com! Gblame :55vnew
 " E.g., to surround with parens: \s(iw
 " TODO: Is this really better than: c<motion>"<C-r><C-o>""<Esc>
 nmap <expr> <leader>s( opfuncwrapper#WrapOpfunc('surround#Surround', 1, '(')
+nmap <expr> <leader>s[ opfuncwrapper#WrapOpfunc('surround#Surround', 1, '[')
 nmap <expr> <leader>s{ opfuncwrapper#WrapOpfunc('surround#Surround', 1, '{')
 nmap <expr> <leader>s< opfuncwrapper#WrapOpfunc('surround#Surround', 1, '<')
 nmap <expr> <leader>s" opfuncwrapper#WrapOpfunc('surround#Surround', 1, '"')

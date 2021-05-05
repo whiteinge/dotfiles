@@ -4,6 +4,7 @@
 
 fu! surround#Surround(text, is_inline, surround_char, ...)
     let l:common_pairs = {
+        \'[': ']', ']': '[',
         \'{': '}', '}': '{',
         \'(': ')', ')': '(',
         \'<': '>', '>': '<',
