@@ -16,7 +16,6 @@ count -- Count occurrences of the same line in a file
 countdown -- A simple countdown timer
 cull-brew -- Remove any brew packages that are not on a whitelist
 cull-dnf -- Remove any user-installed packages not on a whitelist
-curlretry -- Repeatedly download & resume from a URL until finished
 c -- Wrap curl for easy headers, json, timing input/output
 devdocs-local -- Select docs from devdocs.io using a fuzzy-finder for display at the CLI
 diffconflicts -- A better vimdiff mergetool for Git
@@ -44,6 +43,7 @@ _fzy_podman -- Use a fuzzy-finder to complete container IDs
 _fzy_ssh -- Use a fuzzy-finder for hostnames in ~/.ssh/config
 genmac -- Generate a locally-assigned (starts with 02) mac address from a salt
 genpass -- Generate a cryptographically inadequate(!) password
+genreadme -- Generate a README for all $DOTFILES/bin scripts
 ggrep -- A wrapper to parallelize grep and optionally filter by filename pattern
 ghkeys -- Display GitHub public keys for a user
 git-attic -- List deleted files in a Git repository
@@ -81,7 +81,6 @@ osx-xclip -- An xclip-like wrapper to pbcopy/pbpaste
 play-somafm -- Select a SomaFM stream with a fuzy-finder and play via mpv
 pysmtp -- Start a echoing SMTP server
 queue -- A lightweight job queue using tail and xargs
-readme-gen -- Generate a README for all $DOTFILES/bin scripts
 replace-link -- Replace a symlink with a copy of the thing it points to
 res -- Output an xrandr command for common configurations
 rgb2hex -- Convert 16-bit RGB values to hexadecimal
