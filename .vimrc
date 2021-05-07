@@ -38,8 +38,7 @@ com! -nargs=* Grepbuflist call range(0, bufnr('$'))
 " grep all files in the quickfix list.
 com! -nargs=* Grepqflist call getqflist()
     \ ->map({i, x -> fnameescape(bufname(x.bufnr))})
-    \ ->uniq()
-    \ ->join(' ')
+    \ ->sort() ->uniq() ->join(' ')
     \ ->M('grep <args> ')
     \ ->execute()
 
@@ -440,7 +439,7 @@ com! Qf2Arg call getqflist()
 
 " Fuzzy-find and edit an entry in the quickfix list.
 map <F2>
-    \ :call getqflist() ->map({i, x -> bufname(x.bufnr)}) ->uniq()
+    \ :call getqflist() ->map({i, x -> bufname(x.bufnr)}) ->sort() ->uniq()
     \ ->util#SysR('fzy -p "Quickfix > "') ->M('e ') ->execute()<cr>
 
 " Toggle diff view on the left, center, or right windows
