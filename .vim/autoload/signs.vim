@@ -48,7 +48,7 @@ fu! signs#GitChanges()
 endfu
 
 " Add any quickfix entries for the current file.
-fu! signs#QfList()
+fu! signs#Qflist()
     let l:curbuf = bufnr('%')
     let l:group = 'signs#qf'
 

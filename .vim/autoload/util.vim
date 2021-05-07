@@ -39,14 +39,14 @@ fu! util#OnChanged(Fn, Cb)
     return funcref('Wrapper')
 endfu
 
-let s:QfChanged = util#OnChanged({-> getqflist({'changedtick': 1, 'id': 0})},
+let s:Qfchanged = util#OnChanged({-> getqflist({'changedtick': 1, 'id': 0})},
     \ {-> execute('silent doautocmd <nomodeline> User QfChanged')})
-let s:LlChanged = util#OnChanged({-> getloclist(0, {'changedtick': 1, 'id': 0})},
+let s:Llchanged = util#OnChanged({-> getloclist(0, {'changedtick': 1, 'id': 0})},
     \ {-> execute('silent doautocmd <nomodeline> User LlChanged')})
 
 fu! util#StartQfWatchers()
-    call timer_start(1000, s:QfChanged, {'repeat': -1})
-    call timer_start(1000, s:LlChanged, {'repeat': -1})
+    call timer_start(1000, s:Qfchanged, {'repeat': -1})
+    call timer_start(1000, s:Llchanged, {'repeat': -1})
 endfu
 
 " Call system() and then call :redraw!

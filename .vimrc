@@ -414,21 +414,21 @@ nmap <silent>[L :lfirst<cr>
 nmap <silent>]L :llast<cr>
 
 " Toggle the quickfix and location list windows.
-com! ToggleQf
+com! Toggleqf
     \ call getwininfo()
     \ ->filter({i, x -> x.quickfix && !x.loclist}) ->len()
     \ ->{x -> x ? ':cclose' : ':botright copen | :wincmd p'}()
     \ ->execute()
 
-com! ToggleLl
+com! Togglell
     \ call getwininfo()
     \ ->filter({i, v -> bufnr('%') ==
         \ get(v.variables, 'quickfix_title', '_gndn') ->bufnr()})
     \ ->{x -> len(x) > 0 ? ':lclose' : ':lopen | :wincmd p'}()
     \ ->execute()
 
-map <F3> :ToggleQf<cr>
-map <F4> :ToggleLl<cr>
+map <F4> :Toggleqf<cr>
+map <F3> :Togglell<cr>
 
 " Open all files referenced in the quickfix list as args.
 " Sometimes you just want to step through the files and not all the changes.
@@ -693,8 +693,8 @@ au BufReadPost * call signs#GitChanges()
 au BufWritePost * call signs#GitChanges()
 
 call util#StartQfWatchers()
-au User LlChanged call signs#Loclist()
-au User QfChanged call signs#QfList()
+au User Llchanged call signs#Loclist()
+au User Qfchanged call signs#Qflist()
 
 """ Mapping to call DetectIndent
 nmap <silent> <leader>i :1verbose DetectIndent<cr>
