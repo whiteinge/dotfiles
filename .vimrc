@@ -245,21 +245,14 @@ set complete-=t,i           " Remove tags and included files from default insert
 inoremap <nul> <C-X><C-O>
 
 " Maps file completion relative to current file path.
-" Usage: ./<ctrl-f>[navigate up/down completions]<tab><tab>[etc]<ctrl-y>
+" FIXME: update to not dep on coreutils?
 inoremap <C-F>
-    \ <C-O>:let b:oldpwd = getcwd() <bar>
-    \ lcd %:p:h<cr><C-X><C-F>
-" Restore path when done.
-au CompleteDone *
-    \ if exists('b:oldpwd') |
-    \   lcd `=b:oldpwd` |
-    \   unlet b:oldpwd |
-    \ endif
-" Chain multiple path completions with <tab> key. Selects the first suggestion
-" if no current selection. Use ctrl-y to finish completion as normal.
-imap <expr> <tab> pumvisible()
-    \ ? len(v:completed_item) ? '<C-Y><C-F>' : '<C-N><C-Y><C-F>'
-    \ : '<tab>'
+    \ <C-O>:call util#SysR('', 'ftree '. expand('%:p:h')
+        \ .'\| xargs -r realpath --relative-to='.
+        \ expand('%:p:h') .'\| tr -d \\n')
+    \ ->fnameescape()
+    \ ->M('norm a')
+    \ ->execute()<cr>
 
 " Don't select first autocomplete item, follow typing.
 set completeopt=longest,menuone,preview
