@@ -690,6 +690,7 @@ let g:vim_json_syntax_conceal = 0
 """ Autocommands for when to place signs
 au BufReadPost * call signs#GitChanges()
 au BufWritePost * call signs#GitChanges()
+au ShellCmdPost * call signs#GitChanges()
 
 call util#StartQfWatchers()
 au User Llchanged call signs#Loclist()
