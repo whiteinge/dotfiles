@@ -1,3 +1,4 @@
+android-platform-tools
 bash
 cataclysm
 cloc
@@ -8,8 +9,10 @@ datamash
 diffutils
 ffmpeg
 findutils
+font-dejavu
 fzy
 gawk
+gimp
 git
 gnu-sed
 gnu-tar
@@ -22,6 +25,7 @@ grep
 gzip
 htop
 ifstat
+inkscape
 jo
 jq
 less
@@ -48,9 +52,11 @@ tmux
 tree
 unzip
 vim
+vlc
 watch
 wget
 wordnet
 wtf
 xmlstarlet
+xquartz
 zsh
