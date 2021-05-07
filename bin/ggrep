@@ -115,13 +115,17 @@ _main () {
             grep --color \
             ${is_icase:+-i} \
             -nH -E -e "${search}"
+        ret=$?
 
         set +f
     else
         grep --color \
             ${is_icase:+-i} \
             -nH -E -e "${search}" "$@"
+        ret=$?
     fi
+
+    return "$ret"
 }
 
 _main "$@"
