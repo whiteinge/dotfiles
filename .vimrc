@@ -224,10 +224,8 @@ dig +1 128077
 dig -1 128078
 
 " }}}
-" Folding (spacebar toggles) {{{
-" Spacebar toggles a fold, zi toggles all folding, zM closes all folds
-
-noremap  <silent>  <space> :exe 'silent! normal! za'.(foldlevel('.')?'':'l')<cr>
+" Folding {{{
+" zA toggles a fold, zi toggles all folding, zM closes all folds
 
 set foldmethod=marker           "fdm:   looks for patterns of triple-braces in a file
 set foldcolumn=4                "fdc:   creates a small left-hand gutter for displaying fold info
