@@ -68,8 +68,7 @@ _main () {
         tail -z -n+0 -f "$QUEUE" \
             | xargs -0 -r -I{} -P "$MAXJOBS" sh -c \
                 'echo Start $$
-                printf '\''%s\n'\'' "{}" > '"$QUEUE_DIR"'/job-$$.out
-                printf '\''%s\n'\'' "{}" > '"$QUEUE_DIR"'/job-$$.err
+                printf '\''%s\n'\'' "{}" > '"$QUEUE_DIR"'/job-$$.job
                 {} 1>'"$QUEUE_DIR"'/job-$$.out 2>'"$QUEUE_DIR"'/job-$$.err
                 echo Done $$ $?' \
             | awk '
