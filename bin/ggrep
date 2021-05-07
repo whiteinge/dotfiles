@@ -62,7 +62,7 @@ _main () {
 
     local ext
 
-    while getopts VhvxX: opt; do
+    while getopts VhvxX:P: opt; do
         case $opt in
         V) printf 'Version: %s\n' $VERSION
            exit;;
@@ -70,6 +70,13 @@ _main () {
            printf '\n'
            exit;;
         x) set -x;;
+        P)
+            if [ -n "$pth" ]; then
+                pth="-path ${OPTARG} -o ${pth}"
+            else
+                pth="-path ${OPTARG}"
+            fi
+            ;;
         X)
             if [ -n "$ext" ]; then
                 ext="-name ${OPTARG} -o ${ext}"
@@ -84,6 +91,9 @@ _main () {
     local search="${1:?'Missing "searchterm".'}"; shift
 
     # Wrap any filename pattern args in parens for find.
+    if [ -n "$pth" ]; then
+        pth="( ${pth} )"
+    fi
     if [ -n "$ext" ]; then
         ext="( ${ext} )"
     fi
@@ -99,7 +109,7 @@ _main () {
 
         ffind "${1:-.}" \
             -type f \
-            $ext \
+            $ext $pth \
             -print0 \
         | xargs -0 -P8 \
             grep --color \
