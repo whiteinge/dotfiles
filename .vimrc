@@ -585,8 +585,11 @@ let loaded_netrwPlugin = 1
 nmap <silent> -
     \ :call util#SysR('', 'ftree '. expand('%:p:h') .'\| tr -d \\n')
     \ ->fnameescape()
-    \ ->{x -> isdirectory(x) ? 'lcd '. x : 'edit '. x}()
-    \ ->execute()<cr>
+    \ ->{x -> x == ''
+    \     ? ''
+    \     : isdirectory(x) ? 'lcd '. x : 'edit '. x
+    \ }()
+    \ ->execute()<cr><bar>:pwd<cr>
 
 """ Make a buffer into a scratch buffer:
 com! Scratch call scratch#Scratch()
