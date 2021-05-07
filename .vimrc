@@ -194,8 +194,9 @@ nnoremap <silent> <leader>ll
 " Toggle spell-checking
 map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
 
-" Change directory to the path of the current file
-map <leader>cd :lcd %:p:h<cr>
+" Change directory to the path of the current file; and back again
+map <leader>cd :lcd %:p:h<cr><bar>:pwd<cr>
+map <leader>cc :lcd -<cr><bar>:pwd<cr>
 
 " Make necessary directories to be able to write the current file
 com! Mkdirwrite call util#SysR('', 'mkdir -p '. expand('%:h')) | execute('w')
