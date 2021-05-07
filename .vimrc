@@ -592,10 +592,7 @@ nmap <silent> -
 com! Scratch call scratch#Scratch()
 
 """ Diff unstaged changes.
-nmap <silent> <leader>cc :call stagediff#StageDiff()<cr>
-com! Gcommit !git commit
-com! Gamend !git commit --amend --no-edit
-com! Gadd !git add %
+com! Gdiff :call stagediff#StageDiff()
 com! Gblame :55vnew
     \| :call scratch#Scratch()
     \| :exe 'r !git blame -c --date=relative -- '. fnamemodify(expand('#'), ':~:.')
