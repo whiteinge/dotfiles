@@ -367,7 +367,7 @@ set showtabline=1               " Display the tabbar if there are multiple tabs.
 set hidden                      " Allows opening a new buffer in place of an existing one without first saving the existing one
 
 " Replace the current window from open buffers:
-map <F1>
+nn <leader>bb
     \ :redir => _redir \| silent ls \| redir END
     \ \|call util#SysR(_redir, 'fzy -p "Buffers > "')
     \ ->matchstr('[0-9]\+') ->M('b ') ->execute()<cr>
@@ -388,12 +388,12 @@ endif
 packadd cfilter
 
 " Use a fuzzy-finder to switch betweeen quickfix/location-list history entries.
-map <leader>fqh
+map <F3>
     \ :redir => _redir \| silent chistory \| redir END
     \ \|:call util#SysR(_redir, 'fzy')
     \ ->matchstr('[0-9]\+') ->W('chistory') ->execute()<cr>
 
-map <leader>flh
+map <F4>
     \ :redir => _redir \| silent lhistory \| redir END
     \ \|:call util#SysR(_redir, 'fzy')
     \ ->matchstr('[0-9]\+') ->W('lhistory') ->execute()<cr>
@@ -422,8 +422,8 @@ com! Togglell
     \ ->{x -> len(x) > 0 ? ':lclose' : ':lopen | :wincmd p'}()
     \ ->execute()
 
-map <F4> :Toggleqf<cr>
-map <F3> :Togglell<cr>
+map <F1> :Toggleqf<cr>
+map <F2> :Togglell<cr>
 
 " Open all files referenced in the quickfix list as args.
 " Sometimes you just want to step through the files and not all the changes.
@@ -434,7 +434,8 @@ com! Qf2Arg call getqflist()
     \ ->map({i, x -> execute('$argadd #'. x.bufnr)})
 
 " Fuzzy-find and edit an entry in the quickfix list.
-map <F2>
+" FIXME: is 'q' a good prefix for this? what about the location list? do I even use this?
+nmap <leader>qf
     \ :call getqflist() ->map({i, x -> bufname(x.bufnr)}) ->sort() ->uniq()
     \ ->util#SysR('fzy -p "Quickfix > "') ->M('e ') ->execute()<cr>
 
