@@ -101,10 +101,11 @@
     lf = "!sh -c 'GIT_PAGER=\"$PAGER -p $(git short $1)\" git l' -"
     ltf = "!sh -c 'GIT_PAGER=\"$PAGER -p $(git short $1)\" git lt' -"
 
-    # Fuzzy-find any Git ranges in the tmux scrollback then copy into a tmux
-    # save buffer for easy pasting. Useful after fetch to inspect new commits.
+    # Fuzzy-find any Git ranges in the tmux scrollback then re-output as an
+    # in-progress git log command.
     # Usage: git fetch && git frefs
-    frefs = "!scrollback | match-git-range | uniq | fzy | tr -d \\\\n | tmux loadb -"
+    frefs = "!scrollback | match-git-range | uniq | fzy | tr -d \\\\n \
+        | xargs -I{} tmux send git Space l Space {} Space"
 
     # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
     ctags = !.git/hooks/ctags
