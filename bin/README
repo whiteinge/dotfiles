@@ -7,6 +7,7 @@ busywork -- Silly functions to make a terminal look busy like in a movie
 caffeine -- Prevent the screensaver from activating or the screen from sleeping
 chop -- Chop lines to available terminal width
 click -- Use a fuzzy-finder to open URLs found in the scrollback buffer
+clip -- A wrapper around xclip to make using the clipboard faster
 cloc-git -- Temporarily clone a repository and run cloc on it
 clot -- Fill screen with garbage as visual separator
 colors-waterfall -- Output the spectrum and each number for 256 palette

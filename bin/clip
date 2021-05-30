@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# A wrapper around xclip to make using the clipboard faster
+
+xclip -selection clipboard "$@"

@@ -217,7 +217,6 @@ alias fetchall-gl='fetchall "git@gitlab.com"'
 alias ducks='du -cks * | sort -rn | head -15'
 alias incognito=' unset HISTFILE'
 alias osx_openports='lsof -iTCP -sTCP:LISTEN -P'
-alias clip='xclip -selection clipboard'
 alias rs='rsync -avhzC --progress'
 compdef rs=rsync
 
