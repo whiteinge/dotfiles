@@ -9,6 +9,8 @@
 #
 # Setup: either the CWD should be a Git repo or the TODO_REPO variable should
 # point to a Git repo used to store the todo list.
+#
+# Usage: run without args to add a new todo item; run with -h to see args.
 
 NAME=$(basename "$0")
 TODO_REPO=${TODO_REPO:-'./.git'}
@@ -58,7 +60,7 @@ help() {
 
 	Flag        | Description
 	----------- | -----------
-	-d <hash>   | Show version.
+	-d <hash>   | Delete a todo by hash.
 	-h          | Show this screen.
 	-x          | Enable xtrace debug logging.
 
