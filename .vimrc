@@ -305,6 +305,9 @@ set laststatus=2                "ls:    makes the status bar always visible
 set ttyfast                     "tf:    improves redrawing for newer computers
 set notitle                     "       don't update xterm (or tmux pane) titles
 
+" Only save cursor/fold/buffer/window/tab positions.
+set sessionoptions=blank,buffers,folds,help,tabpages,winsize
+
 if &columns < 88
     " If we can't fit at least 80-cols, don't display these screen hogs
     set nonumber
