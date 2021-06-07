@@ -1,0 +1,63 @@
+#!/usr/bin/env sh
+# Browse through dlna media directories using a fuzzy-finder
+# then use mpv to play a selected file.
+#
+# Requires socat, curl, and xmlstarlet.
+
+tab="$(printf '\t')"
+
+if [ -z "$FDLNA_HOST" ]; then
+    _lservers__query='M-SEARCH * HTTP/1.1\r
+Host: 239.255.255.250:1900\r
+Man: "ssdp:discover"\r
+ST: urn:schemas-upnp-org:device:MediaServer:1\r
+MX: 3.\r
+User-Agent: gupnp-av-cp GSSDP/0.12.1\r\n'
+
+    FDLNA_HOST=$(printf '%b' "$_lservers__query" \
+        | socat -T1 STDIO UDP4-DATAGRAM:239.255.255.250:1900 \
+        | awk '/^LOCATION/ { sub("([^/]+)$", "", $2); print $2 }')
+fi
+
+_list () {
+    printf '
+    <?xml version="1.0"?>
+    <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+      <s:Body>
+        <u:Browse xmlns:u="urn:schemas-upnp-org:service:ContentDirectory:1">
+          <ObjectID>%s</ObjectID>
+          <BrowseFlag>BrowseDirectChildren</BrowseFlag>
+          <Filter>*</Filter>
+          <StartingIndex>0</StartingIndex>
+          <RequestedCount>0</RequestedCount>
+          <SortCriteria></SortCriteria>
+        </u:Browse>
+      </s:Body>
+    </s:Envelope>
+    ' "${1:?-'ObjectID missing.'}" \
+        | curl -Ss "${FDLNA_HOST}upnp/control/ContentDirectory" \
+            -H 'Content-Type: text/xml; charset=utf-8' \
+            -H 'SOAPAction: "urn:schemas-upnp-org:service:ContentDirectory:1#Browse"' \
+            --data-binary @- \
+        | xmlstarlet sel -T -t -v 'str:decode-uri(//Result)' \
+        | xmlstarlet sel -T -t -m '//_:container | //_:item' \
+            -v 'dc:title' -o "$tab" \
+            -v '@id' -o "$tab" \
+            -v '_:res' \
+            -n
+}
+
+_main () {
+    # The root directory is always ObjectID "0".
+    local ObjectID="${1:-0}"
+
+    _list "$ObjectID" | fzy | while IFS="$tab" read -r title id url; do
+        if [ -z "$url" ]; then
+            FDLNA_HOST="$FDLNA_HOST" exec "$0" "$id"
+        else
+            printf '%s\n' "$url" | xargs mpv
+        fi
+    done
+}
+
+_main "$@"
