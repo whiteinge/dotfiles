@@ -399,14 +399,14 @@ packadd cfilter
 
 " Use a fuzzy-finder to switch betweeen quickfix/location-list history entries.
 map <F3>
-    \ :redir => _redir \| silent chistory \| redir END
-    \ \|:call util#SysR(_redir, 'fzy')
-    \ ->matchstr('[0-9]\+') ->W('chistory') ->execute()<cr>
-
-map <F4>
     \ :redir => _redir \| silent lhistory \| redir END
     \ \|:call util#SysR(_redir, 'fzy')
     \ ->matchstr('[0-9]\+') ->W('lhistory') ->execute()<cr>
+
+map <F4>
+    \ :redir => _redir \| silent chistory \| redir END
+    \ \|:call util#SysR(_redir, 'fzy')
+    \ ->matchstr('[0-9]\+') ->W('chistory') ->execute()<cr>
 
 " Shortcuts for working with quickfix/location lists
 nmap <silent>]q :cnext<cr>
@@ -432,8 +432,8 @@ com! Togglell
     \ ->{x -> len(x) > 0 ? ':lclose' : ':lopen | :wincmd p'}()
     \ ->execute()
 
-map <F1> :Toggleqf<cr>
-map <F2> :Togglell<cr>
+map <F1> :Togglell<cr>
+map <F2> :Toggleqf<cr>
 
 " Open all files referenced in the quickfix list as args.
 " Sometimes you just want to step through the files and not all the changes.
