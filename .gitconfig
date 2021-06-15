@@ -14,7 +14,7 @@
     cr = reset HEAD~1
     co = checkout
     d = diff --summary --stat --patch
-    dc = diff --cached
+    ds = d --cached
     ff = merge --ff-only
     m = merge --no-ff
     mt = mergetool
