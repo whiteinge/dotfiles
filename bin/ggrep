@@ -104,7 +104,7 @@ _main () {
     fi
 
     # Call grep against supplied filenames, or use find to generate them first.
-    if [[ "$#" -lt 2 ]]; then
+    if [ "$#" -lt 2 ]; then
         set -f
 
         ffind "${1:-.}" \
