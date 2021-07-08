@@ -55,7 +55,7 @@ _main () {
         if [ -z "$url" ]; then
             FDLNA_HOST="$FDLNA_HOST" exec "$0" "$id"
         else
-            printf '%s\n' "$url" | xargs mpv
+            printf '%s\n' "$url" | xargs -t mpv
         fi
     done
 }
