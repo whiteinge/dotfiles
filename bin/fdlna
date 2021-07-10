@@ -50,10 +50,12 @@ _list () {
 _main () {
     # The root directory is always ObjectID "0".
     local ObjectID="${1:-0}"
+    local PrevID="${2:-0}"
 
-    _list "$ObjectID" | fzy | while IFS="$tab" read -r title id url; do
+    { printf '[root]\t0\n[back]\t%s\n' "$PrevID"; _list "$ObjectID"; } |
+    fzy | while IFS="$tab" read -r title id url; do
         if [ -z "$url" ]; then
-            FDLNA_HOST="$FDLNA_HOST" exec "$0" "$id"
+            FDLNA_HOST="$FDLNA_HOST" exec "$0" "$id" "$ObjectID"
         else
             printf '%s\n' "$url" | xargs -t mpv
         fi
