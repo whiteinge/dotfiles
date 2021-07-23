@@ -43,6 +43,7 @@ extra_path=(
     $HOME/bin \
     $HOME/.nodejs/nodejs/bin \
     $HOME/.cabal/bin \
+    $HOME/.cargo/bin \
     $HOME/.local/bin \
     $HOME/.luarocks/bin/ \
     /sbin \
