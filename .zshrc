@@ -71,8 +71,8 @@ WATCHFMT='%n %a %l from %m at %T.'
 
 export EDITOR='vim'
 export VISUAL=$EDITOR
-export LESS='-imJMWR'
-export PAGER="less $LESS"
+export PAGER='less -imMWR'
+export MANPAGER="$PAGER"
 export BROWSER='firefox'
 
 export WINEDEBUG=-all
