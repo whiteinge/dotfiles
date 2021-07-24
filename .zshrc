@@ -393,10 +393,14 @@ function refresh_tmux_on_git() {
     fi
 }
 
+function ssh_tmux_status() {
+    [[ "$1" == ssh* ]] && tmux selectp -T "${1##ssh }"
+}
+
 # }}}
 
 # Run precmd functions
-preexec_functions=( last_command_was_git )
+preexec_functions=( last_command_was_git ssh_tmux_status )
 chpwd_functions=( refresh_tmux )
 precmd_functions=( refresh_tmux_on_git )
 
