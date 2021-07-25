@@ -291,7 +291,7 @@ ${hdr}"
     esac
 
     # The only way to know when the request is finished is if there is
-    # a content-length header. If not assume no request body.
+    # a content-length header. If missing assume no request body.
     local clen="$(_hdrval "$HEADERS" 'content-length')"
     if [ -z "$clen" ]; then clen=0; fi
 
@@ -353,8 +353,6 @@ _main () {
 
     if [[ $# -eq 0 ]]; then
         printf '%s on port %s\n' "$listen" "$port"
-        # Socat doesn't know when to stop listening with EXEC so use the
-        # timeout param to fake when the request body ends.
         socat "${listen}:${port},fork,reuseaddr${ssl}" EXEC:"${0} _http"
     else
         "$1" "$@"
