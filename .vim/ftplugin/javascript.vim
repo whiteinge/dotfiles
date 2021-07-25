@@ -35,5 +35,5 @@ let _namespace_action = 'f:wa=expand("%:t:r")/gui'
 let _namespace_all_actions = 'vi{:QQ g:_namespace_action'
 
 " (Req's my Caser and surround mappings.)
-let _css_to_js = '0w\wct:ww\s''$hxpr,'
+let _css_to_js = '^\wct:ww\s''$hxpr,'
 let _js_to_css = 'w\wkwf''xf''xr;'
