@@ -7,13 +7,14 @@
 # With ssh pipelining:
 #     fetchall "git@github.com"
 
-SSH_URI="$1"
-REPO_CACHE="${TMPDIR:-/tmp}/_fetchall.txt"
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+REPO_CACHE="${TEMP}/fetchall.txt"
 
 trap '
     excode=$?; trap - EXIT;
-    __ssh_fetchall
-    __fetchall
+    rm -f '"$REPO_CACHE"'
     exit $excode
 ' INT TERM EXIT
 
@@ -40,45 +41,38 @@ _wait_for_ssh () {
     printf '\nConnected!\n'
 }
 
-fetchall () {
-    find . -type d -name .git -print0 \
+main() {
+    local SSH_URI="$1"
+
+    mkdir -p "$TEMP"
+    trap '
+        excode=$?; trap - EXIT;
+        rm -rf -- '"$TEMP"'
+        exit $excode
+    ' INT TERM EXIT
+
+    stdbuf -i0 -o0 -e0 find . -type d -name .git -print0 \
         | tee "$REPO_CACHE" \
-        | xargs -t -r -0 -P5 -I@ git --git-dir=@ fetch -a
+        | awk '
+            BEGIN { RS="\0" }
+            { printf("\033[2K\033[1GLooking for Git repos: %s", NR) }
+            END { printf("\n") }
+        '
 
-    < "$REPO_CACHE" xargs -0 -n1 \
-        | wc -l \
-        | xargs printf 'Fetched upstream changes from %s repos.\n'
-}
-__fetchall () {
-    rm -f "$REPO_CACHE"
-}
-
-ssh_fetchall () {
-    if [ -z "$SSH_URI" ]; then
-        printf 'SSH connection string required.\n' 1>&2
-        exit 1
+    if [ -n "$SSH_URI" ]; then
+        ssh -N ${SSH_URI} &
+        _wait_for_ssh ${SSH_URI}
     fi
 
-    ssh -N ${SSH_URI} &
-    _wait_for_ssh ${SSH_URI}
-
-    # Kick off a ton of parallel fetch operations
-    time fetchall
-}
-__ssh_fetchall () {
-    # Exit connection when done
+    < "$REPO_CACHE" xargs -t -r -0 -P5 -I@ git --git-dir=@ fetch -a
 
     if [ -n "$SSH_URI" ]; then
         ssh -O exit "$SSH_URI"
     fi
-}
 
-main() {
-    if [ "$#" -gt 0 ]; then
-        ssh_fetchall "$@"
-    else
-        fetchall
-    fi
+    < "$REPO_CACHE" xargs -0 -n1 \
+        | wc -l \
+        | xargs printf 'Fetched upstream changes for %s repos.\n'
 }
 
 main "$@"
