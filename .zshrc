@@ -218,7 +218,7 @@ alias fetchall-gl='fetchall "git@gitlab.com"'
 alias ducks='du -cks * | sort -rn | head -15'
 alias incognito=' unset HISTFILE'
 alias osx_openports='lsof -iTCP -sTCP:LISTEN -P'
-alias rs='rsync -avhzC --progress'
+alias rs='rsync -ah --info=progress2'
 compdef rs=rsync
 
 # Print all files under the current path without prefixed path.
