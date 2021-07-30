@@ -17,6 +17,5 @@ vi_keys=on
 emacs_keys=off
 file_editor=vi
 
-character_set=UNICODE (UTF-8)
 preferred_charset=UTF-8
 preferred_language=en
