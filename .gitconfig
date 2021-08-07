@@ -81,10 +81,13 @@
 
     # Perform a merge in-memory and output if conflicts are found (dry-run):
     #   git mergetest otherbranch
-    mergetest = "!sh -c 'git merge-tree \
+    mergetest = "!_() { \
+        git merge-tree \
             $(git merge-base ${1:?Missing branch} HEAD) \
-        ${1:?Missing branch} HEAD \
-        | awk '\\''/<<<<<<</ { print \"Conflicts found\"; exit 1 }'\\''' -"
+            ${1:?Missing branch} \
+            HEAD \
+        | awk '/<<<<<<</ { exit 1 }'; \
+    }; _"
 
     l = log --format=format:'%C(auto)%h%d%C(reset) %s %C(bold blue)(%an, %ar)%C(reset)'
     ll = log --stat --decorate --abbrev-commit --date=relative
