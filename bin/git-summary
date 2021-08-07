@@ -9,10 +9,14 @@ while getopts f opt; do
 done
 shift $(( OPTIND - 1 ))
 
+test -t 1 && show_progress=1
+
 git log --no-renames ${show_files:+--numstat} \
         --format='XXX%x09%h%x09%an%x09%ae%x09%cn%x09%ce%x09%aD%x09%cr' \
-    | awk -v FS='\t' -v OFS='\t' '
+    | awk -v show_progress="$show_progress" '
     function alen(a, i, c) { for (i in a) c += 1; return c; }
+
+    BEGIN { FS="\t"; OFS="\t" }
 
     /^$/ { next }
 
@@ -44,6 +48,10 @@ git log --no-renames ${show_files:+--numstat} \
         active_days[auth_date] = 1
         top_hours[hour] += 1
         top_weekdays[weekday] += 1
+
+        if (show_progress) {
+            printf("\033[2K\033[1GCommits processed: %s", commit_count)
+        }
     }
 
     NR == 1 { last_date=auth_date; last_reldate=reldate; last_sha=sha }
@@ -58,6 +66,7 @@ git log --no-renames ${show_files:+--numstat} \
     }
 
     END {
+        if (show_progress) { printf("\033[2K\033[1G") }
         print "First commit:", sha " - " auth_date " (" reldate ")"
         print "Last commit:", last_sha " - " last_date " (" last_reldate ")"
         print ""
