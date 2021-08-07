@@ -56,7 +56,7 @@
     # Interactive rebase against upstream HEAD or ref:
     #   git r
     #   git r HEAD~10
-    r = "!sh -c 'git rebase -i ${1:-\"@{u}\"}' -"
+    r = "!sh -c 'git rebase --autosquash -i ${1:-\"@{u}\"}' -"
 
     # Rebase against upstream HEAD or ref:
     #   git r
