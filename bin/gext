@@ -45,16 +45,16 @@ _main () {
     # more -X flags.
     #
     # Automatically parallelized:
-    # ggrep searchterm
-    # ggrep searchterm ./searchpath
-    # ggrep -X '*.js' -X '*.jsx' searchterm ./searchpath
+    # gext searchterm
+    # gext searchterm ./searchpath
+    # gext -X '*.js' -X '*.jsx' searchterm ./searchpath
     #
     # If given more than one file name to search it will instead behave like
     # regular grep and ffind will not be invoked.
     #
     # Not automatically parallelized (but caller can do that manually):
-    # ggrep searchterm [...files]
-    # find . -name '*.foo' -print0 | xargs -0 -P4 ggrep searchterm
+    # gext searchterm [...files]
+    # find . -name '*.foo' -print0 | xargs -0 -P4 gext searchterm
 
     local opt
     local OPTARG

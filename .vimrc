@@ -19,7 +19,7 @@ nn <silent> * :let @/ = '\<' .  expand('<cword>') . '\>'
   \\| if &hlsearch != 0 \| set hlsearch \| endif
   \\| echo '/'. @/ .'/=' execute('%s///gn')<cr>
 
-set grepprg=ggrep
+set grepprg=gext
 
 " grep for the word under the cursor.
 nn <silent> <leader>* :grep <cword><cr>
