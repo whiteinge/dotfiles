@@ -394,7 +394,7 @@ function refresh_tmux_on_git() {
 }
 
 function ssh_tmux_status() {
-    [[ "$1" == ssh* ]] && tmux selectp -T "${1##ssh }"
+    [[ "$1" == 'ssh '* ]] && tmux selectp -T "${1##ssh }"
 }
 
 # }}}
