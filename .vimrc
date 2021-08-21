@@ -445,11 +445,10 @@ com! Qf2Arg call getqflist()
     \ ->uniq()
     \ ->map({i, x -> execute('$argadd #'. x.bufnr)})
 
-" Fuzzy-find and edit an entry in the quickfix list.
-" FIXME: is 'q' a good prefix for this? what about the location list? do I even use this?
-nmap <leader>qf
-    \ :call getqflist() ->map({i, x -> bufname(x.bufnr)}) ->sort() ->uniq()
-    \ ->util#SysR('fzy -p "Quickfix > "') ->M('e ') ->execute()<cr>
+" Fuzzy-find and edit a file in the quickfix list.
+com! Qfjump
+    \ call getqflist() ->map({i, x -> bufname(x.bufnr)}) ->sort() ->uniq()
+    \ ->util#SysR('fzy -p "Quickfix > "') ->M('e ') ->execute()
 
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
