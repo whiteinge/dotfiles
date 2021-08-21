@@ -427,8 +427,10 @@ com! Toggleqf
 
 com! Togglell
     \ call getwininfo()
-    \ ->filter({i, v -> bufnr('%') ==
-        \ get(v.variables, 'quickfix_title', '_gndn') ->bufnr()})
+    \ ->filter({i, v ->
+        \ v.loclist == 1 &&
+        \ v.wincol == win_getid() ->getwininfo()[0] ->get('wincol', 0)
+    \ })
     \ ->{x -> len(x) > 0 ? ':lclose' : ':lopen | :wincmd p'}()
     \ ->execute()
 
