@@ -68,18 +68,15 @@ endfu
 
 " Add any location list entries
 fu! signs#Loclist(...)
-    let l:curbuf = bufnr('%')
     let l:group = 'signs#loclist'
 
-    call sign_unplace(l:group, {'buffer' : l:curbuf})
+    call sign_unplace(l:group)
 
-    let l:signs_array = getloclist(0)
+    call getloclist(0)
         \ ->map({i, x -> {
-            \ 'buffer': x.bufnr,
             \ 'group': l:group,
             \ 'lnum': x.lnum,
             \ 'name': get({'E': 'LlErr', 'W': 'LlWarn'}, x.type, 'LlGen'),
         \ }})
-
-    call sign_placelist(l:signs_array)
+        \ ->sign_placelist()
 endfu
