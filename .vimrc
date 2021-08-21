@@ -450,6 +450,15 @@ com! Qfjump
     \ call getqflist() ->map({i, x -> bufname(x.bufnr)}) ->sort() ->uniq()
     \ ->util#SysR('fzy -p "Quickfix > "') ->M('e ') ->execute()
 
+" Load all Git changes in the work tree as quickfix entries.
+com! Qffromdiff cgetexpr
+    \ system('git diff -p -U0 --diff-filter=AM -r HEAD | diff-to-quickfix')
+
+" Load all Git changes to the current file as location list entries.
+com! Llfromdiff lgetexpr
+    \ system('git diff -p -U0 --diff-filter=AM -- '.
+    \   expand('%:p') .' | diff-to-quickfix')
+
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
 nmap <silent> <leader>dm :call difftoggle#DiffToggle(2)<cr>
