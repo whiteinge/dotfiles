@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+# Search Grady Ward's Moby Project thesaurus with a fuzzy-finder
+# https://en.wikipedia.org/wiki/Moby_Project
+#
+# Usage:
+#
+#   thes
+#   thes balloon
+
+THES_URL='https://www.gutenberg.org/files/3202/files/mthesaur.txt'
+THES_CACHE="$HOME/tmp/docs/mthesaur.txt"
+
+if [ ! -e "$THES_CACHE" ]; then
+    curl -sS -C - "$THES_URL" -o "$THES_CACHE"
+fi
+
+awk 'BEGIN { FS=","; OFS="\t" } { print NR, $1 }' "$THES_CACHE" \
+    | fzy ${@:+-q "$@"} \
+    | cut -f1 \
+    | xargs -I{} awk -F, -v 'lnum={}' '
+        NR == lnum { for (i=1; i<= NF; i+=1) print $i; exit }
+    ' "$THES_CACHE" \
+    | git column --mode=column
