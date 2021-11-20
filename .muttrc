@@ -33,12 +33,7 @@ set reverse_realname = no
 # Mail Server #################################################################
 
 # Create encrypted file containing:
-# set imap_pass="password"
-# set smtp_pass="password"
-# set imap_user="user"
-# set folder = "folder"
-# set smtp_url="smtp-server"
-# set spoolfile="spoolfile"
+# set smtp_url="smtp://user@example.com:changeme@server.example.com:587/
 #
 # Encrypt via:
 # gpg -r [your keyid] -e ~/.mutt/passwords
@@ -46,17 +41,17 @@ set reverse_realname = no
 # rm ~/.mutt/passwords
 source "gpg -qd ~/.mutt/passwords.gpg |"
 
-set copy = yes
-set imap_idle = yes
-set imap_check_subscribed = yes
-set mail_check = 60
+set mbox_type=Maildir
+
+set folder="~/Mail"
+set mask="!^\\.[^.]"
+
 set postponed = "+Drafts"
 set record = "+Sent"
 set trash="+Trash"
 set reverse_alias = yes
 set send_charset = utf-8
 set sort_alias = alias
-set ssl_force_tls = yes
 
 
 # Color ######################################################################
