@@ -12,7 +12,6 @@ set message_cachedir = ~/.mutt/cache/bodies
 set message_cache_clean = yes
 
 # Viewing Mail ################################################################
-# set mailcap_path = ~/.mailcap
 auto_view text/html
 ignore *
 unignore Date: From: To: CC: Bcc: Subject:
