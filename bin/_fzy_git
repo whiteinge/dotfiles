@@ -2,7 +2,9 @@
 # Use a fuzzy-finder to complete Git refs
 
 cmd="$1 $2"; shift 2
-git show-ref \
-    | awk '{ sub(/refs\/(heads|tags|remotes)\//, "", $2); print $2 }' \
+{
+    git branch --format='%(refname:short)' --sort=-committerdate;
+    git branch --format='%(refname:short)' --sort=-committerdate -r;
+} \
     | fzy -p 'Git refs > ' -q "$*" \
     | xargs printf '%s %s' "$cmd"
