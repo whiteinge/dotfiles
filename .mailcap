@@ -3,6 +3,6 @@ image/gif; sxiv %s
 image/jpeg; sxiv %s
 image/jpg; sxiv %s
 image/png; sxiv %s
-text/html; echo && lynx --dump %s; nametemplate=%s.html; copiousoutput
+text/html; lynx -assume_charset=%{charset} -display_charset=utf-8 -collapse_br_tags -dump %s; nametemplate=%s.html; copiousoutput
 video/*; mpv %s
 video/mpeg; mpv %s
