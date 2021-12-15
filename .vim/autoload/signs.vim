@@ -80,3 +80,17 @@ fu! signs#Loclist(...)
         \ }})
         \ ->sign_placelist()
 endfu
+
+fu! signs#Move(direction)
+    let l:curline = getcurpos() ->get(1)
+    let l:lnums = bufname('%')
+        \ ->sign_getplaced({'group': '*'})
+        \ ->get(0) ->get('signs')
+        \ ->map({i, x -> x.lnum})
+        \ ->sort('n') ->uniq()
+
+    if a:direction == 1
+        return l:lnums ->util#Find({x -> x > l:curline})
+    elseif a:direction == 0
+        return l:lnums ->reverse() ->util#Find({x -> x < l:curline})
+endfu

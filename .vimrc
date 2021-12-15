@@ -163,7 +163,7 @@ map <leader>O :set paste<cr>m`O<esc>``:set nopaste<cr>
 " Toggle between line numbers and relative line numbers
 nnoremap <silent> <leader>u :exe "set " . (&rnu == 1 ? "nornu" : "rnu")<cr>
 
-" Change j and k to add movements to the jump list.
+" Change j and k to add movements to the jumplist.
 nnoremap <expr> k (v:count > 1 ? "m'". v:count : '') . 'gk'
 nnoremap <expr> j (v:count > 1 ? "m'". v:count : '') . 'gj'
 
@@ -712,6 +712,10 @@ au ShellCmdPost * call signs#GitChanges()
 call util#StartQfWatchers()
 au User Llchanged call signs#Loclist()
 au User Qfchanged call signs#Qflist()
+
+" Add mappings to quickly jump between signs.
+nnoremap <silent> [g :call signs#Move(0) ->W('G') ->M('norm ') ->execute()<cr>
+nnoremap <silent> ]g :call signs#Move(1) ->W('G') ->M('norm ') ->execute()<cr>
 
 """ Mapping to call DetectIndent
 nmap <silent> <leader>i :1verbose DetectIndent<cr>
