@@ -317,10 +317,10 @@ endif
 
 " Maybe return a string if the first arg is not empty.
 fu! M(x, y)
-    return a:x == '' ? '' : a:y . a:x
+    return a:x == '' || a:x == v:false ? '' : a:y . a:x
 endfu
 fu! W(x, y)
-    return a:x == '' ? '' : a:x . a:y
+    return a:x == '' || a:x == v:false ? '' : a:x . a:y
 endfu
 
 " If we have multiple files open with the same name then also include the
