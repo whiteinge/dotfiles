@@ -57,3 +57,15 @@ fu! util#SysR(arr, cmd)
     redraw!
     return l:ret
 endfu
+
+" Return the first item in a list that satisfies a predicate function.
+" Data-first so works as a method.
+fu! util#Find(list, fn)
+    for i in a:list
+        let l:ret = a:fn(i)
+        if l:ret == v:true
+            return i
+        endif
+    endfor
+    return v:false
+endfu
