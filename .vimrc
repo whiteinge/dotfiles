@@ -387,6 +387,12 @@ com! Delbuf redir => _redir | silent ls | redir END
     \ | call util#SysR(_redir, 'fzy')
     \ ->matchstr('[0-9]\+') ->M('bw ') ->execute()
 
+" Save all open buffers to a file that can be loaded as a quickfix list (-q).
+com! BufSaveAsQf call getbufinfo()
+    \ ->filter({i, x -> x.listed && x.name != ''})
+    \ ->map({i, x -> fnamemodify(x.name, ':~') .':'. string(x.lnum) .': '})
+    \ ->writefile(input('Write? ', 'Quickfix.txt'), 's')
+
 " When restoring a hidden buffer Vim doesn't always keep the same view (like
 " when your view shows beyond the end of the file). (Vim tip 1375)
 if ! &diff
