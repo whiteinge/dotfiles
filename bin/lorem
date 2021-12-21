@@ -11,18 +11,7 @@
 paragraphs="${1:-1}"
 preamble_show="${2:-1}"
 
-while
-    # Continually output random arrangements of words until the reader exits.
-    printf '%s\n' \
-        consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore\
-        et dolore magna aliqua ut enim ad minim veniam quis nostrud\
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat\
-        duis aute irure dolor in reprehenderit in voluptate velit esse cillum\
-        dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non\
-        proident sunt in culpa qui officia deserunt mollit anim id est laborum\
-    | shuf
-    # https://en.wikipedia.org/wiki/Lorem_ipsum
-do :; done | awk \
+awk \
     -v paragraphs="$paragraphs" \
     -v seed="$(date +%N)" \
     -v preamble_show="$preamble_show" \
@@ -30,60 +19,67 @@ do :; done | awk \
 function _rand(start, end) { return int(start + rand() * (end - start + 1)) }
 function _words() { return _rand(4, 10) } # words per sentence
 function _sentences() { return _rand(4, 6) } # sentences per paragraph
+function cap(s) { return toupper(substr(s, 1, 1)) substr(s, 2) }
 
-# Typical, awk-as-disorganized-state-machine. Reads one word at a time,
-# outputs it, and decrements various counters to decide if we have yet output
-# the desired number of paragraphs, sentences, and words. Then loops. Might be
-# easier to read from the bottom-up. :-P
+# Reservoir sampling to choose random items in one pass.
+# K - wanted items
+# FIXME: do I have this algorithm right? The first K items of the input array
+# can only appear in the exact same order as first given. E.g., input[K] can
+# only ever appear in the output[K] position.
+function _shuf(input, input_length, K, output,    i, s) {
+    for (i = 0; i < input_length; i += 1) {
+        if (i < K) {
+            output[i] = input[i]
+        } else {
+            s = int(rand() * (i + 1))
+            if (s < K) {
+                output[s] = input[i]
+            }
+        }
+    }
+}
+
 BEGIN {
     srand(seed)
 
+    for (i = 0; i < ARGC; i += 1) { wordlist[i] = ARGV[i + 1] }
+    wordlist_length = ARGC - 1
+
     if (preamble_show) {
         printf("Lorem ipsum dolor sit amet")
-        preamble_trunc = 3
         wsep = " "
-    } else {
-        cap_next = 1
-        wsep = ""
-    }
-
-    words = _words() - preamble_trunc
-    sentences = _sentences()
-}
-
-# Exit when done.
-paragraphs == 0 { exit }
-
-# Refill vars when empty.
-sentences == 0 && paragraphs > 0 { sentences = _sentences() }
-words == 0 && sentences > 0 { words = _words() }
-
-# Words.
-{
-    if (cap_next) {
-        w = toupper(substr($0, 1, 1)) substr($0, 2)
         cap_next = 0
     } else {
-        w = $0
+        wsep = ""
+        cap_next = 1
     }
 
-    printf("%s%s", wsep, w)
-    words -= 1
-    wsep = " "
-}
+    for (p = 0; p < paragraphs; p += 1) {
+        for (s = 0; s <= _sentences(); s += 1) {
+            split("", results) # reinitialize empty words array
+            _shuf(wordlist, wordlist_length, _words(), results)
 
-# Sentences.
-words == 0 {
-    printf(".")
-    sentences -= 1
-    cap_next = 1
-}
+            if (cap_next) {
+                results[0] = cap(results[0])
+            }
 
-# Paragraphs.
-sentences == 0 {
-    if (paragraphs > 1) printf("\n\n")
-    else printf("\n")
-    paragraphs -= 1
-    wsep = ""
+            for (w in results) {
+                printf("%s%s", wsep, results[w])
+                if (wsep == "") wsep = " "
+            }
+
+            printf(".")
+            cap_next = 1
+        }
+
+        wsep = ""
+        printf("%s\n", p + 1 < paragraphs ? "\n" : "")
+    }
 }
-'
+' \
+    consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore\
+    et dolore magna aliqua ut enim ad minim veniam quis nostrud\
+    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat\
+    duis aute irure dolor in reprehenderit in voluptate velit esse cillum\
+    dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non\
+    proident sunt in culpa qui officia deserunt mollit anim id est laborum
