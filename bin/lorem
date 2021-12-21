@@ -11,75 +11,38 @@
 paragraphs="${1:-1}"
 preamble_show="${2:-1}"
 
-awk \
-    -v paragraphs="$paragraphs" \
-    -v seed="$(date +%N)" \
-    -v preamble_show="$preamble_show" \
-'
-function _rand(start, end) { return int(start + rand() * (end - start + 1)) }
-function _words() { return _rand(4, 10) } # words per sentence
-function _sentences() { return _rand(4, 6) } # sentences per paragraph
-function cap(s) { return toupper(substr(s, 1, 1)) substr(s, 2) }
-
-# Reservoir sampling to choose random items in one pass.
-# K - wanted items
-# FIXME: do I have this algorithm right? The first K items of the input array
-# can only appear in the exact same order as first given. E.g., input[K] can
-# only ever appear in the output[K] position.
-function _shuf(input, input_length, K, output,    i, s) {
-    for (i = 0; i < input_length; i += 1) {
-        if (i < K) {
-            output[i] = input[i]
-        } else {
-            s = int(rand() * (i + 1))
-            if (s < K) {
-                output[s] = input[i]
-            }
-        }
-    }
+_lorem_base() {
+    printf '%s\n' \
+        consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore\
+        et dolore magna aliqua ut enim ad minim veniam quis nostrud\
+        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat\
+        duis aute irure dolor in reprehenderit in voluptate velit esse cillum\
+        dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non\
+        proident sunt in culpa qui officia deserunt mollit anim id est laborum
 }
 
-BEGIN {
-    srand(seed)
+while test "$paragraphs" -gt 0; do
+    _sentences=$(shuf -i 4-6 -n 1)
 
-    for (i = 0; i < ARGC; i += 1) { wordlist[i] = ARGV[i + 1] }
-    wordlist_length = ARGC - 1
+    while test "$_sentences" -gt 0; do
+        _lorem_base \
+            | {
+                if [ "$preamble_show" -eq 1 ]; then
+                    printf '%s\n' lorem ipsum dolor sit amet
+                    _words=$(shuf -i 4-6 -n 1)
+                else
+                    _words=$(shuf -i 4-10 -n 1)
+                fi
+                shuf -n "$_words";
+            } \
+            | xargs \
+            | awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) "." }'
 
-    if (preamble_show) {
-        printf("Lorem ipsum dolor sit amet")
-        wsep = " "
-        cap_next = 0
-    } else {
-        wsep = ""
-        cap_next = 1
-    }
+        _sentences=$(( _sentences - 1 ))
+        preamble_show=0
+    done | xargs
 
-    for (p = 0; p < paragraphs; p += 1) {
-        for (s = 0; s <= _sentences(); s += 1) {
-            split("", results) # reinitialize empty words array
-            _shuf(wordlist, wordlist_length, _words(), results)
-
-            if (cap_next) {
-                results[0] = cap(results[0])
-            }
-
-            for (w in results) {
-                printf("%s%s", wsep, results[w])
-                if (wsep == "") wsep = " "
-            }
-
-            printf(".")
-            cap_next = 1
-        }
-
-        wsep = ""
-        printf("%s\n", p + 1 < paragraphs ? "\n" : "")
-    }
-}
-' \
-    consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore\
-    et dolore magna aliqua ut enim ad minim veniam quis nostrud\
-    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat\
-    duis aute irure dolor in reprehenderit in voluptate velit esse cillum\
-    dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non\
-    proident sunt in culpa qui officia deserunt mollit anim id est laborum
+    paragraphs=$(( paragraphs - 1 ))
+    preamble_show=0
+    test "$paragraphs" -gt 0 && printf '\n'
+done
