@@ -9,7 +9,6 @@ datamash
 diffutils
 ffmpeg
 findutils
-font-dejavu
 fzy
 gawk
 gimp
@@ -38,8 +37,6 @@ mutt
 ncdu
 nethack
 nmap
-openssh
-openssl
 pandoc
 pinentry-mac
 readline
