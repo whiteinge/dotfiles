@@ -129,6 +129,34 @@ json_rep () {
 }\n'
 }
 
+content_negotiation () {
+    ctype="$(printf '%s\n' "$3" | awk '
+        BEGIN { FS=": " }
+        tolower($1) ~ /accept/ { accept = $2 }
+        END {
+            supported_types["application/json"] = "json_rep"
+            supported_types["text/html"] = "index"
+            supported_types["text/xml"] = "favicon"
+            supported_types["*/*"] = "index"
+
+            split(accept, preferred_formats, ", ")
+
+            for (ctype in preferred_formats) {
+                if (supported_types[accept]) {
+                    print supported_types[accept]
+                    exit
+                }
+            }
+        }
+    ')"
+
+    if [ -n "$ctype" ]; then
+        "$ctype" "$@"
+    else
+        _rep '406 Not Acceptable'
+    fi
+}
+
 echoserver () {
     _rep '200 Ok'
 
@@ -278,6 +306,7 @@ ${hdr}"
         '/html') cmd=index;;
         '/json') cmd=json_rep;;
         '/xml') cmd=favicon;;
+        '/ctype') cmd=content_negotiation;;
 
         '/drip') cmd=drip;;
         /delay/*) cmd=delay; pathseg="${HTTP_PATH#/delay/}";;
