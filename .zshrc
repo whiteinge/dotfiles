@@ -234,6 +234,10 @@ alias pssh='ssh -o "ProxyCommand ssh $PSSH_HOST nc -w1 %h %p"'
 mkcd() { mkdir -p -- "$1" && cd -- "$1" }
 compdef mkcd=mkdir
 
+# Create a disposable directory and cd to it.
+# Useful for mucking around with temporary files that will be auto-deleted.
+cdtmp() { cd $(mktemp -d --suffix="-${1:-"cdtmp"}") }
+
 # Override GNU info to open info pages in less instead.
 function info() { command info "$@" | less }
 
