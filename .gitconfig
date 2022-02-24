@@ -166,7 +166,10 @@
     ui = auto
 
 [init]
-    templatedir = ~/.git_template
+    # Use full path to dotfiles instead of the path to the symlinks in my
+    # homedir. This causes the target template files to get copied into new
+    # repos rather than copying the symlinks to those template files.
+    templatedir = ~/src/dotfiles/.git_template
 
 [pager]
     # Don't paginate the oneline log output if less than one page.
