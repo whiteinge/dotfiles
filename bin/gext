@@ -105,14 +105,16 @@ _main () {
 
     # If we're given a search path use find to generate list of files to
     # search, otherwise assume the file list is provided and just pass to grep.
-    if [ -d "$1" ]; then
-        searchpath="$1"
-        shift
-    else
+    if [ "$#" -eq 0 ] ; then
         searchpath='.'
+    else
+        if [ -d "$1" ]; then
+            searchpath="$1"
+            shift
+        fi
     fi
 
-    if [ "$searchpath" != '.' ]; then
+    if [ -n "$searchpath" ]; then
         set -f
 
         ffind "$searchpath" \
