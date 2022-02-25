@@ -19,12 +19,12 @@ _main () {
     #
     # ## Usage
     #
-    # `NAME [<flags>] searchterm [<searchpath> | (<filepath>, <filepath>...)]`
+    # `NAME [<flags>] searchterm [<searchpath> | (<grep args>...)]`
     #
     #     NAME -h
     #     NAME searchterm
+    #     NAME searchterm /search/path
     #     NAME -X '*.js' -X '*.jsx' searchterm
-    #     NAME searchterm ./searchpath
     #     NAME searchterm file1 file2 file3
     #
     # Flag | Description
@@ -49,7 +49,7 @@ _main () {
     # gext searchterm ./searchpath
     # gext -X '*.js' -X '*.jsx' searchterm ./searchpath
     #
-    # If given more than one file name to search it will instead behave like
+    # If given one or more file names to search it will instead behave like
     # regular grep and ffind will not be invoked.
     #
     # Not automatically parallelized (but caller can do that manually):
@@ -103,18 +103,26 @@ _main () {
         local is_icase=1
     fi
 
-    # Call grep against supplied filenames, or use find to generate them first.
-    if [ "$#" -lt 2 ]; then
+    # If we're given a search path use find to generate list of files to
+    # search, otherwise assume the file list is provided and just pass to grep.
+    if [ -d "$1" ]; then
+        searchpath="$1"
+        shift
+    else
+        searchpath='.'
+    fi
+
+    if [ "$searchpath" != '.' ]; then
         set -f
 
-        ffind "${1:-.}" \
+        ffind "$searchpath" \
             -type f \
             $ext $pth \
             -print0 \
         | xargs -0 -P8 \
             grep --color \
             ${is_icase:+-i} \
-            -nH -E -e "${search}"
+            -nH -E -e "${search}" "$@"
         ret=$?
 
         set +f
