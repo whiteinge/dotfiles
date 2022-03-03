@@ -200,6 +200,8 @@ alias vimprof="${EDITOR} \
     --cmd 'profile func *' \
     --cmd 'profile file *'"; compdef vimprof=vim
 
+alias pp='pepper --config ~/.config/pepper/init.pp'
+
 # Aliases that override default names:
 alias less='less -imJMW'
 alias tree="tree -FC --charset=ascii"
