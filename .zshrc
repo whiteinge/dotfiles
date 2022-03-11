@@ -243,6 +243,9 @@ compdef mkcd=mkdir
 # Useful for mucking around with temporary files that will be auto-deleted.
 cdtmp() { cd $(mktemp -d --suffix="-${1:-"cdtmp"}") }
 
+# Export all environment variables defined in an .env file.
+senv() { set -a; source .env; set +a; }
+
 # Override GNU info to open info pages in less instead.
 function info() { command info "$@" | less }
 
