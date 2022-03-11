@@ -65,6 +65,9 @@ SAVEHIST=4096
 # Output time stats for progs that run for longer than a minute.
 REPORTTIME=60
 
+# Add memory and disk usage stats to time output.
+TIMEFMT="${TIMEFMT}; total disk %K KB; max RSS %M KB"
+
 # Report any login/logout of other users.
 WATCH=notme
 WATCHFMT='%n %a %l from %m at %T.'
