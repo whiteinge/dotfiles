@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+# Disable the EA Origin overlay for Steam games
+#
+# Dumb shell script but I want to remember the .dll name and this is as good
+# a place as any. Also EA sucks.
+
+steamdir="${1:-$HOME/Steam}"
+
+find "$steamdir" -name igo64.dll -print0 \
+    | xargs -t -r -0 -I{} mv {} {}.orig
