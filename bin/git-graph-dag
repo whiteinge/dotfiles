@@ -14,7 +14,7 @@
 set -e
 
 main() {
-    local commit_msg=""
+    local show_msg=""
 
     local opt
     local OPTARG
@@ -22,7 +22,7 @@ main() {
 
     while getopts c opt; do
         case $opt in
-        c) commit_msg=" %f";;
+        c) show_msg=1;;
         esac
     done
     shift $(( OPTIND - 1 ))
@@ -33,47 +33,49 @@ main() {
         exit 1
     fi
 
-    printf 'digraph lattice {\n'
+    {
+        git fsck --unreachable --no-reflogs --no-progress \
+            | awk '/commit/ { print $3 }'
 
-    # Draw the DAG and connect parents
-    git rev-list --parents "$@" |
-        while read commit parents; do
-            for p in $parents; do
-                printf 'n%s -> n%s\n' "$commit" "$p"
-            done
-        done
+        printf 'XXX\n'
 
-    # Make pretty labels with the short sha1 and any refs
-    git rev-list --pretty=format:"%H %h %d${commit_msg}" "$@" | awk '
+        git rev-list --no-commit-header --pretty=format:'%H|%h|%p|%D|%f' "$@" ;
+    } |
+    awk -v show_msg="$show_msg" '
+
     BEGIN {
-        command = "git fsck --unreachable --no-reflogs | cut -d\" \" -f3"
-        while (command | getline unr) unreachable[unr] = 1
-        close(command)
+        FS="|"
+        print "digraph lattice {"
     }
 
-    !/^commit/ {
-        refs = " ("
-        sep = ""
-        for (i=3; i<=NF; i++) {
-            sub("\\(", "", $i); sub("\\)", "", $i); sub("->", "", $i);
-            if ($i != "") { refs = refs sep $i }
-            sep = ", "
+    /^XXX$/ { revlist = 1; next }
+
+    !revlist { unreachable[$1] = 1 }
+
+    revlist {
+        hashfull = $1
+        hash = $2
+        split($3, parents, " ")
+        refs = $4
+        msg = $5
+
+        sub(" -> ", " -\\&gt; ", refs)
+        unreachable[hashfull] == 1 ? isunr = 1 : isunr = 0
+
+        for (p in parents) {
+            printf("x%s -> x%s\n", hash, parents[p])
         }
-        refs = refs ")"
-        if (refs == " ()") { refs = "" }
 
-        unreachable[$1] == 1 ? isunr = 1 : isunr = 0
-
-        printf "n%s [shape=Mrecord, style=%s, label=\"{%s%s}\"]\n", \
-            $1, \
+        printf("x%s [shape=Mrecord, style=%s, label=<%s%s%s>]\n",
+            hash, \
             isunr == 1 ? "dashed" : "filled", \
-            $2, \
-            refs
+            "<b>" hash "</b>",
+            show_msg == 1 ? " <font color=\"gray20\">" msg "</font>" : "", \
+            refs == "" ? "" : "<br/><font color=\"gray20\" point-size=\"10.0\">" refs "</font>")
+    }
 
-        refs = ""
-    }'
-
-    printf '}\n'
+    END { printf("}\n") }
+    '
 }
 
 main "$@"
