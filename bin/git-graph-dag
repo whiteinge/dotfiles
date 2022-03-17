@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 # Draw a graphviz diagram of the Git DAG
 #
 # Labels consist of the short SHA1 and any refs.
@@ -11,25 +11,18 @@
 # The -c flag will also output the commit message. These should probably be
 # extremely short for it to not make the graph awful.
 
-set -e
-
 main() {
-    local show_msg=""
-
-    local opt
-    local OPTARG
-    local OPTIND
-
-    while getopts c opt; do
+    while getopts ch opt; do
         case $opt in
         c) show_msg=1;;
+        h) show_help=1;;
         esac
     done
     shift $(( OPTIND - 1 ))
 
-    if [[ -z $@ ]] ; then
-        echo -e "Usage: git graph-dag HEAD~10.. | dot -Tpng | display -antialias"
-        echo -e "Usage: git graph-dag HEAD~10.. | dot -Tpng | open -a Preview.app -f"
+    if [[ $# -eq 0 ]] || [[ -n "$show_help" ]] ; then
+        printf 'Usage: git graph-dag HEAD~10.. | dot -Tpng | display -antialias
+Usage: git graph-dag HEAD~10.. | dot -Tpng | open -a Preview.app -f\n'
         exit 1
     fi
 
