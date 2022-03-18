@@ -31,9 +31,6 @@
 [submodule "tmp/repos/cwm"]
 	path = tmp/repos/cwm
 	url = https://github.com/leahneukirchen/cwm.git
-[submodule "tmp/repos/fzy"]
-	path = tmp/repos/fzy
-	url = https://github.com/jhawthorn/fzy.git
 [submodule ".vim/pack/foo/start/vim-jqplay"]
 	path = .vim/pack/foo/start/vim-jqplay
 	url = https://github.com/bfrg/vim-jqplay.git
@@ -43,3 +40,7 @@
 [submodule "tmp/repos/lr"]
 	path = tmp/repos/lr
 	url = https://github.com/leahneukirchen/lr.git
+[submodule "tmp/repos/fzy"]
+	path = tmp/repos/fzy
+	url = https://github.com/gpanders/fzy.git
+	branch = multiselect
