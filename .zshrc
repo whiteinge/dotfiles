@@ -203,6 +203,18 @@ alias vimprof="${EDITOR} \
     --cmd 'profile func *' \
     --cmd 'profile file *'"; compdef vimprof=vim
 
+# Open a list of file names that contain line and column information as
+# quickfix entries (Quickfix is preferable because Vim's arglist doesn't suport
+# columns nor line information for more than one file).
+#
+# Usage:
+#
+#     vimjump path/to/foo.txt:30:22 path/to/bar:40:19
+#
+function vimjump () {
+    "$EDITOR" -q <(printf '%s: \n' "$@")
+}
+
 alias pp='pepper --config ~/.config/pepper/init.pp'
 
 # Aliases that override default names:
