@@ -78,7 +78,7 @@ _main() {
     fi
 
     case "$@" in
-        *-print|*-print0) ;;
+        *-print|*-print0|*-printf*) ;;
         *) local add_print=1 ;;
     esac
 
