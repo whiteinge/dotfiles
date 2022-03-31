@@ -11,7 +11,7 @@
 #       "foo": "Foo!",
 #       "bar": null,
 #       "baz": [{"qux": 1}, {"quux": true}]
-#     }' | jflatten
+#     }' | jqflat
 #     foo     string  Foo!
 #     bar     null
 #     baz     array
