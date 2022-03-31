@@ -331,8 +331,12 @@ alias ..='cd ..'
 
 # cd to a parent directory.
 function ...() {
-    explode_path | tail -n +2 | fzy -p 'Parents > ' | read -d -r new_dir
-    cd "$new_dir"
+    new_dir="$(explode_path | tail -n +2 | fzy -p 'Parents > ')"
+    if [ -n "$new_dir" ]; then
+        cd "$new_dir"
+    else
+        return 1
+    fi
 }
 
 # When completion is invoked without arguments use the scrollback buffer. This
