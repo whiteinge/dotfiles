@@ -22,6 +22,12 @@ vlc
 xquartz
 ' | xargs /usr/local/bin/brew cask install
 
+# Fix the cache path for man-db from Brew then generate it.
+/usr/local/bin/gsed -i -e \
+    '/^MANDB_MAP/ s|/var/cache|/usr/local/var/cache|' \
+    /usr/local/etc/man_db.conf
+mandb -c
+
 # Make yourself at home.
 printf 'Adding zsh to /etc/shells (enter password):\n'
 sudo printf '/usr/local/bin/zsh\n' >> /etc/shells

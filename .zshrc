@@ -53,7 +53,8 @@ extra_path=(
 )
 export PATH="${(j|:|)extra_path}:$PATH"
 
-export MANPATH="${HOME}/share/man:${HOME}/.local/bin:${MANPATH}"
+# Prepend : so man also references default config file.
+export MANPATH=":${HOME}/share/man:${MANPATH}"
 
 CDPATH=$CDPATH::$HOME:/usr/local
 
