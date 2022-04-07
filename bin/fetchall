@@ -64,7 +64,7 @@ main() {
         _wait_for_ssh ${SSH_URI}
     fi
 
-    < "$REPO_CACHE" xargs -t -r -0 -P5 -I@ git --git-dir=@ fetch -a
+    < "$REPO_CACHE" xargs -t -r -0 -P5 -I@ git --git-dir=@ fetch --all
 
     if [ -n "$SSH_URI" ]; then
         ssh -O exit "$SSH_URI"
