@@ -159,6 +159,9 @@
     addrefspr = "!sh -c 'git config --add \
         remote.${1:?Missing remote}.fetch \"+refs/pull/*/head:refs/remotes/$1/pr/*\"' -"
 
+[commit]
+    verbose = 2
+
 [core]
     excludesfile = ~/.gitignore
 
