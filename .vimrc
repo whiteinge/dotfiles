@@ -201,6 +201,9 @@ map <leader>cc :lcd -<cr><bar>:pwd<cr>
 " Make necessary directories to be able to write the current file
 com! Mkdirwrite call util#SysR('', 'mkdir -p '. expand('%:h')) | execute('w')
 
+" Add all TODOs in the current file as quickfix entries.
+com! Qftodo silent grep TODO %:p | redraw!
+
 " Helps if you have to use another editor on the same file
 au FileChangedShell * echo "File has been changed outside of Vim."
 
