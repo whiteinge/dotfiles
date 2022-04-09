@@ -418,14 +418,14 @@ map <F4>
     \ ->matchstr('[0-9]\+') ->W('chistory') ->execute()<cr>
 
 " Shortcuts for working with quickfix/location lists
-nmap <silent>]q :cnext<cr>
-nmap <silent>[q :cprev<cr>
-nmap <silent>[Q :cfirst<cr>
-nmap <silent>]Q :clast<cr>
-nmap <silent>]l :lnext<cr>
-nmap <silent>[l :lprev<cr>
-nmap <silent>[L :lfirst<cr>
-nmap <silent>]L :llast<cr>
+nmap <silent>]q :cnext<cr>:norm zv<cr>
+nmap <silent>[q :cprev<cr>:norm zv<cr>
+nmap <silent>[Q :cfirst<cr>:norm zv<cr>
+nmap <silent>]Q :clast<cr>:norm zv<cr>
+nmap <silent>]l :lnext<cr>:norm zv<cr>
+nmap <silent>[l :lprev<cr>:norm zv<cr>
+nmap <silent>[L :lfirst<cr>:norm zv<cr>
+nmap <silent>]L :llast<cr>:norm zv<cr>
 
 " Toggle the quickfix and location list windows.
 com! Toggleqf
