@@ -79,6 +79,9 @@
     # Cherry-pick a commit directly into the working directory.
     cherry-patch = "!sh -c 'git show \"${1:?Missing revision}\" | git apply' -"
 
+    # Use a fuzzy-finder to find a SHA to use for a fixup commit.
+    fixup = !git l @{u}.. | fzy | awk '{ print $1 }' | xargs -I{} git ci --fixup={}
+
     # Perform a merge in-memory and output if conflicts are found (dry-run):
     #   git mergetest otherbranch
     mergetest = "!_() { \
