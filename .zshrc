@@ -277,6 +277,9 @@ alias -g OUT='@{u}..'
 alias -g OOUT='@{u}...'
 alias -g UP='@{u}'
 
+# Choose the last item in the filename glob.
+alias -g LAST='*([-1])'
+
 # Selects a random file: `mpv RANDOM`
 alias -g RANDOM='"$(shuf -e -n1 *)"'
 
