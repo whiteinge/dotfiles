@@ -4,9 +4,14 @@ WPM=250
 print_pid=0
 
 print_orp() {
-    while read -r line; do
-        delay="0.25"
+    sleep_pid=0
+    delay="0.25"
+    trap '
+    read -r delay < _keypresses
+    kill $sleep_pid
+    ' SIGUSR1 < /dev/tty
 
+    while read -r line; do
         if [ "$line" = '' ]; then
             printf '\e[2K\e[1G'
             sleep "$delay"
@@ -25,9 +30,9 @@ print_orp() {
             esac
             padlen=$(( 20 - orp ))
 
-            stty raw min 0 time 1 < /dev/tty
-            read -r delay < _keypresses
-            sleep "$delay"
+            sleep "$delay" &
+            sleep_pid=$!
+            wait "$sleep_pid"
 
             printf '\e[2K\e[1G%*s%s%*s' "$padlen" '' "$word" "$padlen" ''
             printf ' XXX%s: ' "$delay"
@@ -65,6 +70,7 @@ read_input () {
             delay="$(printf 'scale=4; 60 / %s\n' "$WPM" | bc)"
         fi
 
+        kill -USR1 "$1"
         printf '%s\n' "$delay" > _keypresses
     done
 }
@@ -84,7 +90,7 @@ _main() {
     print_orp < /dev/stdin &
     print_pid=$!
 
-    read_input < /dev/tty
+    read_input "$print_pid" < /dev/tty
     wait
 }
 
@@ -93,9 +99,9 @@ _cleanup() {
 
     rm _keypresses
 
-    if [ "$print_pid" -ne 0 ]; then
-        kill "$print_pid"
-    fi
+#     if [ "$print_pid" -ne 0 ]; then
+#         kill "$print_pid"
+#     fi
 }
 
 _main "$@"
