@@ -65,32 +65,28 @@ _main () {
     touch "$QUEUE"
 
     if [ $# -eq 0 ]; then
-        printf 'Watching queue for jobs...\n\n'
-
         tail -z -n+0 -f "$QUEUE" \
             | xargs -0 -r -I{} -P "$MAXJOBS" sh -c \
                 'echo Start $$
                 printf '\''%s\n'\'' "{}" > '"$QUEUE_DIR"'/job-$$.job
                 {} 1>'"$QUEUE_DIR"'/job-$$.out 2>'"$QUEUE_DIR"'/job-$$.err
-                echo Done $$ $?' \
+                echo Done $? | tee '"$QUEUE_DIR"'/job-$$.exit' \
             | awk '
-                function alen(a, i, c) { for (i in a) c += 1; return c; }
-                /^Start/ { jobs[$2] = "X" }
-                /^Done/ { jobs[$2] = $3 }
+                BEGIN {
+                    OFS="\t\t"
+                    running = 0; success = 0; fail = 0
+                    print "Queue:", "Running", "Success", "Fail"
+                    print "", running, success, fail
+                }
+
+                /^Start/ { running += 1 }
+                /^Done/ {
+                    running -= 1
+                    if ($2 == 0) { success += 1 } else { fail += 1 }
+                }
                 {
-                    printf("\033[s") # save pos
-                    printf("\033[0J") # clear to end of screen
-                    printf("\033[1E") # next line
-                    printf("%-8s%-15s%-15s\n",
-                        "PID", "Is running", "Exit code")
-                    for (i in jobs) {
-                        printf("%-8s%-15s%-15s\n",
-                        i,
-                        jobs[i] == "X" ? "X" : "",
-                        jobs[i] == "X" ? "" : jobs[i])
-                    }
-                    printf("\nTotal jobs: %s\n", alen(jobs))
-                    printf("\033[u") # restore pos
+                    printf("\033[1A\033[2K") # clear line
+                    print "", running, success, fail
                 }
             '
     else
