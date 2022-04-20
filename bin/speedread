@@ -1,0 +1,101 @@
+#!/usr/bin/env sh
+
+WPM=250
+print_pid=0
+
+print_orp() {
+    while read -r line; do
+        delay="0.25"
+
+        if [ "$line" = '' ]; then
+            printf '\e[2K\e[1G'
+            sleep "$delay"
+            continue
+        fi
+
+        for word in $line; do
+            # ORP: Optical Recognition Point
+            # https://github.com/pasky/speedread
+            case "${#word}" in
+                1|2) orp=0;;
+                3|4|5|6) orp=1;;
+                7|8|9|10) orp=2;;
+                11|12|13|14) orp=3;;
+                *) orp=4;;
+            esac
+            padlen=$(( 20 - orp ))
+
+            stty raw min 0 time 1 < /dev/tty
+            read -r delay < _keypresses
+            sleep "$delay"
+
+            printf '\e[2K\e[1G%*s%s%*s' "$padlen" '' "$word" "$padlen" ''
+            printf ' XXX%s: ' "$delay"
+        done
+    done
+}
+
+read_input () {
+    stty -echo -icanon min 1 time 0
+
+    # if [ -t 0 ]; then
+    #     # Put device in noncanoncial mode w/ blocking read until 1 byte.
+    #     stty -echo -icanon min 1 time 0
+    # fi
+
+    while key="$(dd ibs=1 count=1 2>/dev/null)"; do
+        case "$key" in
+            '[') WPM=$(( WPM - 10 ));;
+            ']') WPM=$(( WPM + 10 ));;
+            # *)
+            #     if [ "$key" = ' ' ]; then
+            #         if [ "$WPM" -eq 0 ]; then
+            #            WPM="$PREV_WPM"
+            #         else
+            #             PREV_WPM="$WPM"
+            #             WPM=0
+            #         fi
+            #     fi
+            # ;;
+        esac
+
+        if [ "$WPM" -eq 0 ]; then
+            delay=INF
+        else
+            delay="$(printf 'scale=4; 60 / %s\n' "$WPM" | bc)"
+        fi
+
+        printf '%s\n' "$delay" > _keypresses
+    done
+}
+
+_main() {
+    # if [ ! -t 0 ]; then
+    #     printf 'This script must be run from a terminal\n' 1>&2
+    #     exit 1
+    # fi
+
+    # Hide and show cursor.
+    printf '\e[?25l'
+    trap _cleanup EXIT
+
+    mkfifo _keypresses
+
+    print_orp < /dev/stdin &
+    print_pid=$!
+
+    read_input < /dev/tty
+    wait
+}
+
+_cleanup() {
+    printf '\e[?25h'
+
+    rm _keypresses
+
+    if [ "$print_pid" -ne 0 ]; then
+        kill "$print_pid"
+    fi
+}
+
+_main "$@"
