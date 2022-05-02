@@ -8,13 +8,13 @@ print_orp() {
     delay="0.25"
     trap '
     read -r delay < _keypresses
-    kill $sleep_pid
+    kill $sleep_pid 2>/dev/null
     ' SIGUSR1 < /dev/tty
 
     while read -r line; do
         if [ "$line" = '' ]; then
             printf '\e[2K\e[1G'
-            sleep "$delay"
+            sleep "$delay" 2>/dev/null
             continue
         fi
 
@@ -32,12 +32,14 @@ print_orp() {
 
             sleep "$delay" &
             sleep_pid=$!
-            wait "$sleep_pid"
+            wait "$sleep_pid" 2>/dev/null
 
             printf '\e[2K\e[1G%*s%s%*s' "$padlen" '' "$word" "$padlen" ''
-            printf ' XXX%s: ' "$delay"
+            printf ' XXX %s: ' "$delay"
         done
     done
+
+    exit
 }
 
 read_input () {
@@ -52,16 +54,16 @@ read_input () {
         case "$key" in
             '[') WPM=$(( WPM - 10 ));;
             ']') WPM=$(( WPM + 10 ));;
-            # *)
-            #     if [ "$key" = ' ' ]; then
-            #         if [ "$WPM" -eq 0 ]; then
-            #            WPM="$PREV_WPM"
-            #         else
-            #             PREV_WPM="$WPM"
-            #             WPM=0
-            #         fi
-            #     fi
-            # ;;
+            *)
+                if [ "$key" = ' ' ]; then
+                    if [ "$WPM" -eq 0 ]; then
+                       WPM="$PREV_WPM"
+                    else
+                        PREV_WPM="$WPM"
+                        WPM=0
+                    fi
+                fi
+            ;;
         esac
 
         if [ "$WPM" -eq 0 ]; then
@@ -70,7 +72,7 @@ read_input () {
             delay="$(printf 'scale=4; 60 / %s\n' "$WPM" | bc)"
         fi
 
-        kill -USR1 "$1"
+        kill -USR1 "$1" 2>/dev/null
         printf '%s\n' "$delay" > _keypresses
     done
 }
@@ -83,7 +85,12 @@ _main() {
 
     # Hide and show cursor.
     printf '\e[?25l'
-    trap _cleanup EXIT
+
+    trap '
+        break
+        printf '\''\e[?25h'\''
+        rm _keypresses
+    ' EXIT
 
     mkfifo _keypresses
 
@@ -91,12 +98,12 @@ _main() {
     print_pid=$!
 
     read_input "$print_pid" < /dev/tty
-    wait
+    wait "$print_pid"
+    exit
 }
 
 _cleanup() {
     printf '\e[?25h'
-
     rm _keypresses
 
 #     if [ "$print_pid" -ne 0 ]; then
