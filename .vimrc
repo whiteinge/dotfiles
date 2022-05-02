@@ -601,6 +601,13 @@ set viminfo+=<0
 set nomodeline
 set modelines=0
 
+" Add text objects for "a line" and "inner line".
+" https://stackoverflow.com/a/61624228
+vnoremap al :<C-U>normal 0v$h<CR>
+omap al :normal val<CR>
+vnoremap il :<C-U>normal ^vg_<CR>
+omap il :normal vil<CR>
+
 " Make mapleader default explicit
 let mapleader = '\'
 
