@@ -174,24 +174,6 @@ alias ls='ls -F --color'
 alias la='ls -A'; compdef la=ls
 alias ll='ls -lh'; compdef ll=ls
 
-# lr:
-function _lr () {
-    lr \
-        -t 'type == f && color 15 || print' \
-        -t 'type == p && color 11 || print' \
-        -t 'mode == "+x" && color 10 || print' \
-        -t 'type == l && color 14 || print' \
-        -t 'type == d && color 12 || print' \
-        "$@"
-}
-function _lrc () {
-    _lr "$@" | git column --mode=dense --padding=2
-}
-
-alias lrs='_lrc -1AFGGs'
-alias lra='_lrc -1FGGs'
-alias lrl='_lr -1AFGGlhs'
-
 # Regular Vim
 alias vi=$EDITOR; compdef vi=vim
 # Fast Vim (no vimrc, syntax, ftplugins) for big files
