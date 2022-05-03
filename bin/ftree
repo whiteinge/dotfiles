@@ -28,6 +28,11 @@ while true; do
         old_path="$(cd "$new_path"; printf '%s' "$PWD")"
         continue
     else
+        new_path="${new_path%\*}"
+        new_path="${new_path%=}"
+        new_path="${new_path%>}"
+        new_path="${new_path%@}"
+        new_path="${new_path%|}"
         printf '%s\n' "$new_path"
         break
     fi
