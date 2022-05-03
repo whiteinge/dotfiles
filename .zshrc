@@ -265,7 +265,8 @@ function info() { command info "$@" | less }
 # Wrap man to use Vim as MANPAGER.
 function _man() {
     [[ $# -eq 0 ]] && return 1
-    MANPAGER='cat' command man "$@" | col -b | vim -M +MANPAGER -
+    MANPAGER='cat' command man "$@" | col -b \
+        | vim +'exe search(".") ? "" : "quit!"' -M +MANPAGER -
 }
 # Zsh's completion invokes man on tab so avoid a recursive definition.
 alias man='_man'
