@@ -714,6 +714,9 @@ let g:tagbar_autoshowtag = 1
 let g:tagbar_iconchars = ['+', '-']
 let g:tagbar_show_linenumbers = -1
 
+nmap [t :TagbarJumpPrev<cr>
+nmap ]t :TagbarJumpNext<cr>
+
 " See .md files as markdown instead of modula-2.
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
