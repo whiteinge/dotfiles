@@ -27,7 +27,9 @@ _main () {
     # -x   | Enable xtrace debug logging.
     # -n   | Delete the queue file before starting.
     # -P   | Max number of jobs to run in parallel.
-    # -l   | List queued jobs and exit.
+    # -L   | List queued jobs and exit.
+    # -F   | List failed jobs and exit.
+    # -R   | List running jobs and exit.
     #
     # Flags _must_ be the first argument to `NAME`.
     #
@@ -48,14 +50,16 @@ _main () {
     local OPTARG
     local OPTIND
 
-    while getopts hP:nxl opt; do
+    while getopts hP:nxLFR opt; do
         case $opt in
         h) help _main
            printf '\n'
            exit;;
         P) MAXJOBS="$OPTARG";;
         n) rm -rf "$QUEUE_DIR";;
-        l) xargs -0 -n1 < "$QUEUE"; exit ;;
+        L) xargs -0 -n1 < "$QUEUE"; exit ;;
+        F) grep -v 'Done 0' "$QUEUE_DIR"/*.ret; exit ;;
+        R) find "$QUEUE_DIR" -name '*.ret' -type f -size 0; exit ;;
         x) set -x;;
         esac
     done
