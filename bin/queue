@@ -69,8 +69,9 @@ _main () {
             | xargs -0 -r -I{} -P "$MAXJOBS" sh -c \
                 'echo Start $$
                 printf '\''%s\n'\'' "{}" > '"$QUEUE_DIR"'/job-$$.job
+                touch '"$QUEUE_DIR"'/job-$$.ret
                 {} 1>'"$QUEUE_DIR"'/job-$$.out 2>'"$QUEUE_DIR"'/job-$$.err
-                echo Done $? | tee '"$QUEUE_DIR"'/job-$$.exit' \
+                echo Done $? | tee '"$QUEUE_DIR"'/job-$$.ret ' \
             | awk '
                 BEGIN {
                     OFS="\t\t"
