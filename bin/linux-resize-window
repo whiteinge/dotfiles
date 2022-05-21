@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# Select a window in X11 and resize it to given dimensions
+
+size="${1:-1024,768}"
+
+wmctrl -l | fzy | awk '{ print $1 }' \
+    | xargs -I{} wmctrl -i -r {} -e "0,0,0,${size}"

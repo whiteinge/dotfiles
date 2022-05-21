@@ -62,6 +62,7 @@ invoice -- Generate a PDF invoice from a plain text time log using groff and m4
 jqflat -- Use jq to flatten a JSON structure for easy use with awk/grep/etc
 joinpdf -- Merges, or joins multiple PDF files into "joined.pdf"
 join-strings -- Join strings together with a delimiter
+linux-resize-window -- Select a window in X11 and resize it to given dimensions
 lndir.sh -- Create a shadow directory of symbolic links to another directory tree
 lorem -- Output paragraphs of lorem ipsum placeholder text
 luksimg -- Wrappers around cryptsetup to create/mount/unmount encrypted images
