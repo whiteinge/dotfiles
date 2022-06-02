@@ -1,0 +1,61 @@
+[general]
+status_path = "~/.vdirsyncer/status/"
+
+# CARDDAV
+# You need to run `vdirsyncer discover` if new calendars/addressbooks are added
+# on the server.
+
+[pair contacts]
+a = "contacts_local"
+b = "contacts_remote"
+
+collections = ["from a", "from b"]
+
+metadata = ["displayname"]
+
+# To resolve a conflict the following values are possible:
+#   `null` - abort when collisions occur (default)
+#   `"a wins"` - assume a's items to be more up-to-date
+#   `"b wins"` - assume b's items to be more up-to-date
+#conflict_resolution = null
+
+[storage contacts_local]
+type = "filesystem"
+path = "~/Contacts/"
+fileext = ".vcf"
+
+[storage contacts_remote]
+type = "carddav"
+url.fetch = ["command", "~/.vdirsyncer/get.sh", "url"]
+username.fetch = ["command", "~/.vdirsyncer/get.sh", "username"]
+password.fetch = ["command", "~/.vdirsyncer/get.sh", "password"]
+
+# CALDAV
+[pair calendar]
+a = "calendar_local"
+b = "calendar_remote"
+collections = ["from a", "from b"]
+
+# Calendars also have a color property
+metadata = ["displayname", "color"]
+
+[storage calendar_local]
+type = "filesystem"
+path = "~/Calendars/"
+fileext = ".ics"
+
+[storage calendar_remote]
+type = "caldav"
+url.fetch = ["command", "~/.vdirsyncer/get.sh", "url"]
+username.fetch = ["command", "~/.vdirsyncer/get.sh", "username"]
+password.fetch = ["command", "~/.vdirsyncer/get.sh", "password"]
+
+# Passwords format:
+# url https://example.com
+# username foo
+# password bar
+#
+# Encrypt via:
+# gpg -r [your keyid] -e ~/.vdirsyncer/passwords
+# shred ~/.vdirsyncer/passwords
+# rm ~/.vdirsyncer/passwords
