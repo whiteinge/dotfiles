@@ -631,7 +631,7 @@ com! Scratch call scratch#Scratch()
 com! Gdiff :call stagediff#StageDiff()
 com! Gblame :55vnew
     \| :call scratch#Scratch()
-    \| :exe 'r !git blame -c --date=relative -- '. fnamemodify(expand('#'), ':~:.')
+    \| :exe 'r !git blame --date=relative -- '. expand('#:p:~:.')
     \| 1delete
     \| :wincmd p
     \| :windo setl nofoldenable nowrap scrollbind
