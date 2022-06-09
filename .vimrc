@@ -637,6 +637,12 @@ com! Gblame :55vnew
     \| :windo setl nofoldenable nowrap scrollbind
     \| :syncbind
 
+com! Gannotateline
+    \ :call printf("!git blame -l -L %s,+1 -- %s \| awk '{ print $1 }' \| xargs git sh",
+    \     getpos('.')[1],
+    \     expand('%:p'))
+    \ ->execute() | :redraw!
+
 """ Surround a visual selection of opfunc movement with characters.
 " E.g., to surround with parens: \s(iw
 " TODO: Is this really better than: c<motion>"<C-r><C-o>""<Esc>
