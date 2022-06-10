@@ -1,3 +1,5 @@
+# Prefix commands with GIT_TRACE=1 to debug performance.
+
 [user]
     email = seth@eseth.com
     name = Seth House
