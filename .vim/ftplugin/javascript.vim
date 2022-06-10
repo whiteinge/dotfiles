@@ -12,22 +12,6 @@ let b:ale_linters_ignore = ['prettier']
 let b:ale_javascript_prettier_use_local_config = 1
 let b:ale_javascript_eslint_options = "--rule 'prettier/prettier: 0'"
 
-let g:tagbar_type_javascript = {
-    \ 'kinds': [
-        \ 'V:variables',
-        \ 'A:arrays',
-        \ 'C:classes',
-        \ 'E:exports',
-        \ 'F:functions',
-        \ 'G:generators',
-        \ 'I:imports',
-        \ 'M:methods',
-        \ 'P:properties',
-        \ 'O:objects',
-        \ 'T:tags',
-    \ ],
-\ }
-
 " (Req's my split/join plugin & mappings.)
 let _sort_es6_imports = 'f{\js,i{vi{!sort\jj,i{kJJ'
 
