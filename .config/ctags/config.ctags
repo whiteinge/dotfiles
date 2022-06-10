@@ -15,6 +15,7 @@
 --exclude=bower_components
 --exclude=bundle.js
 --exclude=node_modules
+--exclude=package-lock.json
 
 --exclude=*.map
 --exclude=*.min.\*
