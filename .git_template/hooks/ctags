@@ -6,5 +6,6 @@ test -d .git || exit 0
 
 mkdir .git/tags_lock 2>/dev/null || exit 0
 trap "rm -rf .git/tags_lock; rm -f .git/tags.$$" EXIT
-ctags --tag-relative -Rf.git/tags.$$ --exclude=.git ${EXCLUDE}
+git ls-files |
+    ctags -L - --tag-relative -R -f .git/tags.$$ --exclude=.git ${EXCLUDE}
 mv .git/tags.$$ .git/tags
