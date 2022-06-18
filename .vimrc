@@ -594,8 +594,8 @@ let _uppercase_word = 'gUw'
 " }}}
 " Plugin settings {{{
 
-" Don't remember register contents between sessions.
-set viminfo+=<0
+" Remember marks and nohlsearch only.
+set viminfo='100,s0,h
 
 " I stopped using modelines and they can be a security risk, best to disable.
 set nomodeline
