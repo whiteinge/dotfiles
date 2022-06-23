@@ -13,6 +13,10 @@
 # Thu  02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 00 01  Fri - America/New_York
 # Thu  07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 00 01 02 03 04 05 06  Fri - UTC
 #
+# Specify a date (accepts any string GNU date will consume):
+#
+# % timebuddy -d 2022-03-13 UTC America/New_York
+#
 # Pair with a fuzzy-finder to quickly look up timezone formats.
 # E.g.: ftimezone | xargs timebuddy
 #
@@ -36,9 +40,11 @@ fmt_hours () {
 get_hours () {
     cur="${1:?'Current timezone required.'}"
     tgt="${2:?'Target timezone required.'}"
+    datestr="${3:-today}"
+    offset="$(TZ="$cur" date +%z)"
 
     seq -w 0 23 |
-        xargs -n1 printf 'TZ="%s" %s:00\n' "$cur" |
+        xargs -I{} printf 'TZ="%s" %s {}:00 %s\n' "$cur" "$datestr" "$offset" |
         TZ="$tgt" date +'%a %H' -f - |
         fmt_hours
     printf ' - %s\n' "$tgt"
@@ -54,14 +60,21 @@ validate_tz () {
 }
 
 _main () {
+    while getopts d: opt; do
+        case $opt in
+        d) datestr="$OPTARG";;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
     localtime="$(readlink /etc/localtime)"
     timezone="${localtime#*zoneinfo/}"
     validate_tz "$timezone"
 
-    get_hours "$timezone" "$timezone"
+    get_hours "$timezone" "$timezone" "$datestr"
     for tz in "$@"; do
         validate_tz "$tz"
-        get_hours "$timezone" "$tz"
+        get_hours "$timezone" "$tz" "$datestr"
     done
 }
 
