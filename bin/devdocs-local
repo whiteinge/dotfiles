@@ -38,21 +38,20 @@ download () {
         mkdir -p "$ddir"
         cd "$ddir"
 
-        printf 'Installing %s\n' "$slug" 1>&2
-
         if [ -r "${ddir}/mtime" ]; then
             old_mtime=$(< "${ddir}/mtime")
 
             if [ "$old_mtime" -ge "$mtime" ]; then
-                printf '%s already installed.\n' "$slug" 1>&2
-                return
+                printf 'Verifying existing %s\n' "$slug" 1>&2
+            else
+                printf 'Installing %s\n' "$slug" 1>&2
             fi
         fi
 
         printf '%s\n' "$mtime" > mtime
 
-        curl -sS -o index.json "https://devdocs.io/docs/${slug}/index.json?${mtime}"
-        curl -sS -o db.json "https://documents.devdocs.io/${slug}/db.json?${mtime}"
+        curl -C - -sS -o index.json "https://devdocs.io/docs/${slug}/index.json?${mtime}"
+        curl -C - -sS -o db.json "https://documents.devdocs.io/${slug}/db.json?${mtime}"
     done;
 }
 
