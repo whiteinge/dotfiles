@@ -40,9 +40,9 @@ fu! util#OnChanged(Fn, Cb)
 endfu
 
 let s:Qfchanged = util#OnChanged({-> getqflist({'changedtick': 1, 'id': 0})},
-    \ {-> execute('silent doautocmd <nomodeline> User QfChanged')})
+    \ {-> execute('silent doautocmd <nomodeline> User Qfchanged')})
 let s:Llchanged = util#OnChanged({-> getloclist(0, {'changedtick': 1, 'id': 0})},
-    \ {-> execute('silent doautocmd <nomodeline> User LlChanged')})
+    \ {-> execute('silent doautocmd <nomodeline> User Llchanged')})
 
 fu! util#StartQfWatchers()
     call timer_start(1000, s:Qfchanged, {'repeat': -1})
