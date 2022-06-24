@@ -52,7 +52,7 @@ download () {
         printf '%s\n' "$mtime" > mtime
 
         curl -sS -o index.json "https://devdocs.io/docs/${slug}/index.json?${mtime}"
-        curl -sS -o db.json "https://docs.devdocs.io/${slug}/db.json?${mtime}"
+        curl -sS -o db.json "https://documents.devdocs.io/${slug}/db.json?${mtime}"
     done;
 }
 
