@@ -556,7 +556,7 @@ au VimEnter,ColorScheme * hi DiffChange ctermbg=0
 au VimEnter,ColorScheme * hi DiffText cterm=reverse ctermbg=none
 
 syntax enable
-colorscheme desert
+colorscheme desert_legacy
 set background=dark
 
 " Add MatchN highlights for highlighting arbitrary text matches legibly.
