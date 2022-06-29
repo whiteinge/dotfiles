@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 # Configure flags for Vim
+#
+# Add for OSX:
+# export CPPFLAGS=-I/opt/X11/include
 
 ./configure \
     --with-compiledby=whiteinge \
