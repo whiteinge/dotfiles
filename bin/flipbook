@@ -1,6 +1,12 @@
 #!/usr/bin/env sh
 # A flipbook loop for ascii drawings
 #
+# Takes one argument which is a path to an animation script, which is a text
+# file where each frame is separated by a line of exactly 17 dashes. (Ignores
+# all content before the first dash.)
+#
+# Run without arguments to see the example script below.
+#
 # http://www.ascii-art.de/ascii/s/stickman.txt
 # -----------------
 #        o,    o__        
