@@ -43,7 +43,7 @@ _wait_for_ssh () {
 
 main() {
     local SSH_URI="$1"
-    shift 1
+    test $# -gt 0 && shift 1
 
     mkdir -p "$TEMP"
     trap '
