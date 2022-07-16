@@ -13,6 +13,8 @@ paths=(
     "/usr/local/opt/grep/libexec/gnubin" \
     "/usr/local/opt/make/libexec/gnubin" \
     "/usr/local/opt/python/libexec/bin" \
+    "/usr/local/opt/util-linux/bin" \
+    "/usr/local/opt/util-linux/sbin" \
 )
 
 manpaths=(
@@ -25,9 +27,14 @@ manpaths=(
     "/usr/local/opt/gnu-which/libexec/gnuman" \
     "/usr/local/opt/grep/libexec/gnuman" \
     "/usr/local/opt/make/libexec/gnuman" \
+    "/usr/local/opt/util-linux/share/man" \
 )
 
 export ANDROID_HOME=/usr/local/opt/android-sdk
 
 export PATH="${(j|:|)paths}:${PATH}"
 export MANPATH="${(j|:|)manpaths}:${MANPATH}"
+
+export LDFLAGS="-L/usr/local/opt/util-linux/lib"
+export CPPFLAGS="-I/usr/local/opt/util-linux/include"
+export PKG_CONFIG_PATH="/usr/local/opt/util-linux/lib/pkgconfig"
