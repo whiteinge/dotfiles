@@ -1,40 +1,12 @@
 #!/bin/sh
 # Align columns at CHAR
 #
-# (Useful in Vim.)
+# Useful in Vim. Requires column from util-linux or bsdextrautils.
 #
 # Usage (align stdin on the = character):
 #     !align =
+#
+# http://leahneukirchen.org/dotfiles/bin/align
 
-NAME=$(basename "$0")
-TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
-    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
-
-trap '
-    excode=$?; trap - EXIT;
-    rm -rf '"$TEMP"'
-    exit $excode
-' INT TERM EXIT
-
-mkdir -p -m 700 "$TEMP"
-tmpfile="${TEMP}/tmpfile"
-cat > "$tmpfile"
-
-awk -v sep="${1:?'Missing seperator character.'}" '
-BEGIN { FS=sep }
-
-NR == FNR {
-    for (i = 1; i <= NF; i += 1) {
-        l = length($i)
-        if (w[i] < l) w[i] = l
-    }
-}
-
-NR != FNR {
-    for (i = 1; i <= NF; i++) {
-        printf("%*s%s", w[i], $i, i != NF ? sep : "")
-    }
-    printf("\n")
-}
-
-' "$tmpfile" "$tmpfile"
+CHAR=${1:?'Missing character to align on.'}; shift
+exec column -t -s "$CHAR" -o "$CHAR" "$@"
