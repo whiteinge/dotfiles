@@ -1,11 +1,42 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env sh
 # Remove any brew packages that are not on a whitelist
 #
 # (Or deps of something on the whitelist.)
 # Will prompt for confirmation before removal.
 # Usage: osx-brew-cull < packages-whitelist
 
-xargs -r sh -c 'printf '\''%s\n'\'' "$@"; brew deps --union "$@"' - \
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+INPUT_PKGS="${TEMP}/input-packages.txt"
+INPUT_DEPS="${TEMP}/input-deps.txt"
+INSTALLED_PKGS="${TEMP}/installed-pkgs.txt"
+INSTALLED_NON_DEPS="${TEMP}/installed-non-deps.txt"
+
+trap '
+    excode=$?; trap - EXIT;
+    rm -rf -- '"$TEMP"'
+    exit $excode
+' INT TERM EXIT
+
+mkdir -p "$TEMP"
+
+# Save all desired packages.
+sort -u > "$INPUT_PKGS"
+
+# Get deps for all desired packages.
+xargs -r brew deps --union --include-requirements --include-build \
+    < "$INPUT_PKGS" \
     | sort -u \
-    | comm -23 <(brew list -1 | sort -u) - \
+    > "$INPUT_DEPS"
+
+# Get all actually installed packages.
+brew list -q | sort -u > "$INSTALLED_PKGS"
+
+# Remove deps for desired packages from installed packages to get only packages
+# that are installed and not deps.
+comm -13 "$INPUT_DEPS" "$INSTALLED_PKGS" > "$INSTALLED_NON_DEPS"
+
+# Compare desired packages with installed packages and remove the undesired.
+comm -13 "$INPUT_PKGS" "$INSTALLED_NON_DEPS" \
     | xargs -r -p brew uninstall
