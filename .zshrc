@@ -393,7 +393,7 @@ bindkey '^F' fzy-completion
 # Needed to immediate update the Git status display.
 
 function refresh_tmux() {
-    tmux refresh -S
+    tmux refresh -S 2>/dev/null
 }
 
 _last_cmd_was_git=0
@@ -404,12 +404,12 @@ function last_command_was_git() {
 function refresh_tmux_on_git() {
     if [[ "$_last_cmd_was_git" -eq 1 ]]; then
         _last_cmd_was_git=0
-        tmux refresh -S
+        tmux refresh -S 2>/dev/null
     fi
 }
 
 function ssh_tmux_status() {
-    [[ "$1" == 'ssh '* ]] && tmux selectp -T "${1##ssh }"
+    [[ "$1" == 'ssh '* ]] && tmux selectp -T "${1##ssh }" 2>/dev/null
 }
 
 # }}}
