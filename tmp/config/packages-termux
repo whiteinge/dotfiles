@@ -6,6 +6,7 @@ datamash
 diffutils
 dpkg
 ffmpeg
+file
 findutils
 gawk
 git
@@ -28,6 +29,7 @@ openssl
 patch
 pinentry
 proot
+proot-distro
 readline
 readline
 rlwrap
@@ -38,7 +40,6 @@ tar
 termux-api
 termux-exec
 tidy
-tigervnc
 tmux
 tree
 units
