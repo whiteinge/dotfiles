@@ -20,7 +20,6 @@
     ff = merge --ff-only
     m = merge --no-ff
     mt = mergetool
-    p = push
     pushnoci = push -o ci.skip
     pg = pagediffs
     short = rev-parse --short
