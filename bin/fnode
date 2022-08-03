@@ -14,7 +14,9 @@
 NODE_MIRROR="${NODE_MIRROR:-"https://nodejs.org/dist"}"
 NODE_DIR="${NODE_DIR:-"${HOME}/.nodejs"}"
 
-mkdir -p "$NODE_DIR/"{versions,downloads}
+export PATH="${PATH}:${HOME}/${NODE_DIR}/nodejs/bin"
+mkdir -p "$NODE_DIR/versions"
+mkdir -p "$NODE_DIR/downloads"
 cd "$NODE_DIR/downloads"
 
 curl -sS "${NODE_MIRROR}/index.tab" |
