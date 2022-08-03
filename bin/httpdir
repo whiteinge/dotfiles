@@ -37,7 +37,7 @@ http() {
     fi
 
     local rpath="$PWD$HTTP_PATH"
-    if [[ "$rpath" = *..* ]]; then
+    if [ "$rpath" = *..* ]; then
         rep 400
         exit
     fi
@@ -49,7 +49,7 @@ http() {
         rpath="${rpath}/index.html"
     fi
 
-    if [[ -d "$rpath" ]]; then
+    if [ -d "$rpath" ]; then
         local bpath="${rpath##$PWD}"
         local bpath="${bpath%/}"
         local base="//localhost:${SOCAT_SOCKPORT}${bpath}"
@@ -63,7 +63,7 @@ http() {
         exit
     fi
 
-    if [[ -r "$rpath" ]]; then
+    if [ -r "$rpath" ]; then
         local ctype=""
         case "$rpath" in
             *.css) ctype='text/css';;
@@ -122,7 +122,7 @@ main() {
     done
     shift $(( OPTIND - 1 ))
 
-    if [[ $# -eq 0 ]]; then
+    if [ $# -eq 0 ]; then
         printf '%s on port %s\n' "$listen" "$port"
         socat "${listen}:${port},fork,reuseaddr${ssl}" EXEC:"${0} http"
     else
