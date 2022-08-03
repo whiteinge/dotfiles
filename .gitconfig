@@ -9,7 +9,6 @@
 
 [alias]
     b = branch -vv --sort=-committerdate
-    ap = add --patch
     ca = commit --amend --no-edit
     cm = commit --amend -o
     ci = commit
@@ -29,8 +28,6 @@
     sti = status -s -b --ignored
     stat = diff --stat
     sl = stash list --name-status --pretty='format:%gd [%ar]: %s'
-    ss = "!_() { git stash show -p stash@{${1:-0}}; };_"
-    sd = "!_() { git stash drop stash@{${1:-0}}; };_"
     which = "!_() { git config --global --get alias.$1; };_"
     churn = !git log --all -M -C --name-only --format='format:' "$@" \
         | grep . | sort | uniq -c | sort -n -r
