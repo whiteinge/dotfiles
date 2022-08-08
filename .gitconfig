@@ -16,11 +16,13 @@
     co = checkout
     d = diff --summary --stat --patch
     ds = d --cached
+    f = fetch --tags --all
     ff = merge --ff-only
     m = merge --no-ff
     mt = mergetool
     pushnoci = push -o ci.skip
     pg = pagediffs
+    r = rebase --autosquash -i
     short = rev-parse --short
     ref = rev-parse --symbolic-full-name
     sh = show --summary --stat --pretty=fuller --patch
@@ -45,31 +47,6 @@
             $range; \
         printf '\n'; \
     };_"
-
-    # Fetch all or one remote:
-    #   git f
-    #   git f upstream
-    f = "!sh -c 'git fetch --tags ${1:-\"--all\"}' -"
-
-    # Interactive rebase against upstream HEAD or ref:
-    #   git r
-    #   git r HEAD~10
-    r = "!sh -c 'git rebase --autosquash -i ${1:-\"@{u}\"}' -"
-
-    # Rebase against upstream HEAD or ref:
-    #   git r
-    #   git r HEAD~10
-    rup = "!sh -c 'git rebase ${1:-\"@{u}\"}' -"
-
-    # Hard reset to upstream or ref:
-    #   git re
-    #   git rh HEAD~1
-    rh = "!sh -c 'git reset --hard ${1:-\"@{u}\"}' -"
-
-    # Fast-forward merge upstream or ref:
-    #   git up
-    #   git up myremote/mybranch
-    up = "!sh -c 'git merge --ff-only ${1:-\"@{u}\"}' -"
 
     # Make a stub commit with file and file contents. Useful for demoing.
     stub = "!sh -c 'echo $1 > $1; git add $1; git commit -m Add-$1' -"
