@@ -56,10 +56,10 @@
     };_"
 
     # Make a stub commit with file and file contents. Useful for demoing.
-    stub = "!sh -c 'echo $1 > $1; git add $1; git commit -m Add-$1' -"
+    stub = "!_() { echo $1 > $1; git add $1; git commit -m Add-$1; };_"
 
-    # Cherry-pick a commit directly into the working directory.
-    cherry-patch = "!sh -c 'git show \"${1:?Missing revision}\" | git apply' -"
+    # Cherry-pick a commit into the working directory as unstaged changes.
+    cherry-patch = "!_() { git show \"${1:?Missing revision}\" | git apply; };_"
 
     # Use a fuzzy-finder to find a SHA to use for a fixup commit.
     fixup = !git l @{u}.. | fzy | awk '{ print $1 }' | xargs -I{} git ci --fixup={}
@@ -86,8 +86,8 @@
 
     # Show the Git log and automatically shorten & search for a SHA:
     #   git lf deb8dff8d8c1ed8acb7d7a2ec1158e7db136aab3
-    lf = "!sh -c 'GIT_PAGER=\"$PAGER -p $(git short $1)\" git l' -"
-    ltf = "!sh -c 'GIT_PAGER=\"$PAGER -p $(git short $1)\" git lt' -"
+    lf = "!_() { GIT_PAGER=\"$PAGER -p $(git short $1)\" git l; };_"
+    ltf = "!_() { GIT_PAGER=\"$PAGER -p $(git short $1)\" git lt; };_"
 
     # Fuzzy-find any Git ranges in the tmux scrollback then re-output as an
     # in-progress git log command.
@@ -128,21 +128,24 @@
     # Merge a GitHub pull request into the current branch.
     # Usage: git preq <preq>
     # Usage: git preq <preq> [<remote>]
-    preq = "!sh -c 'git pull --no-ff ${2:-upstream} refs/pull/${1:?Missing preq}/head' -"
+    preq = "!_() { git pull --no-ff ${2:-upstream} refs/pull/${1:?Missing preq}/head; };_"
     # Same thing but for GitLab:
-    mreq = "!sh -c 'git pull --no-ff ${2:-origin} refs/merge-requests/${1:?Missing preq}/head' -"
+    mreq = "!_() { git pull --no-ff ${2:-origin} refs/merge-requests/${1:?Missing preq}/head; };_"
 
     # Make a local branch from a remote branch somewhere on GitHub.
     # Usage git ghbranch username reponame remotebranchname localbranchname
-    ghbranch = "!sh -c 'git fetch git@github.com:${1:?Missing user}/\
+    ghbranch = "!_() { \
+        git fetch git@github.com:${1:?Missing user}/ \
         ${2:?Missing repo}.git \
-        ${3:?Missing remote branch}:${4:?Missing local branch}' -"
+        ${3:?Missing remote branch}:${4:?Missing local branch} \
+    };_"
 
     # Configure local clone to also make local refs for all GitHub pull
     # requests for the specified remote
     # Usage: git addrefspr upstream; git fetch upstream; git show upstream/pr/13
-    addrefspr = "!sh -c 'git config --add \
-        remote.${1:?Missing remote}.fetch \"+refs/pull/*/head:refs/remotes/$1/pr/*\"' -"
+    addrefspr = "!_() { git config --add remote.${1:?Missing remote}.fetch \
+        \"+refs/pull/*/head:refs/remotes/${1}/pr/*\" \
+    };_"
 
 [commit]
     verbose = 2
