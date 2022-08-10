@@ -22,7 +22,7 @@
     mt = mergetool
     pushnoci = push -o ci.skip
     pg = pagediffs
-    r = rebase --autosquash -i
+    r = rebase --autosquash
     short = rev-parse --short
     ref = rev-parse --symbolic-full-name
     sh = show --summary --stat --pretty=fuller --patch
