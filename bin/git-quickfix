@@ -1,0 +1,61 @@
+#!/usr/bin/env sh
+# Open Vim with Git changes as quickfix entries
+#
+# Supports a range of commits, or defaults to the HEAD commit. Also supports
+# loading unstaged or staged changes as quickfix entries. Useful for stepping
+# through changes in one or more commits, or quickly picking back up where you
+# left off after a WIP commit.
+#
+# Usage:
+#
+#     git quickfix
+#     git quickfix HEAD~3
+#     git quickfix HEAD~3..
+#     git quickfix @{u}..
+#     git quickfix -m modified
+#     git quickfix -m staged
+
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+
+QFLIST="${TEMP}/quickfix.txt"
+
+trap '
+    excode=$?; trap - EXIT;
+    rm -rf -- '"$TEMP"'
+    exit $excode
+' INT TERM EXIT
+
+while getopts m:x opt; do
+    case $opt in
+    m) mode="$OPTARG";;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+mkdir -p -m 700 "$TEMP"
+
+{
+    if [ "$mode" = 'modified' ]; then
+        git diff -p -U0 --diff-filter=AM
+    elif [ "$mode" = 'staged' ]; then
+        git diff --cached -p -U0 --diff-filter=AM
+    else
+        case $1 in
+            *..*) cmd='diff';;
+            *) cmd='diff-tree';;
+        esac
+
+        git "$cmd" -p -U0 --diff-filter=AM -r "${1:-HEAD}"
+    fi;
+} | diff-to-quickfix > "$QFLIST"
+
+if [ ! -s "$QFLIST" ]; then
+    printf 'No %s changes.\n' "$mode" 1>&2
+    exit 1
+fi
+
+# bd1 deletes the initial "[No Name]" buffer (reqs :set hidden). Better way?
+exec $EDITOR +bd1 -q "$QFLIST"

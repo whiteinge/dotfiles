@@ -21,7 +21,6 @@
     m = merge --no-ff
     mt = mergetool
     pushnoci = push -o ci.skip
-    pg = pagediffs
     r = rebase --autosquash
     rh = reset --hard
     short = rev-parse --short
@@ -32,6 +31,11 @@
     stat = diff --stat
     sl = stash list --name-status --pretty='format:%gd [%ar]: %s'
     lasttag = describe --abbrev=0
+
+    editc = quickfix
+    editm = quickfix -m modified
+    edits = quickfix -m staged
+    pg = pagediffs
 
     # Output alias definitions. Usage: git which st
     which = "!_() { git config --global --get alias.$1; };_"
@@ -97,27 +101,6 @@
 
     # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
     ctags = !.git/hooks/ctags
-
-    # Open all modified or staged files into Vim's quickfix list.
-    # bd1 deletes the initial "[No Name]" buffer since we're using :set hidden
-    # E.g.: git editm; git edits
-    editm = "!zsh -c '$EDITOR +bd1 -q <(git diff -p -U0 --diff-filter=AM \
-        | diff-to-quickfix)'"
-    edits = "!zsh -c '$EDITOR +bd1 -q <(git diff --cached -p -U0 --diff-filter=AM \
-        | diff-to-quickfix)'"
-
-    # Open all files changed within either a single commit, or a commit range
-    # into Vim's quickfix list. Defaults to HEAD. Useful for stepping through
-    # changes in one or more commits, or quickly picking back up where you left
-    # off after a WIP commit.
-    # E.g.: git editc
-    # E.g.: git editc HEAD~3
-    # E.g.: git editc @{u}..
-    editc = "!zsh -c ' \
-        [[ \"$1\" =~ \"\\.\\.\" ]] && dcmd=diff || dcmd=diff-tree ; \
-        $EDITOR +bd1 -q <(git $dcmd -p -U0 --diff-filter=AM -r \
-        \"${1:-HEAD}\" \
-        | diff-to-quickfix)' -"
 
     # Alias to make an archive with a prefix set to the name of the repo.
     # git tar <ref> (defaults HEAD)
