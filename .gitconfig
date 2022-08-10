@@ -37,6 +37,21 @@
     edits = quickfix -m staged
     pg = pagediffs
 
+    l = log --format=format:'%C(auto)%h%d%C(reset) %s %C(bold blue)(%an, %ar)%C(reset)'
+    ll = log --stat --decorate --abbrev-commit --date=relative
+    lll = log -p --stat --decorate --color-moved --pretty=fuller
+    lt = l --topo-order
+    lm = log --oneline --decorate --topo-order --merges --ancestry-path
+
+    rl = reflog --date=relative
+    rll = reflog --date=relative --stat
+    rlll = reflog --date=relative -p --stat --color-moved
+
+    # Show the Git log and automatically shorten & search for a SHA:
+    #   git lf deb8dff8d8c1ed8acb7d7a2ec1158e7db136aab3
+    lf = "!_() { GIT_PAGER=\"$PAGER -p $(git short $1)\" git l; };_"
+    ltf = "!_() { GIT_PAGER=\"$PAGER -p $(git short $1)\" git lt; };_"
+
     # Output alias definitions. Usage: git which st
     which = "!_() { git config --global --get alias.$1; };_"
 
@@ -77,21 +92,6 @@
             HEAD \
         | awk '/<<<<<<</ { exit 1 }'; \
     }; _"
-
-    l = log --format=format:'%C(auto)%h%d%C(reset) %s %C(bold blue)(%an, %ar)%C(reset)'
-    ll = log --stat --decorate --abbrev-commit --date=relative
-    lll = log -p --stat --decorate --color-moved --pretty=fuller
-    lt = log --topo-order --format=format:'%C(auto)%h%d%C(reset) %s %C(bold blue)(%an, %ar)%C(reset)'
-    lm = log --oneline --decorate --topo-order --merges --ancestry-path
-
-    rl = reflog --date=relative
-    rll = reflog --date=relative --stat
-    rlll = reflog --date=relative -p --stat --color-moved
-
-    # Show the Git log and automatically shorten & search for a SHA:
-    #   git lf deb8dff8d8c1ed8acb7d7a2ec1158e7db136aab3
-    lf = "!_() { GIT_PAGER=\"$PAGER -p $(git short $1)\" git l; };_"
-    ltf = "!_() { GIT_PAGER=\"$PAGER -p $(git short $1)\" git lt; };_"
 
     # Fuzzy-find any Git ranges in the tmux scrollback then re-output as an
     # in-progress git log command.
