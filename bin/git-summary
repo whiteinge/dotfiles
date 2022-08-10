@@ -2,8 +2,10 @@
 # Show a summary of the commits, authors, and files in a Git repo
 
 show_files=1
-while getopts f opt; do
+while getopts hf opt; do
     case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
     f) unset show_files;;
     esac
 done

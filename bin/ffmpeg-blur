@@ -8,6 +8,14 @@
 #
 #     ffmpeg-blur ./input.mp4 ./mask.png 10,20
 
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
 input="${1:?'Video input required.'}"
 mask="${2:?'Mask image required.'}"
 duration="${3:?'start,end duration required.'}"

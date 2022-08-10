@@ -2,8 +2,17 @@
 # Quickly create and edit a new shell script, already marked as executable
 #
 # Usage:
+#
 #   new-sh foo.sh
 #   new-sh foo.py python
+
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
 
 script="${1:?Script name required.}"
 lang=${2:-sh}

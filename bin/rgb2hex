@@ -6,6 +6,14 @@
 #
 #     rgb2hex 0 cbcb 202
 
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
 r="${1:?Missing red}"
 g="${2:?Missing green}"
 b="${3:?Missing blue}"

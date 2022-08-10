@@ -11,6 +11,14 @@
 # echo jan mar april | xargs -n1 tmux-tiled cal -m
 # echo {2015..2019} | xargs -n1 tmux-tiled cal -y
 
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
 INITIAL_PANE="$(tmux display -p '#{pane_id}')"
 
 tmux splitw -l 4 -b "$@"

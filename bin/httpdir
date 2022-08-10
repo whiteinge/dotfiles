@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
-# Serve a local directory via HTTP (via socat)
+# Serve a local directory via HTTP (via socat) with or without SSL
+#
+# Usage:
+#
+#     httpdir
+#     httpdir -p 8000
+#     httpdir -s
 
 HTTP_METHOD=''
 HTTP_PATH=''
@@ -111,8 +117,10 @@ main() {
     local port="8000"
     local ssl=""
 
-    while getopts p:s opt; do
+    while getopts hp:s opt; do
         case $opt in
+        h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+           exit;;
         p) port="$OPTARG";;
         s) mk_cert;
             ssl=",cert=/tmp/${NAME}.crt,key=/tmp/${NAME}.key,verify=0";

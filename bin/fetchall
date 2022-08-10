@@ -2,9 +2,11 @@
 # Run `git fetch` on all repos under the current dir in parallel
 #
 # Usage:
+#
 #     fetchall
 #
 # With ssh pipelining:
+#
 #     fetchall "git@github.com"
 
 NAME=$(basename "$0")
@@ -42,6 +44,14 @@ _wait_for_ssh () {
 }
 
 main() {
+    while getopts h opt; do
+        case $opt in
+        h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+           exit ;;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
     local SSH_URI="$1"
     test $# -gt 0 && shift 1
 

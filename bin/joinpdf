@@ -1,8 +1,14 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env sh
 # Merges, or joins multiple PDF files into "joined.pdf"
+#
+# Usage: joinpdf foo.pdf bar.pdf baz.pdf
 
-main () {
-    gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=joined.pdf "$@"
-}
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
 
-main "$@"
+gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=joined.pdf "$@"

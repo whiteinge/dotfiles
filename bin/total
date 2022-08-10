@@ -13,5 +13,13 @@
 #     printf '%s\tBar\n' {1..10} | total 1
 #     printf '%s\tBar\n' {1..10} | total
 
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
 expr "$1" : -F >/dev/null && F=$1 && shift
 exec awk $F -v f=${1:-1} '{s+=$f} END{print s}'

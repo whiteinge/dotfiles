@@ -7,7 +7,16 @@
 # https://github.com/Microsoft/WSL/issues/2229
 #
 # Usage:
+#
 #   lndir.sh $HOME/src/dotfiles $HOME
+
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
 
 src="${1:?Source path is required.}"
 dst="${2:?Destination path is required.}"

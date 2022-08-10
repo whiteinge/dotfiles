@@ -2,7 +2,16 @@
 # Extract a clip from a larger video file
 #
 # Usage:
-# extract_clip somevid.mp4 [hh:mm:ss start time] [hh:mm:ss end time]
+#
+#     extract_clip somevid.mp4 [hh:mm:ss start time] [hh:mm:ss end time]
+
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
 
 function main() {
     local start_seconds end_seconds duration

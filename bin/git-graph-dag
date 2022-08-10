@@ -4,12 +4,18 @@
 # Labels consist of the short SHA1 and any refs.
 # Unreachable commits (ignoring the reflog) will be drawn with dashed lines.
 #
-# Largely stolen from https://git.wiki.kernel.org/index.php/ExampleScripts
+# Adapted from https://git.wiki.kernel.org/index.php/ExampleScripts
 #
 # Accepts any range or arguments that git rev-list accepts.
 #
 # The -c flag will also output the commit message. These should probably be
 # extremely short for it to not make the graph awful.
+#
+# Usage:
+#
+#     git graph-dag HEAD~10.. | dot -Tpng | display -antialias
+#     git graph-dag HEAD~10.. | dot -Tpng | open -a Preview.app -f
+#     git graph-dag -c HEAD~10.. | dot -Tpng | open -a Preview.app -f
 
 main() {
     while getopts ch opt; do
@@ -21,8 +27,7 @@ main() {
     shift $(( OPTIND - 1 ))
 
     if [[ $# -eq 0 ]] || [[ -n "$show_help" ]] ; then
-        printf 'Usage: git graph-dag HEAD~10.. | dot -Tpng | display -antialias
-Usage: git graph-dag HEAD~10.. | dot -Tpng | open -a Preview.app -f\n'
+        awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
         exit 1
     fi
 

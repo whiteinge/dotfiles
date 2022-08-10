@@ -27,9 +27,11 @@ trap '
     exit $excode
 ' INT TERM EXIT
 
-while getopts m:x opt; do
+while getopts hm:x opt; do
     case $opt in
     m) mode="$OPTARG";;
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
     x) set -x;;
     esac
 done

@@ -5,7 +5,7 @@ function main() {
     # (Ab)use prompt escapes to get the time without spawning a subshell. :)
     local now remaining
     local epoch='%D{%s}'
-    local target=$(( ${(%)epoch} + $1 ))
+    local target=$(( ${(%)epoch} + ${1:?'Missing countdown target.'} ))
 
     while true; do
         now=${(%)epoch}

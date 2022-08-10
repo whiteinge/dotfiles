@@ -5,6 +5,14 @@
 #
 # NOTE: Output can still be saved via less' 's' binding.
 
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
 NAME=$(basename "$0")
 TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
     'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"

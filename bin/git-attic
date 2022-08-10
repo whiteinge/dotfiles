@@ -7,6 +7,14 @@
 #
 # http://leahneukirchen.org/dotfiles/bin/git-attic
 
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
 git log --raw --no-renames --date=short --format="%h %cd" "$@" |
   awk '/^[0-9a-f]/ { commit=$1; date=$2 }
        /^:/ && $5 == "D" { print date, commit "^:" $6 }' |

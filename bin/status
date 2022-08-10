@@ -1,11 +1,22 @@
 #!/usr/bin/env sh
 # Collect various system stats for feeding into a status bar
 #
+# Run without args to start loop that updates the osd. Or invoke individual
+# status outputs.
+#
 # Usage:
-#   Run without args to start loop that updates the osd.
-#   Invoke individual status outputs:
+#
+#       status
 #       status all
 #       status battery
+
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
 
 curdate () {
     date +'%H:%M %a, %b %d'

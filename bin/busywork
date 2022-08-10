@@ -1,8 +1,11 @@
 #!/usr/bin/env sh
 # Silly functions to make a terminal look busy like in a movie
 
+NAME=$(basename "$0")
+
 hexstream () {
     # https://www.commandlinefu.com/commands/view/6732/pretend-to-be-busy-in-office-to-enjoy-a-cup-of-coffee
+
     while true; do
         head -n 100 /dev/urandom
         sleep .1
@@ -10,6 +13,8 @@ hexstream () {
 }
 
 progress () {
+    # Show a progress bar
+
     local cur=0
     local tot=23
     local rem="$tot"
@@ -43,6 +48,9 @@ progress () {
 }
 
 spinner () {
+    # Show different kinds of activity spinners
+    # (See source for full list.)
+
     local anim="$1"
     local pad=1
     while true; do
@@ -132,6 +140,8 @@ spinner () {
 }
 
 spinner_demo () {
+    # Show all spinners
+
     tmux neww
     printf 'balloon
     ball
@@ -156,6 +166,7 @@ spinner_demo () {
 
 green_matrix () {
     # https://www.commandlinefu.com/commands/view/4352/another-matrix-style-implementation
+
     printf '\e[?25l'
     COL=$(( $(tput cols) / 2 ))
     clear
@@ -170,11 +181,13 @@ green_matrix () {
 
 hexgrid () {
     # https://www.commandlinefu.com/commands/view/11904/generate-30-x-30-matrix
+
     hexdump -v -e '"%u"' </dev/urandom|fold -50|head -n 20|sed 's/\(.\{2\}\)/\1 /g'
 }
 
 _shuf () {
     # Reservoir sampling to choose random items in one pass.
+
     awk -v K="${1:?'Missing count'}" -v seed="$(date +%N)" '
     BEGIN { srand(seed) }
     {
@@ -189,13 +202,9 @@ _shuf () {
     '
 }
 
-_rand () {
-    awk -v end="${1:?'Missing end'}" -v start="${2:-1}" -v seed="$(date +%N)" '
-    BEGIN { srand(seed); print int(start + rand() * (end - start + 1)) }
-    '
-}
-
 _timed_sequence() {
+    # Output after a delay
+
     local start="${1:?'Missing start.'}"
     local end="${2:?'Missing end.'}"
     local delay="${3:?'Missing delay.'}"
@@ -210,14 +219,20 @@ _timed_sequence() {
 }
 
 _flip() {
+    # Flip a coin
+
     return $(shuf -i 0-1 -n 1)
 }
 
-git_range() {
+git_range () {
+    # Fake a git commit range
+
     hexdump -n 8 -e '4/1 "%02x" ".." 4/1 "%02x" "\n"' /dev/urandom
 }
 
-git_fetch() {
+git_fetch () {
+    # Show a fake git fetch sequence of events
+
     local tot_obj="$(shuf -i 10-900 -n 1)"
     local tot_reu="$(shuf -i "10-${tot_obj}" -n 1)"
     printf 'Fetching origin\n'
@@ -288,6 +303,8 @@ git_fetch() {
 }
 
 git_ff () {
+    # Show a fake git fast-forward merge output
+
     count="$(shuf -i 1-100 -n 1)"
     printf 'Updating %s\nFast-forward\n' $(git_range)
 
@@ -349,7 +366,9 @@ git_ff () {
     '
 }
 
-_demo () {
+demo () {
+    # Run all commands in a loop in a new tmux window
+
     tmux neww
     tmux splitw -h -l 79 busywork hexstream
     tmux splitw -t 1 -l 8 busywork green_matrix
@@ -361,8 +380,43 @@ _demo () {
     tmux killp -t 0
 }
 
+help () {
+    # Extract contiguous lines of comments in a function as help text
+
+    awk -v cmd="${1:?'Command name required.'}" -v NAME="$NAME" '
+    $0 ~ "^" cmd "\\s*\\(\\)\\s*{" { is_found=1; next }
+    is_found && !NF { exit }
+    is_found { gsub(/^\s*#\s?/, ""); gsub(/NAME/, NAME); print; }
+    ' "$0"
+}
+
+_all_funcs () {
+    # List all public function names in the current file
+
+    awk '$1 !~ /^_/ && /^[a-zA-Z0-9_]+\s*\(\)/ { print $1 }' "$0"
+}
+
 _main () {
-    cmd="${1:-_demo}"
+    # Silly functions to make a terminal look busy like in a movie
+    #
+    # Usage:
+    #
+    #     NAME <cmd>
+    #     NAME -h
+
+    while getopts hx opt; do
+        case $opt in
+        h) help _main
+           printf '\nAvailable commands:\n\n'
+           _all_funcs | sort
+           printf '\n'
+           exit;;
+        x) set -x;;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
+    cmd="${1:-demo}"
     [ $# -gt 0 ] && shift 1
     "$cmd" "$@"
 }

@@ -8,6 +8,14 @@
 #     curl -LsS devdocs.io |
 #         htmlstar sel -t -v '//script[contains(@src, "docs-")]/@src'
 
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
 command -v xmlstarlet 1>/dev/null
 if [ $? -eq 0 ]; then
     xmlstarprg='xmlstarlet'

@@ -2,6 +2,14 @@
 # Output an xrandr command for common configurations
 # Only outputs, not executes, the command so it can be edited beforehand.
 
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
 fzy << EOF | awk 'BEGIN { FS="\t+" } { print $2 }' | xargs -I{} tmux send xrandr Space {}
 Auto		--auto
 Desktop		--output eDP-1 --off --output DP-1 --primary --preferred --rotate normal

@@ -3,12 +3,15 @@
 # https://github.com/Mayeu/slugify/blob/master/slugify
 #
 # Usage:
+#
 #   printf 'Foo bar baz' | slugify -d _
 
 delim='-'
-while getopts d: opt; do
+while getopts hd: opt; do
     case $opt in
     d) delim="$OPTARG";;
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
     esac
 done
 shift $(( OPTIND - 1 ))

@@ -7,6 +7,14 @@
 #   unmount foo.img /path/to/mount
 #   check foo.img
 
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
 open() {
     local img="${1:?Missing image path.}"
     local name="${2:?Missing name.}"

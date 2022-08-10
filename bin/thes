@@ -7,6 +7,14 @@
 #   thes
 #   thes balloon
 
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
 THES_URL='https://www.gutenberg.org/files/3202/files/mthesaur.txt'
 THES_CACHE="${HOME}/tmp/docs/mthesaur.txt"
 

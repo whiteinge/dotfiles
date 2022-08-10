@@ -23,6 +23,8 @@ _all_funcs () {
 }
 
 _mk_cert () {
+    # Create a self-signed certificate to use for the local server
+
     openssl req -x509 \
         -newkey rsa:4096 \
         -days 365 \
@@ -34,6 +36,8 @@ _mk_cert () {
 }
 
 index () {
+    # Return an HTML response (containing the listing of available functions)
+
     _rep '200 Ok' 'Content-Type: text/html'
     cat <<EOF
 <!DOCTYPE html>
@@ -53,6 +57,8 @@ EOF
 }
 
 favicon () {
+    # Return a SVG image response suitable for use as a favicon
+
     _rep '200 Ok' 'Content-Type: image/svg+xml'
 
     printf '<?xml version="1.0" standalone="yes"?>
@@ -63,10 +69,14 @@ favicon () {
 }
 
 notfound () {
+    # Return a 404 response
+
     _rep '404 Not Found'
 }
 
 get () {
+    # Return a 200 response for a GET request or 405 response otherwise
+
     case "$1" in
         'GET') _rep '200 Ok';;
         *) _rep '405 Method Not Allowed';;
@@ -74,6 +84,8 @@ get () {
 }
 
 post () {
+    # Return a 200 response for a POST request or 405 response otherwise
+
     case "$1" in
         'POST') _rep '200 Ok';;
         *) _rep '405 Method Not Allowed';;
@@ -81,6 +93,8 @@ post () {
 }
 
 put () {
+    # Return a 200 response for a PUT request or 405 response otherwise
+
     case "$1" in
         'PUT') _rep '200 Ok';;
         *) _rep '405 Method Not Allowed';;
@@ -88,6 +102,8 @@ put () {
 }
 
 delete () {
+    # Return a 200 response for a DELETE request or 405 response otherwise
+
     case "$1" in
         'DELETE') _rep '200 Ok';;
         *) _rep '405 Method Not Allowed';;
@@ -95,25 +111,39 @@ delete () {
 }
 
 status () {
+    # Return a response with the requested status code
+    #
+    # Usage:
+    #
+    #     /status/504
+
     _rep "$2"
 }
 
 headers () {
+    # Return a response containing the headers from the request
+
     _rep '200 Ok'
     printf '%s\n' "$HEADERS"
 }
 
 user_agent () {
+    # Return a response containing the user agent from the request
+
     _rep '200 Ok'
     _hdrval "$HEADERS" 'user-agent'
 }
 
 gzip_ct () {
+    # Return a gzipped response body and content type
+
     _rep '200 Ok' 'Content-Encoding: gzip'
     printf 'Hello from gzip.\n' | gzip
 }
 
 json_rep () {
+    # Return a JSON response body
+
     _rep '200 Ok' 'Content-type: application/json'
     printf '{
   "foo": "Foo!",
@@ -130,6 +160,8 @@ json_rep () {
 }
 
 content_negotiation () {
+    # Negotiate a response body based on the accept header from the request
+
     ctype="$(printf '%s\n' "$3" | awk '
         BEGIN { FS=": " }
         tolower($1) ~ /accept/ { accept = $2 }
@@ -158,6 +190,8 @@ content_negotiation () {
 }
 
 echoserver () {
+    # Return a response that echos the method, headers, and body of the request
+
     _rep '200 Ok'
 
     printf 'Method: %s\n\n' "$1"
@@ -168,6 +202,8 @@ echoserver () {
 }
 
 drip () {
+    # Return a slow HTTP response the streams data over ten seconds
+
     local count=0
     local len=10
     local interval=1
@@ -190,11 +226,22 @@ drip () {
 }
 
 delay () {
+    # Return a response after waiting for a specified number of seconds
+    #
+    # Note: 0 or INF can be supplied but the server will need to be manually
+    # killed.
+    #
+    # Usage:
+    #
+    #     /delay/15
+
     _rep '200 Ok'
     sleep "$2"
 }
 
 sse () {
+    # Return an infinite HTTP stream in the Server-sent Events format
+
     local delay="${2:-1}"
     local count=0
 
@@ -216,10 +263,22 @@ sse () {
 }
 
 redirect_to () {
+    # Return a 302 redirect response with the given target URL
+    #
+    # Usage:
+    #
+    #     /redirect-to/<url here>
+
     _rep '302' "Location: ${2}"
 }
 
 redirect_n () {
+    # Return the given number of 302 redirects before stopping
+    #
+    # Usage:
+    #
+    #     /redirect/3
+
     local count="$2"
     local location=''
 
@@ -236,11 +295,15 @@ redirect_n () {
 }
 
 ip_addr () {
+    # Return the IP address of the request
+
     _rep '200 Ok'
     printf '%s\n' "$SOCAT_PEERADDR"
 }
 
 _hdrval () {
+    # Return the value for the given header
+
     local HEADERS="${1:?'Headers string required.'}"
     local hdr="${2:?'Desired header name required.'}"
 
@@ -251,6 +314,8 @@ _hdrval () {
 }
 
 _rep () {
+    # Output a response header of the given status and headers
+
     local status="${1:?Status is required.}"
     shift 1
 
@@ -262,6 +327,8 @@ _rep () {
 }
 
 _http () {
+    # Process and route an HTTP request
+
     local cmd
     local HEADERS=''
     local HTTP_METHOD=''
@@ -384,7 +451,9 @@ _main () {
         printf '%s on port %s\n' "$listen" "$port"
         socat "${listen}:${port},fork,reuseaddr${ssl}" EXEC:"${0} _http"
     else
-        "$1" "$@"
+        cmd="$1"
+        shift 1
+        "$cmd" "$@"
     fi
 }
 

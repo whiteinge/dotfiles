@@ -9,6 +9,14 @@
 #   printf '%s\n' foo bar baz | join-strings
 #   printf '%s\n' foo bar baz | join-strings '-'
 
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
 awk -v delim="${1-, }" '
     BEGIN { isep = "" }
     { printf("%s%s", isep, $0); isep=delim }

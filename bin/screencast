@@ -20,7 +20,12 @@ while getopts war:h opt; do
     w) target='frame';;
     a) noaudio=1;;
     r) framerate="$OPTARG";;
-    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 2) }' $0; exit;;
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
     esac
 done
 shift $(( OPTIND - 1 ))
