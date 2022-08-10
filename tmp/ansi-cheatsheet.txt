@@ -33,4 +33,16 @@ Restore position: [u
 
 Hide: [?25l
 Show: [?25h
+
+Foreground color (30 - 37): [{n}m
+Reset foreground color: [39m
+
+Background color (40 - 47): [{n}m
+Reset background color: [49m
+
+Underline on: [4m
+Underline off: [24m
+
+Bold on: [1m
+Bold off: [21m
 ```
