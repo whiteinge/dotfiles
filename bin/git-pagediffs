@@ -1,19 +1,37 @@
-#!/bin/zsh
-# Open the full diff for a range of commits as separate pages in $PAGER
+#!/usr/bin/env sh
+# Open individual Git commits as separate files in $PAGER
+#
+# Git outputs a range of commits all together which makes scrolling to the top
+# or bottom of a single commit troublesome since you have to manually look or
+# search for the commit separators. This script opens each commit separately so
+# you can scroll to the top or bottom of a diff with `g` or `G`, and move back
+# and forth between individual commits with `:n` and `:p`.
 #
 # Examples:
 #
-# Show diffs for all incoming upstream changes:
-# git pagediffs ..@{u}
+# Show diffs for all outgoing changes not yet pushed to origin:
 #
-# Show diffs for all outgoing changes not yet pushed to origin (also excluding
-# merges and a specific branch):
-# git pagediffs origin/master.. --no-merges --not uninteresting_branch
+#    git pagediffs @{u}..
+#
+# Show diffs for all changes not yet present on the current branch, excluding
+# merges, and ignoring a specific branch:
+#
+#     git pagediffs ..origin/somebranch --no-merges --not uninteresting_branch
 
-setopt RC_EXPAND_PARAM
-local -a revisions
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
 
-revisions=( ${(f)$(git rev-list --reverse ${@})} )
-[[ ${#revisions} -gt 0 ]] || exit 1
+trap '
+    excode=$?; trap - EXIT;
+    rm -rf -- '"$TEMP"'
+    exit $excode
+' INT TERM EXIT
 
-eval $PAGER -f "<(git sh --color=always --color-moved -p --stat ${=revisions})"
+mkdir -p -m 700 "$TEMP"
+
+git sh --reverse --color=always --color-moved "$@" |
+    csplit -s -n 4 -f "${TEMP}/xx" - '/^\[33mcommit /' '{*}'
+
+rm -f -- "${TEMP}/xx0000"
+$PAGER -raw "${TEMP}/xx"*

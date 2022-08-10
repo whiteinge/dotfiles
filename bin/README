@@ -50,7 +50,7 @@ gext -- A wrapper to parallelize grep and optionally filter by filename pattern
 ghkeys -- Display GitHub public keys for a user
 git-attic -- List deleted files in a Git repository
 git-graph-dag -- Draw a graphviz diagram of the Git DAG
-git-pagediffs -- Open the full diff for a range of commits as separate pages in $PAGER
+git-pagediffs -- Open individual Git commits as separate files in $PAGER
 git-prompt -- Output a succinct, one-line Git status
 git-quickfix -- Open Vim with Git changes as quickfix entries
 git-summary -- Show a summary of the commits, authors, and files in a Git repo
