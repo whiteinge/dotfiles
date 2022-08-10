@@ -12,7 +12,6 @@
     ca = commit --amend --no-edit
     cm = commit --amend -o
     ci = commit
-    cr = reset HEAD~1
     co = checkout
     d = diff --summary --stat --patch
     ds = d --cached
@@ -30,6 +29,7 @@
     sti = status -s -b --ignored
     stat = diff --stat
     sl = stash list --name-status --pretty='format:%gd [%ar]: %s'
+    uncommit = reset HEAD~1
     lasttag = describe --abbrev=0
 
     editc = quickfix
