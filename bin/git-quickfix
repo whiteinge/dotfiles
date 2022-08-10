@@ -58,4 +58,4 @@ if [ ! -s "$QFLIST" ]; then
 fi
 
 # bd1 deletes the initial "[No Name]" buffer (reqs :set hidden). Better way?
-exec $EDITOR +bd1 -q "$QFLIST"
+$EDITOR +bd1 -q "$QFLIST"
