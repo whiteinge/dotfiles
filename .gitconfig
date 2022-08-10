@@ -31,11 +31,17 @@
     sti = status -s -b --ignored
     stat = diff --stat
     sl = stash list --name-status --pretty='format:%gd [%ar]: %s'
+    lasttag = describe --abbrev=0
+
+    # Output alias definitions. Usage: git which st
     which = "!_() { git config --global --get alias.$1; };_"
+
+    # Show which files have been changed the most.
     churn = !git log --all -M -C --name-only --format='format:' "$@" \
         | grep . | sort | uniq -c | sort -n -r
+
+    # Show the author information that will be used when writing commits.
     whoami = !git var GIT_COMMITTER_IDENT | sed 's/>.*/>/'
-    lasttag = describe --abbrev=0
 
     # Output all the changes since the most recent tag as a Markdown list:
     # git changelog
