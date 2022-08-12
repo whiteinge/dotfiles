@@ -67,7 +67,8 @@ SAVEHIST=4096
 REPORTTIME=60
 
 # Add memory and disk usage stats to time output.
-TIMEFMT="${TIMEFMT}; total disk %K KB; max RSS %M KB"
+TIMEFMT='time: %J
+time: %U user; %S system; %E real; %P cpu; total disk %K KB; max RSS %M KB'
 
 # Report any login/logout of other users.
 WATCH=notme
