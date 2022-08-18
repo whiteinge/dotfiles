@@ -1,5 +1,13 @@
 #!/usr/bin/env sh
 # Show a summary of the commits, authors, and files in a Git repo
+#
+# Requires GNU datamash.
+# (Avoiding file stats with `-f` is _much_ faster in large repos.)
+#
+# Usage:
+#
+#     git summary
+#     git summary -f
 
 show_files=1
 while getopts hf opt; do
@@ -13,10 +21,12 @@ shift $(( OPTIND - 1 ))
 
 test -t 1 && show_progress=1
 
+# %x09 is a tab character
 git log --no-renames ${show_files:+--numstat} \
         --format='XXX%x09%h%x09%an%x09%ae%x09%cn%x09%ce%x09%aD%x09%cr' \
     | awk -v show_progress="$show_progress" '
     function alen(a, i, c) { for (i in a) c += 1; return c; }
+    function isnum(x){ return (x == x + 0) }
 
     BEGIN { FS="\t"; OFS="\t" }
 
@@ -59,8 +69,8 @@ git log --no-renames ${show_files:+--numstat} \
     NR == 1 { last_date=auth_date; last_reldate=reldate; last_sha=sha }
 
     !/^XXX/ {
-        added=$1
-        removed=$2
+        added=isnum($1) ? $1 : 0
+        removed=isnum($2) ? $2 : 0
         filename=$3
 
         file_list[filename] += 1
