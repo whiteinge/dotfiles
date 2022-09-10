@@ -19,6 +19,7 @@
     ff = merge --ff-only
     m = merge --no-ff
     mt = mergetool
+    p = push
     pushnoci = push -o ci.skip
     r = rebase --autosquash
     rh = reset --hard
