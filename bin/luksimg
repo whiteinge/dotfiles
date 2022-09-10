@@ -4,6 +4,7 @@
 # Usage:
 #   create foo.img 100
 #   mount foo.img /path/to/mount
+#   mount -o foo.img /path/to/mount
 #   unmount foo.img /path/to/mount
 #   check foo.img
 
@@ -33,6 +34,13 @@ close() {
 }
 
 mount() {
+    while getopts o opt; do
+        case $opt in
+        o) ro=1;;
+        esac
+    done
+    shift $(( OPTIND - 1 ))
+
     local img="${1:?Missing image path.}"
     local name="$(basename "$img")"
     local mount_path="${2:?Missing path to mount image.}"
@@ -42,7 +50,7 @@ mount() {
     fi
 
     open "$img" "$name"
-    sudo mount -o uid=$UID "/dev/mapper/${name}" "$mount_path"
+    sudo mount ${ro:+-o} ro,uid=$UID "/dev/mapper/${name}" "$mount_path"
 }
 
 unmount() {
