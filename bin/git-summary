@@ -97,7 +97,7 @@ git log --no-renames ${show_files:+--numstat} \
         print ""
 
         print "Active days:", alen(active_days)
-        printf("Top days:\n\n")
+        printf("\nTop days:\n\n")
         weekday_cmd = "sort -n -r | cut -f2,3 | datamash transpose"
         for (h in top_weekdays) {
             wd = top_weekdays[h]
@@ -116,7 +116,7 @@ git log --no-renames ${show_files:+--numstat} \
         close(hour_cmd)
 
         printf("\nTop authors:\n\n")
-        topcom_cmd = "sort -n -r | head -10"
+        topcom_cmd = "sort -n -r | head -5"
         for (j in author_list) {
             printf("%s\t%.1f%%\t%s\n",
                 author_list[j],
@@ -125,9 +125,19 @@ git log --no-renames ${show_files:+--numstat} \
         }
         close(topcom_cmd)
 
+        printf("\nTop committers:\n\n")
+        topcom_cmd = "sort -n -r | head -5"
+        for (l in committer_list) {
+            printf("%s\t%.1f%%\t%s\n",
+                committer_list[l],
+                (committer_list[l] / commit_count) * 100,
+                l) | topcom_cmd
+        }
+
+        close(topcom_cmd)
         if (alen(file_list)) {
             printf("\nTop files:\n\n")
-            topfil_cmd = "sort -n -r | head -10"
+            topfil_cmd = "sort -n -r | head -5"
             for (k in file_list) print file_list[k], k | topfil_cmd
             close(topfil_cmd)
         }
