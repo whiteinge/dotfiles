@@ -754,10 +754,16 @@ let g:jqplay = {
 au FileType json
     \ if bufname('%')[:11] ==# 'jq-output://' | syntax clear | endif
 
-""" vimux
+""" tmux Integration
 " Quickly add a command to execute on file write.
-com! -complete=shellcmd -nargs=+ Makevimux au! BufWritePost <buffer>
-    \ call VimuxRunCommand(" clear; ". expand("<args>"))
+com! -complete=shellcmd -nargs=+ Tmuxsend
+    \ call util#SysR('', 'tmux list-panes | fzy -p "Choose pane > " -q '.
+    \     get(b:, 'tmuxpane', '') ->shellescape())
+    \ ->matchstr('%[0-9]\+')
+    \ ->shellescape()
+    \ ->M('let b:tmuxpane = ')
+    \ ->execute()
+    \| au! BufWritePost <buffer> call util#Tmuxsend(' clear; '. expand("<args>"))
 
 " }}}
 " EOF

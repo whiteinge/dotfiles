@@ -69,3 +69,18 @@ fu! util#Find(list, fn)
     endfor
     return v:false
 endfu
+
+fu! util#Tmuxsend(text)
+    if (get(b:, 'tmuxpane', '') == '')
+        return
+    endif
+
+    let l:ret = substitute(a:text, '\n$', ' ', '')
+        \ ->shellescape()
+        \ ->{x -> 'tmux send -t '. shellescape(b:tmuxpane) .' '. x .' Enter'}()
+        \ ->system()
+
+    if (v:shell_error != 0)
+        echoe l:ret
+    endif
+endfu
