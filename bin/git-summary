@@ -78,6 +78,9 @@ git log --no-renames ${show_files:+--numstat} \
     }
 
     END {
+        # No Git output? (Probably an error.)
+        if (NR == 0) { exit 1 }
+
         if (show_progress) { printf("\033[2K\033[1G") }
         print "First commit:", sha " - " auth_date " (" reldate ")"
         print "Last commit:", last_sha " - " last_date " (" last_reldate ")"
