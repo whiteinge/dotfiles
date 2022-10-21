@@ -2,7 +2,9 @@
 # Decode urlencoded stdin
 #
 # Usage:
-#   printf 'foo%20bar' | urldecode
+#
+#   urldecode 'foo%20bar'
+#   printf 'foo%%20bar' | urldecode
 
 while getopts h opt; do
     case $opt in
@@ -14,7 +16,11 @@ shift $(( OPTIND - 1 ))
 
 {
     printf '<foo><![CDATA['
-    cat
+    if [ $# -eq 0 ]; then
+        cat
+    else
+        printf '%s' "$1"
+    fi
     printf ']]></foo>\n';
 } \
     | xmlstarlet sel -T -t -v 'str:decode-uri(//foo)'

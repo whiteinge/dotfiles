@@ -2,6 +2,8 @@
 # Urlencode stdin
 #
 # Usage:
+#
+#   urlencode 'foo bar'
 #   printf 'foo bar' | urlencode
 
 while getopts h opt; do
@@ -14,7 +16,11 @@ shift $(( OPTIND - 1 ))
 
 {
     printf '<foo><![CDATA['
-    cat
+    if [ $# -eq 0 ]; then
+        cat
+    else
+        printf '%s' "$1"
+    fi
     printf ']]></foo>\n';
 } \
     | xmlstarlet sel -T -t -v 'str:encode-uri(//foo, true)'
