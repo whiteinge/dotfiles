@@ -52,3 +52,9 @@ JRuby
 timestamp
 WebSockets
 OOP
+OCaml
+ReasonML
+ReScript
+TypeScript
+BuckleScript
+runtimes
