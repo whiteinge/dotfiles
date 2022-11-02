@@ -60,10 +60,6 @@ unmount() {
 
     sudo umount "$mount_path"
     close "$img"
-
-    if [ -n "$(find "$mount_path" -maxdepth 0 -empty)" ]; then
-        rm -r "$mount_path"
-    fi
 }
 
 create() {
