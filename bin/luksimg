@@ -50,7 +50,7 @@ mount() {
     fi
 
     open "$img" "$name"
-    sudo mount ${ro:+-o} ro,uid=$UID "/dev/mapper/${name}" "$mount_path"
+    sudo mount -o "${ro:+ro,}uid=${UID}" "/dev/mapper/${name}" "$mount_path"
 }
 
 unmount() {
