@@ -98,7 +98,6 @@ zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|nc|rsync):*' hosts '
 
 # Custom script in $HOME/bin
 compdef c=curl
-compdef cj=curl
 
 # }}}
 # {{{ prompt and theme

@@ -1,50 +1,33 @@
 #!/usr/bin/env sh
-# Wrap curl for easy headers, json, timing input/output
+# Wrap curl to always output headers and network timing to stderr
+#
+# Preferentially requests JSON responses (can be overridden). Use the `--json`
+# flag to send JSON requests.
+#
+# Note: This will add a false newline to the response body to hopefully flush
+# stderr before outputting (helpful when piping stdout to other tools).
+#
+# Tip: Create config files for commonly accessed hosts, such as authentication
+# creds, SSL options, and even a hostname alias:
+#
+# # Usage: curl -K /path/to/foo.cfg foohost/path/to/resource
+# oauth2-bearer = asdfjkl
+# proto-default = https
+# insecure
+# connect-to = foohost::foohost.example.com:
+# header = "Host: foohost.example.com"
 
-case "$0" in
-    */c)
-        # defaults:
-        # no show_timing
-        # no json_reqrep
-        ;;
-    */cr)
-        retry=1
-        ;;
-    */cj)
-        json_reqrep=1
-        ;;
-    */ct)
-        show_timing=1
-        # NOTE: Appends an artificial newline to the response body in order to
-        # flush stdout before writing timing infos to stderr.
-        ;;
-esac
-
-curl -sS -D /dev/stderr \
-    ${retry:+-g} \
-    ${retry:+--retry 20} \
-    ${retry:+--retry-connrefused} \
-    ${retry:+--progress-meter} \
-    ${json_reqrep:+-H 'Content-Type: application/json'} \
-    ${json_reqrep:+-H 'Accept: application/json'} \
-    ${show_timing:+-w "
-%{stderr}
-----------
-curl timing report
-
+curl -sS -D /dev/stderr -w '
+%{stderr}----------
 namelookup:     %{time_namelookup}
 connect:        %{time_connect}
 appconnect:     %{time_appconnect}
 pretransfer:    %{time_pretransfer}
 redirect:       %{time_redirect}
 starttransfer:  %{time_starttransfer}
-----------
 total:          %{time_total}
-"} "$@" | {
-    if [ -n "$json_reqrep" ]; then
-        rep=$(< /dev/stdin)
-        printf '%s\n' "$rep" | jq || printf '%s\n' "$rep"
-    else
-        cat
-    fi
-}
+----------
+
+%{stdout}
+
+' -H 'Accept: application/json;q=0.9, */*;q=0.1' "$@"
