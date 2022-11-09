@@ -61,9 +61,9 @@ httpdir -- Serve a local directory via HTTP (via socat) with or without SSL
 httptest -- A local HTTP server with many endpoints to test HTTP request/responses
 imenu -- Select multiple items from stdin via abc's like the inventory menu in Nethack
 invoice -- Generate a PDF invoice from a plain text time log using groff and m4
-jqflat -- Use jq to flatten a JSON structure for easy use with awk/grep/etc
 joinpdf -- Merges, or joins multiple PDF files into "joined.pdf"
 join-strings -- Join strings together with a delimiter
+jqflat -- Use jq to flatten a JSON structure for easy use with awk/grep/etc
 linux-resize-window -- Select a window in X11 and resize it to given dimensions
 lndir.sh -- Create a shadow directory of symbolic links to another directory tree
 lorem -- Output paragraphs of lorem ipsum placeholder text
