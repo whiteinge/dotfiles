@@ -57,7 +57,7 @@ git-quickfix -- Open Vim with Git changes as quickfix entries
 git-summary -- Show a summary of the commits, authors, and files in a Git repo
 hr -- Print a line of characters
 htmlstar -- Use xmlstarlet with html
-httpdir -- Serve a local directory via HTTP (via socat)
+httpdir -- Serve a local directory via HTTP (via socat) with or without SSL
 httptest -- A local HTTP server with many endpoints to test HTTP request/responses
 imenu -- Select multiple items from stdin via abc's like the inventory menu in Nethack
 invoice -- Generate a PDF invoice from a plain text time log using groff and m4
