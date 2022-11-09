@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+# Fetch the Wikipedia summary paragraph for a search query
+#
+# Usage:
+#
+#     wikipedia 'world war ii'
+
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+url='https://en.wikipedia.org/w/api.php'
+qs='format=xml&action=query&prop=extracts&exintro&explaintext&redirects=1'
+query="titles=$(urlencode "${1:?'Missing query.'}")"
+
+curl -sS "${url}?${qs}&${query}" |
+    xmlstarlet sel -T -t -m '//extract' -c . |
+    fmt
