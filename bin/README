@@ -32,6 +32,7 @@ femoji -- Add simple emoji fuzzy-finder
 fetchall -- Run `git fetch` on all repos under the current dir in parallel
 ffind -- (filtering find) - A wrapper around find to ignore noise directories
 ffmpeg-blur -- Blur a section of video based on an image mask
+field -- Output a name or numbered field from a delimited input
 flipbook -- A flipbook loop for ascii drawings
 fnode -- Use a fuzzy-finder to select and install a NodeJS version
 ftimezone -- Fuzzy-find available timezones

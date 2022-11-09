@@ -1,0 +1,75 @@
+#!/usr/bin/env sh
+# Output a name or numbered field from a delimited input
+#
+# Flag | Description
+# ---- | -----------
+# -c   | Collapse (ignore) multiple, successive delimiters. (Default: no)
+# -d   | Delimieter. (Default: Tab character)
+# -H   | Use the first line as header values.
+# -h   | Help (this text).
+#
+# Flags _must_ appear before the field.
+#
+# Usage:
+#
+#     % printf 'foo\t\tbar\tbaz\tqux\n' | field
+#     foo
+#
+#     % printf 'foo\t\tbar\tbaz\tqux\n' | field 1
+#     foo
+#
+#     % printf 'foo\t\tbar\tbaz\tqux\n' | field 2
+#
+#
+#     % printf 'foo\t\tbar\tbaz\tqux\n' | field -c 2
+#     bar
+#
+#     % printf 'foo\t\tbar\tbaz\tqux\n' | field 1 3 5
+#     foo
+#     bar
+#     qux
+#
+#     % printf 'foo\tbar\nFoo!\tBar!\n' | field -H bar
+#     Bar!
+#
+#     % printf 'foo--bar-baz-qux\n' | field -d - 2
+#     bar
+
+
+while getopts cd:hH opt; do
+    case $opt in
+    c) collapse=1;;
+    d) delim="$OPTARG";;
+    H) header=1;;
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+awk \
+    -v collapse="$collapse" \
+    -v delim="${delim:-\t}" \
+    -v header="$header" \
+'
+BEGIN {
+    mult=collapse == "" ? "" : "+"
+    FS=delim mult
+    for (i = 1; i < ARGC; i += 1) {
+        fields[i] = tolower(ARGV[i])
+        delete ARGV[i]
+    }
+}
+
+header == 1 && NR == 1 {
+    for (j = 1; j <= NF; j += 1) headers[tolower($j)] = j
+    next
+}
+
+{
+    for (f in fields) {
+        field = header == 1 ? headers[fields[f]] : fields[f]
+        print $field
+    }
+}
+' "${@:-1}"
