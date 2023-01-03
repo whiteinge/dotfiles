@@ -39,6 +39,7 @@ ftimezone -- Fuzzy-find available timezones
 ftree -- Use a fuzzy-finder to traverse the file system and print a file name
 _fzy_cd -- Use a fuzzy-finder to complete child directories
 _fzy_git -- Use a fuzzy-finder to complete Git refs
+_fzy_HandBrakeCLI -- Use a fuzzy-finder to select a HandBrake preset
 _fzy_kill -- Use a fuzzy-finder to complete process names
 _fzy_man -- Use a fuzzy-finder to complete manpage names
 _fzy_npm -- Use a fuzzy-finder for npm scripts

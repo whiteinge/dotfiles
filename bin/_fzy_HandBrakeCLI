@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to select a HandBrake preset
+
+HandBrakeCLI -z 2>&1 \
+    | awk 'BEGIN { FS="    " } $2 != "" { print $2 }' \
+    | fzy -p 'HandBrake Presets > ' \
+    | {
+        printf '%s --all-audio --subtitle-lang-list=eng --all-subtitles' "$*"
+        xargs -d'\n' printf " -Z '%s'";
+    }
