@@ -329,6 +329,18 @@ function ...() {
     fi
 }
 
+function timesheets() {
+    local timesheets_dir="${HOME}/src/timesheets"
+    local tgt_dir=$(find "$timesheets_dir" -mindepth 1 -maxdepth 1 \
+            -name .git -prune -o -type d -printf '%P\n' \
+        | fzy -p 'Choose timesheet > ' ${1:+-q "$1"})
+    local new_dir="${timesheets_dir}/${tgt_dir}"
+
+    if [ -d "$new_dir" ]; then
+        cd "$new_dir"
+    fi
+}
+
 # When completion is invoked without arguments use the scrollback buffer. This
 # makes it easy(-er) to create a new command from the output of another
 # (without having to copy-and-paste).
