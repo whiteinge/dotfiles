@@ -203,7 +203,10 @@
     "defaultProfile": "{2c4de342-38b7-51cf-b940-2309a097f518}",
     "profiles": 
     {
-        "defaults": {},
+        "defaults": 
+        {
+            "cursorShape": "filledBox"
+        },
         "list": 
         [
             {
@@ -246,7 +249,7 @@
             "brightRed": "#E74856",
             "brightWhite": "#F2F2F2",
             "brightYellow": "#F9F1A5",
-            "cursorColor": "#FFFFFF",
+            "cursorColor": "#FF0000",
             "cyan": "#3A96DD",
             "foreground": "#CCCCCC",
             "green": "#13A10E",
