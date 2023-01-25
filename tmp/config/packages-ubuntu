@@ -1,11 +1,11 @@
 cloc
-ctags
 datamash
 fzy
 git
 jq
 mpv
 tmux
+universal-ctags
 vim
 xutils-dev
 zsh
