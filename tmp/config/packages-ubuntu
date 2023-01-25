@@ -1,6 +1,10 @@
+cloc
 ctags
+datamash
 fzy
 git
+jq
+mpv
 tmux
 vim
 xutils-dev
