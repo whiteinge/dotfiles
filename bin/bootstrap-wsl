@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# Bootstrap a minimal WSL Ubuntu install
+
+# Install baseline packages.
+xargs apt install -y < $HOME/src/dotfiles/tmp/config/packages-wsl
+
+update-locale LANG=en_US.utf8

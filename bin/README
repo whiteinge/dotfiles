@@ -3,6 +3,7 @@ bookletize -- Convert a PDF to a fold-able booklet sized PDF
 bootstrap-fedora -- Bootstrap a minimal Fedora install
 bootstrap-osx -- Bootstrap a new OS X machine
 bootstrap-pocket2 -- Bootstrap a new Pocket 2 machine
+bootstrap-wsl -- Bootstrap a minimal WSL Ubuntu install
 busywork -- Silly functions to make a terminal look busy like in a movie
 caffeine -- Prevent the screensaver from activating or the screen from sleeping
 chop -- Chop lines to available terminal width
