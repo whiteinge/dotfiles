@@ -1,0 +1,47 @@
+#!/usr/bin/env zsh
+# A notify-send-like wrapper for WSL
+#
+# This is so I don't need a ton of OS-specific conditionals littering my
+# dotfiles in order to work on OSX. This wrapper is NOT comprehensive and
+# generally only covers the functionality actually used in my dotfiles.
+
+local opts
+# Consume and ignore all the notify-send flags.
+# notify-send --hint=int:transient:1 -u %(urgency)s -i %(icon)s "%(safe_chan)s" "%(safe_msg)s"
+zparseopts -E -D -a opts -- -hint: u: i:
+
+title="${1:=Alert}"
+message="${2:=Message}"
+
+# https://den.dev/blog/powershell-windows-notification/
+powershell.exe -Command '
+function Show-Notification {
+    [cmdletbinding()]
+    Param (
+        [string]
+        $ToastTitle,
+        [string]
+        [parameter(ValueFromPipeline)]
+        $ToastText
+    )
+
+    [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null
+    $Template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText02)
+
+    $RawXml = [xml] $Template.GetXml()
+    ($RawXml.toast.visual.binding.text|where {$_.id -eq "1"}).AppendChild($RawXml.CreateTextNode($ToastTitle)) > $null
+    ($RawXml.toast.visual.binding.text|where {$_.id -eq "2"}).AppendChild($RawXml.CreateTextNode($ToastText)) > $null
+
+    $SerializedXml = New-Object Windows.Data.Xml.Dom.XmlDocument
+    $SerializedXml.LoadXml($RawXml.OuterXml)
+
+    $Toast = [Windows.UI.Notifications.ToastNotification]::new($SerializedXml)
+    $Toast.Tag = "PowerShell"
+    $Toast.Group = "PowerShell"
+    $Toast.ExpirationTime = [DateTimeOffset]::Now.AddMinutes(1)
+
+    $Notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("PowerShell")
+    $Notifier.Show($Toast);
+}
+"'"$message"'" | Show-Notification("'"$title"'")
+'
