@@ -1,10 +1,11 @@
-#!/usr/bin/env -S awk -f
+#!/usr/bin/env sh
 # Convert a diff into Vim's quickfix format
 #
 # Usage:
 #   vi -q $(git diff -p -U0 --diff-filter=AM -r HEAD~5.. | diff-to-quickfix)
 #   vi -q $(diff -U0 a b | diff-to-quickfix)
 
+exec awk '
 /^diff/ {
     in_hunk=0
     if (NR != 1 ) { printf("--\n") }
@@ -24,3 +25,4 @@
 in_hunk {
     printf("%s\n", $0)
 }
+'

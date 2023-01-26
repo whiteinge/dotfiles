@@ -1,6 +1,7 @@
-#!/usr/bin/env -S awk -f
+#!/usr/bin/env sh
 # Output the line numbers for lines added and removed in a unified diff
 
+exec awk '
 # Skip lines between diff and @@.
 /^@@/ { skip = 0 }
 skip == 1 { next }
@@ -28,3 +29,4 @@ skip == 1 { next }
     print "Generate diff with -U0. Got context line:\n" $0 > "/dev/stderr"
     exit 1
 }
+'

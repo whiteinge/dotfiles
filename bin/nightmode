@@ -1,4 +1,4 @@
-#!/usr/bin/env -S awk -f
+#!/usr/bin/env sh
 # Calculate a color value for the current time to gradually red-shift via cron
 #
 # Run every minute between 7pm and 6am.
@@ -11,6 +11,7 @@
 
 # Return evenly spaced numbers over a specified interval.
 # (A linearly spaced vector)
+exec awk '
 function linspace(ret, start, stop, num, i) {
     for (i = 0; i < num; i += 1) {
         ret[sprintf("%02d", i)] = \
@@ -30,7 +31,7 @@ function rgb2int(r, g, b) {
 function int2rgb(ret, C) {
     ret["b"] = and(C, 255.999)
     ret["g"] = and(rshift(C, 8), 255.999)
-    # ??? why doesn't this work?
+    # ??? why doesnt this work?
     # ret["r"] = and(rshift(C, 16), 255.999)
     ret["r"] = (C - ret["b"] - ret["g"] * 256) / (256 * 256)
 }
@@ -88,3 +89,4 @@ BEGIN {
         system("xrandr --output DP1 --gamma " gamma)
     }
 }
+'
