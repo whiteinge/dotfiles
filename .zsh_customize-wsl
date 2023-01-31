@@ -1,0 +1,2 @@
+# This causes very slow completion on WSL due to all the added Windows paths.
+unsetopt PATH_DIRS
