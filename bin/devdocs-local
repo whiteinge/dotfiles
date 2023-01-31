@@ -39,17 +39,20 @@ download () {
         cd "$ddir"
 
         if [ -r "${ddir}/mtime" ]; then
-            old_mtime=$(< "${ddir}/mtime")
+            $(ls "${ddir}/mtime" 1>&2)
+            old_mtime=$(cat "${ddir}/mtime")
 
             if [ "$old_mtime" -ge "$mtime" ]; then
-                printf 'Verifying existing %s\n' "$slug" 1>&2
+                printf 'Up-to-date %s\n' "$slug" 1>&2
+                continue
             else
-                printf 'Installing %s\n' "$slug" 1>&2
+                printf 'Updating %s\n' "$slug" 1>&2
             fi
+        else
+            printf 'Installing %s\n' "$slug" 1>&2
         fi
 
         printf '%s\n' "$mtime" > mtime
-
         curl -C - -sS -o index.json "https://devdocs.io/docs/${slug}/index.json?${mtime}"
         curl -C - -sS -o db.json "https://documents.devdocs.io/${slug}/db.json?${mtime}"
     done;
