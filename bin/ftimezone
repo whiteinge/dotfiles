@@ -1,5 +1,12 @@
 #!/usr/bin/env sh
 # Fuzzy-find available timezones
 
-cd /usr/share/zoneinfo
-find -type f | sed 's|^\./||' | fzy -p 'Timezone > '
+{
+if [ -r /usr/share/zoneinfo/tzdata.zi ]; then
+    # https://unix.stackexchange.com/a/698068
+    awk '/^Z/ { print $2 }; /^L/ { print $3 }' /usr/share/zoneinfo/tzdata.zi
+elif [ -d /usr/share/zoneinfo ]; then
+    cd /usr/share/zoneinfo
+    find -type f -o -type l | sed 's|^\./||'
+fi;
+} | sort -u | fzy -p 'Timezone > '
