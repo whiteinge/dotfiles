@@ -1,0 +1,12 @@
+edit on
+
+# vi-mode
+# Press <esc>-v to open current line in $EDITOR.
+# Press <esc>-: to enter libedit command mode.
+bind -v
+bind '^P' ed-search-prev-history
+bind '^N' ed-search-next-history
+bind '^L' ed-clear-screen
+
+mysql:bind -s '^xd' 'show databases;\n'
+mysql:bind -s '^xt' 'show tables;\n'
