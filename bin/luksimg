@@ -8,10 +8,11 @@
 #   unmount foo.img /path/to/mount
 #   check foo.img
 
-while getopts h opt; do
+while getopts hx opt; do
     case $opt in
     h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
        exit ;;
+    x) set -x ;;
     esac
 done
 shift $(( OPTIND - 1 ))
@@ -69,7 +70,7 @@ create() {
     local name="$(basename "$img")"
 
     printf 'Creating image file.\n'
-    dd if=/dev/zero of="$img" bs=1M count="$size"
+    dd if=/dev/zero of="$img" bs=1MB count="$size"
     printf 'Formatting new image.\n'
     cryptsetup -vy luksFormat "$img" || exit 1
     open "$img" "$name" || exit 1
