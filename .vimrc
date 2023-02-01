@@ -396,13 +396,6 @@ com! BufSaveAsQf call getbufinfo()
     \ ->map({i, x -> fnamemodify(x.name, ':~') .':'. string(x.lnum) .': '})
     \ ->writefile(input('Write? ', 'Quickfix.txt'), 's')
 
-" When restoring a hidden buffer Vim doesn't always keep the same view (like
-" when your view shows beyond the end of the file). (Vim tip 1375)
-if ! &diff
-    au BufLeave * let b:winview = winsaveview()
-    au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
-endif
-
 " Always load the Cfilter/Lfilter commands plugin
 packadd cfilter
 
