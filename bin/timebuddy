@@ -22,7 +22,7 @@
 #
 # Format inspired by https://www.worldtimebuddy.com
 #
-# Requirements: GNU date, seq, /usr/share/zoneinfo
+# Requirements: GNU date, /usr/share/zoneinfo
 
 fmt_hours () {
     awk '
@@ -43,7 +43,8 @@ get_hours () {
     datestr="${3:-today}"
     offset="$(TZ="$cur" date +%z)"
 
-    seq -w 0 23 |
+    printf '%s\n' 00 01 02 03 04 05 06 07 08 09 10 11 12 \
+            13 14 15 16 17 18 19 20 21 22 23 |
         xargs -I{} printf 'TZ="%s" %s {}:00 %s\n' "$cur" "$datestr" "$offset" |
         TZ="$tgt" date +'%a %H' -f - |
         fmt_hours
