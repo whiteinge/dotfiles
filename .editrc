@@ -1,4 +1,5 @@
 edit on
+history unique 1
 
 # vi-mode
 # Press <esc>-v to open current line in $EDITOR.
