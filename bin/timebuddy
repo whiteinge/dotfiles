@@ -60,11 +60,12 @@ validate_tz () {
 }
 
 _main () {
-    while getopts hd: opt; do
+    while getopts xhd: opt; do
         case $opt in
         d) datestr="$OPTARG";;
         h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
            exit ;;
+        x) set -x;;
         esac
     done
     shift $(( OPTIND - 1 ))
