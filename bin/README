@@ -107,6 +107,7 @@ timer -- Output seconds elapsed
 tmux-tiled -- Make a bunch of tiled tmux panes via find -exec or xargs
 todo -- Store a todo list in any Git repository
 total -- Sum (total) numbers in a column
+unique-lines -- Remove duplicate lines (no sort requirement)
 urldecode -- Decode urlencoded stdin
 urlencode -- Urlencode stdin
 vipe -- Use $EDITOR to edit text inside a pipeline

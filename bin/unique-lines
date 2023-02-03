@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Remove duplicate lines (no sort requirement)
+# NOTE: This will use a lot of memory for big files.
+
+awk '!seen[$0] { print } {seen[$0] += 1}'
