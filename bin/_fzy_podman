@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
-# Use a fuzzy-finder to complete container IDs
+# Use a fuzzy-finder to complete Podman/Docker container IDs
+
+case $0 in
+    *podman) prg='podman';;
+    *docker) prg='docker';;
+    *) exit 1 ;;
+esac
 
 cmd="$1"; shift 1
 
@@ -11,7 +17,7 @@ if [ "$subcmd" = 'stop' ] || [ "$subcmd" = 'exec' ]; then
     # Variable number of args.
     fmtstr=$(printf '%*s' "$#" | sed -e 's/ /%s/g')
 
-    podman ps | sed 1d | fzy -p 'Containers > ' \
+    "$prg" ps | sed 1d | fzy -p 'Containers > ' \
         | cut -f1 -d' ' \
         | xargs printf "%s %s %s %s ${fmtstr}\n" "$cmd" "$subcmd" "$*"
 fi

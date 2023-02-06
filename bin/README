@@ -44,7 +44,7 @@ _fzy_HandBrakeCLI -- Use a fuzzy-finder to select a HandBrake preset
 _fzy_kill -- Use a fuzzy-finder to complete process names
 _fzy_man -- Use a fuzzy-finder to complete manpage names
 _fzy_npm -- Use a fuzzy-finder for npm scripts
-_fzy_podman -- Use a fuzzy-finder to complete container IDs
+_fzy_podman -- Use a fuzzy-finder to complete Podman/Docker container IDs
 _fzy_ssh -- Use a fuzzy-finder for hostnames in ~/.ssh/config
 genmac -- Generate a locally-assigned (starts with 02) mac address from a salt
 genpass -- Generate a cryptographically inadequate(!) password
