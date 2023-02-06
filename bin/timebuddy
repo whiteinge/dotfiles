@@ -5,15 +5,20 @@
 # example, you need to book a meeting with coworkers in multiple timezones and
 # want to know what daylight hours overlap in each.
 #
-# Example output:
+# Example output (when run from Denver):
 #
-# % timebuddy EST America/New_York UTC
-# Thu  00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23  Thu - America/Denver
-# Thu  02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 00 01  Fri - EST
-# Thu  02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 00 01  Fri - America/New_York
-# Thu  07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 00 01 02 03 04 05 06  Fri - UTC
+# % timebuddy EST5EDT America/New_York UTC Asia/Tokyo Pacific/Chatham
+# Mon  01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23  Mon - America/Denver
+# Mon  03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 00 01  Tue - EST5EDT
+# Mon  03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 00 01  Tue - America/New_York
+# Mon  08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 00 01 02 03 04 05 06  Tue - UTC
+# Mon  17 18 19 20 21 22 23 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15  Tue - Asia/Tokyo
+# Mon  21 22 23 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19  Tue - (+1345) Pacific/Chatham
 #
-# Specify a date (accepts any string GNU date will consume):
+# Target time zones with a minutes-level offset will display a notice/reminder
+# and the user must do the minutes calculation mentally.
+#
+# Specify a date (accepts any string GNU date will consume; default: 'today'):
 #
 # % timebuddy -d 2022-03-13 UTC America/New_York
 #
@@ -45,12 +50,15 @@ for tgtzone in "$curzone" "$@"; do
         exit 1
     fi
 
+    # Generate a line for every hour of the day in the current time zone and
+    # pass to date to convert that hour into the target time zone.
     printf '%s\n' 00 01 02 03 04 05 06 07 08 09 10 11 12 \
         13 14 15 16 17 18 19 20 21 22 23 \
     | xargs -I{} printf 'TZ="%s" %s {}:00 %s\n' \
         "$curzone" "$datestr" "$curoffset" \
     | TZ="$tgtzone" date "+${tgtzone} %a %H %z" -f -
 done | awk '
+    # Collapse the per-day output from date into a single line per time zone.
     { zone=$1; day=$2; hr=$3; offset=$4; }
 
     lday == "" { lday = day }
