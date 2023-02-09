@@ -13,7 +13,10 @@
 #
 # Usage:
 #
+#     # Linux & Windows (WSL) w/ ImageMagick
 #     git graph-dag HEAD~10.. | dot -Tpng | display -antialias
+#
+#     # OS X
 #     git graph-dag HEAD~10.. | dot -Tpng | open -a Preview.app -f
 #     git graph-dag -c HEAD~10.. | dot -Tpng | open -a Preview.app -f
 
@@ -26,7 +29,7 @@ main() {
     done
     shift $(( OPTIND - 1 ))
 
-    if [[ $# -eq 0 ]] || [[ -n "$show_help" ]] ; then
+    if [ $# -eq 0 ] || [ -n "$show_help" ] ; then
         awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
         exit 1
     fi
