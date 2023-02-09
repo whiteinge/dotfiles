@@ -1,7 +1,16 @@
 #!/usr/bin/env sh
-# Bootstrap a minimal WSL Ubuntu install
+# Bootstrap a WSL Ubuntu install
 
 # Install baseline packages.
 xargs apt install -y < $HOME/src/dotfiles/tmp/config/packages-wsl
 
 update-locale LANG=en_US.utf8
+
+winuser="$(wslvar 'username')"
+winpath="/mnt/c/Users/${winuser}"
+for dir in Documents Downloads Music Videos; do
+    dirpath="$winpath/${dir}"
+    if [ -d "$dirpath" ]; then
+        ln -s "$dirpath" "$HOME"
+    fi
+done
