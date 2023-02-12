@@ -32,8 +32,8 @@ test "$lang" = 'sh' && cat >> "$script" <<-'EOS'
 
 NAME=$(basename "$0")
 VERSION='0.0.1'
-TEMP=$(printf 'mkstemp(template)\n' |
-    m4 -D template="${TMPDIR:-/tmp}/${NAME}XXXXXX")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
 
 help () {
     # Extract contiguous lines of comments in a function as help text
@@ -95,6 +95,12 @@ _main () {
         esac
     done
     shift $(( OPTIND - 1 ))
+
+    mkdir -p -m 700 "$TEMP"
+    if [ $? -ne 0 ]; then
+        printf 'Error creating temp directory.\n' 1>&2
+        exit 1
+    fi
 
     cmd="${1:?"No command given.
 
