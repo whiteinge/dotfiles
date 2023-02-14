@@ -37,7 +37,7 @@ let b:ale_enabled=0
 setl foldnestmax=1
 
 let g:markdown_fenced_languages = [
-    \ 'html', 'python', 'ruby', 'sh', 'c', 'cpp', 'dot',
+    \ 'html', 'python', 'ruby', 'sh', 'c', 'cpp', 'dot', 'diff',
     \'js=javascript', 'ts=typescript', 'hs=haskell', 'math=tex']
 
 setl textwidth=79
