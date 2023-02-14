@@ -76,7 +76,7 @@
     };_"
 
     # Make a stub commit with file and file contents. Useful for demoing.
-    stub = "!_() { echo $1 > $1; git add $1; git commit -m Add-$1; };_"
+    stub = "!_() { echo \"$1\" > \"$1\"; git add \"$1\"; git commit -m \"Add-${1}\"; };_"
 
     # Cherry-pick a commit into the working directory as unstaged changes.
     cherry-patch = "!_() { git show \"${1:?Missing revision}\" | git apply; };_"
