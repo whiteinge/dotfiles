@@ -14,6 +14,7 @@
 #     git quickfix @{u}..
 #     git quickfix -m modified
 #     git quickfix -m staged
+#     git quickfix abcdef -- path/to/file.foo
 
 NAME=$(basename "$0")
 TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
@@ -50,7 +51,7 @@ mkdir -p -m 700 "$TEMP"
             *) cmd='diff-tree';;
         esac
 
-        git "$cmd" -p -U0 --diff-filter=AM -r "${1:-HEAD}"
+        git "$cmd" -p -U0 --diff-filter=AM -r "${@:-HEAD}"
     fi;
 } | diff-to-quickfix > "$QFLIST"
 
