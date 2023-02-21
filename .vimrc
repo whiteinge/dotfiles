@@ -750,7 +750,8 @@ au FileType json
 """ tmux Integration
 " Quickly add a command to execute on file write.
 com! -complete=shellcmd -nargs=+ Tmuxsend
-    \ call util#SysR('', 'tmux list-panes | fzy -p "Choose pane > " -q '.
+    \ call util#SysR('', 'tmux list-panes -f "#{?pane_active,0,1}" |'.
+    \     'fzy -p "Choose pane > " -q '.
     \     get(b:, 'tmuxpane', '') ->shellescape())
     \ ->matchstr('%[0-9]\+')
     \ ->shellescape()
