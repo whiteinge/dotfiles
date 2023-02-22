@@ -49,16 +49,33 @@ nm <silent> <leader>N :set hls<cr>
 " Display the number of matches for the last search
 nm <leader># :%s///gn<cr>
 
-" Highlight arbitrary text (separately from searching); accepts a count and
-" highlights the text under the cursor. Ranges from 1-9; see the corresponding
-" highlights in the Colors section below.
-" Usage: 1\hh or 2\hh or 3\hh, etc.
-nn <leader>hh :<c-u>call matchadd('Match'. v:count1, expand('<cword>'),
-    \ v:count1, v:count1 + 10)<cr>
-" Clear individual matches: 1\hn or 2\hn or 3\hn, etc.
-nn <leader>hH :<c-u>call matchdelete(v:count1 + 10)<cr>
+" Highlight text under the cursor (separate from searching); accepts an
+" optional count and whether to perform a case insensitive search. Available
+" match colors defined in the Colors section below.
+fu! UserMatch(count, icase)
+    " Count from 1-8, then wrap around and start again unless overridden.
+    let w:user_match_count = a:count != 0
+        \ ? a:count
+        \ : (winnr() ->getwinvar('user_match_count', 0) % 8) + 1
+
+    let l:str = (a:icase == 1 ? '\c' : ''). expand('<cword>')
+
+    call winnr()
+        \ ->getwinvar('user_match_count')
+        \ ->M('Match')
+        \ ->matchadd(l:str, w:user_match_count)
+endfu
+
+" Usage: \hh or 1\hh or 2\hh or \HH or 3\HH, etc.
+nn <leader>hh :<c-u>call UserMatch(v:count, 1)<cr>
+nn <leader>HH :<c-u>call UserMatch(v:count, 0)<cr>
+" Clear individual matches via a fuzzy-finder:
+nn <leader>hn :<c-u> call getmatches()
+    \ ->map({i, x -> x.id .' - '. x.pattern})
+    \ ->util#SysR('fzy -p "Clear matches > "') ->split("\n")
+    \ ->map({i, x -> matchstr(x, '^[0-9]\+') ->matchdelete()})<cr>
 " Clear all matches:
-nn <leader>hn :call clearmatches()<cr>
+nn <leader>HN :unlet w:user_match_count \| call clearmatches()<cr>
 
 " }}}
 " Line Wrap {{{
@@ -553,7 +570,7 @@ colorscheme desert_legacy
 set background=dark
 
 " Add MatchN highlights for highlighting arbitrary text matches legibly.
-call map(range(1, 9), {k, v ->
+call map(range(1, 8), {k, v ->
     \ execute(printf('hi Match%s cterm=bold,reverse ctermfg=%s', k + 1, v))})
 
 " }}}
