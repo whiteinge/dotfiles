@@ -8,7 +8,6 @@
 exec awk '
 /^diff/ {
     in_hunk=0
-    if (NR != 1 ) { printf("--\n") }
 }
 /^\+\+\+ / {
     fname=substr($2, 2)
