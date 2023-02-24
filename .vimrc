@@ -732,6 +732,7 @@ let g:tagbar_show_linenumbers = -1
 
 nmap [t :TagbarJumpPrev<cr>
 nmap ]t :TagbarJumpNext<cr>
+nmap <silent> <leader>g :echo tagbar#currenttag('%s', '<No tag found>', 'fs')<cr>
 
 " See .md files as markdown instead of modula-2.
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
