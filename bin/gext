@@ -32,17 +32,19 @@ _main () {
     # -V   | Show version.
     # -h   | Usage and help text.
     # -x   | Enable xtrace debug logging.
+    # -P   | Override parallel xargs processes (defualt: 8).
     # -X   | Filter files by pattern before searching; multiple occurences ok.
+    # -T   | Pass additional paths to ffind; multiple occurences ok.
     #
     # Flags _must_ be the first argument to `NAME`, before `searchterm`.
     #
     # Search will be case-sensitive if the search text contains capital
     # letters.
     #
-    # If given no search path or a single search path this wrapper will use
-    # ffind to generate the list of files and parallelize grep using xargs.
-    # This list can be additionally filtered by filename pattern using zero or
-    # more -X flags.
+    # If given no search path, a single search path, or specific search paths
+    # via `-T` this wrapper will use ffind to generate the list of files and
+    # parallelize grep using xargs. This list can be additionally filtered by
+    # filename pattern using zero or more -X flags.
     #
     # Automatically parallelized:
     # gext searchterm
@@ -51,10 +53,6 @@ _main () {
     #
     # If given one or more file names to search it will instead behave like
     # regular grep and ffind will not be invoked.
-    #
-    # Not automatically parallelized (but caller can do that manually):
-    # gext searchterm [...files]
-    # find . -name '*.foo' -print0 | xargs -0 -P4 gext searchterm
 
     local opt
     local OPTARG
@@ -70,7 +68,8 @@ _main () {
            printf '\n'
            exit;;
         x) set -x;;
-        P)
+        P) parallel="$OPTARG" ;;
+        T)
             if [ -n "$pth" ]; then
                 pth="-path ${OPTARG} -o ${pth}"
             else
@@ -121,7 +120,7 @@ _main () {
             -type f \
             $ext $pth \
             -print0 \
-        | xargs -0 -P8 \
+        | xargs -0 -P"${parallel:-8}" \
             grep --color \
             ${is_icase:+-i} \
             -nH -E -e "${search}" "$@"
