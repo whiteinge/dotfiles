@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to select a GPG key
+
+gpg -k --with-colons \
+    | awk -F: '
+        /^fpr:/ { key = $10 }
+        /^uid:/ { print $10 ":" key }
+    ' \
+    | fzy -p 'Keys > ' \
+    | awk -F: '{ print $2 }' \
+    | xargs printf '%s %s' "$*"
