@@ -3,7 +3,7 @@ bookletize -- Convert a PDF to a fold-able booklet sized PDF
 bootstrap-fedora -- Bootstrap a minimal Fedora install
 bootstrap-osx -- Bootstrap a new OS X machine
 bootstrap-pocket2 -- Bootstrap a new Pocket 2 machine
-bootstrap-wsl -- Bootstrap a minimal WSL Ubuntu install
+bootstrap-wsl -- Bootstrap a WSL Ubuntu install
 busywork -- Silly functions to make a terminal look busy like in a movie
 caffeine -- Prevent the screensaver from activating or the screen from sleeping
 chop -- Chop lines to available terminal width
@@ -16,6 +16,7 @@ connected_ips.awk -- Output IP addresses and ports for machines connected to the
 control-master -- View and manage SSH ControlMaster socket connections in bulk
 count -- Count occurrences of the same line in a file
 countdown -- A simple countdown timer
+csv2table -- Output csv fields as a markdown table.
 cull-brew -- Remove any brew packages that are not on a whitelist
 cull-dnf -- Remove any user-installed packages not on a whitelist
 c -- Wrap curl to always output headers and network timing to stderr
