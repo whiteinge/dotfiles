@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title></title>
+
+        <link href="./foo.css" rel="stylesheet">
+        <script>
+            function ready(fn) {
+                if (document.readyState !== 'loading') {
+                    init();
+                } else {
+                    document.addEventListener('DOMContentLoaded', init);
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <div id="container"></div>
+    </body>
+</html>
