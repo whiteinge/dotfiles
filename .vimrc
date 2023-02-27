@@ -648,6 +648,8 @@ com! Scratch call scratch#Scratch()
 
 """ Diff unstaged changes.
 com! Gdiff :call stagediff#StageDiff()
+
+""" Show Git blame window.
 com! Gblame :55vnew
     \| :call scratch#Scratch()
     \| :exe 'r !git blame --date=relative -- '. expand('#:p:~:.')
@@ -656,11 +658,15 @@ com! Gblame :55vnew
     \| :windo setl nofoldenable nowrap scrollbind
     \| :syncbind
 
+""" Show full commit for current line.
 com! Gannotateline :call
     \ printf("!git blame -l -L %s,+1 -- %s \| awk '{ print $1 }' \| xargs git sh",
     \     getpos('.')[1],
     \     expand('%:p'))
     \ ->execute("")
+
+""" Show current quickfix entry in a popup.
+com! Qfzoom call qfzoom#Qfzoom()
 
 """ Surround a visual selection of opfunc movement with characters.
 " E.g., to surround with parens: \s(iw
