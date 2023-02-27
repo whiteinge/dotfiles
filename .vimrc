@@ -407,6 +407,15 @@ com! Delbuf redir => _redir | silent ls | redir END
     \ | call util#SysR(_redir, 'fzy')
     \ ->matchstr('[0-9]\+') ->M('bw ') ->execute()
 
+" Save the current quickfix list to a file.
+com! Qfsave call getqflist()
+    \ ->map({i, x -> (
+    \     x.bufnr != 0
+    \         ? bufname(x.bufnr) .":". x.lnum .":". x.col .":"
+    \         : ''
+    \ ). x.text })
+    \ ->writefile(input('Write? ', 'Quickfix.txt'), 's')
+
 " Save all open buffers to a file that can be loaded as a quickfix list (-q).
 com! BufSaveAsQf call getbufinfo()
     \ ->filter({i, x -> x.listed && x.name != ''})
