@@ -448,18 +448,13 @@ nmap <silent>]L :llast<cr>:norm zv<cr>
 
 " Toggle the quickfix and location list windows.
 com! Toggleqf
-    \ call getwininfo()
-    \ ->filter({i, x -> x.quickfix && !x.loclist}) ->len()
-    \ ->{x -> x ? ':cclose' : ':botright copen | :wincmd p'}()
+    \ call getqflist({'qfbufnr': 0}).qfbufnr ->bufwinnr()
+    \ ->{x -> x != -1 ? ':cclose' : ':botright copen | :wincmd p'}()
     \ ->execute()
 
 com! Togglell
-    \ call getwininfo()
-    \ ->filter({i, v ->
-        \ v.loclist == 1 &&
-        \ v.wincol == win_getid() ->getwininfo()[0] ->get('wincol', 0)
-    \ })
-    \ ->{x -> len(x) > 0 ? ':lclose' : ':lopen | :wincmd p'}()
+    \ call getloclist(winnr(), {'qfbufnr': 0}).qfbufnr ->bufwinnr()
+    \ ->{x -> x != -1 ? ':lclose' : ':lopen | :wincmd p'}()
     \ ->execute()
 
 map <F1> :Togglell<cr>
