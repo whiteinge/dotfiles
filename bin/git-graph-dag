@@ -6,25 +6,83 @@
 #
 # Adapted from https://git.wiki.kernel.org/index.php/ExampleScripts
 #
-# Accepts any range or arguments that git rev-list accepts.
-#
-# The -c flag will also output the commit message. These should probably be
-# extremely short for it to not make the graph awful.
-#
 # Usage:
+#
+# git graph-dag [<flags>] [<git refs>] (-- [git rev-list args])
+#
+#     git graph-dag HEAD~10..
+#     git graph-dag -c HEAD~10..
+#     git graph-dag HEAD~10.. abcdefa
+#     git graph-dag HEAD~10.. abcdefa abcdefb
+#     git graph-dag -c -- --reflog --all
+#     git graph-dag -w
 #
 #     # Linux & Windows (WSL) w/ ImageMagick
 #     git graph-dag HEAD~10.. | dot -Tpng | display -antialias
 #
 #     # OS X
 #     git graph-dag HEAD~10.. | dot -Tpng | open -a Preview.app -f
-#     git graph-dag -c HEAD~10.. | dot -Tpng | open -a Preview.app -f
+#
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -c   | Also output commit message (must be short!).
+# -w   | Watch mode (see below).
+# --   | Pass any args through to git rev-list.
+#
+# Watch mode:
+#
+# Install a Git hook that will update a PNG image on every ref change and start
+# the `display` ImageMagick viewer that will watch that file for changes. This
+# is an easy and simple way to view updates to the DAG in real-time as they
+# happen (useful for live demos when teaching Git classes). E.g.:
+#
+# Terminal 1:
+#
+#     git init /path/to/foo
+#     cd /path/to/foo
+#     git graph-dag -w
+#
+# Terminal 2:
+#
+#     cd /path/to/foo
+#     touch A; git add A; git commit -m 'Add-A'
+#     touch B; git add B; git commit -m 'Add-B'
+#     git reset --hard HEAD~1
+#     touch C; git add C; git commit -m 'Add-C'
+#     git commit --amend -o -m 'Add-C-2'
+
+HOOKSCRIPT='.git/hooks/reference-transaction'
+
+GITDIR="$(git rev-parse --absolute-git-dir)"
+test $? -eq 0 || exit 1
+
+IMG="${GITDIR}/graph-dag.png"
+
+run_watch() {
+    cat >> "$HOOKSCRIPT" <<-EOS
+#!/usr/bin/env sh
+git graph-dag -c -- --reflog --all | dot -Tpng > "$IMG"
+EOS
+    chmod +x "$HOOKSCRIPT"
+
+    # Initially open blank 200x200 PNG placeholder.
+    cat <<-'EOF' | base64 -d | gzip -d > "$IMG"
+H4sICHoQAWQAA2dyYXBoLWRhZy5wbmcA6wzwc+flkuJiYGDg9fRwCQLSJ0CYgw1Iro1YN4+BgbHV
+08UxpOLW28uMvAwMHMwKb+ffvMukVnCh0U+NdU6UgAALC6OjA4JC57MIogswovMdGQjwHQQI8cmz
+l6BDyLEYwyFk2Ysi0Ngvti1Qxu3VLD1tYLwweLr6uaxzSmgCAISVGHO+AQAA
+EOF
+
+    display -update 1 -antialias "$IMG"
+    exit
+}
 
 main() {
-    while getopts ch opt; do
+    while getopts chw opt; do
         case $opt in
         c) show_msg=1;;
         h) show_help=1;;
+        w) run_watch;;
         esac
     done
     shift $(( OPTIND - 1 ))
