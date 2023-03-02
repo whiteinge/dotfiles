@@ -121,14 +121,14 @@
     ghbranch = "!_() { \
         git fetch git@github.com:${1:?Missing user}/ \
         ${2:?Missing repo}.git \
-        ${3:?Missing remote branch}:${4:?Missing local branch} \
+        ${3:?Missing remote branch}:${4:?Missing local branch}; \
     };_"
 
     # Configure local clone to also make local refs for all GitHub pull
     # requests for the specified remote
     # Usage: git addrefspr upstream; git fetch upstream; git show upstream/pr/13
     addrefspr = "!_() { git config --add remote.${1:?Missing remote}.fetch \
-        \"+refs/pull/*/head:refs/remotes/${1}/pr/*\" \
+        \"+refs/pull/*/head:refs/remotes/${1}/pr/*\"; \
     };_"
 
 [commit]

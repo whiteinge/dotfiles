@@ -360,8 +360,8 @@ function _fzy_generic_find() {
 # (This idea is stolen from fzf.)
 #
 # Usage:
-#   <[empty cli]> - complete from shell history.
-#   <cmd> - complete from _fzy_<cmd> script or funciton output.
+#   <[empty cli]> - complete from tmux scrollback.
+#   <cmd> - complete from _fzy_<cmd> script or function output.
 #   <cmd> - falls back to generic file path completion.
 #
 # New completions can be added for a <cmd> by adding a shell function or

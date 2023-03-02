@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 # Output csv fields as a markdown table.
 
-pandoc -f csv -t commonmark_x
+pandoc -f csv -t gfm
