@@ -145,7 +145,7 @@ if [[ ! -n "$ZSHRUN" ]]; then
     PS1=${(j::)promptseg}
 
     # Fish-like syntax highlighting for Zsh:
-    # git://github.com/nicoulaj/zsh-syntax-highlighting.git \
+    # https://github.com/zsh-users/zsh-syntax-highlighting.git
     if [[ -d $HOME/.zsh-syntax-highlighting/ ]]; then
         source $HOME/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
         ZSH_HIGHLIGHT_HIGHLIGHTERS+=( brackets pattern )
