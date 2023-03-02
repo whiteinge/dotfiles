@@ -56,13 +56,6 @@
     # Output alias definitions. Usage: git which st
     which = "!_() { git config --global --get alias.$1; };_"
 
-    # Show which files have been changed the most.
-    churn = !git log --all -M -C --name-only --format='format:' "$@" \
-        | grep . | sort | uniq -c | sort -n -r
-
-    # Show the author information that will be used when writing commits.
-    whoami = !git var GIT_COMMITTER_IDENT | sed 's/>.*/>/'
-
     # Output all the changes since the most recent tag as a Markdown list:
     # git changelog
     # git changelog HEAD~5...
@@ -70,7 +63,7 @@
         range=${1:-$(git lasttag)...HEAD}; \
         printf 'Changes since %s\n\n' $range; \
         git --no-pager log --reverse --no-merges --oneline \
-            --pretty=format:'- %h %s' \
+            --pretty=format:'- %s' \
             $range; \
         printf '\n'; \
     };_"
@@ -89,8 +82,7 @@
     mergetest = "!_() { \
         git merge-tree \
             $(git merge-base ${1:?Missing branch} HEAD) \
-            ${1:?Missing branch} \
-            HEAD \
+            $1 HEAD \
         | awk '/<<<<<<</ { exit 1 }'; \
     }; _"
 
@@ -112,7 +104,7 @@
     # Merge a GitHub pull request into the current branch.
     # Usage: git preq <preq>
     # Usage: git preq <preq> [<remote>]
-    preq = "!_() { git pull --no-ff ${2:-upstream} refs/pull/${1:?Missing preq}/head; };_"
+    preq = "!_() { git pull --no-ff ${2:-origin} refs/pull/${1:?Missing preq}/head; };_"
     # Same thing but for GitLab:
     mreq = "!_() { git pull --no-ff ${2:-origin} refs/merge-requests/${1:?Missing preq}/head; };_"
 
@@ -126,8 +118,8 @@
 
     # Configure local clone to also make local refs for all GitHub pull
     # requests for the specified remote
-    # Usage: git addrefspr upstream; git fetch upstream; git show upstream/pr/13
-    addrefspr = "!_() { git config --add remote.${1:?Missing remote}.fetch \
+    # Usage: git addprrefs upstream; git fetch upstream; git show upstream/pr/13
+    addprrefs = "!_() { git config --add remote.${1:?Missing remote}.fetch \
         \"+refs/pull/*/head:refs/remotes/${1}/pr/*\"; \
     };_"
 
