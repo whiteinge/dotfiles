@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+# Get unique alphabet character(s) from a positive integer
+#
+# Usage:
+#
+#     printf '1\n' | alphaindex
+#     printf "%s\n" {1..28} | alphaindex
+#     alphaindex 1
+#     alphaindex 1 27
+
+{
+    if [ $# -gt 0 ]; then
+        printf '%s\n' "$@"
+    else
+        cat
+    fi
+} | awk '
+BEGIN {
+    split("ABCDEFGHIJKLMNOPQRSTUVWXYZ", alpha, "")
+}
+
+{
+    if (match($1, "^[0-9]+$") == 0) { print ""; next; }
+
+    idx = $1 - 1
+    pos = idx % 26
+    num = sprintf("%.d", idx / 26) + 1
+
+    while (num > 0) {
+        printf(alpha[pos + 1])
+        num -= 1
+    }
+    printf "\n"
+}
+'

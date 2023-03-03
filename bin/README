@@ -1,4 +1,5 @@
 align -- Align columns at CHAR
+alphaindex -- Get unique alphabet character(s) from a positive integer
 bookletize -- Convert a PDF to a fold-able booklet sized PDF
 bootstrap-fedora -- Bootstrap a minimal Fedora install
 bootstrap-osx -- Bootstrap a new OS X machine
