@@ -66,12 +66,18 @@ git graph-dag -c -- --reflog --all | dot -Tpng > "$IMG"
 EOS
     chmod +x "$HOOKSCRIPT"
 
-    # Initially open blank 200x200 PNG placeholder.
-    cat <<-'EOF' | base64 -d | gzip -d > "$IMG"
+    # Look for existing commits:
+    git rev-list --quiet --all -n 1 HEAD 2>/dev/null
+    if [ $? -eq 0 ]; then
+        git graph-dag -c -- --reflog --all | dot -Tpng > "$IMG"
+    else
+        # Make blank 200x200 PNG placeholder.
+        cat <<-'EOF' | base64 -d | gzip -d > "$IMG"
 H4sICHoQAWQAA2dyYXBoLWRhZy5wbmcA6wzwc+flkuJiYGDg9fRwCQLSJ0CYgw1Iro1YN4+BgbHV
 08UxpOLW28uMvAwMHMwKb+ffvMukVnCh0U+NdU6UgAALC6OjA4JC57MIogswovMdGQjwHQQI8cmz
 l6BDyLEYwyFk2Ysi0Ngvti1Qxu3VLD1tYLwweLr6uaxzSmgCAISVGHO+AQAA
 EOF
+    fi
 
     display -update 1 -antialias "$IMG"
     exit
