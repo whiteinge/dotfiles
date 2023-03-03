@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+# Stub Git commits (touch a file, stage the file, commit the file) for demoing
+#
+# Usage:
+#
+#     git stub A
+#     git stub B
+#     git stub foo bar baz
+#     git stub
+#     git stub
+#     git stub
+#
+# If invoked without arguments it will start a counter and generate unique,
+# alphabetically sequential commits.
+
+while getopts hx opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+if [ $# -eq 0 ]; then
+    set -- "$(git counter | alphaindex)"
+fi
+
+for f in "$@"; do
+    test -e "$f" && exit 1
+
+    printf 'File %s.\n' "$f" > "$f"
+    git add "$f"
+    git commit -m "Add-${f}"
+done

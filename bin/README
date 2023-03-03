@@ -60,6 +60,7 @@ git-graph-dag -- Draw a graphviz diagram of the Git DAG
 git-pagediffs -- Open individual Git commits as separate files in $PAGER
 git-prompt -- Output a succinct, one-line Git status
 git-quickfix -- Open Vim with Git changes as quickfix entries
+git-stub -- Stub Git commits (touch a file, stage the file, commit the file) for demoing
 git-summary -- Show a summary of the commits, authors, and files in a Git repo
 hr -- Print a line of characters
 htmlstar -- Use xmlstarlet with html
