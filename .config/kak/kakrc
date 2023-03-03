@@ -1,0 +1,2 @@
+set global ui_options terminal_assistant=off terminal_set_title=false terminal_enable_mouse=0
+add-highlighter global/ number-lines -relative -hlcursor
