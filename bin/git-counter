@@ -1,0 +1,62 @@
+#!/usr/bin/env sh
+# Atomically increment a counter value stored in a Git repository
+#
+# Usage:
+#
+#     git init /path/to/foo
+#     cd /path/to/foo
+#     git counter
+#     git counter
+#     git counter -p
+#     git cat-file -p refs/counter/count
+#     git counter -n refs/foo/bar
+#     git counter -n refs/foo/bar
+#     git counter -n refs/foo/bar -p
+#
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -n   | Override the default refs/counter/count namespace.
+# -p   | Print the current value.
+# -x   | Enable xtrace debugging.
+
+NS='refs/counter/count'
+
+while getopts hn:px opt; do
+    case $opt in
+    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+       exit ;;
+    n) NS="$OPTARG" ;;
+    p) git cat-file -p "$NS"
+       printf '\n'
+       exit ;;
+    x) set -x ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+GITDIR="$(git rev-parse --absolute-git-dir)"
+test $? -eq 0 || exit 1
+
+printf '%s\n' "$NS" \
+    | git cat-file --batch='%(objectname)' \
+    | xargs -r -d '\n' -n 2 \
+    | while read -r prevsha prev; do
+        if [ "$prev" = 'missing' ]; then
+            unset prevsha
+            next=1
+        else
+            next=$(( prev + 1 ))
+        fi
+
+        printf '%s' "$next" \
+            | git hash-object --stdin -w \
+            | xargs -I{} git update-ref "$NS" {} ${prevsha}
+
+        if [ $? -ne 0 ]; then
+            printf 'Could not advance %s counter.\n' "$NS" 1>&2
+            exit 1
+        fi
+
+        $0 -n "$NS" -p
+    done
