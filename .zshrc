@@ -242,7 +242,8 @@ cdtmp() { cd $(mktemp -d --suffix="-${1:-"cdtmp"}") }
 senv() { set -a; source .env; set +a; }
 
 # Override GNU info to open info pages in less instead.
-function info() { command info "$@" | less }
+function info() { command info "$@" \
+    | vim +'exe search(".") ? "" : "quit!"' -M +MANPAGER - }
 
 # Wrap man to use Vim as MANPAGER.
 function _man() {
