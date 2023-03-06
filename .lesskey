@@ -1,0 +1,5 @@
+l right-scroll
+h left-scroll
+\^ no-scroll
+$ end-scroll
+\\n clear-search
