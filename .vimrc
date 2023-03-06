@@ -502,9 +502,6 @@ set diffopt+=indent-heuristic
 " escape sequence. (Terimal.app on OSX and WSL on Windows.)
 nmap <silent> <leader>6 <c-^><cr>
 
-" Also look for the tags file inside the Git directory.
-set tags+=.git/tags;
-
 " Fuzzy-find entries in Vim's help files.
 " A much faster alternative to :help <char><tab><tab><tab>
 " TODO: add third-party 'someplugin/doc/tag' files too...

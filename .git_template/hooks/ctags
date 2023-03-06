@@ -1,11 +1,7 @@
 #!/bin/sh
 # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
-[ -r .git/ctags_ignore ] && EXCLUDE="--exclude=@.git/ctags_ignore"
-
 test -d .git || exit 0
 
-mkdir .git/tags_lock 2>/dev/null || exit 0
-trap "rm -rf .git/tags_lock; rm -f .git/tags.$$" EXIT
-git ls-files |
-    ctags -L - --tag-relative -R -f .git/tags.$$ --exclude=.git ${EXCLUDE}
-mv .git/tags.$$ .git/tags
+trap 'rm -f "$$.tags"' EXIT
+git ls-files | ctags --tag-relative -L - -f"$$.tags"
+mv "$$.tags" "tags"
