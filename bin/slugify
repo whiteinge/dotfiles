@@ -1,10 +1,9 @@
 #!/usr/bin/env sh
 # Output a string as a slug
-# https://github.com/Mayeu/slugify/blob/master/slugify
 #
 # Usage:
 #
-#   printf 'Foo bar baz' | slugify -d _
+#   printf 'Foo bar baz.\n' | slugify -d _
 
 delim='-'
 while getopts hd: opt; do
@@ -16,7 +15,11 @@ while getopts hd: opt; do
 done
 shift $(( OPTIND - 1 ))
 
-LANG=POSIX LC_ALL=POSIX sed -e 's/[^[:alnum:]]/'"$delim"'/g' \
-    | tr -s "$delim" \
-    | tr A-Z a-z \
-    | sed -e 's/'"$delim"'$//'
+awk -v delim="$delim" '
+{
+    gsub("[^[:alnum:]]", delim)
+    gsub(delim delim "+", delim)
+    sub(delim "$", "")
+    print tolower($0)
+}
+'
