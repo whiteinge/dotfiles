@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to select Pandoc input/output formats
+
+# Get last arg.
+for last; do true; done
+
+{
+    if [ "$last" = '-f' ] || [ "$last" = '--from' ]; then
+        pandoc --list-input-formats \
+            | fzy -p 'Input format > '
+    elif [ "$last" = '-t' ] || [ "$last" = '--to' ]; then
+        pandoc --list-output-formats \
+            | fzy -p 'Output format > '
+    fi
+} | xargs printf '%s %s' "$*"
