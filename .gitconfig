@@ -144,6 +144,7 @@
     sl = $PAGER -F
     stat = $PAGER -F
     rl = $PAGER -F
+    sizes = $PAGER -F
 
 [merge]
     tool = diffconflicts
