@@ -2,7 +2,9 @@
 # A wrapper to parallelize grep and optionally filter by filename pattern
 
 NAME=$(basename "$0")
-VERSION='0.9.0'
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+EXIT="${TEMP}/exit"
 
 help () {
     # Extract contiguous lines of comments in a function as help text
@@ -35,6 +37,7 @@ _main () {
     # -P   | Override parallel xargs processes (defualt: 8).
     # -X   | Filter files by pattern before searching; multiple occurences ok.
     # -T   | Pass additional paths to ffind; multiple occurences ok.
+    # -p   | Do not open search results in a pager.
     #
     # Flags _must_ be the first argument to `NAME`, before `searchterm`.
     #
@@ -60,15 +63,20 @@ _main () {
 
     local ext
 
-    while getopts VhvxX:P: opt; do
+    trap '
+        excode=$?; trap - EXIT;
+        rm -rf -- '"$TEMP"'
+        exit $excode
+    ' INT TERM EXIT
+
+    while getopts hxP:pT:X: opt; do
         case $opt in
-        V) printf 'Version: %s\n' $VERSION
-           exit;;
         h) help _main
            printf '\n'
            exit;;
         x) set -x;;
         P) parallel="$OPTARG" ;;
+        p) nopager=1 ;;
         T)
             if [ -n "$pth" ]; then
                 pth="-path ${OPTARG} -o ${pth}"
@@ -88,6 +96,10 @@ _main () {
     shift $(( OPTIND - 1 ))
 
     local search="${1:?'Missing "searchterm".'}"; shift
+
+    if [ -t 1 ] && [ -z "$nopager" ]; then
+        usepager=1;
+    fi
 
     # Wrap any filename pattern args in parens for find.
     if [ -n "$pth" ]; then
@@ -113,6 +125,9 @@ _main () {
         fi
     fi
 
+    mkdir -p -m 700 "$TEMP"
+
+    {
     if [ -n "$searchpath" ]; then
         set -f
 
@@ -121,20 +136,29 @@ _main () {
             $ext $pth \
             -print0 \
         | xargs -0 -P"${parallel:-8}" \
-            grep --color \
+            grep --color"${usepager:+=always}" \
             ${is_icase:+-i} \
             -nH -E -e "${search}" "$@"
-        ret=$?
+        printf '%s\n' $? > "$EXIT"
 
         set +f
     else
-        grep --color \
+        grep --color"${usepager:+=always}" \
             ${is_icase:+-i} \
             -nH -E -e "${search}" "$@"
-        ret=$?
-    fi
+        printf '%s\n' $? > "$EXIT"
+    fi;
+    } | {
+        if [ -n "$usepager" ]; then
+            $PAGER -FR
+        else
+            cat
+        fi
+    }
 
-    return "$ret"
+    # Is there a simpler way to retain the exit code?
+    read ret < "$EXIT"
+    exit $ret
 }
 
 _main "$@"
