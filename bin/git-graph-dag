@@ -1,14 +1,21 @@
 #!/usr/bin/env sh
-# Draw a graphviz diagram of the Git DAG
+# # Draw a graphviz diagram of the Git DAG
 #
 # Labels consist of the short SHA1 and any refs.
 # Unreachable commits (ignoring the reflog) will be drawn with dashed lines.
 #
-# Adapted from https://git.wiki.kernel.org/index.php/ExampleScripts
+# ## Usage
 #
-# Usage:
+# `git graph-dag [<flags>] [<git refs>] (-- [git rev-list args])`
 #
-# git graph-dag [<flags>] [<git refs>] (-- [git rev-list args])
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -c   | Also output commit message (must be short!).
+# -w   | Watch mode (see below).
+# --   | Pass any args through to git rev-list.
+#
+# ## Examples
 #
 #     git graph-dag HEAD~10..
 #     git graph-dag -c HEAD~10..
@@ -23,19 +30,13 @@
 #     # OS X
 #     git graph-dag HEAD~10.. | dot -Tpng | open -a Preview.app -f
 #
-# Flag | Description
-# ---- | -----------
-# -h   | Show this screen.
-# -c   | Also output commit message (must be short!).
-# -w   | Watch mode (see below).
-# --   | Pass any args through to git rev-list.
+# ## Watch mode
 #
-# Watch mode:
-#
-# Install a Git hook that will update a PNG image on every ref change and start
-# the `display` ImageMagick viewer that will watch that file for changes. This
-# is an easy and simple way to view updates to the DAG in real-time as they
-# happen (useful for live demos when teaching Git classes). E.g.:
+# Install (then remove) a Git hook that will update a PNG image on every ref
+# change and start the `display` ImageMagick viewer that will watch that file
+# for changes. This is an easy and simple way to view updates to the DAG in
+# real-time as they happen (useful for live demos when teaching Git classes).
+# E.g.:
 #
 # Terminal 1:
 #
@@ -60,6 +61,20 @@ test $? -eq 0 || exit 1
 IMG="${GITDIR}/graph-dag.png"
 
 run_watch() {
+    command -v dot 1>/dev/null || \
+        { printf 'Graphviz required.\n' 1>&2; exit 1; }
+
+    if [ -e "$HOOKSCRIPT" ]; then
+        printf 'Existing hook found. Not overwriting!\n' 1>&2
+        exit 1
+    fi
+
+    trap '
+        excode=$?; trap - EXIT;
+        rm -rf -- '"$HOOKSCRIPT"'
+        exit $excode
+    ' INT TERM EXIT
+
     cat >> "$HOOKSCRIPT" <<-EOS
 #!/usr/bin/env sh
 git graph-dag -c -- --reflog --all | dot -Tpng > "$IMG"
@@ -79,7 +94,15 @@ l6BDyLEYwyFk2Ysi0Ngvti1Qxu3VLD1tYLwweLr6uaxzSmgCAISVGHO+AQAA
 EOF
     fi
 
-    display -update 1 -antialias "$IMG"
+    uname -s | grep -q Darwin
+    if [ $? -eq 0 ]; then
+        open -W -g -a Preview.app "$IMG"
+    else
+        command -v display 1>/dev/null || \
+            { printf 'ImageMagick required.\n' 1>&2; exit 1; }
+
+        display -update 1 -antialias "$IMG"
+    fi
     exit
 }
 
