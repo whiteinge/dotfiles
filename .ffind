@@ -14,6 +14,7 @@
 -name *.bundle.js
 -name *.min.css
 -name *.min.js
+-name package-lock.json
 
 # Python build files
 -name *.pyc
