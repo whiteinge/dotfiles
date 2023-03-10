@@ -60,6 +60,7 @@ git-attic -- List deleted files in a Git repository
 git-counter -- Atomically increment a counter value stored in a Git repository
 git-graph-dag -- Draw a graphviz diagram of the Git DAG
 git-pagediffs -- Open individual Git commits as separate files in $PAGER
+git-pagediffs -- Paginate individual Git commits as separate files in $PAGER
 git-prompt -- Output a succinct, one-line Git status
 git-quickfix -- Open Vim with Git changes as quickfix entries
 git-sizes -- Output the largest objects in a repository

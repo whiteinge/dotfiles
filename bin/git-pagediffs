@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Open individual Git commits as separate files in $PAGER
+# Paginate individual Git commits as separate files in $PAGER
 #
 # Git outputs a range of commits all together which makes scrolling to the top
 # or bottom of a single commit troublesome since you have to manually look or
@@ -42,4 +42,4 @@ git sh --reverse --color=always --color-moved "$@" |
     csplit -s -n 4 -f "${TEMP}/xx" - '/^\[33mcommit /' '{*}'
 
 rm -f -- "${TEMP}/xx0000"
-$PAGER -raw "${TEMP}/xx"*
+$PAGER -R "${TEMP}/xx"*
