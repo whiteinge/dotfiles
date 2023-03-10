@@ -6,4 +6,5 @@
 .svn/
 CVS/
 .ffind
-tags
+/tags
+/*.tags
