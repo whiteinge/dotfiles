@@ -459,9 +459,21 @@ map <F1> :Togglell<cr>
 map <F2> :Toggleqf<cr>
 
 " Fuzzy-find and edit a file in the quickfix list.
+" Jumps to the first match in that file.
+" (The qflist does not surface index numbers for some reason, so we need
+" a song-and-dance here to retain them and in-order.)
 com! Qfjump
-    \ call getqflist() ->map({i, x -> bufname(x.bufnr)}) ->sort() ->uniq()
-    \ ->util#SysR('fzy -p "Quickfix > "') ->M('e ') ->execute()
+    \ call getqflist()
+    \ ->map({i, x -> [bufname(x.bufnr), i + 1]})
+    \ ->filter({i, x -> x[0] != ''})
+    \ ->reverse()
+    \ ->reduce({acc, cur -> extend(acc, {cur[0]: cur[1]})}, {})
+    \ ->map({key, val -> val .' - '. key})
+    \ ->values() ->sort('N')
+    \ ->util#SysR('fzy -p "Jump > "')
+    \ ->matchstr('[0-9]\+')
+    \ ->M('crewind ') ->execute()
+    \ ->{ -> 'norm zv'}() ->execute()
 
 " Load all Git changes in the work tree as quickfix entries.
 com! Qffromdiff cgetexpr
