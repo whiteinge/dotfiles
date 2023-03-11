@@ -25,7 +25,45 @@ fi
 printf "#!/usr/bin/env $lang\n" > "$script"
 chmod +x "$script"
 
-test "$lang" = 'sh' && cat >> "$script" <<-'EOS'
+case "$lang" in
+    sh)
+        case "$script" in
+        'start.sh') cat >> "$script" <<-'EOS'
+
+INITIAL_PANE=$(tmux run 'echo #{pane_id}')
+INITIAL_PATH=$(tmux run 'echo #{pane_current_path}')
+
+tmux renamew 'Foo'
+
+tmux splitw -l 3 -c "${INITIAL_PATH}/path/to/client"
+tmux send 'npm start' Enter
+tmux selectp -T 'http://localhost:8080'
+
+tmux splitw -h -p 70 -c "${INITIAL_PATH}/path/to/server"
+tmux send 'python -m http.server' Enter
+tmux selectp -T 'http://localhost:8000'
+
+tmux selectp -t "$INITIAL_PANE"
+
+cat <<'EOF'
+             ____________________
+            /                    \
+            |   Foo server is    |
+            |      running.      |
+            \____________________/
+                     !  !
+                     !  !
+                     !  !
+                     !  !
+                     !  !
+          * .,   *. *! *! ,., . *
+ _________)^\\_//(\/(/\)/\/`\^`_)_______
+
+EOF
+EOS
+;;
+
+        *) cat >> "$script" <<-'EOS'
 # Short Description
 #
 # Longer Description
@@ -115,5 +153,9 @@ $($0 -h)"}"
 
 _main "$@"
 EOS
+;;
+
+        esac;;
+esac
 
 ${EDITOR:-vi} -c ':1' "$script"
