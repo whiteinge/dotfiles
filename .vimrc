@@ -484,6 +484,13 @@ com! Llfromdiff lgetexpr
     \ system('git diff -p -U0 --diff-filter=AM -- '.
     \   expand('%:p') .' | diff-to-quickfix')
 
+" Copy all quickfix entries for the current file into location list entires.
+" This is a simple way to skate around a single file without losing your
+" position in the qf list.
+com! Qf2ll call getqflist()
+    \ ->filter({i, x -> x.bufnr == bufnr()})
+    \ ->setloclist(0)
+
 " Toggle diff view on the left, center, or right windows
 nmap <silent> <leader>dl :call difftoggle#DiffToggle(1)<cr>
 nmap <silent> <leader>dm :call difftoggle#DiffToggle(2)<cr>
