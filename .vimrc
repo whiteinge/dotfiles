@@ -439,12 +439,10 @@ map <F4>
 " Shortcuts for working with quickfix/location lists
 nmap <silent>]q :cnext<cr>:norm zv<cr>
 nmap <silent>[q :cprev<cr>:norm zv<cr>
-nmap <silent>[Q :cfirst<cr>:norm zv<cr>
-nmap <silent>]Q :clast<cr>:norm zv<cr>
-nmap <silent>]l :lnext<cr>:norm zv<cr>
-nmap <silent>[l :lprev<cr>:norm zv<cr>
-nmap <silent>[L :lfirst<cr>:norm zv<cr>
-nmap <silent>]L :llast<cr>:norm zv<cr>
+nmap <silent>[Q :cNfile<cr>:norm zv<cr>
+nmap <silent>]Q :cnfile<cr>:norm zv<cr>
+nmap <silent>]a :lnext<cr>:norm zv<cr>
+nmap <silent>[a :lprev<cr>:norm zv<cr>
 
 " Toggle the quickfix and location list windows.
 com! Toggleqf
@@ -459,14 +457,6 @@ com! Togglell
 
 map <F1> :Togglell<cr>
 map <F2> :Toggleqf<cr>
-
-" Open all files referenced in the quickfix list as args.
-" Sometimes you just want to step through the files and not all the changes.
-com! Qf2Arg call getqflist()
-    \ ->filter({i, x -> bufname(x.bufnr) != ''})
-    \ ->sort()
-    \ ->uniq()
-    \ ->map({i, x -> execute('$argadd #'. x.bufnr)})
 
 " Fuzzy-find and edit a file in the quickfix list.
 com! Qfjump
