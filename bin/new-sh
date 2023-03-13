@@ -30,8 +30,8 @@ case "$lang" in
         case "$script" in
         'start.sh') cat >> "$script" <<-'EOS'
 
-INITIAL_PANE=$(tmux run 'echo #{pane_id}')
-INITIAL_PATH=$(tmux run 'echo #{pane_current_path}')
+INITIAL_PANE="$(tmux display -p '#{pane_id}')"
+INITIAL_PATH="$(tmux display -p '#{pane_current_path}')"
 
 tmux renamew 'Foo'
 
@@ -39,7 +39,7 @@ tmux splitw -l 3 -c "${INITIAL_PATH}/path/to/client"
 tmux send 'npm start' Enter
 tmux selectp -T 'http://localhost:8080'
 
-tmux splitw -h -p 70 -c "${INITIAL_PATH}/path/to/server"
+tmux splitw -h -c "${INITIAL_PATH}/path/to/server"
 tmux send 'python -m http.server' Enter
 tmux selectp -T 'http://localhost:8000'
 
