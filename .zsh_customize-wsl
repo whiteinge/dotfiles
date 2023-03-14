@@ -1,2 +1,5 @@
 # This causes very slow completion on WSL due to all the added Windows paths.
 unsetopt PATH_DIRS
+
+# https://devblogs.microsoft.com/commandline/d3d12-gpu-video-acceleration-in-the-windows-subsystem-for-linux-now-available/
+export LIBVA_DRIVER_NAME=d3d12
