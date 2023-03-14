@@ -66,93 +66,44 @@ EOS
         *) cat >> "$script" <<-'EOS'
 # Short Description
 #
-# Longer Description
+# `NAME [<flags>] (command [<arg>, <name=value>...])`
+#
+#     NAME -h              # Short, usage help text.
+#
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -x   | Enable xtrace debug logging.
 
 NAME=$(basename "$0")
-VERSION='0.0.1'
 TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
     'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
 
-help () {
-    # Extract contiguous lines of comments in a function as help text
+local opt
+local OPTARG
+local OPTIND
 
-    awk -v cmd="${1:?'Command name required.'}" -v NAME="$NAME" '
-    $0 ~ "^" cmd "\\s*\\(\\)\\s*{" { is_found=1; next }
-    is_found && !NF { exit }
-    is_found { gsub(/^\s*#\s?/, ""); gsub(/NAME/, NAME); print; }
-    ' "$0"
-}
+while getopts hx opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
 
-_all_funcs () {
-    # List all public function names in the current file
+trap '
+    excode=$?; trap - EXIT;
+    rm -rf -- '"$TEMP"'
+    exit $excode
+' INT TERM EXIT
 
-    awk '$1 !~ /^_/ && /^[a-zA-Z0-9_]+\s*\(\)/ { print $1 }' "$0"
-}
+mkdir -p -m 700 "$TEMP"
+if [ $? -ne 0 ]; then
+    printf 'Error creating temp directory.\n' 1>&2
+    exit 1
+fi
 
-_main () {
-    # ## Usage
-    #
-    # `NAME [<flags>] (command [<arg>, <name=value>...])`
-    #
-    #     NAME -h              # Short, usage help text.
-    #     NAME help command    # Command-specific help text.
-    #     NAME command         # Run a command without and with args:
-    #     NAME command foo bar baz=Baz qux='Qux arg here'
-    #
-    # Flag | Description
-    # ---- | -----------
-    # -V   | Show version.
-    # -h   | Show this screen.
-    # -x   | Enable xtrace debug logging.
-    #
-    # Flags _must_ be the first argument to `NAME`, before `command`.
-
-    local opt
-    local OPTARG
-    local OPTIND
-
-    local cmd
-    local ret
-
-    trap '
-        excode=$?; trap - EXIT;
-        rm -rf -- '"$TEMP"'
-        exit $excode
-    ' INT TERM EXIT
-
-    while getopts Vhv:x opt; do
-        case $opt in
-        V) printf 'Version: %s\n' $VERSION
-           exit;;
-        h) help _main
-           printf '\nAvailable commands:\n\n'
-           _all_funcs | sort
-           printf '\n'
-           exit;;
-        v) verbose="$OPTARG";;
-        x) set -x;;
-        esac
-    done
-    shift $(( OPTIND - 1 ))
-
-    mkdir -p -m 700 "$TEMP"
-    if [ $? -ne 0 ]; then
-        printf 'Error creating temp directory.\n' 1>&2
-        exit 1
-    fi
-
-    cmd="${1:?"No command given.
-
-$($0 -h)"}"
-
-    shift
-    "$cmd" "$@"
-    ret=$?
-
-    exit $ret
-}
-
-_main "$@"
+printf 'Hello, world.\n'
 EOS
 ;;
 
