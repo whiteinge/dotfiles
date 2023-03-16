@@ -74,6 +74,8 @@
     # Use a fuzzy-finder to find a SHA to use for a fixup commit.
     fixup = !git l @{u}.. | fzy | awk '{ print $1 }' | xargs -I{} git ci --fixup={}
 
+    initialsha = !printf '' | git hash-object --stdin -t tree
+
     # Perform a merge in-memory and output if conflicts are found (dry-run):
     #   git mergetest otherbranch
     mergetest = "!_() { \
