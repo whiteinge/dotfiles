@@ -651,8 +651,9 @@ com! Scratch call scratch#Scratch()
 com! Gdiff :call stagediff#StageDiff()
 
 """ Show Git blame window.
-com! Gblame :55vnew
-    \| :call scratch#Scratch()
+com! Gblame :exe 'tabnew +'. line('.') .' %'
+    \| :55vnew
+    \| :silent! call scratch#Scratch()
     \| :exe 'r !git blame --date=relative -- '. expand('#:p:~:.')
     \| 1delete
     \| :wincmd p
