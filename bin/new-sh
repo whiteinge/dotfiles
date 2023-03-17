@@ -97,7 +97,7 @@ trap '
     exit $excode
 ' INT TERM EXIT
 
-mkdir -p -m 700 "$TEMP"
+mkdir -m 700 "$TEMP"
 if [ $? -ne 0 ]; then
     printf 'Error creating temp directory.\n' 1>&2
     exit 1
