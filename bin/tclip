@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+# Read/write tmux buffer contents via a fuzzy-finder
+#
+# Usage
+#
+#     printf 'Hello!\n' | tclip
+#     tclip
+#     tclip -d
+#
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -x   | Enable xtrace debug logging.
+# -d   | Delete tmux buffer(s) instead of echoing contents.
+
+while getopts dhx opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    d) delete="Delete ";;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+if [ -t 0 ]; then
+    tmux list-buffers \
+        | fzy -p "$delete"'Buffers > ' \
+        | awk -F: '{ print $1 }' \
+        | {
+            if [ -n "$delete" ]; then
+                xargs -I{} tmux delete-buffer -b {}
+            else
+                xargs -I{} tmux save-buffer -b {} -
+            fi;
+        }
+else
+    tmux load-buffer -
+fi

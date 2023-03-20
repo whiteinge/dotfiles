@@ -110,6 +110,7 @@ split-strings -- Split a string on a common delimiter
 status -- Collect various system stats for feeding into a status bar
 steam-disable-origin-overlay -- Disable the EA Origin overlay for Steam games
 tailsplit -- Run a command and open two tmux panes to tail stdout and stderr separately
+tclip -- Read/write tmux buffer contents via a fuzzy-finder
 thes -- Search Grady Ward's Moby Project thesaurus with a fuzzy-finder
 timebuddy -- Compare columns of hours in a day across multiple timezones
 timer -- Output seconds elapsed
