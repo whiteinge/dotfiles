@@ -95,6 +95,8 @@ xterm*charClass: 33:48,37-38:48,45-47:48,64:48,58:48,126:48,61:48,63:48,43:48,35
 ! xterm.vt100.translations: #override\n\
 !        <Key>Tab: string("\033")\n\
 
+! Enable OSC 52 so xterm can set system clipboard contents.
+xterm*disallowedWindowOps: 20,21,SetXprop
 
 ! --- xmessage {{{1
 ! -----------------------------------------------------------------------------
