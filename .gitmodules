@@ -38,3 +38,6 @@
 	path = tmp/repos/fzy
 	url = https://github.com/gpanders/fzy.git
 	branch = multiselect
+[submodule ".vim/pack/foo/start/v-vim"]
+	path = .vim/pack/foo/start/v-vim
+	url = https://github.com/ollykel/v-vim.git
