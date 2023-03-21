@@ -26,10 +26,6 @@ while getopts war:h opt; do
 done
 shift $(( OPTIND - 1 ))
 
-    esac
-done
-shift $(( OPTIND - 1 ))
-
 xwininfo -stats "-${target}" \
     | awk -F':' '
         /Absolute.*X/ { x=$2 }
