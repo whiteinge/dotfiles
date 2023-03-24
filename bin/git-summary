@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 # Show a summary of the commits, authors, and files in a Git repo
 #
-# Requires GNU datamash.
 # (Avoiding file stats with `-f` is _much_ faster in large repos.)
 #
 # Usage:
@@ -27,6 +26,7 @@ git log --no-renames ${show_files:+--numstat} \
     | awk -v show_progress="$show_progress" '
     function alen(a, i, c) { for (i in a) c += 1; return c; }
     function isnum(x){ return (x == x + 0) }
+    function max(n, m) { return n >= m ? n : m; }
 
     BEGIN { FS="\t"; OFS="\t" }
 
@@ -81,46 +81,61 @@ git log --no-renames ${show_files:+--numstat} \
         # No Git output? (Probably an error.)
         if (NR == 0) { exit 1 }
 
+        # Iterate over arrays below using the same sort direction.
+        # gawk extension. Other awks will simply not sort the output.
+        PROCINFO["sorted_in"] = "@val_num_desc"
+
         if (show_progress) { printf("\033[2K\033[1G") }
         print "First commit:", sha " - " auth_date " (" reldate ")"
         print "Last commit:", last_sha " - " last_date " (" last_reldate ")"
         print ""
 
-        transpose_cmd = "datamash transpose"
-        print "Commits\t" commit_count \
-            "\nFiles\t" alen(file_list) \
-            "\nLines\t" lines_changed_count \
-            "\nAuthors\t" alen(author_list) \
-            "\nCommitters\t" alen(committer_list) | transpose_cmd
-        close(transpose_cmd)
+        file_list_count = alen(file_list)
+        author_list_count = alen(author_list)
+        committer_list_count = alen(committer_list)
+        active_days_count = alen(active_days)
 
+        printf( \
+            "%1$*2$s" "%4$*5$s" "%7$*8$s" "%10$*11$s" "%13$*14$s" "%16$*17$s\n" \
+            "%3$*2$s" "%6$*5$s" "%9$*8$s" "%12$*11$s" "%15$*14$s" "%18$*17$s\n",
+            "Commits", max(length("Commits"), length(commit_count)) + 2, commit_count,
+            "Files", max(length("Files"), length(file_list_count)) + 2, file_list_count,
+            "Lines", max(length("Lines"), length(lines_changed_count)) + 2, lines_changed_count,
+            "Authors", max(length("Authors"), length(author_list_count)) + 2, author_list_count,
+            "Committers", max(length("Committers"), length(committer_list_count)) + 2, committer_list_count,
+            "Active Days", max(length("Active Days"), length(active_days_count)) + 2, active_days_count)
+
+        printf("\nTop days:\n\n")
+        for (h in top_weekdays) printf("%5s", h)
+        print ""
+        for (h in top_weekdays) {
+            printf("%4.0f%%", (top_weekdays[h] / commit_count) * 100 )
+        }
         print ""
 
-        print "Active days:", alen(active_days)
-        printf("\nTop days:\n\n")
-        weekday_cmd = "sort -n -r | cut -f2,3 | datamash transpose"
-        for (h in top_weekdays) {
-            wd = top_weekdays[h]
-            printf("%s\t%s\t%.0f%%\n", wd, h, (wd / commit_count) * 100 ) \
-                | weekday_cmd
-        }
-        close(weekday_cmd)
-
         printf("\nTop hours:\n\n")
-        hour_cmd = "sort -n -r | cut -f2,3 | head -6 | datamash transpose"
+        top_hours_counter = 0
+        top_hours_limit = 8
         for (i in top_hours) {
-            hr = top_hours[i]
-            printf("%s\t%s\t%.0f%%\n", hr, i, (hr / commit_count) * 100 ) \
-                | hour_cmd
+            printf("%*s", 4, i)
+            top_hours_counter += 1
+            if (top_hours_counter > top_hours_limit) break
         }
-        close(hour_cmd)
+        print ""
+        top_hours_counter = 0
+        for (i in top_hours) {
+            printf("%3.0f%%", (top_hours[i] / commit_count) * 100 )
+            top_hours_counter += 1
+            if (top_hours_counter > top_hours_limit) break
+        }
+        print ""
 
         printf("\nTop authors:\n\n")
         topcom_cmd = "sort -n -r | head -5"
         for (j in author_list) {
-            printf("%s\t%.1f%%\t%s\n",
+            printf("%s\t%*.1f%%\t%s\n",
                 author_list[j],
-                (author_list[j] / commit_count) * 100,
+                5, (author_list[j] / commit_count) * 100,
                 j) | topcom_cmd
         }
         close(topcom_cmd)
@@ -128,9 +143,9 @@ git log --no-renames ${show_files:+--numstat} \
         printf("\nTop committers:\n\n")
         topcom_cmd = "sort -n -r | head -5"
         for (l in committer_list) {
-            printf("%s\t%.1f%%\t%s\n",
+            printf("%s\t%*.1f%%\t%s\n",
                 committer_list[l],
-                (committer_list[l] / commit_count) * 100,
+                5, (committer_list[l] / commit_count) * 100,
                 l) | topcom_cmd
         }
 
