@@ -95,15 +95,34 @@ git log --no-renames ${show_files:+--numstat} \
         committer_list_count = alen(committer_list)
         active_days_count = alen(active_days)
 
+        # %position$*width$s
         printf( \
-            "%1$*2$s" "%4$*5$s" "%7$*8$s" "%10$*11$s" "%13$*14$s" "%16$*17$s\n" \
+            "%1$*2$s" "%4$*5$s" "%7$*8$s" "%10$*11$s" "%13$*14$s" "%16$*17$s\n"\
             "%3$*2$s" "%6$*5$s" "%9$*8$s" "%12$*11$s" "%15$*14$s" "%18$*17$s\n",
-            "Commits", max(length("Commits"), length(commit_count)) + 2, commit_count,
-            "Files", max(length("Files"), length(file_list_count)) + 2, file_list_count,
-            "Lines", max(length("Lines"), length(lines_changed_count)) + 2, lines_changed_count,
-            "Authors", max(length("Authors"), length(author_list_count)) + 2, author_list_count,
-            "Committers", max(length("Committers"), length(committer_list_count)) + 2, committer_list_count,
-            "Active Days", max(length("Active Days"), length(active_days_count)) + 2, active_days_count)
+
+            "Commits",
+            max(length("Commits"), length(commit_count)) + 2,
+            commit_count,
+
+            "Files",
+            max(length("Files"), length(file_list_count)) + 2,
+            file_list_count == 0 ? "-" : file_list_count,
+
+            "Lines", \
+            max(length("Lines"), length(lines_changed_count)) + 2,
+            lines_changed_count == 0 ? "-" : lines_changed_count,
+
+            "Authors",
+            max(length("Authors"), length(author_list_count)) + 2,
+            author_list_count,
+
+            "Committers",
+            max(length("Committers"), length(committer_list_count)) + 2,
+            committer_list_count,
+
+            "Active Days",
+            max(length("Active Days"), length(active_days_count)) + 2,
+            active_days_count)
 
         printf("\nTop days:\n\n")
         for (h in top_weekdays) printf("%5s", h)
