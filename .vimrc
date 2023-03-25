@@ -793,6 +793,7 @@ com! -complete=shellcmd -nargs=+ Tmuxsend
     \ ->M('let b:tmuxpane = ')
     \ ->execute()
     \| au! BufWritePost <buffer> call util#Tmuxsend(' clear; '. expand("<args>"))
+com! Tmuxsendclear au! BufWritePost <buffer>
 
 " }}}
 " EOF
