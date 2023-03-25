@@ -62,7 +62,7 @@ main() {
         exit $excode
     ' INT TERM EXIT
 
-    stdbuf -i0 -o0 -e0 find . -name .git -print0 \
+    stdbuf -i0 -o0 -e0 find . -name .git -print0 2>/dev/null \
         | tee "$REPO_CACHE" \
         | awk '
             BEGIN { RS="\0" }
