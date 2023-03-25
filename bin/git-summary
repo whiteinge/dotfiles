@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 # Show a summary of the commits, authors, and files in a Git repo
 #
-# (Avoiding file stats with `-f` is _much_ faster in large repos.)
+# Omit file stats with `-f` for a substantially faster processing time for
+# large repositories.
 #
 # Usage:
 #
@@ -86,43 +87,37 @@ git log --no-renames ${show_files:+--numstat} \
         PROCINFO["sorted_in"] = "@val_num_desc"
 
         if (show_progress) { printf("\033[2K\033[1G") }
+
         print "First commit:", sha " - " auth_date " (" reldate ")"
         print "Last commit:", last_sha " - " last_date " (" last_reldate ")"
         print ""
 
         file_list_count = alen(file_list)
-        author_list_count = alen(author_list)
-        committer_list_count = alen(committer_list)
-        active_days_count = alen(active_days)
 
-        # %position$*width$s
-        printf( \
-            "%1$*2$s" "%4$*5$s" "%7$*8$s" "%10$*11$s" "%13$*14$s" "%16$*17$s\n"\
-            "%3$*2$s" "%6$*5$s" "%9$*8$s" "%12$*11$s" "%15$*14$s" "%18$*17$s\n",
+        summary_arr["0,0"] = "Commits"
+        summary_arr["0,1"] = commit_count
+        summary_arr["1,0"] = "Files"
+        summary_arr["1,1"] = file_list_count == "" ? "-" : file_list_count
+        summary_arr["2,0"] = "Lines"
+        summary_arr["2,1"] = lines_changed_count == 0 ? "-" : lines_changed_count
+        summary_arr["3,0"] = "Authors"
+        summary_arr["3,1"] = alen(author_list)
+        summary_arr["4,0"] = "Committers"
+        summary_arr["4,1"] = alen(committer_list)
+        summary_arr["5,0"] = "Active Days"
+        summary_arr["5,1"] = alen(active_days)
+        summary_len = alen(summary_arr) / 2
 
-            "Commits",
-            max(length("Commits"), length(commit_count)) + 2,
-            commit_count,
-
-            "Files",
-            max(length("Files"), length(file_list_count)) + 2,
-            file_list_count == 0 ? "-" : file_list_count,
-
-            "Lines", \
-            max(length("Lines"), length(lines_changed_count)) + 2,
-            lines_changed_count == 0 ? "-" : lines_changed_count,
-
-            "Authors",
-            max(length("Authors"), length(author_list_count)) + 2,
-            author_list_count,
-
-            "Committers",
-            max(length("Committers"), length(committer_list_count)) + 2,
-            committer_list_count,
-
-            "Active Days",
-            max(length("Active Days"), length(active_days_count)) + 2,
-            active_days_count)
+        for (g = 0; g < summary_len; g += 1) {
+            len = max(length(summary_arr[g ",0"]), length(summary_arr[g ",1"])) + 2
+            printf(sprintf("%%%ss", len), summary_arr[g ",0"])
+        }
+        print ""
+        for (g = 0; g < summary_len; g += 1) {
+            len = max(length(summary_arr[g ",0"]), length(summary_arr[g ",1"])) + 2
+            printf(sprintf("%%%ss", len), summary_arr[g ",1"])
+        }
+        print ""
 
         printf("\nTop days:\n\n")
         for (h in top_weekdays) printf("%5s", h)
@@ -136,7 +131,7 @@ git log --no-renames ${show_files:+--numstat} \
         top_hours_counter = 0
         top_hours_limit = 8
         for (i in top_hours) {
-            printf("%*s", 4, i)
+            printf("%4s", i)
             top_hours_counter += 1
             if (top_hours_counter > top_hours_limit) break
         }
@@ -152,9 +147,9 @@ git log --no-renames ${show_files:+--numstat} \
         printf("\nTop authors:\n\n")
         topcom_cmd = "sort -n -r | head -5"
         for (j in author_list) {
-            printf("%s\t%*.1f%%\t%s\n",
+            printf("%s\t%5.1f%%\t%s\n",
                 author_list[j],
-                5, (author_list[j] / commit_count) * 100,
+                (author_list[j] / commit_count) * 100,
                 j) | topcom_cmd
         }
         close(topcom_cmd)
@@ -162,9 +157,9 @@ git log --no-renames ${show_files:+--numstat} \
         printf("\nTop committers:\n\n")
         topcom_cmd = "sort -n -r | head -5"
         for (l in committer_list) {
-            printf("%s\t%*.1f%%\t%s\n",
+            printf("%s\t%5.1f%%\t%s\n",
                 committer_list[l],
-                5, (committer_list[l] / commit_count) * 100,
+                (committer_list[l] / commit_count) * 100,
                 l) | topcom_cmd
         }
 
