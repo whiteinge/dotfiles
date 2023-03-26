@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 # Show a summary of the commits, authors, and files in a Git repo
 #
+# Requires GNU awk.
+#
 # Omit file stats with `-f` for a substantially faster processing time for
 # large repositories.
 #
@@ -24,10 +26,10 @@ test -t 1 && show_progress=1
 # %x09 is a tab character
 git log --no-renames ${show_files:+--numstat} \
         --format='XXX%x09%h%x09%an%x09%ae%x09%cn%x09%ce%x09%aD%x09%cr' \
-    | awk -v show_progress="$show_progress" '
+    | gawk -v show_progress="$show_progress" '
     function alen(a, i, c) { for (i in a) c += 1; return c; }
     function isnum(x){ return (x == x + 0) }
-    function get(var, def) { return var == 0 || var == "" ? def : var }
+    function max(n, m) { return n >= m ? n : m; }
 
     BEGIN { FS="\t"; OFS="\t" }
 
@@ -82,70 +84,100 @@ git log --no-renames ${show_files:+--numstat} \
         # No Git output? (Probably an error.)
         if (NR == 0) { exit 1 }
 
-        if (show_progress) { printf("\033[2K\033[1G") }
+        # Iterate over arrays below using the same sort direction.
+        PROCINFO["sorted_in"] = "@val_num_desc"
 
-        col_cmd =  "git column --mode=row --padding=4 --width=80"
+        if (show_progress) { printf("\033[2K\033[1G") }
 
         commit_str = "%s:\t%s - %s (%s)\n"
         printf(commit_str commit_str "\n",
             "First Commit", sha, auth_date, reldate,
             "Last Commit", last_sha, last_date, last_reldate)
 
-        cmd = col_cmd
+        file_list_count = alen(file_list)
+        author_list_count = alen(author_list)
+        committer_list_count = alen(committer_list)
+        active_days_count = alen(active_days)
+
+        # %valposition$*widthposition$s
         printf( \
-            "Commits: " commit_count "\n"\
-            "Files: " get(alen(file_list), "-") "\n"\
-            "Lines: " get(lines_changed_count, "-") "\n"\
-            "Authors: " alen(author_list) "\n"\
-            "Committers: " alen(committer_list) "\n"\
-            "Active Days: " alen(active_days) "\n") | cmd
-        close(cmd)
+        "%1$*2$s" "%4$*5$s" "%7$*8$s" "%10$*11$s" "%13$*14$s" "%16$*17$s\n"\
+        "%3$*2$s" "%6$*5$s" "%9$*8$s" "%12$*11$s" "%15$*14$s" "%18$*17$s\n",
 
-        cmd = "sort -n -r | cut -f2,3 |" col_cmd
+            "Commits",
+            max(length("Commits"), length(commit_count)) + 2,
+            commit_count,
+
+            "Files",
+            max(length("Files"), length(file_list_count)) + 2,
+            file_list_count == 0 ? "-" : file_list_count,
+
+            "Lines", \
+            max(length("Lines"), length(lines_changed_count)) + 2,
+            lines_changed_count == 0 ? "-" : lines_changed_count,
+
+            "Authors",
+            max(length("Authors"), length(author_list_count)) + 2,
+            author_list_count,
+
+            "Committers",
+            max(length("Committers"), length(committer_list_count)) + 2,
+            committer_list_count,
+
+            "Active Days",
+            max(length("Active Days"), length(active_days_count)) + 2,
+            active_days_count)
+
         printf("\nTop days:\n\n")
+        for (h in top_weekdays) printf("%5s", h)
+        print ""
         for (h in top_weekdays) {
-            printf("%s\t%s: %.0f%%\n",
-                top_weekdays[h],
-                h,
-                (top_weekdays[h] / commit_count) * 100) | cmd
+            printf("%4.0f%%", (top_weekdays[h] / commit_count) * 100 )
         }
-        close(cmd)
+        print ""
 
-        cmd = "sort -n -r | head -12 | cut -f2,3 |" col_cmd
         printf("\nTop hours:\n\n")
+        top_hours_counter = 0
+        top_hours_limit = 8
         for (i in top_hours) {
-            printf("%s\t%s:00: %.0f%%\n",
-                top_hours[i],
-                i,
-                (top_hours[i] / commit_count) * 100) | cmd
+            printf("%*s", 4, i)
+            top_hours_counter += 1
+            if (top_hours_counter > top_hours_limit) break
         }
-        close(cmd)
+        print ""
+        top_hours_counter = 0
+        for (i in top_hours) {
+            printf("%3.0f%%", (top_hours[i] / commit_count) * 100 )
+            top_hours_counter += 1
+            if (top_hours_counter > top_hours_limit) break
+        }
+        print ""
 
-        cmd = "sort -n -r | head -5"
         printf("\nTop authors:\n\n")
+        topcom_cmd = "sort -n -r | head -5"
         for (j in author_list) {
-            printf("%s\t%5.1f%%\t%s\n",
+            printf("%s\t%*.1f%%\t%s\n",
                 author_list[j],
-                (author_list[j] / commit_count) * 100,
-                j) | cmd
+                5, (author_list[j] / commit_count) * 100,
+                j) | topcom_cmd
         }
-        close(cmd)
+        close(topcom_cmd)
 
-        cmd = "sort -n -r | head -5"
         printf("\nTop committers:\n\n")
+        topcom_cmd = "sort -n -r | head -5"
         for (l in committer_list) {
-            printf("%s\t%5.1f%%\t%s\n",
+            printf("%s\t%*.1f%%\t%s\n",
                 committer_list[l],
-                (committer_list[l] / commit_count) * 100,
-                l) | cmd
+                5, (committer_list[l] / commit_count) * 100,
+                l) | topcom_cmd
         }
-        close(cmd)
 
+        close(topcom_cmd)
         if (alen(file_list)) {
-            cmd = "sort -n -r | head -5"
             printf("\nTop files:\n\n")
-            for (k in file_list) print file_list[k], k | cmd
-            close(cmd)
+            topfil_cmd = "sort -n -r | head -5"
+            for (k in file_list) print file_list[k], k | topfil_cmd
+            close(topfil_cmd)
         }
     }
     '
