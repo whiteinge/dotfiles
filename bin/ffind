@@ -30,6 +30,7 @@ _main() {
     # Flag | Description
     # ---- | -----------
     # -V   | Show version.
+    # -q   | Output filenames in Vim quickfix format.
     # -h   | Usage and help text.
     # -x   | Enable xtrace debug logging.
     #
@@ -50,8 +51,9 @@ _main() {
     #     -path *node_modules
     #     -name *.pyc
 
-    while getopts Vhx opt; do
+    while getopts Vqhx opt; do
         case $opt in
+        q) quickfix=1;;
         V) printf 'Version: %s\n' $VERSION
            exit;;
         h) help _main
@@ -64,6 +66,10 @@ _main() {
 
     local spath="${1:?'Search path missing.'}"
     shift 1
+
+    if [ -n "$quickfix" ]; then
+        set -- "$@" -printf '%p:1: \n'
+    fi
 
     exec 4>&2 2>/dev/null
     local prune="$(cat \
