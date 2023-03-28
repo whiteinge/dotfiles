@@ -3,11 +3,11 @@
 #
 # Usage:
 #
-#     fetchall
+#     git fetchall
 #
 # With ssh pipelining:
 #
-#     fetchall "git@github.com"
+#     git fetchall "git@github.com"
 
 NAME=$(basename "$0")
 TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \

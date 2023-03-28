@@ -32,7 +32,6 @@ extract_clip -- Extract a clip from a larger video file
 fbin -- Fuzzy-find scripts in $HOME/bin by description
 fdlna -- Browse through dlna media directories using a fuzzy-finder
 femoji -- Add simple emoji fuzzy-finder
-fetchall -- Run `git fetch` on all repos under the current dir in parallel
 ffind -- (filtering find) - A wrapper around find to ignore noise directories
 ffmpeg-blur -- Blur a section of video based on an image mask
 field -- Output a name or numbered field from a delimited input
@@ -58,8 +57,8 @@ gext -- A wrapper to parallelize grep and optionally filter by filename pattern
 ghkeys -- Display GitHub public keys for a user
 git-attic -- List deleted files in a Git repository
 git-counter -- Atomically increment a counter value stored in a Git repository
+git-fetchall -- Run `git fetch` on all repos under the current dir in parallel
 git-graph-dag -- Draw a graphviz diagram of the Git DAG
-git-pagediffs -- Open individual Git commits as separate files in $PAGER
 git-pagediffs -- Paginate individual Git commits as separate files in $PAGER
 git-prompt -- Output a succinct, one-line Git status
 git-quickfix -- Open Vim with Git changes as quickfix entries
