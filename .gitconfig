@@ -146,7 +146,11 @@
     sl = $PAGER -F
     stat = $PAGER -F
     rl = $PAGER -F
+
+    # Custom git scripts in $HOME/bin
     sizes = $PAGER -F
+    attic = $PAGER -F
+    summary = $PAGER -F
 
 [merge]
     tool = diffconflicts
