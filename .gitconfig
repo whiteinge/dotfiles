@@ -25,13 +25,17 @@
     rh = reset --hard
     short = rev-parse --short
     ref = rev-parse --symbolic-full-name
-    sh = show --summary --stat --pretty=fuller --patch
     st = status -s -b
     sti = status -s -b --ignored
     stat = diff --stat
     sl = stash list --name-status --pretty='format:%gd [%ar]: %s'
     uncommit = reset HEAD~1
     lasttag = describe --abbrev=0
+
+    # Show as much information about a commit(s) as possible. For merge
+    # commits: Add -m to see diff for the whole merge; Omit -m to see diff for
+    # only conflict resolutions.
+    sh = show --summary --stat --pretty=fuller --patch
 
     editc = quickfix
     editm = quickfix -m modified
