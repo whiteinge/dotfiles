@@ -47,11 +47,10 @@ mkdir -p -m 700 "$TEMP"
         git diff --cached -p -U0 --diff-filter=AM
     else
         case $1 in
-            *..*) cmd='diff';;
-            *) cmd='diff-tree';;
+            *..*) git diff -p -U0 --diff-filter=AM -r "${@:-HEAD}";;
+            *) git show --first-parent -m -p -U0 --diff-filter=AM "${@:-HEAD}";;
         esac
 
-        git "$cmd" -p -U0 --diff-filter=AM -r "${@:-HEAD}"
     fi;
 } | diff-to-quickfix > "$QFLIST"
 
