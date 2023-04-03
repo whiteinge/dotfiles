@@ -65,11 +65,20 @@
     # git changelog HEAD~5...
     changelog = "!_() { \
         range=${1:-$(git lasttag)...HEAD}; \
-        printf 'Changes since %s\n\n' $range; \
+        printf '\nChanges since %s\n\n' $range; \
         git --no-pager log --reverse --no-merges --oneline \
             --pretty=format:'- %s' \
             $range; \
         printf '\n'; \
+    };_"
+
+    # Generate a full changelog in Markdown format from messages in each tag.
+    # Restrict output to specific tags with: -l tag1 tag2 tag3
+    fullchangelog = "!_() { \
+        printf '# CHANGELOG\n\n'; \
+        git tag \"$@\" \
+            --sort='-*committerdate' \
+            --format='## %(refname:short)%0a%0a%(*committerdate:iso)%0a%0a%(contents:body)'; \
     };_"
 
     # Cherry-pick a commit into the working directory as unstaged changes.
