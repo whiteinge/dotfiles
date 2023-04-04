@@ -62,6 +62,8 @@ command uxterm uxterm
 command firefox firefox
 command chrome google-chrome
 command qutebrowser qutebrowser
+command gimp gimp
+command inkscape inkscape
 
 # Predefined groups (get from xprop).
 autogroup 1     "uxterm"
