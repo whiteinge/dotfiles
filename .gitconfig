@@ -27,6 +27,7 @@
     ref = rev-parse --symbolic-full-name
     st = status -s -b
     sti = status -s -b --ignored
+    stu = status -s -b --untracked
     stat = diff --stat
     sl = stash list --name-status --pretty='format:%gd [%ar]: %s'
     uncommit = reset HEAD~1
@@ -139,16 +140,13 @@
     verbose = 2
 
 [core]
-    excludesfile = ~/.gitignore
+    excludesfile = ~/.gitexcludesfile
 
 [color]
     ui = auto
 
 [init]
-    # Use full path to dotfiles instead of the path to the symlinks in my
-    # homedir. This causes the target template files to get copied into new
-    # repos rather than copying the symlinks to those template files.
-    templatedir = ~/src/dotfiles/.git_template
+    templatedir = ~/.git_template
 
 [pager]
     # Don't paginate the oneline log output if less than one page.
@@ -193,4 +191,4 @@
 
 [include]
     path = ~/.gitemailconfig
-    path = ~/.gitconfig-customize
+    path = .gitconfig-customize

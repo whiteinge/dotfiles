@@ -1,10 +1,84 @@
-*~
-*.pyc
-.*swp
-.git/
-.hg/
-.svn/
-CVS/
-.ffind
-/tags
-/*.tags
+# Local ignores for my installed dotfiles.
+# (Paths relative to $HOME.)
+
+# Progs I often compile and install myself:
+/bin/cwm
+/bin/fzy
+/bin/view
+/bin/vim
+/bin/vimdiff
+/bin/vimtutor
+/bin/xcape
+
+# Cache files from my own scripts:
+/tmp/docs/devdocs.io
+/tmp/docs/mthesaur.txt
+/tmp/emoji.cache
+/tmp/venvs
+
+# Config dirs I won't ever version control:
+/.config/Code
+/.config/GIMP
+/.config/godot
+/.config/Google
+/.config/google-chrome
+/.config/inkscape
+/.config/Keybase
+/.config/libreoffice
+/.config/microsoft-edge
+/.config/Microsoft/Microsoft Teams
+/.config/mpv/watch_later
+/.config/Mullvad VPN
+/.config/pulse
+/.config/wslu
+
+# Vim temp files:
+/.vim/swapdir
+/.vim/undodir
+
+# Misc UNIX staples I don't care about:
+/.dbus
+/.gnome
+/.gnupg
+/.java
+/.pki
+
+# Third party progs I don't care to see:
+/.android
+/.audacity-data
+/.aws-cli
+/.cache
+/.cargo
+/.docker
+/.dotnet
+/.local/share/gnome-shell
+/.local/share/Steam
+/.local/share/virtualenv
+/.mozilla
+/.nodejs
+/.npm
+/.slocdata
+/.steam
+/.var/app/us.zoom.Zoom
+/.vscode-server
+/.zoom
+
+# Stupid, annoying, terrible path defaults:
+/go
+/snap
+
+# Common OS dirs:
+/Applications
+/Desktop
+/Documents
+/Downloads
+/Games
+/Mail
+/Movies
+/Music
+/Pictures
+/Steam
+/Videos
+
+/share
+/src
