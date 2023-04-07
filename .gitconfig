@@ -191,4 +191,7 @@
 
 [include]
     path = ~/.gitemailconfig
-    path = .gitconfig-customize
+    path = ~/.gitconfig-customize
+
+[includeIf "gitdir:~/src/dotfiles.git"]
+    path = .gitconfig-dotfiles
