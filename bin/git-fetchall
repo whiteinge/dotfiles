@@ -62,7 +62,10 @@ main() {
         exit $excode
     ' INT TERM EXIT
 
-    stdbuf -i0 -o0 -e0 find . -name .git -print0 2>/dev/null \
+    # Disable output buffering so we can draw a count in real-time.
+    stdbuf -i0 -o0 -e0 \
+    find -type d -exec test -e '{}'/refs -a -e '{}'/objects \; -print0 \
+    2>/dev/null \
         | tee "$REPO_CACHE" \
         | awk '
             BEGIN { RS="\0" }
