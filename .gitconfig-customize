@@ -1,0 +1,11 @@
+# This override is specifically for dotfiles in my home directory.
+
+[core]
+    logallrefupdates = true
+
+[status]
+    showUntrackedFiles = no
+
+[remote "shouse"]
+    url = git@github.com:whiteinge/dotfiles.git
+    fetch = +refs/heads/*:refs/remotes/shouse/*

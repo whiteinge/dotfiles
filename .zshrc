@@ -131,6 +131,11 @@ if [[ ! -n "$ZSHRUN" ]]; then
         '$(test ${+HISTFILE} -eq 0 && echo !!)' \
         '%{${reset_color}%}' \
 
+        # In dotfiles mode?
+        '%{${fg[yellow]}%}' \
+        '$(test -n "$GIT_WORK_TREE" && echo ..)' \
+        '%{${reset_color}%}' \
+
         # Any background jobs?
         '%(1j.%j .)' \
 
@@ -316,6 +321,36 @@ if [[ -n "$ZSHRUN" ]]; then
     PROMPT="zshrun %~> "
     RPROMPT=""
 fi
+
+# }}}
+# dotfiles Toggle Git dir and work-tree env vars {{{1
+#
+# I don't want the usual `--git-dir=<dir> --work-tree=<dir>` alias to work on
+# my dotfiles; I'd rather stick with the vanilla `git` command for the muscle
+# memory and tmux status display. This function turns "dotfiles mode" on and
+# off by setting and unsetting env vars instead.
+#
+# Steps to move into a new machine:
+# 1. git clone --bare <dotfiles-url> $HOME/src/dotfiles.git
+# 2. git config remote.origin.fetch 'refs/heads/*:refs/heads/*'
+# 3. git --git-dir=$HOME/src/dotfiles.git --work-tree=$HOME checkout
+# 4. Run necessary bin/bootstrap-foo scripts from there.
+
+dotfiles () {
+    if [[ "$GIT_WORK_TREE" = "$HOME" ]]; then
+        unset GIT_DIR
+        unset GIT_WORK_TREE
+        tmux set-environment -g -u GIT_DIR
+        tmux set-environment -g -u GIT_WORK_TREE
+        tmux refresh -S
+    else
+        export GIT_DIR="${HOME}/src/dotfiles.git"
+        export GIT_WORK_TREE="$HOME"
+        tmux set-environment -g GIT_DIR "$GIT_DIR"
+        tmux set-environment -g GIT_WORK_TREE "$GIT_WORK_TREE"
+        tmux refresh -S
+    fi
+}
 
 # }}}
 # Use a fuzzy-finder for common CLI tasks {{{1

@@ -1,7 +1,8 @@
 #!/bin/sh
 # Generate a README for all $DOTFILES/bin scripts
 
-find "${HOME}/src/dotfiles/bin" -type f -print0 |
+# TODO: include staged or untracked files here?
+git --git-dir=$HOME/src/dotfiles.git ls-files -z -- bin |
     xargs -0 -r -n1 awk '
         FILENAME ~ "README" { next }
         /^#?[a-zA-Z ]+/ {

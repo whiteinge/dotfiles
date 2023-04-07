@@ -12,7 +12,7 @@ curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-
 chmod +x /usr/local/bin/youtube-dl
 
 # Install the baseline packages.
-xargs /usr/local/bin/brew install < $HOME/src/dotfiles/tmp/config/packages-brew
+xargs /usr/local/bin/brew install < $HOME/tmp/config/packages-brew
 
 printf '
 android-platform-tools
@@ -33,12 +33,11 @@ printf 'Adding zsh to /etc/shells (enter password):\n'
 sudo printf '/usr/local/bin/zsh\n' >> /etc/shells
 chsh -s /usr/local/bin/zsh
 
-/usr/X11/bin/lndir -silent $HOME/src/dotfiles $HOME
 ( cd $HOME; ln -s .zsh_customize-brew .zsh_customize; )
 ( cd $HOME/bin; ln -s osx-notify-send notify-send; ln -s osx-xclip xclip; )
 
 # Install script that toggles Wifi on and off.
-$HOME/src/dotfiles/bin/osx-toggle-interfaces install_plist
+$HOME/bin/osx-toggle-interfaces install_plist
 
 printf '
 All set (hopefully).

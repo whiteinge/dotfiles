@@ -1,0 +1,16 @@
+# Global ignore file for all repos.
+
+*~
+.*swp
+
+*.pyc
+
+.git/
+.hg/
+.svn/
+CVS/
+
+/.ffind
+
+/tags
+/*.tags
