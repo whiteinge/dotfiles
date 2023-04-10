@@ -654,7 +654,8 @@ com! Gdiff :call stagediff#StageDiff()
 com! Gblame :exe 'tabnew +'. line('.') .' %'
     \| :55vnew
     \| :silent! call scratch#Scratch()
-    \| :exe 'r !git blame --date=relative -- '. expand('#:p:~:.')
+    \| :exe 'r !git blame -f --date=relative -- '. expand('#:p:~:.')
+    \   ." | awk '{ print $1, substr($0, index($0, \"(\") + 1) }'"
     \| 1delete
     \| :wincmd p
     \| :windo setl nofoldenable nowrap scrollbind
