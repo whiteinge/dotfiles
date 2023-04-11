@@ -1,4 +1,4 @@
-#!/usr/bin/env -S awk -f
+#!/usr/bin/awk -f
 # Print each input character on a new line
 #
 # Usage:
