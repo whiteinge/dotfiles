@@ -14,6 +14,8 @@ TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
     'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
 REPO_CACHE="${TEMP}/fetchall.txt"
 
+ControlPath='~/.ssh/master-%r@%h:%p'
+
 trap '
     excode=$?; trap - EXIT;
     rm -f '"$REPO_CACHE"'
@@ -24,8 +26,7 @@ _wait_for_ssh () {
     # Block until a multiplexed ssh connection is ready
     #
     # Useful for making a single ssh connection that can be reused for many ssh
-    # operations. This requires ControlMaster and ControlPath to be configured
-    # in your ~/.ssh/config file.
+    # operations.
     #
     # Usage:
     #   SSH="me@example.com"
@@ -37,7 +38,7 @@ _wait_for_ssh () {
     local ssh="${1?:ssh hostname required}"
 
     printf 'Connecting to "%s".\n' "$ssh"
-    while ! ssh -O check ${ssh} 1>/dev/null 2>/dev/null true; do
+    while ! ssh -q -S "$ControlPath" -O check ${ssh} true 2>/dev/null; do
         printf '.' ; sleep 0.5;
     done
     printf '\nConnected!\n'
@@ -62,6 +63,8 @@ main() {
         exit $excode
     ' INT TERM EXIT
 
+    printf 'Looking for Git repos: '
+
     # Disable output buffering so we can draw a count in real-time.
     stdbuf -i0 -o0 -e0 \
     find -type d -exec test -e '{}'/refs -a -e '{}'/objects \; -print0 \
@@ -74,14 +77,14 @@ main() {
         '
 
     if [ -n "$SSH_URI" ]; then
-        ssh -N ${SSH_URI} &
+        ssh -q -M -S "$ControlPath" -N ${SSH_URI} &
         _wait_for_ssh ${SSH_URI}
     fi
 
     < "$REPO_CACHE" xargs -t -r -0 -P5 -I{} git --git-dir={} fetch --all "$@"
 
     if [ -n "$SSH_URI" ]; then
-        ssh -O exit "$SSH_URI"
+        ssh -q -S "$ControlPath" -O exit "$SSH_URI"
     fi
 
     < "$REPO_CACHE" xargs -0 -n1 \
