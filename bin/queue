@@ -27,9 +27,9 @@ _main () {
     # -x   | Enable xtrace debug logging.
     # -n   | Delete the queue file before starting.
     # -P   | Max number of jobs to run in parallel.
-    # -L   | List queued jobs and exit.
-    # -F   | List failed jobs and exit.
-    # -R   | List running jobs and exit.
+    # -L   | List all jobs.
+    # -F   | List failed jobs.
+    # -R   | List running jobs.
     #
     # Flags _must_ be the first argument to `NAME`.
     #
@@ -57,9 +57,12 @@ _main () {
            exit;;
         P) MAXJOBS="$OPTARG";;
         n) rm -rf "$QUEUE_DIR";;
-        L) xargs -0 -n1 < "$QUEUE"; exit ;;
-        F) grep -v 'Done 0' "$QUEUE_DIR"/*.ret; exit ;;
-        R) find "$QUEUE_DIR" -name '*.ret' -type f -size 0; exit ;;
+        L) xargs -0 -n1 < "$QUEUE" | grep . ; exit $? ;;
+        F) grep -v 'Done 0' "$QUEUE_DIR"/*.ret 2>/dev/null
+           exit $? ;;
+        R) find "$QUEUE_DIR" -name '*.ret' -type f -size 0 2>/dev/null \
+            | grep . 2>/dev/null
+            exit $? ;;
         x) set -x;;
         esac
     done
@@ -69,6 +72,17 @@ _main () {
     touch "$QUEUE"
 
     if [ $# -eq 0 ]; then
+        trap '
+            excode=$?; trap - EXIT;
+            "$0" -F; failed=$?
+            "$0" -R; running=$?
+            if [ "$failed" -ne 0 -a "$running" -ne 0 ]; then
+                printf "\nQueue complete with no failures. Cleaning...\n" 1>&2
+                rm -rf -- '"$QUEUE_DIR"'
+            fi
+            exit $excode
+        ' INT TERM EXIT
+
         tail -z -n+0 -f "$QUEUE" \
             | xargs -0 -r -I{} -P "$MAXJOBS" sh -c \
                 'echo Start $$
