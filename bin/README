@@ -65,6 +65,7 @@ git-quickfix -- Open Vim with Git changes as quickfix entries
 git-sizes -- Output the largest objects in a repository
 git-stub -- Stub Git commits (touch a file, stage the file, commit the file) for demoing
 git-summary -- Show a summary of the commits, authors, and files in a Git repo
+git-todo -- Store a todo list in any Git repository
 hr -- Print a line of characters
 htmlstar -- Use xmlstarlet with html
 httpdir -- Serve a local directory via HTTP (via socat) with or without SSL
@@ -114,7 +115,6 @@ thes -- Search Grady Ward's Moby Project thesaurus with a fuzzy-finder
 timebuddy -- Compare columns of hours in a day across multiple timezones
 timer -- Output seconds elapsed
 tmux-tiled -- Make a bunch of tiled tmux panes via find -exec or xargs
-todo -- Store a todo list in any Git repository
 total -- Sum (total) numbers in a column
 unique-lines -- Remove duplicate lines (no sort requirement)
 urldecode -- Decode urlencoded stdin

@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env sh
 # Store a todo list in any Git repository
 #
 # A semi-port of the excellent t to use Git as storage.
@@ -7,16 +7,13 @@
 # The todos are stored as namespaced refs. The namespace default namespace can
 # be overridden by setting TODO_NS.
 #
-# Setup: either the CWD should be a Git repo or the TODO_REPO variable should
+# Setup: either the CWD should be a Git repo or the GIT_DIR variable should
 # point to a Git repo used to store the todo list.
 #
 # Usage: run without args to add a new todo item; run with -h to see args.
 
 NAME=$(basename "$0")
-TODO_REPO=${TODO_REPO:-'./.git'}
 TODO_NS=${TODO_NS:-'todo'}
-
-local -a git=( "git" "--git-dir" "${TODO_REPO}" )
 
 add() {
     local in="$*"
@@ -27,17 +24,17 @@ add() {
     fi
 
     printf '%s' "$in" \
-        | "$git[@]" hash-object --stdin -w \
-        | xargs -I{} "$git[@]" update-ref "refs/${TODO_NS}/{}" {}
+        | git hash-object --stdin -w \
+        | xargs -I{} git update-ref "refs/${TODO_NS}/{}" {}
 }
 
 list() {
-    "${git[@]}" for-each-ref --format '%(refname:lstrip=2)' "refs/${TODO_NS}" \
-        | "${git[@]}" cat-file --batch='%(objectname)' \
+    git for-each-ref --format '%(refname:lstrip=2)' "refs/${TODO_NS}" \
+        | git cat-file --batch='%(objectname)' \
         | xargs -r -d '\n' -n 2 \
         | while read -r sha content; do
             printf '%s - %s\n' \
-                "$(${git[@]} rev-parse --short=4 ${sha})" \
+                "$(git rev-parse --short=4 ${sha})" \
                 "$content"
         done \
         | sort
@@ -45,8 +42,8 @@ list() {
 
 del() {
     local id="${1:?Todo ID is required.}"
-    "$git[@]" rev-parse "$id" \
-        | xargs -r -I{} "$git[@]" update-ref -d "refs/${TODO_NS}/{}" {}
+    git rev-parse "$id" \
+        | xargs -r -I{} git update-ref -d "refs/${TODO_NS}/{}" {}
 }
 
 help() {
@@ -77,12 +74,6 @@ main() {
     test -d "$TODO_REPO"
     if [ "$?" -ne 0 ]; then
         printf 'Todo repository "%s" not found.\n' "$TODO_REPO" 1>&2
-        exit 1
-    fi
-
-    command -v "git" 1>/dev/null 2>/dev/null
-    if [ "$?" -ne 0 ]; then
-        printf 'Git must be installed.\n' 1>&2
         exit 1
     fi
 
