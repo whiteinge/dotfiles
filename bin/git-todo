@@ -16,28 +16,28 @@ NAME=$(basename "$0")
 TODO_NS=${TODO_NS:-'todo'}
 
 add() {
-    local in="$*"
+    # local in="$*"
 
-    if [[ $in == *$'\n'* ]]; then
-        printf 'TODOs cannot be multi-line.\n' 1>&2
-        exit 1
-    fi
+    # if [ $in = *$'\n'* ]; then
+    #     printf 'TODOs cannot be multi-line.\n' 1>&2
+    #     exit 1
+    # fi
 
-    printf '%s' "$in" \
+    printf '%s' "$*" \
         | git hash-object --stdin -w \
         | xargs -I{} git update-ref "refs/${TODO_NS}/{}" {}
 }
 
 list() {
-    git for-each-ref --format '%(refname:lstrip=2)' "refs/${TODO_NS}" \
-        | git cat-file --batch='%(objectname)' \
-        | xargs -r -d '\n' -n 2 \
-        | while read -r sha content; do
-            printf '%s - %s\n' \
-                "$(git rev-parse --short=4 ${sha})" \
-                "$content"
-        done \
-        | sort
+    git for-each-ref --format '%(refname:lstrip=2) %(objectname:short=4)' "refs/todo" \
+        | git cat-file --batch='%(rest) XXX' \
+        | awk '
+        /XXX$/ { printf("%s", $1); sha = $1; pad = 0 }
+        !/XXX$/ {
+            printf("%*s%s\n", pad, " ", $0)
+            pad = length(sha) + 1
+        }
+        '
 }
 
 del() {
@@ -70,12 +70,6 @@ main() {
     local opt
     local OPTARG
     local OPTIND
-
-    test -d "$TODO_REPO"
-    if [ "$?" -ne 0 ]; then
-        printf 'Todo repository "%s" not found.\n' "$TODO_REPO" 1>&2
-        exit 1
-    fi
 
     if [ $# -eq 0 ]; then
         cmd='list'
