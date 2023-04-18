@@ -27,6 +27,7 @@ _main () {
     # -x   | Enable xtrace debug logging.
     # -n   | Delete the queue file before starting.
     # -P   | Max number of jobs to run in parallel.
+    # -k   | Don't remove queue directory on successful finish.
     # -L   | List all jobs.
     # -F   | List failed jobs.
     # -R   | List running jobs.
@@ -50,12 +51,13 @@ _main () {
     local OPTARG
     local OPTIND
 
-    while getopts hP:nxLFR opt; do
+    while getopts hP:nxLFRk opt; do
         case $opt in
         h) help _main
            printf '\n'
            exit;;
         P) MAXJOBS="$OPTARG";;
+        k) KEEP_DIR=1;;
         n) rm -rf "$QUEUE_DIR";;
         L) xargs -0 -n1 < "$QUEUE" | grep . ; exit $? ;;
         F) grep -v 'Done 0' "$QUEUE_DIR"/*.ret 2>/dev/null
@@ -76,7 +78,7 @@ _main () {
             excode=$?; trap - EXIT;
             "$0" -F; failed=$?
             "$0" -R; running=$?
-            if [ "$failed" -ne 0 -a "$running" -ne 0 ]; then
+            if [ -z "$KEEP_DIR" -a "$failed" -ne 0 -a "$running" -ne 0 ]; then
                 printf "\nQueue complete with no failures. Cleaning...\n" 1>&2
                 rm -rf -- '"$QUEUE_DIR"'
             fi
