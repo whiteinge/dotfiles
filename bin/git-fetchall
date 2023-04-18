@@ -67,8 +67,8 @@ main() {
 
     # Disable output buffering so we can draw a count in real-time.
     stdbuf -i0 -o0 -e0 \
-    find -name HEAD -execdir test -O refs -a -O objects \; -printf '%h\0' \
-    2>/dev/null \
+    find -name HEAD -printf '%h\0' | xargs -0 -L1 sh -c \
+        'test -O "$1"/refs -a -O "$1"/objects && printf "%s\0" "$1"' - \
         | tee "$REPO_CACHE" \
         | awk '
             BEGIN { RS="\0" }
