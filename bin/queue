@@ -31,6 +31,8 @@ _main () {
     # -L   | List all jobs.
     # -F   | List failed jobs.
     # -R   | List running jobs.
+    # -u   | Increase max jobs number for already-running queue.
+    # -d   | Decrease max jobs number for already-running queue.
     #
     # Flags _must_ be the first argument to `NAME`.
     #
@@ -51,7 +53,7 @@ _main () {
     local OPTARG
     local OPTIND
 
-    while getopts hP:nxLFRk opt; do
+    while getopts hP:nxLFRkud opt; do
         case $opt in
         h) help _main
            printf '\n'
@@ -65,6 +67,8 @@ _main () {
         R) find "$QUEUE_DIR" -name '*.ret' -type f -size 0 2>/dev/null \
             | grep . 2>/dev/null
             exit $? ;;
+        u) 2>/dev/null < "${QUEUE_DIR}/xargs.pid" xargs kill -USR1 ; exit ;;
+        d) 2>/dev/null < "${QUEUE_DIR}/xargs.pid" xargs kill -USR2 ; exit ;;
         x) set -x;;
         esac
     done
@@ -88,6 +92,9 @@ _main () {
         tail -z -n+0 -f "$QUEUE" \
             | xargs -0 -r -I{} -P "$MAXJOBS" sh -c \
                 'echo Start $$
+                if [ ! -e '"$QUEUE_DIR"'/xargs.pid ];then
+                    printf '\''%s'\'' "$PPID" > '"$QUEUE_DIR"'/xargs.pid
+                fi
                 printf '\''%s\n'\'' "{}" > '"$QUEUE_DIR"'/job-$$.job
                 touch '"$QUEUE_DIR"'/job-$$.ret
                 {} 1>'"$QUEUE_DIR"'/job-$$.out 2>'"$QUEUE_DIR"'/job-$$.err
