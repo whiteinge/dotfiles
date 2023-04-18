@@ -8,17 +8,19 @@ trap '
 ' INT TERM EXIT
 
 {
-    for i in {0..15}; do
+    i=0; while [ $i -le 15 ]; do
         tput setaf $i
         printf '%02d\n' "$i"
+        i=$(( $i + 1 ))
     done;
-} | column -c 80
+} | git column --mode=column --width=80
 
 printf '\n'
 
 {
-    for i in {16..255}; do
+    i=16; while [ $i -le 255 ]; do
         tput setaf $i
         printf '%03d\n' "$i"
+        i=$(( $i + 1 ))
     done;
-} | column
+} | git column --mode=column --width=80
