@@ -216,8 +216,8 @@ alias ifstat='ifstat -S -n -z 5'
 
 # Aliases around scripts in $HOME/bin:
 alias tea-timer="countdown 120 && notify-send 'Tea!' 'Tea is done.'"
-alias fetchall-gh='fetchall "git@github.com"'
-alias fetchall-gl='fetchall "git@gitlab.com"'
+alias fetchall-gh='git fetchall "git@github.com"'
+alias fetchall-gl='git fetchall "git@gitlab.com"'
 
 # Aliases that make new things:
 alias ducks='du -cks * | sort -rn | head -15'
