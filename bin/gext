@@ -122,7 +122,7 @@ _main () {
             $ext $pth \
             -print0 \
         | xargs -0 -P"${parallel:-8}" \
-            grep --color"${usepager:+=always}" \
+            grep --line-buffered --color"${usepager:+=always}" \
             ${is_icase:+-i} \
             -nH -E -e "${search}" "$@"
         printf '%s\n' $? > "$EXIT"
