@@ -62,7 +62,7 @@ _main() {
     local prune="$(cat \
         "${HOME}/.ffind" \
         "${PWD}/.ffind" \
-        "$(git rev-parse --absolute-git-dir)/../.ffind" |
+        "$(git rev-parse --show-toplevel)/.ffind" |
         awk '/^-/ { printf("%s%s", sep, $0); sep=" -o " }')"
     exec 2>&4 4>&-
 
