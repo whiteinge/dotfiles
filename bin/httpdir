@@ -11,6 +11,8 @@ HTTP_METHOD=''
 HTTP_PATH=''
 HTTP_VERSION=''
 
+fnmatch () { case "$2" in $1) return 0 ;; *) return 1 ;; esac ; }
+
 rep() {
     local status="${1:?Status is required.}"
     shift 1
@@ -43,7 +45,8 @@ http() {
     fi
 
     local rpath="$PWD$HTTP_PATH"
-    if [ "$rpath" = *..* ]; then
+
+    if fnmatch '*..*' "$rpath"; then
         rep 400
         exit
     fi
