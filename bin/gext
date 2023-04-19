@@ -44,107 +44,97 @@ TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
     'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
 EXIT="${TEMP}/exit"
 
-_main () {
-    local opt
-    local OPTARG
-    local OPTIND
+trap '
+    excode=$?; trap - EXIT;
+    rm -rf -- '"$TEMP"'
+    exit $excode
+' INT TERM EXIT
 
-    local ext
-
-    trap '
-        excode=$?; trap - EXIT;
-        rm -rf -- '"$TEMP"'
-        exit $excode
-    ' INT TERM EXIT
-
-    while getopts hxP:pT:X: opt; do
-        case $opt in
-        h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
-        x) set -x;;
-        P) parallel="$OPTARG" ;;
-        p) nopager=1 ;;
-        T)
-            if [ -n "$pth" ]; then
-                pth="-path ${OPTARG} -o ${pth}"
-            else
-                pth="-path ${OPTARG}"
-            fi
-            ;;
-        X)
-            if [ -n "$ext" ]; then
-                ext="-name ${OPTARG} -o ${ext}"
-            else
-                ext="-name ${OPTARG}"
-            fi
-            ;;
-        esac
-    done
-    shift $(( OPTIND - 1 ))
-
-    local search="${1:?'Missing "searchterm".'}"; shift
-
-    if [ -t 1 ] && [ -z "$nopager" ]; then
-        usepager=1;
-    fi
-
-    # Wrap any filename pattern args in parens for find.
-    if [ -n "$pth" ]; then
-        pth="( ${pth} )"
-    fi
-    if [ -n "$ext" ]; then
-        ext="( ${ext} )"
-    fi
-
-    # Check for capital letters in the search pattern.
-    if ! $(printf '%s\n' "$search" | grep -q -E '[A-Z]' 2>/dev/null); then
-        local is_icase=1
-    fi
-
-    # If we're given a search path use find to generate list of files to
-    # search, otherwise assume the file list is provided and just pass to grep.
-    if [ "$#" -eq 0 ] ; then
-        searchpath='.'
-    else
-        if [ -d "$1" ]; then
-            searchpath="$1"
-            shift
-        fi
-    fi
-
-    mkdir -p -m 700 "$TEMP"
-
-    {
-    if [ -n "$searchpath" ]; then
-        set -f
-
-        ffind "$searchpath" \
-            -type f \
-            $ext $pth \
-            -print0 \
-        | xargs -0 -P"${parallel:-8}" \
-            grep --line-buffered --color"${usepager:+=always}" \
-            ${is_icase:+-i} \
-            -nH -E -e "${search}" "$@"
-        printf '%s\n' $? > "$EXIT"
-
-        set +f
-    else
-        grep --color"${usepager:+=always}" \
-            ${is_icase:+-i} \
-            -nH -E -e "${search}" "$@"
-        printf '%s\n' $? > "$EXIT"
-    fi;
-    } | {
-        if [ -n "$usepager" ]; then
-            $PAGER -FR
+while getopts hxP:pT:X: opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    P) parallel="$OPTARG" ;;
+    p) nopager=1 ;;
+    T)
+        if [ -n "$pth" ]; then
+            pth="-path ${OPTARG} -o ${pth}"
         else
-            cat
+            pth="-path ${OPTARG}"
         fi
-    }
+        ;;
+    X)
+        if [ -n "$ext" ]; then
+            ext="-name ${OPTARG} -o ${ext}"
+        else
+            ext="-name ${OPTARG}"
+        fi
+        ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
 
-    # Is there a simpler way to retain the exit code?
-    read ret < "$EXIT"
-    exit $ret
+search="${1:?'Missing "searchterm".'}"; shift
+
+if [ -t 1 ] && [ -z "$nopager" ]; then
+    usepager=1;
+fi
+
+# Wrap any filename pattern args in parens for find.
+if [ -n "$pth" ]; then
+    pth="( ${pth} )"
+fi
+if [ -n "$ext" ]; then
+    ext="( ${ext} )"
+fi
+
+# Check for capital letters in the search pattern.
+if ! $(printf '%s\n' "$search" | grep -q -E '[A-Z]' 2>/dev/null); then
+    is_icase=1
+fi
+
+# If we're given a search path use find to generate list of files to
+# search, otherwise assume the file list is provided and just pass to grep.
+if [ "$#" -eq 0 ] ; then
+    searchpath='.'
+else
+    if [ -d "$1" ]; then
+        searchpath="$1"
+        shift
+    fi
+fi
+
+mkdir -p -m 700 "$TEMP"
+
+{
+if [ -n "$searchpath" ]; then
+    set -f
+
+    ffind "$searchpath" \
+        -type f \
+        $ext $pth \
+        -print0 \
+    | xargs -0 -P"${parallel:-8}" \
+        grep --line-buffered --color"${usepager:+=always}" \
+        ${is_icase:+-i} \
+        -nH -E -e "${search}" "$@"
+    printf '%s\n' $? > "$EXIT"
+
+    set +f
+else
+    grep --color"${usepager:+=always}" \
+        ${is_icase:+-i} \
+        -nH -E -e "${search}" "$@"
+    printf '%s\n' $? > "$EXIT"
+fi;
+} | {
+    if [ -n "$usepager" ]; then
+        $PAGER -FR
+    else
+        cat
+    fi
 }
 
-_main "$@"
+# Is there a simpler way to retain the exit code?
+read ret < "$EXIT"
+exit $ret

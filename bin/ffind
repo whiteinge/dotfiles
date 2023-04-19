@@ -39,48 +39,44 @@
 NAME=$(basename "$0")
 VERSION='0.9.0'
 
-_main() {
-    while getopts Vqhx opt; do
-        case $opt in
-        q) quickfix=1;;
-        V) printf 'Version: %s\n' $VERSION
-           exit;;
-        h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
-        x) set -x;;
-        esac
-    done
-    shift $(( OPTIND - 1 ))
-
-    local spath="${1:?'Search path missing.'}"
-    shift 1
-
-    if [ -n "$quickfix" ]; then
-        set -- "$@" -printf '%p:1: \n'
-    fi
-
-    exec 4>&2 2>/dev/null
-    local prune="$(cat \
-        "${HOME}/.ffind" \
-        "${PWD}/.ffind" \
-        "$(git rev-parse --show-toplevel)/.ffind" |
-        awk '/^-/ { printf("%s%s", sep, $0); sep=" -o " }')"
-    exec 2>&4 4>&-
-
-    if [ -n "$prune" ]; then
-        prune="( ${prune} ) -prune"
-    fi
-
-    case "$@" in
-        *-print|*-print0|*-printf*) ;;
-        *) local add_print=1 ;;
+while getopts Vqhx opt; do
+    case $opt in
+    q) quickfix=1;;
+    V) printf 'Version: %s\n' $VERSION
+       exit;;
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
     esac
+done
+shift $(( OPTIND - 1 ))
 
-    set -f
-    find "$spath" \
-        $prune \
-        -o "$@" \
-        ${add_print+-print}
-    set +f
-}
+spath="${1:?'Search path missing.'}"
+shift 1
 
-_main "$@"
+if [ -n "$quickfix" ]; then
+    set -- "$@" -printf '%p:1: \n'
+fi
+
+exec 4>&2 2>/dev/null
+prune="$(cat \
+    "${HOME}/.ffind" \
+    "${PWD}/.ffind" \
+    "$(git rev-parse --show-toplevel)/.ffind" |
+    awk '/^-/ { printf("%s%s", sep, $0); sep=" -o " }')"
+exec 2>&4 4>&-
+
+if [ -n "$prune" ]; then
+    prune="( ${prune} ) -prune"
+fi
+
+case "$@" in
+    *-print|*-print0|*-printf*) ;;
+    *) add_print=1 ;;
+esac
+
+set -f
+find "$spath" \
+    $prune \
+    -o "$@" \
+    ${add_print+-print}
+set +f
