@@ -1,62 +1,50 @@
 #!/usr/bin/env sh
 # A wrapper to parallelize grep and optionally filter by filename pattern
+#
+# Usage
+#
+# `NAME [<flags>] searchterm [<searchpath> | (<grep args>...)]`
+#
+#     NAME -h
+#     NAME searchterm
+#     NAME searchterm /search/path
+#     NAME -X '*.js' -X '*.jsx' searchterm
+#     NAME searchterm file1 file2 file3
+#
+# Flag | Description
+# ---- | -----------
+# -V   | Show version.
+# -h   | Usage and help text.
+# -x   | Enable xtrace debug logging.
+# -P   | Override parallel xargs processes (defualt: 8).
+# -X   | Filter files by pattern before searching; multiple occurences ok.
+# -T   | Pass additional paths to ffind; multiple occurences ok.
+# -p   | Do not open search results in a pager.
+#
+# Flags _must_ be the first argument to `NAME`, before `searchterm`.
+#
+# Search will be case-sensitive if the search text contains capital
+# letters.
+#
+# If given no search path, a single search path, or specific search paths
+# via `-T` this wrapper will use ffind to generate the list of files and
+# parallelize grep using xargs. This list can be additionally filtered by
+# filename pattern using zero or more -X flags.
+#
+# Automatically parallelized:
+# gext searchterm
+# gext searchterm ./searchpath
+# gext -X '*.js' -X '*.jsx' searchterm ./searchpath
+#
+# If given one or more file names to search it will instead behave like
+# regular grep and ffind will not be invoked.
 
 NAME=$(basename "$0")
 TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
     'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
 EXIT="${TEMP}/exit"
 
-help () {
-    # Extract contiguous lines of comments in a function as help text
-
-    awk -v cmd="${1:?'Command name required.'}" -v NAME="$NAME" '
-    $0 ~ "^" cmd "\\s*\\(\\)\\s*{" { is_found=1; next }
-    is_found && !NF { exit }
-    is_found { gsub(/^\s*#\s?/, ""); gsub(/NAME/, NAME); print; }
-    ' "$0"
-}
-
 _main () {
-    # A wrapper to parallelize grep and optionally filter by filename pattern
-    #
-    # ## Usage
-    #
-    # `NAME [<flags>] searchterm [<searchpath> | (<grep args>...)]`
-    #
-    #     NAME -h
-    #     NAME searchterm
-    #     NAME searchterm /search/path
-    #     NAME -X '*.js' -X '*.jsx' searchterm
-    #     NAME searchterm file1 file2 file3
-    #
-    # Flag | Description
-    # ---- | -----------
-    # -V   | Show version.
-    # -h   | Usage and help text.
-    # -x   | Enable xtrace debug logging.
-    # -P   | Override parallel xargs processes (defualt: 8).
-    # -X   | Filter files by pattern before searching; multiple occurences ok.
-    # -T   | Pass additional paths to ffind; multiple occurences ok.
-    # -p   | Do not open search results in a pager.
-    #
-    # Flags _must_ be the first argument to `NAME`, before `searchterm`.
-    #
-    # Search will be case-sensitive if the search text contains capital
-    # letters.
-    #
-    # If given no search path, a single search path, or specific search paths
-    # via `-T` this wrapper will use ffind to generate the list of files and
-    # parallelize grep using xargs. This list can be additionally filtered by
-    # filename pattern using zero or more -X flags.
-    #
-    # Automatically parallelized:
-    # gext searchterm
-    # gext searchterm ./searchpath
-    # gext -X '*.js' -X '*.jsx' searchterm ./searchpath
-    #
-    # If given one or more file names to search it will instead behave like
-    # regular grep and ffind will not be invoked.
-
     local opt
     local OPTARG
     local OPTIND
@@ -71,9 +59,7 @@ _main () {
 
     while getopts hxP:pT:X: opt; do
         case $opt in
-        h) help _main
-           printf '\n'
-           exit;;
+        h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
         x) set -x;;
         P) parallel="$OPTARG" ;;
         p) nopager=1 ;;

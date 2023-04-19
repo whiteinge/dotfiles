@@ -1,64 +1,51 @@
 #!/usr/bin/env sh
 # (filtering find) - A wrapper around find to ignore noise directories
+#
+# Usage
+#
+# `NAME [<flags>] <searchpath> [...other find arguments...]
+#
+#     NAME -h
+#     NAME .
+#     NAME ./somepath
+#     NAME . -type d
+#     NAME . -type f -name '*.js'
+#
+# Flag | Description
+# ---- | -----------
+# -V   | Show version.
+# -q   | Output filenames in Vim quickfix format.
+# -h   | Usage and help text.
+# -x   | Enable xtrace debug logging.
+#
+# Flags _must_ be the first argument to `NAME`, before `searchterm`.
+#
+# Patterns to ignore are obtained from reading the following files:
+#
+# - `$HOME/.ffind`
+# - `$PWD/.ffind`
+# - `$(git rev-parse --show-toplevel)/.ffind`
+#
+# The ignore file format is one entry per line, with an expression that
+# find can consume. Blank lines and comments (#) are ignored:
+#
+#     # This is a comment.
+#
+#     -path *.git
+#     -path *node_modules
+#     -name *.pyc
+
 
 NAME=$(basename "$0")
 VERSION='0.9.0'
 
-help () {
-    # Extract contiguous lines of comments in a function as help text
-
-    awk -v cmd="${1:?'Command name required.'}" -v NAME="$NAME" '
-    $0 ~ "^" cmd "\\s*\\(\\)\\s*{" { is_found=1; next }
-    is_found && !NF { exit }
-    is_found { gsub(/^\s*#\s?/, ""); gsub(/NAME/, NAME); print; }
-    ' "$0"
-}
-
 _main() {
-    # A wrapper around find to ignore noise directories
-    #
-    # ## Usage
-    #
-    # `NAME [<flags>] <searchpath> [...other find arguments...]
-    #
-    #     NAME -h
-    #     NAME .
-    #     NAME ./somepath
-    #     NAME . -type d
-    #     NAME . -type f -name '*.js'
-    #
-    # Flag | Description
-    # ---- | -----------
-    # -V   | Show version.
-    # -q   | Output filenames in Vim quickfix format.
-    # -h   | Usage and help text.
-    # -x   | Enable xtrace debug logging.
-    #
-    # Flags _must_ be the first argument to `NAME`, before `searchterm`.
-    #
-    # Patterns to ignore are obtained from reading the following files:
-    #
-    # - `$HOME/.ffind`
-    # - `$PWD/.ffind`
-    # - `$(git rev-parse --absolute-git-dir)/../.ffind`
-    #
-    # The ignore file format is one entry per line, with an expression that
-    # find can consume. Blank lines and comments (#) are ignored:
-    #
-    #     # This is a comment.
-    #
-    #     -path *.git
-    #     -path *node_modules
-    #     -name *.pyc
-
     while getopts Vqhx opt; do
         case $opt in
         q) quickfix=1;;
         V) printf 'Version: %s\n' $VERSION
            exit;;
-        h) help _main
-           printf '\n'
-           exit;;
+        h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
         x) set -x;;
         esac
     done
