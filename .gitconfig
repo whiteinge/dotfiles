@@ -1,4 +1,5 @@
 # Prefix commands with GIT_TRACE=1 to debug performance.
+# Prefix commands with GIT_SSH_COMMAND='ssh -vv' to debug ssh.
 
 [user]
     email = seth@eseth.com
