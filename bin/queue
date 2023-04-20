@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 # A lightweight job queue using tail and xargs
+#
+# Requires GNU versions of tail (-z) and xargs (-0 and -P) via coreutils and
+# findutils.
 
 NAME=$(basename "$0")
 QUEUE_DIR="${PWD}/__queue_jobs"
