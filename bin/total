@@ -12,14 +12,15 @@
 #     printf 'Foo,%s\n' {1..10} | total -F, 2
 #     printf '%s\tBar\n' {1..10} | total 1
 #     printf '%s\tBar\n' {1..10} | total
+#     printf '%s\n' 0.25 0.3 | total
 
-while getopts h opt; do
+while getopts hxF: opt; do
     case $opt in
-    h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
-       exit ;;
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    F) F="$OPTARG";;
+    x) set -x;;
     esac
 done
 shift $(( OPTIND - 1 ))
 
-expr "$1" : -F >/dev/null && F=$1 && shift
-exec awk $F -v f=${1:-1} '{s+=$f} END{print s}'
+awk ${F:+-F "$F"} -v f="${1:-1}" '{ t += $f } END { printf("%.9g\n", t) }'
