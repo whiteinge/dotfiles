@@ -796,5 +796,16 @@ com! -complete=shellcmd -nargs=+ Tmuxsend
     \| au! BufWritePost <buffer> call util#Tmuxsend(' clear; '. expand("<args>"))
 com! Tmuxsendclear au! BufWritePost <buffer>
 
+""" Third-party debugger integration
+let g:vimspector_install_gadgets = ['vscode-php-debug']
+
+com! VimspectorContinue :call vimspector#Continue()
+
+nnoremap <Leader>x :call vimspector#ToggleBreakpoint()<CR>
+nnoremap <Leader>X :call vimspector#ClearBreakpoints()<CR>
+nmap <F9> <Plug>VimspectorStepOver
+nmap <F10> <Plug>VimspectorStepInto
+nmap <F11> <Plug>VimspectorStepOut
+
 " }}}
 " EOF
