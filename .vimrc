@@ -143,7 +143,7 @@ set shiftround                  " Rounds indent to a multiple of shiftwidth
 
 set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (it's not 1990 anymore)
 set lazyredraw                  " Will not redraw the screen while running macros (goes faster)
-set pastetoggle=<F9>            " Useful so auto-indenting doesn't mess up code when pasting
+set pastetoggle=<F7>            " Useful so auto-indenting doesn't mess up code when pasting
 
 set nostartofline               " Avoid moving cursor to BOL when jumping around
 set virtualedit=block           " Let cursor move past the last char in <C-V> mode
@@ -209,7 +209,7 @@ nnoremap <silent> <leader>ll
     \ endif<cr>
 
 " Toggle spell-checking
-map <silent> <F10> :set nospell!<cr>:set nospell?<cr>
+map <silent> <F8> :set nospell!<cr>:set nospell?<cr>
 
 " Change directory to the path of the current file; and back again
 map <leader>cd :lcd %:p:h<cr><bar>:pwd<cr>
