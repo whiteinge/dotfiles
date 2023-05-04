@@ -28,6 +28,7 @@ diff-to-line-numbers -- Output the line numbers for lines added and removed in a
 diff-to-quickfix -- Convert a diff into Vim's quickfix format
 echoc -- Print each input character on a new line
 echol -- Like echo but delimit with newlines instead of spaces
+echos -- Like echo but using printf for safety
 explode_path -- Take a path and output all child paths as absolute paths
 extract_clip -- Extract a clip from a larger video file
 fbin -- Fuzzy-find scripts in $HOME/bin by description

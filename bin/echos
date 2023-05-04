@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# Like echo but using printf for safety
+#
+# echos foo bar baz
+
+if [ "$#" -gt 0 ]; then
+    printf '%s' "$1"
+    shift
+    if [ "$#" -gt 0 ]; then
+        printf ' %s' "$@"
+    fi
+fi
+printf '\n'
