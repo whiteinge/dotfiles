@@ -80,6 +80,7 @@ jqflat -- Use jq to flatten a JSON structure for easy use with awk/grep/etc
 linux-resize-window -- Select a window in X11 and resize it to given dimensions
 lndir.sh -- Create a shadow directory of symbolic links to another directory tree
 lorem -- Output paragraphs of lorem ipsum placeholder text
+_lr -- A wrapper around lr to use standard colors
 luksimg -- Wrappers around cryptsetup to create/mount/unmount encrypted images
 mailto-handler -- A mailto: handler for opening an arbitrary webmail link in Firefox
 match-emails -- Output all matched email addresses

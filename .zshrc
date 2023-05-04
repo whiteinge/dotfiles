@@ -174,10 +174,10 @@ fi
 # }}}
 # {{{ aliases
 
-# ls:
-alias ls='ls -F --color'
-alias la='ls -A'; compdef la=ls
-alias ll='ls -lh'; compdef ll=ls
+# lr but through a wrapper
+ls() { _lr -1AFGGs "$@" | git column --mode=dense --padding=2 }
+la() { _lr -1FGGs "$@" | git column --mode=dense --padding=2 }
+ll() { _lr -1AFGGlhs "$@" }
 
 # Regular Vim
 alias vi=$EDITOR; compdef vi=vim
