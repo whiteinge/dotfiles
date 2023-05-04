@@ -133,7 +133,7 @@ if [[ ! -n "$ZSHRUN" ]]; then
 
         # In dotfiles mode?
         '%{${fg[yellow]}%}' \
-        '$(test -n "$GIT_WORK_TREE" && echo ..)' \
+        '$(test -n "$GIT_WORK_TREE" && git prompt -c ansi)' \
         '%{${reset_color}%}' \
 
         # Any background jobs?
@@ -340,15 +340,9 @@ dotfiles () {
     if [[ "$GIT_WORK_TREE" = "$HOME" ]]; then
         unset GIT_DIR
         unset GIT_WORK_TREE
-        tmux set-environment -g -u GIT_DIR
-        tmux set-environment -g -u GIT_WORK_TREE
-        tmux refresh -S
     else
         export GIT_DIR="${HOME}/src/dotfiles.git"
         export GIT_WORK_TREE="$HOME"
-        tmux set-environment -g GIT_DIR "$GIT_DIR"
-        tmux set-environment -g GIT_WORK_TREE "$GIT_WORK_TREE"
-        tmux refresh -S
     fi
 }
 
