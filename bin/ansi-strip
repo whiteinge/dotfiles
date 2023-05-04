@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Remove ansi terminal formatting codes
+
+sed -e 's/\x1b\[[0-9;]*m//g'
