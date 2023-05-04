@@ -41,3 +41,9 @@
 [submodule ".vim/pack/foo/start/v-vim"]
 	path = .vim/pack/foo/start/v-vim
 	url = https://github.com/ollykel/v-vim.git
+[submodule "tmp/repos/lr"]
+	path = tmp/repos/lr
+	url = https://github.com/leahneukirchen/lr.git
+[submodule "tmp/repos/xe"]
+	path = tmp/repos/xe
+	url = https://github.com/leahneukirchen/xe.git
