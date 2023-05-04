@@ -1,0 +1,114 @@
+#!/usr/bin/env sh
+# A wrapper to parallelize grep and optionally filter by filename pattern
+#
+# Usage
+#
+# `glr [<flags>] searchterm [<searchpath> | (<grep args>...)]`
+#
+#     glr -h
+#     glr searchterm
+#     glr searchterm /search/path
+#     glr -t 'name ~~ "*.js"' searchterm ./searchpath
+#     glr searchterm file1 file2 file3
+#
+# Flag | Description
+# ---- | -----------
+# -V   | Show version.
+# -h   | Usage and help text.
+# -x   | Enable xtrace debug logging.
+# -t   | Pass additional test conditions to lr; multiple occurences ok.
+# -p   | Do not open search results in a pager.
+#
+# Flags _must_ be the first argument to `glr`, before `searchterm`.
+#
+# Search will be case-sensitive if the search text contains capital
+# letters.
+#
+# If given no search path, a single search path, or specific search paths
+# via `-T` this wrapper will use flr to generate the list of files and
+# parallelize grep using xe.
+#
+# Automatically parallelized:
+#
+#     glr searchterm
+#     glr searchterm ./searchpath
+#     glr -t 'name ~~ "*.js"' searchterm ./searchpath
+#
+# If given one or more file names to search it will instead behave like
+# regular grep and flr will not be invoked.
+
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+EXIT="${TEMP}/exit"
+
+trap '
+    excode=$?; trap - EXIT;
+    rm -rf -- '"$TEMP"'
+    exit $excode
+' INT TERM EXIT
+
+while getopts hxt:p opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    t)
+        if [ -n "$testcond" ]; then
+            testcond="${testcond} && ${OPTARG}"
+        else
+            testcond="$OPTARG"
+        fi;;
+    p) nopager=1;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+mkdir -m 700 "$TEMP"
+if [ $? -ne 0 ]; then
+    printf 'Error creating temp directory.\n' 1>&2
+    exit 1
+fi
+
+if [ -t 1 ] && [ -z "$nopager" ]; then
+    usepager=1;
+fi
+
+# Check for capital letters in the search pattern.
+if ! $(printf '%s\n' "$search" | grep -q -E '[A-Z]' 2>/dev/null); then
+    is_icase=1
+fi
+
+search="${1:?'Missing "search term".'}"; shift
+
+# If we're given a search path use find to generate list of files to
+# search, otherwise assume the file list is provided and just pass to grep.
+if [ "$#" -eq 0 ] ; then
+    searchpath='.'
+else
+    if [ -d "$1" ]; then
+        searchpath="$1"
+        shift
+    fi
+fi
+
+{
+    if [ -n "$searchpath" ]; then
+        flr -0 -t 'type == f' ${testcond:+-t "$testcond"} "$searchpath" |
+            xe -0 -j0 -N0 -L \
+            grep --color"${usepager:+=always}" ${is_icase:+-i} -nH "$search" "$@"
+        printf '%s\n' $? > "$EXIT"
+    else
+        grep --color"${usepager:+=always}" ${is_icase:+-i} -nH "$search" "$@"
+        printf '%s\n' $? > "$EXIT"
+    fi;
+} | {
+    if [ -n "$usepager" ]; then
+        $PAGER -FR
+    else
+        cat
+    fi;
+}
+
+# Only way to retain the grep exit code since we use a pager.
+read ret < "$EXIT"
+exit $ret

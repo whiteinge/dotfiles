@@ -1,0 +1,60 @@
+#!/usr/bin/env sh
+# (filtering lr) - A wrapper around lr to ignore noise directories
+#
+# Usage
+#
+# `flr [<flags>] <searchpath> [...<lr args>]`
+#
+#     flr -h
+#     flr
+#     flr ./somepath
+#     flr -t 'type == d'
+#     flr -t 'name ~~ "*.js"'
+#
+# Flag | Description
+# ---- | -----------
+# -q   | Output filenames in Vim quickfix format.
+# -h   | Usage and help text.
+# -x   | Enable xtrace debug logging.
+#
+# Flags _must_ be the first argument to `flr`, before `searchterm`.
+#
+# Patterns to ignore are obtained from reading the following files:
+#
+# - `$HOME/.flr`
+# - `$PWD/.flr`
+# - `$(git rev-parse --show-toplevel)/.flr`
+#
+# The ignore file format is one entry per line, with an expression that
+# lr can consume. Blank lines and comments (#) are ignored:
+#
+#     # This is a comment.
+#
+#     path ~~ "*.git"
+#     path == "node_modules"
+#     name ~~ "*.pyc"
+
+
+while getopts :hxq opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x; shift $(( OPTIND - 1 ));;
+    q) quickfix=1; shift $(( OPTIND - 1 ));;
+    esac
+done
+
+exec 4>&2 2>/dev/null
+prune="$(cat \
+    "${HOME}/.flr" \
+    "${PWD}/.flr" \
+    "$(git rev-parse --show-toplevel)/.flr" |
+    awk '/^[a-z]/ { printf("%s%s", sep, $0); sep=" || " }')"
+exec 2>&4 4>&-
+
+if [ -n "$prune" ]; then
+    prune="${prune} ? prune && skip : print"
+else
+    unset prune
+fi
+
+lr -U ${prune:+-t "$prune"} ${quickfix:+-f '%p:1: \n'} "$@"

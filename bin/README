@@ -38,6 +38,7 @@ ffind -- (filtering find) - A wrapper around find to ignore noise directories
 ffmpeg-blur -- Blur a section of video based on an image mask
 field -- Output a name or numbered field from a delimited input
 flipbook -- A flipbook loop for ascii drawings
+flr -- (filtering lr) - A wrapper around lr to ignore noise directories
 fnode -- Use a fuzzy-finder to select and install a NodeJS version
 ftimezone -- Fuzzy-find available timezones
 ftree -- Use a fuzzy-finder to traverse the file system and print a file name
@@ -68,6 +69,7 @@ git-sizes -- Output the largest objects in a repository
 git-stub -- Stub Git commits (touch a file, stage the file, commit the file) for demoing
 git-summary -- Show a summary of the commits, authors, and files in a Git repo
 git-todo -- Store a todo list in any Git repository
+glr -- A wrapper to parallelize grep and optionally filter by filename pattern
 hr -- Print a line of characters
 htmlstar -- Use xmlstarlet with html
 httpdir -- Serve a local directory via HTTP (via socat) with or without SSL
