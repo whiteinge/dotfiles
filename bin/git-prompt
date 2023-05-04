@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Output a succinct, one-line Git status
+# Output a fast, succinct, one-line Git status for use in a prompt
 #
 # E.g.:
 #     1ac744a5522d UUAM? master+1-5 origin/master
@@ -7,6 +7,8 @@
 # Usage:
 #     git prompt
 #     git-prompt /path/to/repo
+#     git-prompt -c tmux
+#     git-prompt -c ansi
 
 color=""
 while getopts hc: opt; do
