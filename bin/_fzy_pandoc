@@ -12,4 +12,4 @@ for last; do true; done
         pandoc --list-output-formats \
             | fzy -p 'Output format > '
     fi
-} | xargs printf '%s %s' "$*"
+} | xe printf '%s %s' "$*"

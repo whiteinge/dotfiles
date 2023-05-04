@@ -2,4 +2,4 @@
 # Output seconds elapsed
 
 start=$(date +%s) watch -t -n1 \
-    'expr $(date +%s) - $start | xargs printf "%s seconds"'
+    'expr $(date +%s) - $start | xe printf "%s seconds"'

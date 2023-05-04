@@ -26,7 +26,7 @@ fi
 awk 'BEGIN { FS=","; OFS="\t" } { print NR, $1 }' "$THES_CACHE" \
     | fzy ${@:+-q "$@"} \
     | cut -f1 \
-    | xargs -I{} awk -F, -v 'lnum={}' '
+    | xe -p % awk -F, -v 'lnum=%' '
         NR == lnum { for (i=1; i<= NF; i+=1) print $i; exit }
     ' "$THES_CACHE" \
     | git column --mode=column

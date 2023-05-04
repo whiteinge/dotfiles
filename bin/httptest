@@ -49,7 +49,7 @@ index () {
     <body>
         <h1>${NAME}</h1>
         <ul>
-$(_all_funcs | xargs -n1 printf '<li>%s</li>\n')
+$(_all_funcs | xe printf '<li>%s</li>\n')
         </ul>
     </body>
 </html>
@@ -447,7 +447,7 @@ _main () {
     done
     shift $(( OPTIND - 1 ))
 
-    if [[ $# -eq 0 ]]; then
+    if [ $# -eq 0 ]; then
         printf '%s on port %s\n' "$listen" "$port"
         socat "${listen}:${port},fork,reuseaddr${ssl}" EXEC:"${0} _http"
     else

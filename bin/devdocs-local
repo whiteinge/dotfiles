@@ -76,11 +76,11 @@ choose () {
 
 choose_from () {
     jq -r '.docs | split("/")[]' "${1:?Missing Devdocs Prefs export JSON}" |
-        xargs "$0" choose
+        xe -N0 "$0" choose
 }
 
 doc () {
-    find "$DEVDOCS_DIR" -mindepth 1 -type d -printf '%f\n' |
+    lr "$DEVDOCS_DIR" -1 -s -t 'type == d' | tail -n+2 |
         fzy -p 'Choose docs > ' | {
             read -r slug
             test -n "$slug" || return

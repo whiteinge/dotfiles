@@ -4,4 +4,4 @@
 genreadme |
     fzy |
     awk 'BEGIN { FS=" -- " } { print $1 }' |
-    xargs -I{} tmux send {} Space
+    xe tmux send {} Space

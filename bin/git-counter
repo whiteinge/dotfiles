@@ -40,7 +40,7 @@ test $? -eq 0 || exit 1
 
 printf '%s\n' "$NS" \
     | git cat-file --batch='%(objectname)' \
-    | xargs -r -d '\n' -n 2 \
+    | xe -N2 echos \
     | while read -r prevsha prev; do
         if [ "$prev" = 'missing' ]; then
             unset prevsha
@@ -51,7 +51,7 @@ printf '%s\n' "$NS" \
 
         printf '%s' "$next" \
             | git hash-object --stdin -w \
-            | xargs -I{} git update-ref "$NS" {} ${prevsha}
+            | xe git update-ref "$NS" {} ${prevsha}
 
         if [ $? -ne 0 ]; then
             printf 'Could not advance %s counter.\n' "$NS" 1>&2

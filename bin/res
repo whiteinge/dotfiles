@@ -10,7 +10,7 @@ while getopts h opt; do
 done
 shift $(( OPTIND - 1 ))
 
-fzy << EOF | awk 'BEGIN { FS="\t+" } { print $2 }' | xargs -I{} tmux send xrandr Space {}
+fzy << EOF | awk 'BEGIN { FS="\t+" } { print $2 }' | xe tmux send xrandr Space {}
 Auto		--auto
 Desktop		--output eDP-1 --off --output DP-1 --primary --preferred --rotate normal
 Livingroom	--output eDP-1 --off --output DP-1 --primary --mode 1360x768

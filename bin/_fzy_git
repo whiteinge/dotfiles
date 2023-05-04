@@ -6,4 +6,4 @@
     git branch --format='%(refname:short)' --sort=-committerdate -r;
 } \
     | fzy -p 'Git refs > ' \
-    | xargs printf '%s %s' "$*"
+    | xe printf '%s %s' "$*"

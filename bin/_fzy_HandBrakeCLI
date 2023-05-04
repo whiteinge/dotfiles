@@ -6,5 +6,5 @@ HandBrakeCLI -z 2>&1 \
     | fzy -p 'HandBrake Presets > ' \
     | {
         printf '%s --all-audio --subtitle-lang-list=eng --all-subtitles' "$*"
-        xargs -d'\n' printf " -Z '%s'";
+        xe printf " -Z '%s'";
     }

@@ -65,10 +65,9 @@ main() {
 
     printf 'Looking for Git repos: '
 
-    # Disable output buffering so we can draw a count in real-time.
-    stdbuf -i0 -o0 -e0 \
-    find -name HEAD -printf '%h\0' | xargs -0 -L1 sh -c \
-        'test -O "$1"/refs -a -O "$1"/objects && printf "%s\0" "$1"' - \
+    lr -0Ut 'name == "HEAD"' \
+        | xe -0 -s 'd=${1%/*}
+            test -O "$d"/refs -a -O "$d"/objects && printf "%s\0" "$d"' \
         | tee "$REPO_CACHE" \
         | awk '
             BEGIN { RS="\0" }
@@ -81,15 +80,15 @@ main() {
         _wait_for_ssh ${SSH_URI}
     fi
 
-    < "$REPO_CACHE" xargs -t -r -0 -P5 -I{} git --git-dir={} fetch --all "$@"
+    < "$REPO_CACHE" xe -v -0 -j5 -s 'git --git-dir="$1" fetch --all'
 
     if [ -n "$SSH_URI" ]; then
         ssh -q -S "$ControlPath" -O exit "$SSH_URI"
     fi
 
-    < "$REPO_CACHE" xargs -0 -n1 \
+    < "$REPO_CACHE" xe -0 \
         | wc -l \
-        | xargs printf 'Fetched upstream changes for %s repos.\n'
+        | xe printf 'Fetched upstream changes for %s repos.\n'
 }
 
 main "$@"

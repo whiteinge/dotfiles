@@ -28,9 +28,9 @@ if [ -t 0 ]; then
         | awk -F: '{ print $1 }' \
         | {
             if [ -n "$delete" ]; then
-                xargs -I{} tmux delete-buffer -b {}
+                xe tmux delete-buffer -b {}
             else
-                xargs -I{} tmux save-buffer -b {} -
+                xe tmux save-buffer -b {} -
             fi;
         }
 else

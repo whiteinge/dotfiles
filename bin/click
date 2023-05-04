@@ -2,12 +2,15 @@
 # Use a fuzzy-finder to open URLs found in the scrollback buffer
 # Inspired by the excellent https://github.com/minond/click
 
-open_cmd=$(command -v 'wslview')
-test "$?" -eq 0 || open_cmd=$(command -v 'open')
-test "$?" -eq 0 || open_cmd=$(command -v 'xdg-open')
-test "$?" -eq 0 || open_cmd='echo'
+if uname -s | grep -q Darwin ; then
+    open_cmd=$(command -v 'open')
+else
+    open_cmd=$(command -v 'wslview')
+    test "$?" -eq 0 || open_cmd=$(command -v 'xdg-open')
+    test "$?" -eq 0 || open_cmd='echo'
+fi
 
 scrollback \
     | match-urls \
     | fzy -p 'Open URL > ' \
-    | xargs -r "$open_cmd"
+    | xe "$open_cmd"

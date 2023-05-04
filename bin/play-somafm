@@ -8,4 +8,4 @@ curl -sS https://somafm.com/channels.json \
         | .url)"' \
     | fzy -p 'SomaFM > ' \
     | cut -f2 \
-    | xargs mpv --no-resume-playback
+    | xe mpv --no-resume-playback

@@ -12,7 +12,7 @@ curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-
 chmod +x /usr/local/bin/youtube-dl
 
 # Install the baseline packages.
-xargs /usr/local/bin/brew install < $HOME/tmp/config/packages-brew
+xe -N0 /usr/local/bin/brew install < $HOME/tmp/config/packages-brew
 
 printf '
 android-platform-tools
@@ -20,7 +20,7 @@ gimp
 virtualbox
 vlc
 xquartz
-' | xargs /usr/local/bin/brew cask install
+' | xe -N0 /usr/local/bin/brew cask install
 
 # Fix the cache path for man-db from Brew then generate it.
 /usr/local/bin/gsed -i -e \

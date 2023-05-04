@@ -43,12 +43,12 @@ while test "$paragraphs" -gt 0; do
                 fi
                 shuf -n "$_words";
             } \
-            | xargs \
+            | xe -N0 echos \
             | awk '{ print toupper(substr($0, 1, 1)) substr($0, 2) "." }'
 
         _sentences=$(( _sentences - 1 ))
         preamble_show=0
-    done | xargs
+    done | xe -N0 echos
 
     paragraphs=$(( paragraphs - 1 ))
     preamble_show=0

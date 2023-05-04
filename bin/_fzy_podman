@@ -19,5 +19,5 @@ if [ "$subcmd" = 'stop' ] || [ "$subcmd" = 'exec' ]; then
 
     "$prg" ps | sed 1d | fzy -p 'Containers > ' \
         | cut -f1 -d' ' \
-        | xargs printf "%s %s %s %s ${fmtstr}\n" "$cmd" "$subcmd" "$*"
+        | xe printf "%s %s %s %s ${fmtstr}\n" "$cmd" "$subcmd" "$*"
 fi

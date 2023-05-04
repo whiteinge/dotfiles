@@ -23,7 +23,7 @@ dnf install -y \
 dnf install -y rpmfusion-free-release-tainted
 
 # Install baseline packages.
-xargs dnf install -y < $HOME/tmp/config/packages-fedora
+xe -N0 dnf install -y < $HOME/tmp/config/packages-fedora
 
 # Enable laptop-friendly services.
 systemctl enable systemd-backlight@backlight:intel_backlight.service

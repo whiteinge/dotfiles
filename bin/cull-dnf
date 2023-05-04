@@ -6,4 +6,4 @@
 
 sort -u \
     | comm -23 <(dnf repoquery --userinstalled --qf '%{name}' | sort -u) - \
-    | xargs -r sh -c 'sudo dnf remove "$@" < /dev/tty' -
+    | xe -s 'sudo dnf remove "$@" < /dev/tty'

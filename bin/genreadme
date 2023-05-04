@@ -3,7 +3,7 @@
 
 # TODO: include staged or untracked files here?
 git --git-dir=$HOME/src/dotfiles.git ls-files -z -- bin |
-    xargs -0 -r -n1 awk '
+    xe -0 awk '
         FILENAME ~ "README" { next }
         /^#?[a-zA-Z ]+/ {
             sub(/^# /, "", $0)

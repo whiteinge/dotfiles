@@ -2,7 +2,7 @@
 # Bootstrap a WSL Ubuntu install
 
 # Install baseline packages.
-xargs apt install -y < $HOME/tmp/config/packages-wsl
+xe -N0 apt install -y < $HOME/tmp/config/packages-wsl
 
 update-locale LANG=en_US.utf8
 

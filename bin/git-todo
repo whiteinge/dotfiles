@@ -25,7 +25,7 @@ add() {
 
     printf '%s' "$*" \
         | git hash-object --stdin -w \
-        | xargs -I{} git update-ref "refs/${TODO_NS}/{}" {}
+        | xe -p % git update-ref "refs/${TODO_NS}/%" %
 }
 
 list() {
@@ -43,7 +43,7 @@ list() {
 del() {
     local id="${1:?Todo ID is required.}"
     git rev-parse "$id" \
-        | xargs -r -I{} git update-ref -d "refs/${TODO_NS}/{}" {}
+        | xe -p % git update-ref -d "refs/${TODO_NS}/%" %
 }
 
 help() {

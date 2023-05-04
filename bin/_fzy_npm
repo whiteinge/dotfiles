@@ -13,4 +13,4 @@ npm run | awk '
     ' \
         | fzy -p 'npm run > ' -q "$*" \
         | cut -f1 \
-        | xargs printf '%s %s' "$cmd"
+        | xe printf '%s %s' "$cmd"

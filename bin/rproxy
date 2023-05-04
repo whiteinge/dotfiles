@@ -108,7 +108,7 @@ _help () {
     ' "$0"
 }
 
-mk_cert() {
+mk_cert () {
     openssl req -x509 \
         -newkey rsa:4096 \
         -days 365 \
@@ -173,7 +173,7 @@ _main () {
     shift $(( OPTIND - 1 ))
 
     cmd="${1:?"No command given. Available commands:
-$(_all_funcs | sort | xargs)"}"
+$(_all_funcs | sort | xe -N0 echos )"}"
     shift
 
     if [ -n "$is_sub" ]; then

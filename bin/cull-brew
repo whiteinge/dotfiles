@@ -25,7 +25,7 @@ mkdir -p "$TEMP"
 sort -u > "$INPUT_PKGS"
 
 # Get deps for all desired packages.
-xargs -r brew deps --union --include-requirements --include-build \
+xe -N0 -brew deps --union --include-requirements --include-build \
     < "$INPUT_PKGS" \
     | sort -u \
     > "$INPUT_DEPS"
@@ -39,4 +39,4 @@ comm -13 "$INPUT_DEPS" "$INSTALLED_PKGS" > "$INSTALLED_NON_DEPS"
 
 # Compare desired packages with installed packages and remove the undesired.
 comm -13 "$INPUT_PKGS" "$INSTALLED_NON_DEPS" \
-    | xargs -r -p brew uninstall
+    | xe -N0 -v brew uninstall

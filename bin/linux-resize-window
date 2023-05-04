@@ -17,4 +17,4 @@ shift $(( OPTIND - 1 ))
 size="${1:-1024,768}"
 
 wmctrl -l | fzy | awk '{ print $1 }' \
-    | xargs -I{} wmctrl -i -r {} -e "0,0,0,${size}"
+    | xe wmctrl -i -r {} -e "0,0,0,${size}"

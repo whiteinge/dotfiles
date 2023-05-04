@@ -8,4 +8,4 @@ gpg -k --with-colons \
     ' \
     | fzy -p 'Keys > ' \
     | awk -F: '{ print $2 }' \
-    | xargs printf '%s %s' "$*"
+    | xe printf '%s %s' "$*"
