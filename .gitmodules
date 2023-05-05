@@ -47,3 +47,6 @@
 [submodule "tmp/repos/xe"]
 	path = tmp/repos/xe
 	url = https://github.com/leahneukirchen/xe.git
+[submodule "tmp/repos/csvquote"]
+	path = tmp/repos/csvquote
+	url = https://github.com/dbro/csvquote.git
