@@ -32,9 +32,19 @@
 /.config/pulse
 /.config/wslu
 
-# Vim temp files:
+# Common history files that won't need to be cleaned:
+/.bash_history
+/.lesshst
+/.php_history
+/.pyhistory
+/.ssh/known_hosts
+/.ssh/ssh-auth-sock
 /.vim/swapdir
 /.vim/undodir
+/.viminfo
+/.wget-hsts
+/.zcompdump
+/.zsh_history
 
 # Misc UNIX staples I don't care about:
 /.dbus
