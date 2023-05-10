@@ -34,6 +34,27 @@ Restore position: [u
 Hide: [?25l
 Show: [?25h
 
+Color: [{a};{b};{f}m
+    a - attribute
+          0 normal
+          1 bold
+          2 dim
+          4 underlined
+          5 blink
+          7 reverse
+          8 hidden
+    b - background color
+    f - foreground color
+
+Reset:
+    0  All
+    21 bold/bright
+    22 dim
+    24 underlined
+    25 blink
+    27 reverse
+    28 hidden
+
 Foreground color (30 - 37): [{n}m
 Reset foreground color: [39m
 
