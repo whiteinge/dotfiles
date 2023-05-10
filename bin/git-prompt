@@ -31,6 +31,7 @@ git \
     status \
     --porcelain=v2 \
     --branch \
+    --show-stash \
     2>/dev/null \
 | awk -v color="$color" '
     BEGIN {
@@ -62,6 +63,7 @@ git \
         a = $3 != "+0" ? $3 : ""
         b = $4 != "-0" ? $4 : ""
     }
+    /^# stash/ { stash="$" $3 }
     /^\?/ { untracked="?" }
     /^[0-9] [A-Z]. / { added="A" }
     /^[0-9] .[A-Z] / { modified="M" }
@@ -74,6 +76,7 @@ git \
             c["green"] added \
             c["red"] modified \
             c["yellow"] untracked ,
+            c["reset"] stash ,
             branch \
             c["green"] a \
             c["red"] b,
