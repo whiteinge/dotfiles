@@ -132,9 +132,7 @@ if [[ ! -n "$ZSHRUN" ]]; then
         '%{${reset_color}%}' \
 
         # In dotfiles mode?
-        '%{${fg[yellow]}%}' \
-        '$(test -n "$GIT_WORK_TREE" && git prompt -c ansi)' \
-        '%{${reset_color}%}' \
+        '$(test -n "$GIT_WORK_TREE" && git prompt -c zsh)' \
 
         # Any background jobs?
         '%(1j.%j .)' \

@@ -9,6 +9,8 @@
 #     git-prompt /path/to/repo
 #     git-prompt -c tmux
 #     git-prompt -c ansi
+#     git-prompt -c bash
+#     git-prompt -c zsh
 
 color=""
 while getopts hc: opt; do
@@ -32,17 +34,25 @@ git \
     2>/dev/null \
 | awk -v color="$color" '
     BEGIN {
+        if (color == "bash") { color = "ansi"; escape = "bash" }
+        else if (color == "zsh") { color = "ansi"; escape = "zsh" }
+
         if (color == "ansi") {
-            _reset = "\033[0m"
-            _red = "\033[31m"
-            _green = "\033[32;1m"
-            _yellow = "\033[33;1m"
+            c["reset"] = "\033[0m"
+            c["red"] = "\033[31m"
+            c["green"] = "\033[32;1m"
+            c["yellow"] = "\033[33;1m"
         } else if (color == "tmux") {
-            _reset = "#[fg=terminal]"
-            _red = "#[fg=red]"
-            _green = "#[fg=green,bold]"
-            _yellow = "#[fg=yellow,bold]"
+            c["reset"] = "#[fg=terminal]"
+            c["red"] = "#[fg=red]"
+            c["green"] = "#[fg=green,bold]"
+            c["yellow"] = "#[fg=yellow,bold]"
         }
+
+        # Add escapes around color sequences for use in PS1 to avoid mangling
+        # terminal renders. 001 and 002 are \[ and \]
+        if (escape == "bash") { for (i in c) c[i] = "\001" c[i] "\002" }
+        else if (escape == "zsh") { for (i in c) c[i] = "%{" c[i] "%}" }
     }
 
     /^# branch\.oid/ { sha=substr($3, 0, 12) }
@@ -59,14 +69,14 @@ git \
 
     END {
         print (\
-            _reset sha,
-            _red conflicts \
-            _green added \
-            _red modified \
-            _yellow untracked ,
-            _reset branch \
-            _green a \
-            _red b,
-            _reset)
+            c["reset"] sha,
+            c["red"] conflicts \
+            c["green"] added \
+            c["red"] modified \
+            c["yellow"] untracked ,
+            branch \
+            c["green"] a \
+            c["red"] b,
+            c["reset"])
     }
 '
