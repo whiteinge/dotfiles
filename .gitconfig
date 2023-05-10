@@ -158,6 +158,7 @@
     sl = $PAGER -F
     stat = $PAGER -F
     rl = $PAGER -F
+    status = $PAGER -F
 
     # Custom git scripts in $HOME/bin
     sizes = $PAGER -F
