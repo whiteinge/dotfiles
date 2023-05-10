@@ -1,0 +1,62 @@
+#!/usr/bin/env sh
+# Transpose rows of key/value pairs to aligned key/value columns
+#
+# This nessarily stores all input in memory so is only suitable for small data.
+#
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -x   | Enable xtrace debug logging.
+# -f   | Field separator (default: tab).
+# -s   | Minimum space between columns (default: 2).
+#
+# Example:
+#
+#     % printf 'foo\t123\nbar\t456\nbaz\t789' | transpose
+#     foo  bar  baz
+#     123  456  789
+#
+#     % printf 'foo:123\nbar:456\nbaz:789' | transpose -f:
+#     foo  bar  baz
+#     123  456  789
+#
+#     % printf 'foo\t123\nbar\t456\nbaz\t789' | transpose -s 5
+#          foo     bar     baz
+#          123     456     789
+
+
+fs='\t'
+sp=2
+
+while getopts hxf:s: opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    f) fs="$OPTARG";;
+    s) sp="$OPTARG";;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+awk -v fs="$fs" -v sp="$sp" '
+function max(n, m) { return n >= m ? n : m; }
+
+BEGIN { FS=fs }
+
+{
+    for (i = 1; i <= NF; i += 1) {
+        arr[NR, i] = $i
+        if (colcount <= NF) colcount = NF
+        colwidth[NR] = max(length($i), colwidth[NR])
+    }
+}
+
+END {
+    for (i = 1; i <= colcount; i += 1) {
+        for (j = 1; j <= NR; j += 1) {
+            printf("%*s", colwidth[j] + sp, arr[j, i])
+        }
+        printf("\n")
+    }
+}
+'
