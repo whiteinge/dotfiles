@@ -73,12 +73,12 @@ if [ -t 1 ] && [ -z "$nopager" ]; then
     usepager=1;
 fi
 
+search="${1:?'Missing "search term".'}"; shift
+
 # Check for capital letters in the search pattern.
 if ! $(printf '%s\n' "$search" | grep -q -E '[A-Z]' 2>/dev/null); then
     is_icase=1
 fi
-
-search="${1:?'Missing "search term".'}"; shift
 
 # If we're given a search path use find to generate list of files to
 # search, otherwise assume the file list is provided and just pass to grep.
