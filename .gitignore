@@ -32,11 +32,14 @@
 /.config/pulse
 /.config/wslu
 
-# Common history files that won't need to be cleaned:
+# Common files that won't ever be version-controlled or cleaned:
 /.bash_history
 /.lesshst
 /.php_history
 /.pyhistory
+/.ssh/authorized_keys
+/.ssh/config
+/.ssh/id_*
 /.ssh/known_hosts
 /.ssh/ssh-auth-sock
 /.vim/swapdir
@@ -70,6 +73,7 @@
 /.slocdata
 /.steam
 /.var/app/us.zoom.Zoom
+/.vmodules
 /.vscode-server
 /.zoom
 
