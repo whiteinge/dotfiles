@@ -2,13 +2,17 @@
 # (Paths relative to $HOME.)
 
 # Progs I often compile and install myself:
+/bin/csvheader
+/bin/csvquote
 /bin/cwm
 /bin/fzy
+/bin/lr
 /bin/view
 /bin/vim
 /bin/vimdiff
 /bin/vimtutor
 /bin/xcape
+/bin/xe
 
 # Cache files from my own scripts:
 /tmp/docs/devdocs.io
@@ -35,6 +39,8 @@
 # Common files that won't ever be version-controlled or cleaned:
 /.bash_history
 /.lesshst
+/.netrc
+/.node_repl_history
 /.php_history
 /.pyhistory
 /.ssh/authorized_keys
@@ -42,11 +48,13 @@
 /.ssh/id_*
 /.ssh/known_hosts
 /.ssh/ssh-auth-sock
+/.units_history
+/.viminfo
 /.vim/swapdir
 /.vim/undodir
-/.viminfo
 /.wget-hsts
 /.zcompdump
+/.zsh_customize
 /.zsh_history
 
 # Misc UNIX staples I don't care about:
