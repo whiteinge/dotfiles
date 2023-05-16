@@ -44,7 +44,7 @@
 /.php_history
 /.pyhistory
 /.ssh/authorized_keys
-/.ssh/config
+/.ssh/*.conf
 /.ssh/id_*
 /.ssh/known_hosts
 /.ssh/ssh-auth-sock
