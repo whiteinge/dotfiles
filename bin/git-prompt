@@ -76,10 +76,9 @@ git \
             c["green"] added \
             c["red"] modified \
             c["yellow"] untracked ,
-            c["reset"] stash ,
-            branch \
+            c["reset"] branch ,
             c["green"] a \
-            c["red"] b,
-            c["reset"])
+            c["red"] b ,
+            c["reset"] stash )
     }
 '
