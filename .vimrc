@@ -477,12 +477,14 @@ com! Qfjump
 
 " Load all Git changes in the work tree as quickfix entries.
 com! Qffromdiff cgetexpr
-    \ system('git diff -p -U0 --diff-filter=AM -r HEAD | diff-to-quickfix')
+    \ system('git quickfix -m modified')
 
 " Load all Git changes to the current file as location list entries.
 com! Llfromdiff lgetexpr
-    \ system('git diff -p -U0 --diff-filter=AM -- '.
-    \   expand('%:p') .' | diff-to-quickfix')
+    \ system('git quickfix -m modified -- '. expand('%:p'))
+
+" Load Git changes for the specified commits.
+com! -nargs=* Gitqf cgetexpr system('git quickfix '. expand('<args>'))
 
 " Copy all quickfix entries for the current file into location list entires.
 " This is a simple way to skate around a single file without losing your
