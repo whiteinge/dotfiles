@@ -1,7 +1,25 @@
 #!/usr/bin/env sh
-# A wrapper around lr to use standard colors
+# Wrap lr to use standard colors and avoid ambiguous strip output
 
-lr \
+use_strip=1
+
+while getopts :d opt; do
+    case $opt in
+    d) unset use_strip;;
+    esac
+done
+
+dir_count=0
+for i in "$@"; do
+    test -d "$i" && dir_count=$(( dir_count + 1 ))
+    if [ "$dir_count" -gt 1 ]; then
+        unset use_strip
+        break
+    fi
+done
+
+lr ${use_strip:+-s} \
+    ${use_strip:+-t '!type == d || depth > 0'} \
     -t 'type == f && color 15 || print' \
     -t 'type == p && color 11 || print' \
     -t 'mode == "+x" && color 10 || print' \

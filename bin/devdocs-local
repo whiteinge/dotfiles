@@ -80,7 +80,7 @@ choose_from () {
 }
 
 doc () {
-    lr "$DEVDOCS_DIR" -1 -s -t 'type == d' | tail -n+2 |
+    lr "$DEVDOCS_DIR" -1 -s -t 'type == d' -t '!type == d || depth > 0' |
         fzy -p 'Choose docs > ' | {
             read -r slug
             test -n "$slug" || return

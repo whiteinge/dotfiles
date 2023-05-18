@@ -174,9 +174,9 @@ fi
 
 # lr but through a wrapper
 unalias ls la ll 2>/dev/null
-ls() { _lr -1AFGGs "$@" | git column --mode=dense --padding=2 }
-la() { _lr -1FGGs "$@" | git column --mode=dense --padding=2 }
-ll() { _lr -1AFGGlhs "$@" }
+ls() { _lr -1AFGG "$@" | git column --mode=dense --padding=2 }
+la() { _lr -1FGG "$@" | git column --mode=dense --padding=2 }
+ll() { _lr -1AFGGlh "$@" }
 
 # Regular Vim
 alias vi=$EDITOR; compdef vi=vim
