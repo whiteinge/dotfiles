@@ -1,133 +1,103 @@
 #!/usr/bin/env sh
-# A lightweight job queue using tail and xargs
+# A lightweight job queue using tail and xe
 #
-# Requires GNU versions of tail (-z) and xargs (-0 and -P) via coreutils and
-# findutils.
+# Requires a POSIX environment and xe (easily replaced with xargs).
+#
+# `NAME [<flags>] [command to enqueue...]`
+#
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -x   | Enable xtrace debug logging.
+# -n   | Delete the queue file before starting.
+# -P   | Max number of jobs to run in parallel.
+# -k   | Don't remove queue directory on successful finish.
+# -L   | List all jobs.
+# -F   | List failed jobs.
+# -R   | List running jobs.
+#
+# Flags _must_ be the first argument to `NAME`.
+#
+# Examples:
+#
+# Start processing the queue, three concurrent jobs at a time:
+#
+#     NAME -P3
+#
+# Add new jobs to the queue:
+#
+#     NAME 'sleep 5 && echo done'
+#     NAME sleep 5 \&\& echo done
+#     NAME echo hi
+#     NAME curl -L -C - 'http://example.com/somedownload.tar.gz' -o myfile.tar.gz
 
 NAME=$(basename "$0")
 QUEUE_DIR="${PWD}/__queue_jobs"
 QUEUE="${QUEUE_DIR}/queue"
 MAXJOBS=1
 
-help () {
-    # Extract contiguous lines of comments in a function as help text
+while getopts hP:knLFRx opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    P) MAXJOBS="$OPTARG";;
+    k) KEEP_DIR=1;;
+    n) rm -rf "$QUEUE_DIR";;
+    L) xe < "$QUEUE" | grep . ; exit $? ;;
+    F) grep -v 'Done 0' "$QUEUE_DIR"/*.ret 2>/dev/null
+       exit $? ;;
+    R) find "$QUEUE_DIR" -name '*.ret' -type f -size 0 2>/dev/null \
+        | grep . 2>/dev/null
+        exit $? ;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
 
-    awk -v cmd="${1:?'Command name required.'}" -v NAME="$NAME" '
-    $0 ~ "^" cmd "\\s*\\(\\)\\s*{" { is_found=1; next }
-    is_found && !NF { exit }
-    is_found { gsub(/^\s*#\s?/, ""); gsub(/NAME/, NAME); print; }
-    ' "$0"
-}
+mkdir -p -m 700 "$QUEUE_DIR"
+touch "$QUEUE"
 
-_main () {
-    # ## Usage
-    #
-    # `NAME [<flags>] [command to enqueue...]`
-    #
-    # Flag | Description
-    # ---- | -----------
-    # -h   | Show this screen.
-    # -x   | Enable xtrace debug logging.
-    # -n   | Delete the queue file before starting.
-    # -P   | Max number of jobs to run in parallel.
-    # -k   | Don't remove queue directory on successful finish.
-    # -L   | List all jobs.
-    # -F   | List failed jobs.
-    # -R   | List running jobs.
-    # -u   | Increase max jobs number for already-running queue.
-    # -d   | Decrease max jobs number for already-running queue.
-    #
-    # Flags _must_ be the first argument to `NAME`.
-    #
-    # ### Examples:
-    #
-    # Start processing the queue, three concurrent jobs at a time:
-    #
-    #     NAME -P3
-    #
-    # Add new jobs to the queue:
-    #
-    #     NAME 'sleep 5 && echo done'
-    #     NAME sleep 5 \&\& echo done
-    #     NAME echo hi
-    #     NAME curl -L -C - 'http://example.com/somedownload.tar.gz' -o myfile.tar.gz
+if [ $# -eq 0 ]; then
+    trap '
+        excode=$?; trap - EXIT;
+        "$0" -F; failed=$?
+        "$0" -R; running=$?
+        if [ -z "$KEEP_DIR" -a "$failed" -ne 0 -a "$running" -ne 0 ]; then
+            printf "\nQueue complete with no failures. Cleaning...\n" 1>&2
+            rm -rf -- '"$QUEUE_DIR"'
+        fi
+        exit $excode
+    ' INT TERM EXIT
 
-    local opt
-    local OPTARG
-    local OPTIND
+    tail -n+0 -f "$QUEUE" \
+        | xe -j "$MAXJOBS" -s '
+            echo Start $$
+            printf '\''%s\n'\'' "$1" > '"$QUEUE_DIR"'/job-$$.job
+            touch '"$QUEUE_DIR"'/job-$$.ret
+            $1 1>'"$QUEUE_DIR"'/job-$$.out 2>'"$QUEUE_DIR"'/job-$$.err
+            echo Done $? | tee '"$QUEUE_DIR"'/job-$$.ret ' \
+        | awk '
+            BEGIN {
+                OFS="\t\t"
+                running = 0; success = 0; fail = 0
+                print "Queue:", "Running", "Success", "Fail"
+                print "", running, success, fail
+            }
 
-    while getopts hP:nxLFRkud opt; do
-        case $opt in
-        h) help _main
-           printf '\n'
-           exit;;
-        P) MAXJOBS="$OPTARG";;
-        k) KEEP_DIR=1;;
-        n) rm -rf "$QUEUE_DIR";;
-        L) xargs -0 -n1 < "$QUEUE" | grep . ; exit $? ;;
-        F) grep -v 'Done 0' "$QUEUE_DIR"/*.ret 2>/dev/null
-           exit $? ;;
-        R) find "$QUEUE_DIR" -name '*.ret' -type f -size 0 2>/dev/null \
-            | grep . 2>/dev/null
-            exit $? ;;
-        u) 2>/dev/null < "${QUEUE_DIR}/xargs.pid" xargs kill -USR1 ; exit ;;
-        d) 2>/dev/null < "${QUEUE_DIR}/xargs.pid" xargs kill -USR2 ; exit ;;
-        x) set -x;;
-        esac
-    done
-    shift $(( OPTIND - 1 ))
-
-    mkdir -p -m 700 "$QUEUE_DIR"
-    touch "$QUEUE"
-
-    if [ $# -eq 0 ]; then
-        trap '
-            excode=$?; trap - EXIT;
-            "$0" -F; failed=$?
-            "$0" -R; running=$?
-            if [ -z "$KEEP_DIR" -a "$failed" -ne 0 -a "$running" -ne 0 ]; then
-                printf "\nQueue complete with no failures. Cleaning...\n" 1>&2
-                rm -rf -- '"$QUEUE_DIR"'
-            fi
-            exit $excode
-        ' INT TERM EXIT
-
-        tail -z -n+0 -f "$QUEUE" \
-            | xargs -0 -r -I{} -P "$MAXJOBS" sh -c \
-                'echo Start $$
-                if [ ! -e '"$QUEUE_DIR"'/xargs.pid ];then
-                    printf '\''%s'\'' "$PPID" > '"$QUEUE_DIR"'/xargs.pid
-                fi
-                printf '\''%s\n'\'' "{}" > '"$QUEUE_DIR"'/job-$$.job
-                touch '"$QUEUE_DIR"'/job-$$.ret
-                {} 1>'"$QUEUE_DIR"'/job-$$.out 2>'"$QUEUE_DIR"'/job-$$.err
-                echo Done $? | tee '"$QUEUE_DIR"'/job-$$.ret ' \
-            | awk '
-                BEGIN {
-                    OFS="\t\t"
-                    running = 0; success = 0; fail = 0
-                    print "Queue:", "Running", "Success", "Fail"
-                    print "", running, success, fail
-                }
-
-                /^Start/ { running += 1 }
-                /^Done/ {
-                    running -= 1
-                    if ($2 == 0) { success += 1 } else { fail += 1 }
-                }
-                {
-                    printf("\033[1A\033[2K") # clear line
-                    print "", running, success, fail
-                }
-            '
-    else
-        # Try to mimic Bash's printf '%q':
-        printf '%s\0' "$*" \
-            | sed \
-                -e "s/'/'\\\\''/g" \
-                -e 's/[|&;<>()$`\\"\*\?\[#~=%\t\n]/\\&/g' \
-            >> "$QUEUE"
-    fi
-}
-
-_main "$@"
+            /^Start/ { running += 1 }
+            /^Done/ {
+                running -= 1
+                if ($2 == 0) { success += 1 } else { fail += 1 }
+            }
+            {
+                printf("\033[1A\033[2K") # clear line
+                print "", running, success, fail
+            }
+        '
+else
+    # Try to mimic Bash's printf '%q':
+    printf '%s\n' "$*" \
+        | sed \
+            -e "s/'/'\\\\''/g" \
+            -e 's/[|&;<>()$`\\"\*\?\[#~=%\t\n]/\\&/g' \
+        >> "$QUEUE"
+fi
