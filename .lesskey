@@ -3,3 +3,5 @@ h left-scroll
 \^ no-scroll
 $ end-scroll
 \\n clear-search
+z invalid
+w invalid
