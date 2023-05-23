@@ -206,7 +206,7 @@ alias pp='pepper --config ~/.config/pepper/init.pp'
 
 # Aliases that override default names:
 alias less='less -imJMW'
-alias tree="tree -FC --charset=ascii"
+tree() { command tree -FC --charset=ascii "$@" | less -RF }
 alias wtf='wtf -o'
 alias csi='rlwrap csi -quiet'
 alias ocaml='rlwrap ocaml'
