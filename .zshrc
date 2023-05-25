@@ -84,6 +84,7 @@ export WINEDEBUG=-all
 export WINEARCH=win32
 
 export PYTHONSTARTUP=$HOME/.pythonrc.py
+export LYNX_CFG_PATH=/etc/lynx
 export LYNX_CFG=$HOME/.lynx/lynx.cfg
 
 # }}}
