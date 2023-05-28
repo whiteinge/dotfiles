@@ -93,6 +93,10 @@ zstyle ':completion:*' list-colors "$LS_COLORS"
 zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|nc|rsync):*' hosts '
     reply=( ${=${${(M)${(f)"$(cat ~/.ssh/config ~/.ssh/*.conf)"}:#Host*}#Host }:#*\**} )'
 
+# Open kill and fg options in a selection menu:
+zstyle ':completion:*:*:(kill|fg):*' menu yes select
+zstyle ':completion:*:*:(kill|fg):*' complete-options true
+
 # Custom script in $HOME/bin
 compdef c=curl
 
