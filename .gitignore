@@ -48,6 +48,7 @@
 /.ssh/id_*
 /.ssh/known_hosts
 /.ssh/ssh-auth-sock
+/.sudo_as_admin_successful
 /.units_history
 /.viminfo
 /.vim/swapdir
