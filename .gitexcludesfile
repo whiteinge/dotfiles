@@ -13,5 +13,5 @@ CVS/
 /.ffind
 /.flr
 
-/tags
-/*.tags
+tags
+*.tags
