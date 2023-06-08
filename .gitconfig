@@ -34,6 +34,10 @@
     uncommit = reset HEAD~1
     lasttag = describe --abbrev=0
 
+    # Show merged branches as machine parsable list.
+    merged = for-each-ref --format='%(refname:short)' refs/heads/ \
+        --merged=@ --no-contains=@
+
     # Show as much information about a commit(s) as possible. For merge
     # commits: Add -m to see diff for the whole merge; Omit -m to see diff for
     # only conflict resolutions.
