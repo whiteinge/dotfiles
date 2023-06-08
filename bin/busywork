@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
 # Silly functions to make a terminal look busy like in a movie
+#
+# Usage (list available commands with -h):
+#
+#     busywork
+#     busywork spinner_demo
+#     busywork <cmd>
 
 NAME=$(basename "$0")
 
