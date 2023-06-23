@@ -14,3 +14,6 @@ let g:tagbar_type_vlang = {
     \ 'E:efield',
   \ ],
 \ }
+
+let b:ale_linter_aliases = { 'vlang': 'v' }
+let b:ale_fixers = ['vfmt']
