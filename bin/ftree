@@ -15,8 +15,10 @@ case "$old_path" in
 esac
 
 while true; do
-    new_path="$(_lr -1FAsGG -otn "$old_path" |
-        fzy -p "${old_path} > ")" || break
+    new_path="$({
+        printf '../\n'
+        _lr -1FAsGG -otn "$old_path" ;
+    } | fzy -p "${old_path} > ")" || break
 
     # Strip colors separately so fzy SIGINT will break loop.
     new_path="$(printf '%s\n' "$new_path" | ansi-strip)"
