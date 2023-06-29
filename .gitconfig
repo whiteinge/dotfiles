@@ -63,6 +63,9 @@
     lf = "!_() { GIT_PAGER=\"$PAGER -p $(git short $1)\" git l; };_"
     ltf = "!_() { GIT_PAGER=\"$PAGER -p $(git short $1)\" git lt; };_"
 
+    # Git diff with visible markers for tabs.
+    diffws = "!_() { git diff \"$@\" | sed 's/\t/>-------/g' | $PAGER -F; };_"
+
     # Output alias definitions. Usage: git which st
     which = "!_() { git config --global --get alias.$1; };_"
 
