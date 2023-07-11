@@ -5,3 +5,9 @@ let php_folding = 1
 if exists("+omnifunc")
     setl omnifunc=phpcomplete#CompletePHP
 endif
+
+iab _profile
+    \ $before = hrtime(true);<cr>
+    \ $after = hrtime(true);<cr>
+    \ $duration = ($after - $before) / 1000000;<cr>
+    \ print_r("Duration (ms): ". $duration .PHP_EOL);<cr>
