@@ -31,6 +31,7 @@ echol -- Like echo but delimit with newlines instead of spaces
 echos -- Like echo but using printf for safety
 explode_path -- Take a path and output all child paths as absolute paths
 extract_clip -- Extract a clip from a larger video file
+extract_segments -- Extract a long video into same-length video segments
 fbin -- Fuzzy-find scripts in $HOME/bin by description
 fdlna -- Browse through dlna media directories using a fuzzy-finder
 femoji -- Add simple emoji fuzzy-finder

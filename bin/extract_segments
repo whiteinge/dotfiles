@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+# Extract a long video into same-length video segments
+#
+# Usage:
+#
+#     extract_segments foo.mp4 25:00
+
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+ffmpeg -i "${1:?'Filename required.'}" \
+    -threads 3 -acodec copy \
+    -f segment -segment_time "${2:-25:00}" \
+    -reset_timestamps 1 \
+    out_%02d.m4a
