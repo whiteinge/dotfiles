@@ -69,6 +69,7 @@
 # Third party progs I don't care to see:
 /.android
 /.audacity-data
+/.aws
 /.aws-cli
 /.cache
 /.cargo
