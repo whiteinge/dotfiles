@@ -53,6 +53,7 @@
 /.viminfo
 /.vim/swapdir
 /.vim/undodir
+/.vim/spell/*.add.spl
 /.wget-hsts
 /.zcompdump
 /.zsh_customize
