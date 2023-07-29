@@ -4,6 +4,7 @@
 # Usage:
 #
 #   printf 'Foo bar baz.\n' | slugify -d _
+#   slugify 'Some file name.mp3'
 
 delim='-'
 while getopts hd: opt; do
@@ -15,6 +16,13 @@ while getopts hd: opt; do
 done
 shift $(( OPTIND - 1 ))
 
+{
+    if [ $# -ne 0 ]; then
+        printf '%s\n' "$@"
+    else
+        cat
+    fi;
+} |
 awk -v delim="$delim" '
 {
     gsub("[^[:alnum:]]", delim)
