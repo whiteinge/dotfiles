@@ -4,7 +4,7 @@ setl textwidth=79
 if bufname('%') == 'presentation.rst'
     setlocal makeprg=../beamer.py\ %\ /tmp/presentation.pdf
 else
-    setl makeprg=make\ html\ SPHINXOPTS=\"-q\"\ SPHINXBUILD=$HOME/tmp/venvs/sphinx/bin/sphinx-build
+    setl makeprg=make\ html\ SPHINXOPTS=\"-q\"\ SPHINXBUILD=$HOME/var/cache/venvs/sphinx/bin/sphinx-build
 endif
 
 " tagbar settings

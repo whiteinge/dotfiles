@@ -12,7 +12,7 @@ curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-
 chmod +x /usr/local/bin/youtube-dl
 
 # Install the baseline packages.
-xe -N0 /usr/local/bin/brew install < $HOME/tmp/config/packages-brew
+xe -N0 /usr/local/bin/brew install < $HOME/opt/packages-brew
 
 printf '
 android-platform-tools

@@ -2,7 +2,7 @@
 # Bootstrap a new Pocket 2 machine
 # Mostly thanks to https://github.com/joshskidmore/gpd-pocket-2-arch-guide
 
-cat $HOME/shouse/tmp/config/{packages-fedora,packages-pocket2} \
+cat $HOME/opt/{packages-fedora,packages-pocket2} \
     | xe -N0 dnf install -y
 
 # Add Yubikey detection.

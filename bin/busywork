@@ -12,7 +12,7 @@ NAME=$(basename "$0")
 if [ -e '/usr/share/dict/words' ]; then
     wordfile='/usr/share/dict/words'
 else
-    wordfile="${HOME}/tmp/metasyntactic.txt"
+    wordfile="${HOME}/share/doc/dotfiles/metasyntactic.txt"
 fi
 
 hexstream () {

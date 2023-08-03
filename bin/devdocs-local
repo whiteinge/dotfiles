@@ -18,7 +18,7 @@ NAME=$(basename "$0")
 TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
     'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
 
-DEVDOCS_DIR="${DEVDOCS_DIR-"${HOME}/tmp/docs/devdocs.io"}"
+DEVDOCS_DIR="${DEVDOCS_DIR-"${HOME}/var/cache/devdocs.io"}"
 mkdir -p "$DEVDOCS_DIR"
 
 list () {

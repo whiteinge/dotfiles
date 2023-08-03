@@ -23,30 +23,30 @@
 	path = .vim/pack/foo/start/undotree
 	url = https://github.com/mbbill/undotree.git
 [submodule "tmp/repos/xcape"]
-	path = tmp/repos/xcape
+	path = opt/repos/xcape
 	url = https://github.com/alols/xcape.git
 [submodule "tmp/repos/dswitcher"]
-	path = tmp/repos/dswitcher
+	path = opt/repos/dswitcher
 	url = https://github.com/Excerion/dswitcher.git
 [submodule "tmp/repos/cwm"]
-	path = tmp/repos/cwm
+	path = opt/repos/cwm
 	url = https://github.com/leahneukirchen/cwm.git
 [submodule ".vim/pack/foo/start/vim-jqplay"]
 	path = .vim/pack/foo/start/vim-jqplay
 	url = https://github.com/bfrg/vim-jqplay.git
 [submodule "tmp/repos/fzy"]
-	path = tmp/repos/fzy
+	path = opt/repos/fzy
 	url = https://github.com/gpanders/fzy.git
 	branch = multiselect
 [submodule ".vim/pack/foo/start/v-vim"]
 	path = .vim/pack/foo/start/v-vim
 	url = https://github.com/ollykel/v-vim.git
 [submodule "tmp/repos/lr"]
-	path = tmp/repos/lr
+	path = opt/repos/lr
 	url = https://github.com/leahneukirchen/lr.git
 [submodule "tmp/repos/xe"]
-	path = tmp/repos/xe
+	path = opt/repos/xe
 	url = https://github.com/leahneukirchen/xe.git
 [submodule "tmp/repos/csvquote"]
-	path = tmp/repos/csvquote
+	path = opt/repos/csvquote
 	url = https://github.com/dbro/csvquote.git

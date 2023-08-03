@@ -15,10 +15,10 @@
 /bin/xe
 
 # Cache files from my own scripts:
-/tmp/docs/devdocs.io
-/tmp/docs/mthesaur.txt
-/tmp/emoji.cache
-/tmp/venvs
+/var/cache/devdocs.io
+/var/cache/mthesaur.txt
+/var/cache/emoji.cache
+/var/cache/venvs
 
 # Config dirs I won't ever version control:
 /.config/Code

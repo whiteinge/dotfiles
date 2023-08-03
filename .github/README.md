@@ -9,9 +9,9 @@ any POSIX-like environment.
   that with additional and custom functionality.
 - I often compile my own copies of several programs such as Vim, and the repos
   linked in
-  [~/tmp/repos](https://github.com/whiteinge/dotfiles/tree/master/tmp/repos)
+  [~/opt/repos](https://github.com/whiteinge/dotfiles/tree/master/opt/repos)
 - Common packages, by OS, and other configuration are kept in
-  [~/tmp/config](https://github.com/whiteinge/dotfiles/tree/master/tmp/config).
+  [~/opt](https://github.com/whiteinge/dotfiles/tree/master/opt).
 
 ## Installation
 

@@ -16,10 +16,10 @@ done
 shift $(( OPTIND - 1 ))
 
 THES_URL='https://www.gutenberg.org/files/3202/files/mthesaur.txt'
-THES_CACHE="${HOME}/tmp/docs/mthesaur.txt"
+THES_CACHE="${HOME}/var/cache/mthesaur.txt"
 
 if [ ! -e "$THES_CACHE" ]; then
-    mkdir -p "${HOME}/tmp/docs"
+    mkdir -p "${HOME}/var/cache"
     curl -sS -C - "$THES_URL" -o "$THES_CACHE"
 fi
 
