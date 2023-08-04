@@ -77,7 +77,10 @@ fu! util#Tmuxsend(text)
 
     let l:ret = substitute(a:text, '\n$', ' ', '')
         \ ->shellescape()
-        \ ->{x -> 'tmux send -t '. shellescape(b:tmuxpane) .' '. x .' Enter'}()
+        \ ->{x ->
+            \ 'tmux respawnp -k -t '. shellescape(b:tmuxpane) .';'.
+            \ 'tmux send -t '. shellescape(b:tmuxpane) .' '. x .' Enter'
+        \ }()
         \ ->system()
 
     if (v:shell_error != 0)
