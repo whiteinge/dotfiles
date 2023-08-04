@@ -12,7 +12,11 @@
 /bin/vimdiff
 /bin/vimtutor
 /bin/xcape
+/bin/xclip
 /bin/xe
+
+# Misc repos; move to ~/opt/repos to save.
+/var/repos
 
 # Cache files from my own scripts:
 /var/cache/devdocs.io
@@ -25,7 +29,9 @@
 /.config/GIMP
 /.config/godot
 /.config/Google
+/.config/configstore
 /.config/google-chrome
+/.config/gtk-2.0
 /.config/inkscape
 /.config/Keybase
 /.config/libreoffice
@@ -38,6 +44,7 @@
 
 # Common files that won't ever be version-controlled or cleaned:
 /.bash_history
+/.crawl
 /.lesshst
 /.netrc
 /.node_repl_history
@@ -75,7 +82,9 @@
 /.cargo
 /.docker
 /.dotnet
+/.local/share/applications
 /.local/share/gnome-shell
+/.local/share/recently-used.xbel
 /.local/share/Steam
 /.local/share/virtualenv
 /.mozilla
