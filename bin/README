@@ -35,7 +35,6 @@ extract_segments -- Extract a long video into same-length video segments
 fbin -- Fuzzy-find scripts in $HOME/bin by description
 fdlna -- Browse through dlna media directories using a fuzzy-finder
 femoji -- Add simple emoji fuzzy-finder
-ffind -- (filtering find) - A wrapper around find to ignore noise directories
 ffmpeg-blur -- Blur a section of video based on an image mask
 field -- Output a name or numbered field from a delimited input
 flipbook -- A flipbook loop for ascii drawings
@@ -57,7 +56,6 @@ _fzy_ssh -- Use a fuzzy-finder for hostnames in ~/.ssh/config
 genmac -- Generate a locally-assigned (starts with 02) mac address from a salt
 genpass -- Generate a cryptographically inadequate(!) password
 genreadme -- Generate a README for all $DOTFILES/bin scripts
-gext -- A wrapper to parallelize grep and optionally filter by filename pattern
 ghkeys -- Display GitHub public keys for a user
 git-attic -- List deleted files in a Git repository
 git-counter -- Atomically increment a counter value stored in a Git repository

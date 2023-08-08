@@ -19,7 +19,7 @@ nn <silent> * :let @/ = '\<' .  expand('<cword>') . '\>'
   \\| if &hlsearch != 0 \| set hlsearch \| endif
   \\| echo '/'. @/ .'/=' execute('%s///gn')<cr>
 
-set grepprg=gext
+set grepprg=glr
 
 " grep for the word under the cursor.
 nn <silent> <leader>* :grep <cword><cr>
@@ -290,7 +290,7 @@ endif
 
 " Fuzzy-find files under the current directory and open in window/split/tab etc.
 fu! FzyFind(cword = 0)
-    return util#SysR('', "ffind . '(' -type f -o -type l ')' -print \| fzy".
+    return util#SysR('', "flr -t 'type = f || type = l' \| fzy".
         \ (a:cword ? ' -q '. expand('<cword>') : ''))
 endfu
 nn <leader>ff :call FzyFind() ->M('edit ') ->execute()<cr>

@@ -51,7 +51,7 @@ for arg in "$@"; do
 done
 
 if [[ -z "$findcmd" ]]; then
-    findcmd=( ffind . -type f )
+    findcmd=( flr -t 'type = f' )
 fi
 
 pane_src="$(tmux display -p '#{pane_id}')"
@@ -66,7 +66,7 @@ last_run="$(date +%s)"
 printf 'Watching every %s seconds. Ctrl-c to stop.' "$interval"
 while true; do
     now="$(date +%s)"
-    new_sha="$(${findcmd[*]} -exec stat -c '%Y' {} + | md5sum)"
+    new_sha="$(${findcmd[*]} -f '%Ts\n' | md5sum)"
 
     if [ "$new_sha" != "$old_sha" ]; then
         tmux respawnp -k -t "$pane_tgt"
