@@ -2,24 +2,32 @@
 # Wrap lr to use standard colors and avoid ambiguous strip output
 
 use_strip=1
+check_depth=1
 
 while getopts :d opt; do
     case $opt in
-    d) unset use_strip;;
+    # If we're not entering directories:
+    # - Avoid depth check so directory names aren't skipped entirely.
+    # - Avoid strip so directory names aren't replaced with dots.
+    d)  unset check_depth
+        unset use_strip
+        ;;
     esac
 done
 
-dir_count=0
+# If more than one path is given as an arg and at least one is
+# a multi-segmented path then strip can produce ambiguous output.
+file_count=0
 for i in "$@"; do
-    test -d "$i" && dir_count=$(( dir_count + 1 ))
-    if [ "$dir_count" -gt 1 ]; then
+    test -e "$i" && file_count=$(( file_count + 1 ))
+    if [ "$file_count" -gt 1 ]; then
         unset use_strip
         break
     fi
 done
 
 lr ${use_strip:+-s} \
-    ${use_strip:+-t '!type == d || depth > 0'} \
+    ${check_depth:+-t '!type == d || depth > 0'} \
     -t 'type == f && color 15 || print' \
     -t 'type == p && color 11 || print' \
     -t 'mode == "+x" && color 10 || print' \
