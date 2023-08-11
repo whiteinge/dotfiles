@@ -3,7 +3,8 @@
 #
 # Usage
 #
-#     printf 'Hello!\n' | tclip
+#     printf 'Hello!\n' | tclip -
+#     tclip /path/to/somefile
 #     tclip
 #     tclip -d
 #
@@ -22,7 +23,9 @@ while getopts dhx opt; do
 done
 shift $(( OPTIND - 1 ))
 
-if [ -t 0 ]; then
+if [ "$1" = '-' -o -e "$1" ]; then
+    tmux load-buffer "$1"
+else
     tmux list-buffers \
         | fzy -p "$delete"'Buffers > ' \
         | awk -F: '{ print $1 }' \
@@ -33,6 +36,4 @@ if [ -t 0 ]; then
                 xe tmux save-buffer -b {} -
             fi;
         }
-else
-    tmux load-buffer -
 fi
