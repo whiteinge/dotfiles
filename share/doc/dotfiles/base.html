@@ -16,6 +16,28 @@
                 }
             }
         </script>
+
+        <script type="importmap">
+        {
+            "imports": {
+                "lodash": "https://esm.sh/lodash",
+                "preact": "https://esm.sh/preact",
+                "rx": "https://esm.sh/rx"
+            }
+        }
+        </script>
+
+        <script type="module">
+            import _ from 'lodash';
+            import Rx from 'rx';
+            import { h, Component, render } from 'preact';
+
+            const app = h('div', null, [
+                h('h1', null, _.toUpper('Hello World!')),
+            ]);
+
+            render(app, document.querySelector('#container'));
+        </script>
     </head>
 
     <body>
