@@ -4,7 +4,7 @@
 use_strip=1
 check_depth=1
 
-while getopts :d opt; do
+while getopts :01ABC:DFGHLQPST:UWXde:f:lho:st:x opt; do
     case $opt in
     # If we're not entering directories:
     # - Avoid depth check so directory names aren't skipped entirely.
@@ -15,18 +15,15 @@ while getopts :d opt; do
     esac
 done
 
-# If more than one path is given as an arg and at least one is
-# a multi-segmented path then strip can produce ambiguous output.
-file_count=0
-for i in "$@"; do
-    test -e "$i" && file_count=$(( file_count + 1 ))
-    if [ "$file_count" -gt 1 ]; then
-        unset use_strip
-        break
-    fi
-done
+# If more than one path is given as an arg, strip can produce ambiguous output
+# for multi-segment paths (and has no effect on single-segment paths).
+if [ "$#" -gt "$OPTIND" ]; then
+    unset use_strip
+    break
+fi
 
-lr ${use_strip:+-s} \
+lr -1 \
+    ${use_strip:+-s} \
     ${check_depth:+-t '!type == d || depth > 0'} \
     -t 'type == f && color 15 || print' \
     -t 'type == p && color 11 || print' \

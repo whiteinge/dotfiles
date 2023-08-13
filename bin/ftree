@@ -17,7 +17,7 @@ esac
 while true; do
     new_path="$({
         printf '../\n'
-        _lr -1FsGG -otn "$old_path" ;
+        _lr -FsGG -otn "$old_path" ;
     } | fzy -p "${old_path} > ")" || break
 
     # Strip colors separately so fzy SIGINT will break loop.
