@@ -19,7 +19,6 @@ done
 # for multi-segment paths (and has no effect on single-segment paths).
 if [ "$#" -gt "$OPTIND" ]; then
     unset use_strip
-    break
 fi
 
 lr -1 \
