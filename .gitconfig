@@ -61,6 +61,11 @@
     # Output alias definitions. Usage: git which st
     which = "!_() { git config --global --get alias.$1; };_"
 
+    # Show merged branches as machine parsable list.
+    #   git merged; git merged origin/master
+    merged = "!_() { git branch --merged=\"${1:-@}\" \
+        | awk '!/\\*|master|main|develop/ { print $1 }'; };_"
+
     # Output all the changes since the most recent tag as a Markdown list:
     # git changelog
     # git changelog HEAD~5...
