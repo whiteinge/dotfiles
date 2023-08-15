@@ -34,10 +34,6 @@
     uncommit = reset HEAD~1
     lasttag = describe --abbrev=0
 
-    # Show merged branches as machine parsable list.
-    merged = for-each-ref --format='%(refname:short)' refs/heads/ \
-        --merged=@ --no-contains=@
-
     # Show as much information about a commit(s) as possible. For merge
     # commits: Add -m to see diff for the whole merge; Omit -m to see diff for
     # only conflict resolutions.
@@ -52,7 +48,6 @@
     ll = log --stat --decorate --abbrev-commit --date=relative
     lll = log -p --stat --decorate --color-moved --pretty=fuller
     lt = l --topo-order
-    lm = log --oneline --decorate --topo-order --merges --ancestry-path
 
     rl = reflog --date=relative --pretty=relauthor
     rll = reflog --date=relative --stat
@@ -62,9 +57,6 @@
     #   git lf deb8dff8d8c1ed8acb7d7a2ec1158e7db136aab3
     lf = "!_() { GIT_PAGER=\"$PAGER -p $(git short $1)\" git l; };_"
     ltf = "!_() { GIT_PAGER=\"$PAGER -p $(git short $1)\" git lt; };_"
-
-    # Git diff with visible markers for tabs.
-    diffws = "!_() { git diff \"$@\" | sed 's/\t/>-------/g' | $PAGER -F; };_"
 
     # Output alias definitions. Usage: git which st
     which = "!_() { git config --global --get alias.$1; };_"
@@ -96,6 +88,7 @@
     # Use a fuzzy-finder to find a SHA to use for a fixup commit.
     fixup = !git l @{u}.. | fzy | awk '{ print $1 }' | xargs -I{} git ci --fixup={}
 
+    # Output the hidden, initial SHA for a respository.
     initialsha = !printf '' | git hash-object --stdin -t tree
 
     # Perform a merge in-memory and output if conflicts are found (dry-run):
@@ -117,10 +110,13 @@
     ctags = !.git/hooks/ctags
 
     # Alias to make an archive with a prefix set to the name of the repo.
-    # git tar <ref> (defaults HEAD)
-    tar = "!zsh -c 'REF=${1:-HEAD}; \
-        BASE=$(basename $(git rev-parse --show-toplevel)); \
-        git archive --prefix=${BASE}/ -o ${BASE}-$(git describe ${REF}).tar.gz ${REF}' -"
+    #   git tar <ref> (default HEAD)
+    tar = "!_() { \
+        REF=\"${1:-HEAD}\"; \
+        DIR=\"$(basename $(git rev-parse --show-toplevel))\"; \
+        TAG=\"$(git describe --always \"$REF\")\"; \
+        git archive --prefix=\"$DIR\"/ -o \"${DIR}-${TAG}.tar.gz\" \"$REF\"; \
+    };_"
 
     # Merge a GitHub pull request into the current branch.
     # Usage: git preq <preq>
