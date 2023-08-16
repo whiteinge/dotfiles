@@ -50,8 +50,8 @@
     lt = l --topo-order
 
     rl = reflog --date=relative --pretty=relauthor
-    rll = reflog --date=relative --stat
-    rlll = reflog --date=relative -p --stat --color-moved
+    rll = reflog --date=relative --stat --decorate --abbrev-commit
+    rlll = reflog --date=relative -p --stat --decorate --color-moved --pretty=fuller
 
     # Show the Git log and automatically shorten & search for a SHA:
     #   git lf deb8dff8d8c1ed8acb7d7a2ec1158e7db136aab3
