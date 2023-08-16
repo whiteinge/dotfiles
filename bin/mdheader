@@ -1,0 +1,11 @@
+#!/usr/bin/awk -f
+# Output the first line as a Markdown header, then other lines verbatim
+#
+# Usage:
+#
+#     printf 'Heading\n\nBody.\n' | mdheader
+#     mdheader /path/to/somefile
+#     mdheader /path/to/somefile /path/to/otherfile
+
+FNR == 1 { printf("# ") }
+{ print }

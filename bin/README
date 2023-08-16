@@ -88,6 +88,7 @@ match-emails -- Output all matched email addresses
 match-git-range -- Output all matched Git SHA ranges (e.g., 123456..654321)
 match-ips -- Output all matched IP addresses
 match-urls -- Output all matched URLs
+mdheader -- Output the first line as a Markdown header, then other lines verbatim
 mdless -- View rendered Markdown files with $MANPAGER
 new-sh -- Quickly create and edit a new shell script, already marked as executable
 nightmode -- Calculate a color value for the current time to gradually red-shift via cron
