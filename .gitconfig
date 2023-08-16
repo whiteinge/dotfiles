@@ -147,6 +147,7 @@
 
 [commit]
     verbose = 2
+    cleanup = scissors
 
 [core]
     excludesfile = ~/.gitexcludesfile
