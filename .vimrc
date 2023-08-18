@@ -143,7 +143,7 @@ set shiftround                  " Rounds indent to a multiple of shiftwidth
 
 set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (it's not 1990 anymore)
 set lazyredraw                  " Will not redraw the screen while running macros (goes faster)
-set pastetoggle=<F7>            " Useful so auto-indenting doesn't mess up code when pasting
+set pastetoggle=<F10>            " Useful so auto-indenting doesn't mess up code when pasting
 
 set nostartofline               " Avoid moving cursor to BOL when jumping around
 set virtualedit=block           " Let cursor move past the last char in <C-V> mode
@@ -209,7 +209,7 @@ nnoremap <silent> <leader>ll
     \ endif<cr>
 
 " Toggle spell-checking
-map <silent> <F8> :set nospell!<cr>:set nospell?<cr>
+map <silent> <F9> :set nospell!<cr>:set nospell?<cr>
 
 " Change directory to the path of the current file; and back again
 map <leader>cd :lcd %:p:h<cr><bar>:pwd<cr>
@@ -426,15 +426,15 @@ com! BufSaveAsQf call getbufinfo()
 packadd cfilter
 
 " Use a fuzzy-finder to switch betweeen quickfix/location-list history entries.
-map <F3>
-    \ :redir => _redir \| silent lhistory \| redir END
-    \ \|:call util#SysR(_redir, 'fzy')
-    \ ->matchstr('[0-9]\+') ->W('lhistory') ->execute()<cr>
+com! Qfchoose
+    \ redir => _redir | silent lhistory | redir END
+    \ | call util#SysR(_redir, 'fzy')
+    \ ->matchstr('[0-9]\+') ->W('lhistory') ->execute()
 
-map <F4>
-    \ :redir => _redir \| silent chistory \| redir END
-    \ \|:call util#SysR(_redir, 'fzy')
-    \ ->matchstr('[0-9]\+') ->W('chistory') ->execute()<cr>
+com! Llchoose
+    \ redir => _redir | silent chistory | redir END
+    \ | call util#SysR(_redir, 'fzy')
+    \ ->matchstr('[0-9]\+') ->W('chistory') ->execute()
 
 " Shortcuts for working with quickfix/location lists
 nmap <silent>]q :cnext<cr>:norm zv<cr>
@@ -732,7 +732,7 @@ let g:ft_man_no_sect_fallback = 1
 let g:ft_man_folding_enable = 1
 
 """ undotree settings
-nnoremap <F6> :UndotreeToggle<cr>
+nnoremap <F3> :UndotreeToggle<cr>
 
 """ ale settings
 let g:ale_set_highlights = 0
@@ -743,7 +743,7 @@ nmap <silent> <leader>fg :ALEFix<cr>
 nmap <silent> <leader>fm :call ale#Lint()<cr>
 
 """ Tagbar plugin settings
-map <F5> :TagbarToggle<cr>
+map <F4> :TagbarToggle<cr>
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 let g:tagbar_autoshowtag = 1
@@ -801,13 +801,12 @@ com! Tmuxsendclear au! BufWritePost <buffer>
 """ Third-party debugger integration
 let g:vimspector_install_gadgets = ['vscode-php-debug']
 
-com! VimspectorContinue :call vimspector#Continue()
-
-nnoremap <Leader>x :call vimspector#ToggleBreakpoint()<CR>
-nnoremap <Leader>X :call vimspector#ClearBreakpoints()<CR>
-nmap <F9> <Plug>VimspectorStepOver
-nmap <F10> <Plug>VimspectorStepInto
-nmap <F11> <Plug>VimspectorStepOut
+nnoremap <Leader>x :call vimspector#ToggleBreakpoint()<cr>
+nnoremap <Leader>X :call vimspector#ClearBreakpoints()<cr>
+nmap <F5> <Plug>VimspectorStepOver
+nmap <F6> <Plug>VimspectorStepInto
+nmap <F7> <Plug>VimspectorStepOut
+nmap <F8> :call vimspector#Continue()<cr>
 
 " }}}
 " EOF
