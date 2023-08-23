@@ -104,7 +104,7 @@ git log --no-renames ${show_files:+--numstat} \
         weekday_cmd = "sort -n -r | cut -f2,3 | transpose"
         for (h in top_weekdays) {
             wd = top_weekdays[h]
-            printf("%s\t%s\t%.0f%%\n", wd, h, (wd / commit_count) * 100 ) \
+            printf("%s\t%s\t%.1f%%\n", wd, h, (wd / commit_count) * 100 ) \
             | weekday_cmd
         }
         close(weekday_cmd)
