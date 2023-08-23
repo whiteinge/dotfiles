@@ -158,7 +158,7 @@ spinner_demo () {
     tmux neww
     printf '%s\n' balloon ball bounce blink hypnotoad fish ansi vee dots \
         cells plus db qp alpha tminus spin \
-    | xe tmux splitw -t 0 -l 1 "$0" spinner
+    | xargs -n1 tmux splitw -t 0 -l 1 "$0" spinner
 
     tmux selectp -t 0
 }
@@ -234,15 +234,15 @@ git_fetch () {
 
     _timed_sequence 0 "$tot_obj" 0.001 |
         cut -f2 |
-        xe printf '\e[1Gremote: Enumerating objects: %3s'
+        xargs printf '\e[1Gremote: Enumerating objects: %3s'
     printf ', done.\n'
 
     _timed_sequence 0 "$tot_obj" 0.001 |
-        xe printf '\e[1Gremote: Counting objects: %3s (%s/%s)'
+        xargs printf '\e[1Gremote: Counting objects: %3s (%s/%s)'
     printf ', done.\n'
 
     _timed_sequence 0 "$tot_reu" 0.001 |
-        xe printf '\e[1Gremote: Compressing objects: %3s (%s/%s)'
+        xargs printf '\e[1Gremote: Compressing objects: %3s (%s/%s)'
     printf ', done.\n'
 
     local net=$(shuf -i 90-450 -n 1)
@@ -266,13 +266,13 @@ git_fetch () {
     printf ', done.\n'
 
     _timed_sequence 0 "$tot_reu" 0.001 |
-        xe printf '\e[1GResolving deltas: %3s (%s/%s)'
+        xargs printf '\e[1GResolving deltas: %3s (%s/%s)'
     printf ', completed with %s local objects.\n' "$tot_reu"
 
     shuf -n 4 "$wordfile" |
         tr -cd '[[:alnum:]]-_ \n' |
         tr '[:upper:]' '[:lower:]' |
-        xe printf 'From %s/%.3s:%s/%s\n'
+        xargs printf 'From %s/%.3s:%s/%s\n'
 
     {
         shuf -n $(shuf -i 1-20 -n 1) "$wordfile" |
@@ -293,7 +293,7 @@ git_fetch () {
                 printf '%s\t%s\t%s\t%s\n' "$t" "$r" "$w" "origin/${w}${f}"
             done
 
-        shuf -i 1-9 -n $(shuf -i 0-13 -n 1) | xe -N2 |
+        shuf -i 1-9 -n $(shuf -i 0-13 -n 1) | xargs -n2 |
             while read -r x y; do
                 printf '%s\t%s\t%s\t%s\n' \
                     '*' '[new tag]' "v$x.${y:-0}" "v$x.${y:-0}"
