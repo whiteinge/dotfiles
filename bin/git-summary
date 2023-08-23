@@ -25,7 +25,7 @@ test -t 1 && show_progress=1
 
 # %x09 is a tab character
 git log --no-renames ${show_files:+--numstat} \
-        --format='XXX%x09%h%x09%an%x09%ae%x09%cn%x09%ce%x09%aD%x09%cr' \
+        --format='XXX%x09%h%x09%an%x09%ae%x09%cn%x09%ce%x09%cD%x09%cr' \
     | awk -v show_progress="$show_progress" '
     function alen(a, i, c) { for (i in a) c += 1; return c; }
     function isnum(x){ return (x == x + 0) }
