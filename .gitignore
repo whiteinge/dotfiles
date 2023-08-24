@@ -46,6 +46,8 @@
 /.bash_history
 /.crawl
 /.lesshst
+/.mbsyncpasswd.gpg
+/.mutt/passwords.gpg
 /.netrc
 /.node_repl_history
 /.php_history
@@ -57,6 +59,7 @@
 /.ssh/ssh-auth-sock
 /.sudo_as_admin_successful
 /.units_history
+/.vdirsyncer/passwords.gpg
 /.viminfo
 /.vim/swapdir
 /.vim/undodir
@@ -103,6 +106,7 @@
 
 # Common OS dirs:
 /Applications
+/Contacts
 /Desktop
 /Documents
 /Downloads
