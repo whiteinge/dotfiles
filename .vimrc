@@ -683,6 +683,8 @@ nmap <expr> <leader>s< opfuncwrapper#WrapOpfunc('surround#Surround', 1, '<')
 nmap <expr> <leader>s" opfuncwrapper#WrapOpfunc('surround#Surround', 1, '"')
 nmap <expr> <leader>s' opfuncwrapper#WrapOpfunc('surround#Surround', 1, "'")
 nmap <expr> <leader>s` opfuncwrapper#WrapOpfunc('surround#Surround', 1, '`')
+nmap <expr> <leader>s_ opfuncwrapper#WrapOpfunc('surround#Surround', 1, '_')
+nmap <expr> <leader>s* opfuncwrapper#WrapOpfunc('surround#Surround', 1, '*')
 nmap <expr> <leader>ss opfuncwrapper#WrapOpfunc('surround#Surround', 1,
     \input("Surround with what chars? "))
 vmap <silent> <leader>s( :<C-U>call 
