@@ -18,6 +18,7 @@
 # -x   | Enable xtrace debug logging.
 # -t   | Pass additional test conditions to lr; multiple occurences ok.
 # -p   | Do not open search results in a pager.
+# -I   | Force case-sensitve search.
 #
 # Flags _must_ be the first argument to `glr`, before `searchterm`.
 #
@@ -48,7 +49,7 @@ trap '
     exit $excode
 ' INT TERM EXIT
 
-while getopts hxt:p opt; do
+while getopts hxt:pI opt; do
     case $opt in
     h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
     x) set -x;;
@@ -59,6 +60,7 @@ while getopts hxt:p opt; do
             testcond="$OPTARG"
         fi;;
     p) nopager=1;;
+    I) casesensitive=1;;
     esac
 done
 shift $(( OPTIND - 1 ))
@@ -76,8 +78,10 @@ fi
 search="${1:?'Missing "search term".'}"; shift
 
 # Check for capital letters in the search pattern.
-if ! $(printf '%s\n' "$search" | grep -q -E '[A-Z]' 2>/dev/null); then
-    is_icase=1
+if [ -z "$casesensitive" ]; then
+    if ! $(printf '%s\n' "$search" | grep -q -E '[A-Z]' 2>/dev/null); then
+        is_icase=1
+    fi
 fi
 
 # If we're given a search path use find to generate list of files to
