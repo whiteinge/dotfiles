@@ -92,7 +92,7 @@ def my_displayhook(value):
         except ImportError:
             __builtins__._ = value
 
-        pprint(value)
+        pprint(value, sort_dicts=False)
 sys.displayhook = my_displayhook
 
 # Welcome message
