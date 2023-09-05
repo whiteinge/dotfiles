@@ -11,3 +11,6 @@ iab _profile
     \ $after = hrtime(true);<cr>
     \ $duration = ($after - $before) / 1000000;<cr>
     \ print_r("Duration (ms): ". $duration .PHP_EOL);<cr>
+
+" This can matter for old PHP using the closing ?> tag.
+set nofixeol
