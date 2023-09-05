@@ -159,8 +159,8 @@
     ui = auto
 
 [pretty]
-    # a0350b8af2 (HEAD -> foo, origin/foo) Important thing (shouse, 5 day.. shouse, 23 ho..)
-    relauthor = %C(auto)%h%d%C(reset) %s %C(bold blue)(%aL, %<(7,trunc)%ar";"%C(cyan) %cL, %<(7,trunc)%cr)%C(reset)
+    # a0350b8af2 (HEAD -> foo, origin/foo) Important thing (shouse, 5 day.. shouse, 23 ho..) rebase (finish): returning to ...
+    relauthor = %C(auto)%h%d%C(reset) %s %C(bold blue)(%aL, %<(7,trunc)%ar";"%C(cyan) %cL, %<(7,trunc)%cr)%C(reset) %gs
 
 [init]
     templatedir = ~/.git_template
