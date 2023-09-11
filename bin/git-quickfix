@@ -15,6 +15,7 @@
 #     git quickfix -m modified
 #     git quickfix -m staged
 #     git quickfix abcdef -- path/to/file.foo
+#     git quickfix -- -w
 
 NAME=$(basename "$0")
 TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
@@ -28,6 +29,7 @@ trap '
     exit $excode
 ' INT TERM EXIT
 
+mode='commit'
 while getopts hm:x opt; do
     case $opt in
     m) mode="$OPTARG";;
@@ -46,9 +48,16 @@ mkdir -p -m 700 "$TEMP"
     elif [ "$mode" = 'staged' ]; then
         git diff --cached -p -U0 --diff-filter=AM "$@"
     else
-        case $1 in
-            *..*) git diff -p -U0 --diff-filter=AM -r "${@:-HEAD}";;
-            *) git show --first-parent -m -p -U0 --diff-filter=AM "${@:-HEAD}";;
+        if [ $# -gt 1 ]; then
+            shift 1
+            ref="$1"
+        else
+            ref='HEAD'
+        fi
+
+        case "$ref" in
+            *..*) git diff -p -U0 --diff-filter=AM -r "$ref" "$@";;
+            *) git show --first-parent -m -p -U0 --diff-filter=AM "$ref" "$@";;
         esac
 
     fi;
