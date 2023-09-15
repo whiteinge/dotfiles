@@ -2,6 +2,7 @@
 # http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
 test -d .git || exit 0
 
-trap 'rm -f "$$.tags"' EXIT
+mkdir .git/tags_lock 2>/dev/null || exit 0
+trap 'rm -rf .git/tags_lock; rm -f "$$.tags"' INT TERM EXIT
 git ls-files | ctags --tag-relative -L - -f"$$.tags"
-mv "$$.tags" "tags"
+mv "$$.tags" "tags" 2>/dev/null
