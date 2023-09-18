@@ -13,6 +13,8 @@ any POSIX-like environment.
 - Common packages, by OS, and other configuration are kept in
   [~/opt](https://github.com/whiteinge/dotfiles/tree/master/opt).
 
+![](https://www.eseth.org/2019/tmux-status-line.png)
+
 ## Installation
 
 The layout of this repo is intended to be used directly in a home folder. The
