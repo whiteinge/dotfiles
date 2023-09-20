@@ -100,11 +100,14 @@
     initialsha = !printf '' | git hash-object --stdin -t tree
 
     # Perform a merge in-memory and output if conflicts are found (dry-run):
-    #   git mergetest otherbranch
+    #   git mergetest targetbranch
+    #   git mergetest targetbranch intobranch
     mergetest = "!_() { \
+        target=\"${1:?Missing target branch}\"; \
+        into=\"${2:-HEAD}\"; \
         git merge-tree \
-            $(git merge-base ${1:?Missing branch} HEAD) \
-            $1 HEAD \
+            $(git merge-base \"$target\" \"$into\") \
+            \"$target\" \"$into\" \
         | awk '/<<<<<<</ { exit 1 }'; \
     }; _"
 
