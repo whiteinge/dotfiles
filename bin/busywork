@@ -366,6 +366,508 @@ git_ff () {
     '
 }
 
+openssl_debug () {
+    :
+
+    # !!% openssl s_client -debug -connect 192.168.86.24:8765
+    # CONNECTED(00000003)
+    # write to 0x559920772bb0 [0x559920859040] (295 bytes => 295 (0x127))
+    # 0000 - 16 03 01 01 22 01 00 01-1e 03 03 57 58 59 05 64   ...."......WXY.d
+    # 0010 - 94 f0 ae 5e c3 18 63 56-bc c7 71 ed 8b f3 25 e9   ...^..cV..q...%.
+    # 0020 - 2e 39 b0 a8 88 8b 31 75-c5 7d 0a 20 1d ac 07 41   .9....1u.}. ...A
+    # 0030 - 83 55 50 ca d8 27 a6 d8-ac 86 8f 4f 4f be 3f 38   .UP..'.....OO.?8
+    # 0040 - 65 13 07 9b 6e a3 32 4c-76 81 db 8f 00 48 13 02   e...n.2Lv....H..
+    # 0050 - 13 03 13 01 13 04 c0 2c-c0 30 cc a9 cc a8 c0 ad   .......,.0......
+    # 0060 - c0 2b c0 2f c0 ac c0 23-c0 27 c0 0a c0 14 c0 09   .+./...#.'......
+    # 0070 - c0 13 00 9d c0 9d 00 9c-c0 9c 00 3d 00 3c 00 35   ...........=.<.5
+    # 0080 - 00 2f 00 9f cc aa c0 9f-00 9e c0 9e 00 6b 00 67   ./...........k.g
+    # 0090 - 00 39 00 33 00 ff 01 00-00 8d 00 0b 00 04 03 00   .9.3............
+    # 00a0 - 01 02 00 0a 00 16 00 14-00 1d 00 17 00 1e 00 19   ................
+    # 00b0 - 00 18 01 00 01 01 01 02-01 03 01 04 00 23 00 00   .............#..
+    # 00c0 - 00 16 00 00 00 17 00 00-00 0d 00 22 00 20 04 03   ...........". ..
+    # 00d0 - 05 03 06 03 08 07 08 08-08 09 08 0a 08 0b 08 04   ................
+    # 00e0 - 08 05 08 06 04 01 05 01-06 01 03 03 03 01 00 2b   ...............+
+    # 00f0 - 00 05 04 03 04 03 03 00-2d 00 02 01 01 00 33 00   ........-.....3.
+    # 0100 - 26 00 24 00 1d 00 20 a7-f6 ae d0 e9 73 50 0a 29   &.$... .....sP.)
+    # 0110 - aa 94 e1 be 37 e3 30 c8-72 bf 50 f2 25 f8 34 d0   ....7.0.r.P.%.4.
+    # 0120 - 50 60 67 1d c3 22 3f                              P`g.."?
+    # read from 0x559920772bb0 [0x55992084fe13] (5 bytes => 5 (0x5))
+    # 0000 - 16 03 03 00 7a                                    ....z
+    # read from 0x559920772bb0 [0x55992084fe18] (122 bytes => 122 (0x7A))
+    # 0000 - 02 00 00 76 03 03 07 3e-da 77 1c ac 4c 8e 38 95   ...v...>.w..L.8.
+    # 0010 - 9b d0 a8 2a d4 e9 e6 76-3f da ac 07 74 79 7d 0e   ...*...v?...ty}.
+    # 0020 - 78 c4 bb 3e 6e 33 20 1d-ac 07 41 83 55 50 ca d8   x..>n3 ...A.UP..
+    # 0030 - 27 a6 d8 ac 86 8f 4f 4f-be 3f 38 65 13 07 9b 6e   '.....OO.?8e...n
+    # 0040 - a3 32 4c 76 81 db 8f 13-02 00 00 2e 00 33 00 24   .2Lv.........3.$
+    # 0050 - 00 1d 00 20 9c be 19 ac-50 db 39 c5 06 38 02 ef   ... ....P.9..8..
+    # 0060 - 15 d7 43 ae 64 cc fd f8-78 9f ad 16 7d 07 4d c5   ..C.d...x...}.M.
+    # 0070 - c8 77 89 4f 00 2b 00 02-03 04                     .w.O.+....
+    # read from 0x559920772bb0 [0x55992084fe13] (5 bytes => 5 (0x5))
+    # 0000 - 14 03 03 00 01                                    .....
+    # read from 0x559920772bb0 [0x55992084fe18] (1 bytes => 1 (0x1))
+    # 0000 - 01                                                .
+    # read from 0x559920772bb0 [0x55992084fe13] (5 bytes => 5 (0x5))
+    # 0000 - 17 03 03 00 17                                    .....
+    # read from 0x559920772bb0 [0x55992084fe18] (23 bytes => 23 (0x17))
+    # 0000 - 15 57 9f 48 da a9 8d 18-3e 03 08 7f 5d a7 ce 50   .W.H....>...]..P
+    # 0010 - 95 e7 d5 92 57 ee ac                              ....W..
+    # Can't use SSL_get_servername
+    # read from 0x559920772bb0 [0x55992084fe13] (5 bytes => 5 (0x5))
+    # 0000 - 17 03 03 04 0a                                    .....
+    # read from 0x559920772bb0 [0x55992084fe18] (1034 bytes => 1034 (0x40A))
+    # 0000 - fa 5f 69 df 40 fb 72 2d-98 48 c0 73 2b 0a e7 2c   ._i.@.r-.H.s+..,
+    # 0010 - 97 e9 a3 f7 19 b9 e7 6f-ab 58 c6 e1 9f f9 f4 a2   .......o.X......
+    # 0020 - 93 fd 47 d8 75 32 c0 7f-c8 bd 2f 5e 84 1a f7 70   ..G.u2..../^...p
+    # 0030 - c3 7c da a1 08 fa d5 b4-66 a3 03 4f bb 79 cb 7a   .|......f..O.y.z
+    # 0040 - ed db 11 37 e1 fb c1 b9-ae a3 f7 1f 83 ea b1 da   ...7............
+    # 0050 - 83 33 fb 7d 59 b1 90 59-4d dd cb aa f2 af 1d d0   .3.}Y..YM.......
+    # 0060 - 86 f6 f6 7d d8 b3 24 05-4d 8f 61 9b 5f 3f 39 d9   ...}..$.M.a._?9.
+    # 0070 - e4 ac 88 38 67 a4 21 22-3e 66 de 5e 23 4c 3d 15   ...8g.!">f.^#L=.
+    # 0080 - bf c9 ac 4c 93 19 57 d1-91 62 c3 45 3e 24 0c c5   ...L..W..b.E>$..
+    # 0090 - 56 68 64 9f 56 de 64 b0-5f c4 02 c4 12 c3 25 25   Vhd.V.d._.....%%
+    # 00a0 - 08 1b 29 05 c5 c2 81 cd-cd c4 43 a0 fc 0b 15 dc   ..).......C.....
+    # 00b0 - 1d 68 2d a6 52 a2 e1 e2-6f 7c 05 5d da 00 b5 b4   .h-.R...o|.]....
+    # 00c0 - 11 ac 8c 22 94 47 7b 87-9b 26 52 0a 67 ce 8d 19   ...".G{..&R.g...
+    # 00d0 - 06 48 4b c7 27 ad 5c 09-93 a4 fd 0b be a9 0f 13   .HK.'.\.........
+    # 00e0 - 6f d4 54 ab 02 ac fa d4-b9 68 46 a9 fa 95 0b 12   o.T......hF.....
+    # 00f0 - 50 0b a9 bb cb 26 a2 45-ee 8c ad 8b 99 47 b0 bc   P....&.E.....G..
+    # 0100 - 86 76 fe b8 7e 4c c4 ca-b5 ae ee b3 c5 58 ae 81   .v..~L.......X..
+    # 0110 - d0 87 e8 d1 f6 9c 2f 44-ea 2f 0b 2c 69 46 55 2d   ....../D./.,iFU-
+    # 0120 - 86 1f c1 aa 6d b8 04 3f-59 68 b9 88 b7 fe 33 df   ....m..?Yh....3.
+    # 0130 - 88 52 a0 af a6 ba 69 3b-76 5e 7f 8b be 0c e4 bb   .R....i;v^......
+    # 0140 - e7 d5 b8 28 5d 3f f7 36-88 71 ca 6a 2e 38 4c f6   ...(]?.6.q.j.8L.
+    # 0150 - eb ba 3c 89 ae 93 17 be-4f f6 90 0a e7 f9 04 2f   ..<.....O....../
+    # 0160 - 48 7c 14 bf a8 c9 fc 3d-62 40 86 13 4a b1 e2 d7   H|.....=b@..J...
+    # 0170 - ba 70 0a 38 4a 8e 69 89-5e 98 33 e5 1b 8b e8 4c   .p.8J.i.^.3....L
+    # 0180 - 91 48 fe b2 ed 87 c4 d4-be 72 01 9c e1 cb a2 bd   .H.......r......
+    # 0190 - 18 4a 26 d5 01 cd 37 49-d2 db c5 31 3d b3 d9 3d   .J&...7I...1=..=
+    # 01a0 - 3b 6f bd 64 21 0d 75 e9-67 38 03 6c d3 ba 03 a4   ;o.d!.u.g8.l....
+    # 01b0 - 32 6e 37 02 51 1c dd 3f-1d 3d 52 d3 90 39 8a 26   2n7.Q..?.=R..9.&
+    # 01c0 - cb f1 18 b2 c3 36 c1 67-27 15 6c eb 3e 19 a5 14   .....6.g'.l.>...
+    # 01d0 - b0 d4 08 be 93 0e 16 a5-77 c5 e0 47 86 36 c6 e5   ........w..G.6..
+    # 01e0 - 6e 1a 69 2b 79 33 7d 8a-9f de 5b 27 e8 ea e3 84   n.i+y3}...['....
+    # 01f0 - 2a 48 6f f1 09 15 68 e3-ba bd 36 59 db 96 68 41   *Ho...h...6Y..hA
+    # 0200 - 8d 86 ec 76 e8 9f ab c2-f5 83 28 1c 13 82 b9 e7   ...v......(.....
+    # 0210 - 24 8b 3c f0 df 6f 79 b8-21 3d 74 27 84 7d e6 44   $.<..oy.!=t'.}.D
+    # 0220 - 8b 0c 3c 53 1c cf e7 39-54 94 cd 4d 9b 86 74 40   ..<S...9T..M..t@
+    # 0230 - 92 25 47 4c 44 19 a6 93-0b 01 cf 5f ba 50 c2 5b   .%GLD......_.P.[
+    # 0240 - 84 9a 46 1d e9 1c 60 c0-d3 8e b7 41 2f 50 04 66   ..F...`....A/P.f
+    # 0250 - f4 42 3c f5 bb 3d 2c 11-4e 39 cf a6 82 08 b7 29   .B<..=,.N9.....)
+    # 0260 - 8d 1e 25 7a d5 3a 1d 5b-c7 a9 a2 f1 e0 be 92 3b   ..%z.:.[.......;
+    # 0270 - cf 17 f5 66 78 74 78 ee-aa b6 fc 06 d8 e0 9b b9   ...fxtx.........
+    # 0280 - 2e e8 d4 c4 b9 b3 42 ad-a0 71 32 67 52 ba 28 3a   ......B..q2gR.(:
+    # 0290 - 24 bd 72 73 ee 95 4b 31-ae a9 36 4b 93 e0 23 46   $.rs..K1..6K..#F
+    # 02a0 - 59 45 85 62 55 71 53 2c-c1 b2 85 6f aa b7 03 44   YE.bUqS,...o...D
+    # 02b0 - 14 e5 b0 3d fd 1d 86 c5-b9 3f 58 6f e9 2d d2 cb   ...=.....?Xo.-..
+    # 02c0 - f4 d3 02 eb 93 fb 85 b7-00 ef 80 73 01 3c d6 ec   ...........s.<..
+    # 02d0 - db 00 5f da aa 6c 8b ab-4b cf 15 fb ce 5a 08 77   .._..l..K....Z.w
+    # 02e0 - e3 05 5e 2b c4 3d 46 65-be 9c bb c0 e4 e2 b7 e2   ..^+.=Fe........
+    # 02f0 - 6e b6 79 07 0c 8b 9f 0a-e5 eb de 3e 83 44 b6 e0   n.y........>.D..
+    # 0300 - 60 80 59 a8 28 da e9 d9-d4 44 32 8a 3a 61 de b3   `.Y.(....D2.:a..
+    # 0310 - 8b 87 9d 5b 6a f9 63 a9-23 86 c6 f9 0e 29 7e 38   ...[j.c.#....)~8
+    # 0320 - f9 6d d3 8c fd 16 9b c9-29 e3 bf 9e fa 21 e6 bc   .m......)....!..
+    # 0330 - f6 79 ca f7 f8 d8 ea 8f-5b 0a b4 a3 aa 09 4f 38   .y......[.....O8
+    # 0340 - ff 07 db 65 57 07 ec 71-69 8f 98 74 dd e9 11 91   ...eW..qi..t....
+    # 0350 - ba 9f 00 79 2a 18 43 2b-41 be ca ab 64 6b f2 d7   ...y*.C+A...dk..
+    # 0360 - 0b e2 68 c6 f8 e6 49 c4-34 56 74 cf 05 ae f5 62   ..h...I.4Vt....b
+    # 0370 - 08 a6 c9 51 db 60 99 64-dd 12 98 bb fa fb 3f 33   ...Q.`.d......?3
+    # 0380 - ec 3e 37 32 f7 1f 28 a8-c8 bc 9d 90 74 1e 16 05   .>72..(.....t...
+    # 0390 - fc fc 0e 06 cc c8 f2 82-f4 b3 9d 0c cd 8b 93 47   ...............G
+    # 03a0 - 4e 84 0f de 91 54 fb 75-2b 0b 11 4c 2a de 7e 9e   N....T.u+..L*.~.
+    # 03b0 - d0 ac b4 8c 4f d8 e3 21-b4 6b 89 d8 c2 ab b6 cb   ....O..!.k......
+    # 03c0 - 3d 96 97 df ab c1 4f ab-d2 34 54 dd 55 ea 88 5e   =.....O..4T.U..^
+    # 03d0 - f6 ff ff 4d 16 13 1d a6-33 40 15 fa 81 94 41 7f   ...M....3@....A.
+    # 03e0 - 6b 7b a6 6e a6 1b d0 16-5c f1 fe 83 bd 4d ed 6c   k{.n....\....M.l
+    # 03f0 - c5 6f 8b 8a 74 43 92 a5-b4 b3 ea 04 e5 1a b9 88   .o..tC..........
+    # 0400 - 95 62 7b 68 aa 4b e3 5b-2e 8f                     .b{h.K.[..
+    # depth=0 C = US, ST = UT, L = Ogden, O = Sensorial Cyberspace Inc, CN = 192.168.86.24
+    # verify error:num=20:unable to get local issuer certificate
+    # verify return:1
+    # depth=0 C = US, ST = UT, L = Ogden, O = Sensorial Cyberspace Inc, CN = 192.168.86.24
+    # verify error:num=21:unable to verify the first certificate
+    # verify return:1
+    # depth=0 C = US, ST = UT, L = Ogden, O = Sensorial Cyberspace Inc, CN = 192.168.86.24
+    # verify return:1
+    # read from 0x559920772bb0 [0x55992084fe13] (5 bytes => 5 (0x5))
+    # 0000 - 17 03 03 01 19                                    .....
+    # read from 0x559920772bb0 [0x55992084fe18] (281 bytes => 281 (0x119))
+    # 0000 - ac 5c f8 ab a3 4e 6b 75-af f5 ef fd f4 54 31 83   .\...Nku.....T1.
+    # 0010 - a5 37 35 14 34 d2 42 9d-6c d2 58 9f 52 91 3e 57   .75.4.B.l.X.R.>W
+    # 0020 - 75 f2 a5 92 8d 30 dd d1-09 d6 c0 d4 1b 75 70 3c   u....0.......up<
+    # 0030 - a2 6d 35 e7 4d 09 5e 86-53 26 65 3a 03 b0 90 fb   .m5.M.^.S&e:....
+    # 0040 - 48 65 c6 47 77 a9 ed 85-e7 9c e5 ca da fb 3c 93   He.Gw.........<.
+    # 0050 - 8d b7 0a bf 95 c9 5f 41-62 d3 8c ab d7 7c 13 37   ......_Ab....|.7
+    # 0060 - d0 8d 6b e2 6d ed 02 3f-1f 0c c8 01 62 ff 14 12   ..k.m..?....b...
+    # 0070 - 50 79 9f 33 d1 4a 9d bd-6f 39 97 08 b5 d4 eb a4   Py.3.J..o9......
+    # 0080 - a5 d6 f1 55 54 5b bc f2-7a 14 81 37 e2 42 1b 2f   ...UT[..z..7.B./
+    # 0090 - 15 47 e5 11 71 27 9c 6a-17 8c 76 1c c3 dd 43 71   .G..q'.j..v...Cq
+    # 00a0 - f6 10 aa a8 77 29 91 44-5e b3 73 f6 9e 84 a2 09   ....w).D^.s.....
+    # 00b0 - 06 cc dd 7c c9 87 d0 01-32 e2 a3 42 7a cf c1 8d   ...|....2..Bz...
+    # 00c0 - 7b 36 34 e8 bd be 1a e2-23 0f 1b d0 c1 09 f1 52   {64.....#......R
+    # 00d0 - 0c 01 5c de f8 6c 5e d6-e6 57 57 f5 3f 82 3a 8c   ..\..l^..WW.?.:.
+    # 00e0 - 13 43 88 64 fb 98 91 d3-00 ea d1 b1 52 f7 5d af   .C.d........R.].
+    # 00f0 - 82 b6 a0 e8 1d 5a a5 99-54 c8 1e c8 04 00 87 d4   .....Z..T.......
+    # 0100 - b4 9c 62 63 6f 9a a1 f9-7e 1d bf 81 3e 01 f5 ee   ..bco...~...>...
+    # 0110 - 86 83 17 bf 40 a6 81 8b-07                        ....@....
+    # read from 0x559920772bb0 [0x55992084fe13] (5 bytes => 5 (0x5))
+    # 0000 - 17 03 03 00 45                                    ....E
+    # read from 0x559920772bb0 [0x55992084fe18] (69 bytes => 69 (0x45))
+    # 0000 - 54 9b 58 f7 39 20 88 5e-b2 9e 9f de 2d 85 7b c0   T.X.9 .^....-.{.
+    # 0010 - 40 37 97 aa 9c 51 11 8c-a4 c1 c4 69 cf b0 11 eb   @7...Q.....i....
+    # 0020 - 8e ac f4 97 63 eb f0 9d-38 4a c6 8f 67 61 02 4f   ....c...8J..ga.O
+    # 0030 - 20 9e 92 f9 48 d0 e8 89-99 58 12 83 eb 23 e3 a1    ...H....X...#..
+    # 0040 - d4 59 21 1d 60                                    .Y!.`
+    # write to 0x559920772bb0 [0x559920859040] (80 bytes => 80 (0x50))
+    # 0000 - 14 03 03 00 01 01 17 03-03 00 45 b0 9b 75 fa 05   ..........E..u..
+    # 0010 - d3 45 c8 81 57 dd 68 1f-f4 02 58 b9 0e 30 83 6c   .E..W.h...X..0.l
+    # 0020 - f9 b9 fa da f0 1d b2 ed-42 60 d5 e5 4f e9 8f e7   ........B`..O...
+    # 0030 - fe 73 f2 ea 14 0f c5 d8-06 df c4 ea 98 4e e0 4c   .s...........N.L
+    # 0040 - 59 28 6c 7e e4 ba c1 1f-dc 5d ca 9e ea ec 8f 49   Y(l~.....].....I
+    # ---
+    # Certificate chain
+    #  0 s:C = US, ST = UT, L = Ogden, O = Sensorial Cyberspace Inc, CN = 192.168.86.24
+    #    i:C = US, ST = UT, L = Ogden, O = Sensorial Cyberspace Inc, CN = 192.168.86.24
+    #    a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+    #    v:NotBefore: Sep  6 05:04:13 2023 GMT; NotAfter: Sep  5 05:04:13 2024 GMT
+    # ---
+    # Server certificate
+    # -----BEGIN CERTIFICATE-----
+    # MIID6DCCAtCgAwIBAgIUKb9UL37SG0s0BQcu7d+niRtwfTswDQYJKoZIhvcNAQEL
+    # BQAwZTELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAlVUMQ4wDAYDVQQHDAVPZ2RlbjEh
+    # MB8GA1UECgwYU2Vuc29yaWFsIEN5YmVyc3BhY2UgSW5jMRYwFAYDVQQDDA0xOTIu
+    # MTY4Ljg2LjI0MB4XDTIzMDkwNjA1MDQxM1oXDTI0MDkwNTA1MDQxM1owZTELMAkG
+    # A1UEBhMCVVMxCzAJBgNVBAgMAlVUMQ4wDAYDVQQHDAVPZ2RlbjEhMB8GA1UECgwY
+    # U2Vuc29yaWFsIEN5YmVyc3BhY2UgSW5jMRYwFAYDVQQDDA0xOTIuMTY4Ljg2LjI0
+    # MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjCMBDJResqZ7DTfsexSJ
+    # Kt+5uB0t+FtOTLt9AD08ZxBz+lvDKwLuSc/3BQTaRbkEC+jzpFAL4T++CzyXf5Zj
+    # KQ0us5IH7FasD8pPP6L47nG6Tc1pTCkGAZkDdAp4Xot5ezWnDfAOLKMd37wLT9ue
+    # VBr4e1VEDHUgiH990GE+yYNeK8o1IV0Rmpn05JhExX6DkZN6b3iVVLPLzsOg3f+Z
+    # BSyvE3AsERuCux25EH90cMToRxc0hNMRswAQyCExqxnNzGKnAvc/9sJ9d2frZ7ta
+    # T3Gs0N7IoO3s/KLvETZdVyTnrapXeboEBMw+7gWwELETqOq8P3e0t9e91eehbETd
+    # IwIDAQABo4GPMIGMMB8GA1UdIwQYMBaAFJhsIiNncRUTJXhk1sSb2YcH1vywMAwG
+    # A1UdEwQFMAMBAf8wCwYDVR0PBAQDAgTwMBMGA1UdJQQMMAoGCCsGAQUFBwMBMBoG
+    # A1UdEQQTMBGHBMCoVhiCCWxvY2FsaG9zdDAdBgNVHQ4EFgQUT6QNueOmXV+gLram
+    # 7VJ8/vg76t0wDQYJKoZIhvcNAQELBQADggEBAAudei3eL1+2uI2/LxTyFIRoIdOF
+    # Y0n0tgbCwSH22ASYjENQ2PXVG9DVYL630/+SKX4QZgfGoBkIA1ualoFEI5L/m9B4
+    # JVIJ4TyoncGkAcYEcT2Mr0++5ZP5LsC85+oDGZLuKfaajqRB+rT296NCrzrdYT0c
+    # mlvGFSSM4FjJaCAEDPTQPX1DnR+ljmvW9jrXtKjcXOvAlAdlaUW0drzYhhgaJX6p
+    # CzFkxNcZbV2MmawMmpjo99SvKhscwvqjBeUjIIrAtbk7NJ5nJW7bbTk2av3gbnFu
+    # /1oS8DyXd/VFaIat8chEhHvSQ0ztuHIXAbfeZTYMlNqTA+xSrIsiLudAjKs=
+    # -----END CERTIFICATE-----
+    # subject=C = US, ST = UT, L = Ogden, O = Sensorial Cyberspace Inc, CN = 192.168.86.24
+    # issuer=C = US, ST = UT, L = Ogden, O = Sensorial Cyberspace Inc, CN = 192.168.86.24
+    # ---
+    # No client certificate CA names sent
+    # Peer signing digest: SHA512
+    # Peer signature type: RSA-PSS
+    # Server Temp Key: X25519, 253 bits
+    # ---
+    # SSL handshake has read 1560 bytes and written 375 bytes
+    # Verification error: unable to verify the first certificate
+    # ---
+    # New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+    # Server public key is 2048 bit
+    # Secure Renegotiation IS NOT supported
+    # Compression: NONE
+    # Expansion: NONE
+    # No ALPN negotiated
+    # Early data was not sent
+    # Verify return code: 21 (unable to verify the first certificate)
+    # ---
+    # read from 0x559920772bb0 [0x55992084fe13] (5 bytes => 5 (0x5))
+    # 0000 - 17 03 03 00 a5                                    .....
+    # read from 0x559920772bb0 [0x55992084fe18] (165 bytes => 165 (0xA5))
+    # 0000 - 2c 38 18 82 21 f2 40 a6-66 00 28 7f d9 f5 d1 02   ,8..!.@.f.(.....
+    # 0010 - eb 31 7e bc a4 d8 af 64-15 32 81 ef a0 c8 ee a5   .1~....d.2......
+    # 0020 - 33 e5 66 bf c6 97 82 86-e2 bb 66 01 a5 be d4 7a   3.f.......f....z
+    # 0030 - fb 5e 68 c2 5f 63 d0 c5-b7 cf 06 3c 2e d9 73 1c   .^h._c.....<..s.
+    # 0040 - bd 75 de 98 06 5d ca 20-9f 76 bc 9c 33 7b 90 99   .u...]. .v..3{..
+    # 0050 - 17 cd a3 52 aa 59 79 18-15 19 e4 c5 27 3c ca e3   ...R.Yy.....'<..
+    # 0060 - d9 c2 2d 1c 45 4a 64 91-a9 a8 18 cf 43 f9 db 30   ..-.EJd.....C..0
+    # 0070 - 7a 4f c2 4f d6 72 74 15-39 26 cb 38 95 e0 d2 9c   zO.O.rt.9&.8....
+    # 0080 - 49 0b c7 48 a7 3c e0 74-38 9e 63 d9 4d e6 84 9b   I..H.<.t8.c.M...
+    # 0090 - 7b 92 af 38 a9 d5 63 f2-fe dc ef 28 e2 6b f0 ba   {..8..c....(.k..
+    # 00a0 - 19 52 c7 b2 7f                                    .R...
+    # ---
+    # Post-Handshake New Session Ticket arrived:
+    # SSL-Session:
+    #     Protocol  : TLSv1.3
+    #     Cipher    : TLS_AES_256_GCM_SHA384
+    #     Session-ID: 7782BF54CB71F640DBDA5BA49472A20090E3815CE99309758585C6774239CDE9
+    #     Session-ID-ctx:
+    #     Resumption PSK: 7C38EA047C85C8B3BD355C04C6262B7FD9D940D27C8E572C54BEC9E63D0FF99C331FC339D39444EC7AF5C60CD3AE60BE
+    #     PSK identity: None
+    #     PSK identity hint: None
+    #     SRP username: None
+    #     TLS session ticket lifetime hint: 43200 (seconds)
+    #     TLS session ticket:
+    #     0000 - c2 e3 de 7f fe bf 7f 74-d5 9f 82 33 23 ca 74 61   .......t...3#.ta
+    #     0010 - 2c f7 9e c8 a3 66 16 af-cb 0f 32 4c 24 62 f5 60   ,....f....2L$b.`
+    #     0020 - c5 fb 47 18 a3 18 da 52-e4 2f cd 9a 16 ea f3 45   ..G....R./.....E
+    #     0030 - f8 15 66 7a e6 28 60 1c-77 a4 2a 47 a7 92 f0 31   ..fz.(`.w.*G...1
+    #     0040 - 2a a7 93 e3 90 77 b3 71-b8 a6 8d c8 c3 43 67 a9   *....w.q.....Cg.
+    #     0050 - 69 c4 d2 5d 7e f3 1b c0-d8 b2 8b 7f bf 48 31 47   i..]~........H1G
+    #     0060 - 3c 35 5c                                          <5\
+
+    #     Start Time: 1694097430
+    #     Timeout   : 7200 (sec)
+    #     Verify return code: 21 (unable to verify the first certificate)
+    #     Extended master secret: no
+    #     Max Early Data: 0
+    # ---
+    # read R BLOCK
+    # read from 0x559920772bb0 [0x55992084fe13] (5 bytes => 5 (0x5))
+    # 0000 - 17 03 03 00 a5                                    .....
+    # read from 0x559920772bb0 [0x55992084fe18] (165 bytes => 165 (0xA5))
+    # 0000 - 60 69 fd 76 8c f4 06 14-d1 61 9b 11 4d a1 8a d1   `i.v.....a..M...
+    # 0010 - 56 16 79 8c 2c 3c fa 19-3d 21 e7 48 3f 59 8f 23   V.y.,<..=!.H?Y.#
+    # 0020 - 3d 63 c1 f1 6d d0 29 3a-e7 11 09 50 db ee 62 28   =c..m.):...P..b(
+    # 0030 - ac b2 a4 57 b1 1f 58 1b-95 86 fc 88 3d 70 48 4f   ...W..X.....=pHO
+    # 0040 - 86 0d 28 35 07 96 5f 01-8a 44 03 5c 9a f9 68 4c   ..(5.._..D.\..hL
+    # 0050 - da 22 ae 6d 7f 9a 69 fe-47 8d 21 9d 50 eb 6c db   .".m..i.G.!.P.l.
+    # 0060 - 23 b3 e8 32 f1 0f ee 46-08 63 3b 98 3a f7 a1 7d   #..2...F.c;.:..}
+    # 0070 - cd c9 0e fb 40 9e f8 7e-40 91 d8 c7 6c 2b fa 36   ....@..~@...l+.6
+    # 0080 - 1f 1a 12 c8 4b 99 f2 44-85 7a ef b6 9e 77 26 bc   ....K..D.z...w&.
+    # 0090 - 32 47 08 65 40 87 85 14-a4 fe 9f ac 61 e5 77 7a   2G.e@.......a.wz
+    # 00a0 - 47 b6 06 86 d6                                    G....
+    # ---
+    # Post-Handshake New Session Ticket arrived:
+    # SSL-Session:
+    #     Protocol  : TLSv1.3
+    #     Cipher    : TLS_AES_256_GCM_SHA384
+    #     Session-ID: E6E6B113D6978C7CF294E2B95AA08079FD0F71393BE7E6719EA20ABA7FC9D668
+    #     Session-ID-ctx:
+    #     Resumption PSK: BA040AC1318F7162C3ACE1E050A8A34292ECD7FD7015DFF81F03C43EB55222D5527D6F1D071D48CF7DBDEAA60D6B02B1
+    #     PSK identity: None
+    #     PSK identity hint: None
+    #     SRP username: None
+    #     TLS session ticket lifetime hint: 43200 (seconds)
+    #     TLS session ticket:
+    #     0000 - 09 b2 07 88 8f 81 53 40-a9 9f e9 ea 1e 10 cd a5   ......S@........
+    #     0010 - 74 7a 2f f9 1c 17 f7 7d-21 6c 37 2f 99 4e 90 31   tz/....}!l7/.N.1
+    #     0020 - 1b ff ae 0a a8 88 d0 27-ae 26 24 fa a9 a7 ac 03   .......'.&$.....
+    #     0030 - 4d 12 ea 74 05 cd c9 d7-87 28 1f 49 62 a6 2c b4   M..t.....(.Ib.,.
+    #     0040 - 79 dc de 73 94 c7 02 bd-60 b1 6d bf 89 83 45 a4   y..s....`.m...E.
+    #     0050 - cb 11 e3 e1 3b ce 5b 81-a1 bc 40 e8 27 20 15 b8   ....;.[...@.' ..
+    #     0060 - 96 4b e1                                          .K.
+
+    #     Start Time: 1694097430
+    #     Timeout   : 7200 (sec)
+    #     Verify return code: 21 (unable to verify the first certificate)
+    #     Extended master secret: no
+    #     Max Early Data: 0
+    # ---
+    # read R BLOCK
+    # read from 0x559920772bb0 [0x55992084fe13] (5 bytes => 5 (0x5))
+    # 0000 - 17 03 03 00 a5                                    .....
+    # read from 0x559920772bb0 [0x55992084fe18] (165 bytes => 165 (0xA5))
+    # 0000 - 3d 24 97 de e6 12 cb 35-85 2e 6c ee e2 b5 82 93   =$.....5..l.....
+    # 0010 - 28 82 f3 14 8f c4 3d 48-0d 0d ec 56 56 13 df 3c   (.....=H...VV..<
+    # 0020 - b5 21 a6 6c 40 fd df bf-31 c1 f9 d9 c8 23 8c 48   .!.l@...1....#.H
+    # 0030 - 86 80 b7 77 a0 ed 74 91-37 55 5a d6 cd dd e4 17   ...w..t.7UZ.....
+    # 0040 - 04 85 15 70 d8 25 3f 0d-c6 5d 0f 01 ba 70 03 38   ...p.%?..]...p.8
+    # 0050 - 67 77 cb cc 11 56 df 9c-64 fc 42 fe e3 da 28 52   gw...V..d.B...(R
+    # 0060 - d3 9f d3 c0 06 eb 50 cf-ef b3 e3 52 a9 45 be 87   ......P....R.E..
+    # 0070 - 48 56 22 63 d1 70 a9 d8-7d 4c a4 da 88 d3 60 97   HV"c.p..}L....`.
+    # 0080 - 19 25 1c b8 10 67 30 1b-9d 5d 2b 1a c4 40 be d8   .%...g0..]+..@..
+    # 0090 - 59 37 3c b8 47 79 f2 17-f4 f3 fe c9 9b 88 16 33   Y7<.Gy.........3
+    # 00a0 - bc 1c 99 85 40                                    ....@
+    # ---
+    # Post-Handshake New Session Ticket arrived:
+    # SSL-Session:
+    #     Protocol  : TLSv1.3
+    #     Cipher    : TLS_AES_256_GCM_SHA384
+    #     Session-ID: D9384EA7676A6694D108048C51CAAE2C43949A2D8A09BF051515F2BB262D51FA
+    #     Session-ID-ctx:
+    #     Resumption PSK: 63276CAB00564931F5E068667A414CC1F708C3DB069F85A97E1125FAF9D3C44E5E77B977FC5FA20240F63280083EFC16
+    #     PSK identity: None
+    #     PSK identity hint: None
+    #     SRP username: None
+    #     TLS session ticket lifetime hint: 43200 (seconds)
+    #     TLS session ticket:
+    #     0000 - 4e 1d bf 80 27 f7 92 98-98 2a bb ce 95 49 bb 13   N...'....*...I..
+    #     0010 - 32 73 c0 31 07 a6 c0 e5-9c 51 1d 49 79 27 a9 9b   2s.1.....Q.Iy'..
+    #     0020 - ce 89 1e c2 67 34 29 c1-87 14 28 d9 47 8c 83 e2   ....g4)...(.G...
+    #     0030 - 86 c4 4b 29 b2 06 63 78-f0 77 27 8c 3f 35 45 bd   ..K)..cx.w'.?5E.
+    #     0040 - d3 18 42 66 b2 55 6a ad-23 03 fc 60 6f fd 0a d2   ..Bf.Uj.#..`o...
+    #     0050 - 4f 68 91 78 38 d2 af 56-c5 84 56 b7 1f 0d 49 67   Oh.x8..V..V...Ig
+    #     0060 - 7a 4c db                                          zL.
+
+    #     Start Time: 1694097430
+    #     Timeout   : 7200 (sec)
+    #     Verify return code: 21 (unable to verify the first certificate)
+    #     Extended master secret: no
+    #     Max Early Data: 0
+    # ---
+    # read R BLOCK
+    # read from 0x559920772bb0 [0x55992084fe13] (5 bytes => 5 (0x5))
+    # 0000 - 17 03 03 00 a5                                    .....
+    # read from 0x559920772bb0 [0x55992084fe18] (165 bytes => 165 (0xA5))
+    # 0000 - 45 47 37 4a 6c 21 b4 0c-b5 d4 7e 43 d5 d7 ea 21   EG7Jl!....~C...!
+    # 0010 - 4e 68 66 a8 1e 08 21 5c-a6 55 04 a9 08 d0 4a 1e   Nhf...!\.U....J.
+    # 0020 - 3e 45 9e c3 19 c7 ec 63-78 15 93 20 82 45 a3 f9   >E.....cx.. .E..
+    # 0030 - ef 97 63 38 f8 89 d9 4d-74 f3 2a 7f 00 d0 ad fc   ..c8...Mt.*.....
+    # 0040 - 1d 63 85 65 56 a4 3a 4b-87 71 46 ee ee 37 b8 b7   .c.eV.:K.qF..7..
+    # 0050 - 77 06 5d 0b 42 49 d3 e4-0e e9 1b 06 77 be c0 06   w.].BI......w...
+    # 0060 - bf 5e 3d 9a 7c 18 73 aa-d9 93 31 9d a5 f5 d4 da   .^=.|.s...1.....
+    # 0070 - 65 bf 2e 5c 2d f2 14 66-08 6b a2 67 0d 92 04 9f   e..\-..f.k.g....
+    # 0080 - bd c0 fb d2 2b 49 0f f6-e3 28 b4 f7 e6 e5 21 2a   ....+I...(....!*
+    # 0090 - 65 3e ad 8c 9e 47 58 24-7c 2a 05 b5 17 a3 70 a1   e>...GX$|*....p.
+    # 00a0 - 95 8c 5f be 23                                    .._.#
+    # ---
+    # Post-Handshake New Session Ticket arrived:
+    # SSL-Session:
+    #     Protocol  : TLSv1.3
+    #     Cipher    : TLS_AES_256_GCM_SHA384
+    #     Session-ID: F73CCFB03A188899C37C69217018DF9DD2C9ED52EC4E6C5A2E95D4738C57DD7C
+    #     Session-ID-ctx:
+    #     Resumption PSK: 35AC7444D024E26B8A877CF3BB2D4A1A38BA6213EE4423B417BD598F6B9EBC9280D51C19F248A241675281C4238C18CF
+    #     PSK identity: None
+    #     PSK identity hint: None
+    #     SRP username: None
+    #     TLS session ticket lifetime hint: 43200 (seconds)
+    #     TLS session ticket:
+    #     0000 - 02 31 00 f8 46 2e 68 5b-53 61 58 c1 53 d4 c1 a5   .1..F.h[SaX.S...
+    #     0010 - 1a 41 46 f6 ed e9 b9 49-b0 6f b1 64 3c f3 43 b3   .AF....I.o.d<.C.
+    #     0020 - 23 2e 04 b9 97 21 07 cd-5e 77 7a f9 a9 dd a8 31   #....!..^wz....1
+    #     0030 - 4e 6c 0e 74 fc d2 e8 2e-51 25 43 ea b0 c0 d3 3a   Nl.t....Q%C....:
+    #     0040 - b2 9a ba 2c 2d 96 0f ea-b0 af 23 75 26 78 57 61   ...,-.....#u&xWa
+    #     0050 - fb ec d4 66 34 f1 85 2d-b5 2f 13 60 87 7c 1a ea   ...f4..-./.`.|..
+    #     0060 - 67 3a 2b                                          g:+
+
+    #     Start Time: 1694097430
+    #     Timeout   : 7200 (sec)
+    #     Verify return code: 21 (unable to verify the first certificate)
+    #     Extended master secret: no
+    #     Max Early Data: 0
+    # ---
+}
+
+
+make_out () {
+    # % make
+    # cc -g -O2 -Wall -Wno-switch -Wextra -Wwrite-strings    lr.c   -o lr
+    # lr.c:2206:24: warning: comparison of integers of different signs: 'long' and 'blkcnt_t' (aka 'unsigned long') [-Wsign-compare]
+    #                 if (fi->sb.st_blocks > maxblocks)
+    #                     ~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~
+    # 1 warning generated.
+    #
+    # "warning" is magenta
+    # the "~" are green
+    #
+    # ---
+    #
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` calmwm.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` screen.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` xmalloc.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` client.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` menu.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` search.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` util.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` xutil.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` conf.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` xevents.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` group.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` kbfunc.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` strlcpy.c
+    # cc -c -Wall -O2 -g -D_GNU_SOURCE `pkg-config --cflags x11 xft xrandr` strlcat.c
+    #
+    # ---
+    #
+    # cc -DVERSION=\"1.0\" -D_GNU_SOURCE -Wall -Wextra -g -std=c99 -O3 -pedantic -Ideps -Werror=vla -c -o src/fzy.o src/fzy.c
+    # cc -DVERSION=\"1.0\" -D_GNU_SOURCE -Wall -Wextra -g -std=c99 -O3 -pedantic -Ideps -Werror=vla -c -o src/match.o src/match.c
+    # cc -DVERSION=\"1.0\" -D_GNU_SOURCE -Wall -Wextra -g -std=c99 -O3 -pedantic -Ideps -Werror=vla -c -o src/tty.o src/tty.c
+    # cc -DVERSION=\"1.0\" -D_GNU_SOURCE -Wall -Wextra -g -std=c99 -O3 -pedantic -Ideps -Werror=vla -c -o src/choices.o src/choices.c
+    # cc -DVERSION=\"1.0\" -D_GNU_SOURCE -Wall -Wextra -g -std=c99 -O3 -pedantic -Ideps -Werror=vla -c -o src/options.o src/options.c
+    # cc -DVERSION=\"1.0\" -D_GNU_SOURCE -Wall -Wextra -g -std=c99 -O3 -pedantic -Ideps -Werror=vla -c -o src/tty_interface.o src/tty_interface.c
+    # cc -Wall -Wextra -g -std=c99 -O3 -pedantic -Ideps -Werror=vla  -o fzy src/fzy.o src/match.o src/tty.o src/choices.o src/options.o src/tty_interface.o -lpthread
+
+    :
+}
+
+configure_out () {
+    # configure: loading cache auto/config.cache
+    # checking whether make sets $(MAKE)... (cached) yes
+    # checking for gcc... (cached) gcc
+    # checking whether the C compiler works... yes
+    # checking for C compiler default output file name... a.out
+    # checking for suffix of executables...
+    # checking whether we are cross compiling... no
+    # checking for suffix of object files... (cached) o
+    # checking whether we are using the GNU C compiler... (cached) yes
+    # checking whether gcc accepts -g... (cached) yes
+    # checking for gcc option to accept ISO C89... (cached) none needed
+    # checking for gcc option to accept ISO C99... (cached) none needed
+    # checking how to run the C preprocessor... (cached) gcc -E
+    # checking for grep that handles long lines and -e... (cached) /bin/grep
+    # checking for egrep... (cached) /bin/grep -E
+    # checking for fgrep... (cached) /bin/grep -F
+    # checking for library containing strerror... (cached) none required
+    # checking for gawk... (cached) gawk
+    # checking for strip... (cached) strip
+    # checking for ANSI C header files... (cached) yes
+    # checking for sys/wait.h that is POSIX.1 compatible... (cached) yes
+    # checking for unsigned long long int... (cached) yes
+    # checking for long long int... (cached) yes
+    # checking if the compiler supports trailing commas... yes
+    # checking if the compiler supports C++ comments... yes
+    # checking --enable-fail-if-missing argument... no
+    # checking for clang version... N/A
+    # checking for buggy tools... checking uname... Linux (cached)
+    # checking uname -r... 5.4.0-1094-aws (cached)
+    # checking uname -m... x86_64 (cached)
+    # checking for Haiku... no
+    # checking for QNX... no
+    # checking for Darwin (Mac OS X)... no
+    # checking for sys/types.h... (cached) yes
+    # checking for sys/stat.h... (cached) yes
+    # checking for stdlib.h... (cached) yes
+    # checking for string.h... (cached) yes
+    # checking for memory.h... (cached) yes
+    # checking for strings.h... (cached) yes
+    # checking for inttypes.h... (cached) yes
+    # checking for stdint.h... (cached) yes
+    # checking for unistd.h... (cached) yes
+    # checking for AvailabilityMacros.h... (cached) no
+    # checking --with-local-dir argument... Defaulting to /usr/local
+    # checking --with-vim-name argument... Defaulting to vim
+    # checking --with-ex-name argument... Defaulting to ex
+    # checking --with-view-name argument... Defaulting to view
+    # checking --with-global-runtime argument... no
+    # checking --with-modified-by argument... no
+    # checking if character set is EBCDIC... no
+    # checking --disable-smack argument... no
+    # checking for linux/xattr.h... (cached) yes
+    # checking for attr/xattr.h... (cached) no
+    # checking --disable-selinux argument... no
+    # checking for is_selinux_enabled in -lselinux... (cached) no
+    # checking --with-features argument... huge
+    # checking --with-compiledby argument... whiteinge
+    # checking --disable-xsmp argument... no
+    # checking --disable-xsmp-interact argument... no
+    # checking diff feature... enabled
+    # checking --enable-luainterp argument... yes
+    # checking --with-lua-prefix argument... no
+    # checking LUA_PREFIX environment var... not set, default to /usr
+    # checking --with-luajit... no
+    # checking for lua... /home/shouse/bin/lua
+    # checking Lua version... 5.4
+    # checking if lua.h can be found in /usr/include... no
+    # checking if lua.h can be found in /usr/include/lua5.4... no
+    # checking if lua.h can be found in /usr/include/moonjit-2.3... no
+    # checking --enable-mzschemeinterp argument... no
+    # checking --enable-perlinterp argument... no
+    # checking --enable-pythoninterp argument... no
+    # checking --enable-python3interp argument... no
+
+    :
+}
+
+clot () {
+    # TODO: add clot output to a new pane
+    :
+}
+
 demo () {
     # Run all commands in a loop in a new tmux window
 
