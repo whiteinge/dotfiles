@@ -289,23 +289,15 @@ if has("autocmd") && exists("+omnifunc")
 endif
 
 " Fuzzy-find files under the current directory and open in window/split/tab etc.
-fu! FzyFind(cword = 0)
-    return util#SysR('', "flr -t 'type = f || type = l' \| fzy".
-        \ (a:cword ? ' -q '. expand('<cword>') : ''))
+fu! FzyFind()
+    return util#SysR('', "flr -t 'type = f || type = l' \| fzy")
 endfu
-nn <leader>ff :call FzyFind() ->M('edit ') ->execute()<cr>
-nn <leader>ft :call FzyFind() ->M('tabe ') ->execute()<cr>
-nn <leader>fh :call FzyFind() ->M('aboveleft vsplit ') ->execute()<cr>
-nn <leader>fl :call FzyFind() ->M('belowright vsplit ') ->execute()<cr>
-nn <leader>fj :call FzyFind() ->M('belowright split ') ->execute()<cr>
-nn <leader>fk :call FzyFind() ->M('aboveleft split ') ->execute()<cr>
-" ...use the word under the cursor as a starting query.
-nn <leader>fwf :call FzyFind(1) ->M('edit ') ->execute()<cr>
-nn <leader>fwt :call FzyFind(1) ->M('tabe ') ->execute()<cr>
-nn <leader>fwh :call FzyFind(1) ->M('aboveleft vsplit ') ->execute()<cr>
-nn <leader>fwl :call FzyFind(1) ->M('belowright vsplit ') ->execute()<cr>
-nn <leader>fwj :call FzyFind(1) ->M('belowright split ') ->execute()<cr>
-nn <leader>fwk :call FzyFind(1) ->M('aboveleft split ') ->execute()<cr>
+nn <leader>ff :call FzyFind() ->split("\n") ->map({i, x -> x ->M('edit ') ->execute()})<cr>
+nn <leader>ft :call FzyFind() ->split("\n") ->map({i, x -> x ->M('tabe ') ->execute()})<cr>
+nn <leader>fh :call FzyFind() ->split("\n") ->map({i, x -> x ->M('aboveleft vsplit ') ->execute()})<cr>
+nn <leader>fl :call FzyFind() ->split("\n") ->map({i, x -> x ->M('belowright vsplit ') ->execute()})<cr>
+nn <leader>fj :call FzyFind() ->split("\n") ->map({i, x -> x ->M('belowright split ') ->execute()})<cr>
+nn <leader>fk :call FzyFind() ->split("\n") ->map({i, x -> x ->M('aboveleft split ') ->execute()})<cr>
 
 " }}}
 " Window Layout {{{
