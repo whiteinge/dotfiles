@@ -17,6 +17,7 @@
 # -h   | Usage and help text.
 # -x   | Enable xtrace debug logging.
 # -t   | Pass additional test conditions to lr; multiple occurences ok.
+# -X   | Shorthand for adding a test condition for a file extension.
 # -p   | Do not open search results in a pager.
 # -I   | Force case-sensitve search.
 # -E   | Use extended regular expression search
@@ -34,7 +35,9 @@
 #
 #     glr searchterm
 #     glr searchterm ./searchpath
-#     glr -t 'name ~~ "*.js"' searchterm ./searchpath
+#     glr -t 'name ~~~ "*.js"' searchterm
+#     glr -t 'size > 1M' -t 'mode | 700' searchterm
+#     glr -X js searchterm
 #
 # If given one or more file names to search it will instead behave like
 # regular grep and flr will not be invoked.
@@ -50,7 +53,7 @@ trap '
     exit $excode
 ' INT TERM EXIT
 
-while getopts hxt:pIE opt; do
+while getopts hxt:X:pIE opt; do
     case $opt in
     h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
     x) set -x;;
@@ -59,6 +62,13 @@ while getopts hxt:pIE opt; do
             testcond="${testcond} && ${OPTARG}"
         else
             testcond="$OPTARG"
+        fi;;
+    X)
+        exttest="name ~~~ \"*.${OPTARG}\""
+        if [ -n "$testcond" ]; then
+            testcond="${testcond} && ${exttest}"
+        else
+            testcond="$exttest"
         fi;;
     p) nopager=1;;
     I) casesensitive=1;;
