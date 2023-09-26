@@ -2,7 +2,9 @@
 # Browse through dlna media directories using a fuzzy-finder
 # then use mpv to play a selected file.
 #
-# Requires socat, curl, and xmlstarlet.
+# Requires curl and xmlstarlet. Optionally requires socat to discover the dlna
+# server automatically. Set the FDLNA_HOST variable to an IP to manually
+# specify the server address.
 
 tab="$(printf '\t')"
 
