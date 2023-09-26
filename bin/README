@@ -6,6 +6,7 @@ bootstrap-fedora -- Bootstrap a minimal Fedora install
 bootstrap-osx -- Bootstrap a new OS X machine
 bootstrap-pocket2 -- Bootstrap a new Pocket 2 machine
 bootstrap-wsl -- Bootstrap a WSL Ubuntu install
+bootstrap-yt-dlp -- Bootstrap a yt-dlp install
 busywork -- Silly functions to make a terminal look busy like in a movie
 caffeine -- Prevent the screensaver from activating or the screen from sleeping
 chop -- Chop lines to available terminal width

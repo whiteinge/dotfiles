@@ -33,6 +33,4 @@ systemctl enable xdm.service
 systemctl set-default graphical.target
 systemctl --user enable pulseaudio.socket
 
-# Of course.
-curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o $HOME/bin/yt-dlp
-chmod +x $HOME/bin/yt-dlp
+$HOME/bin/bootstrap-yt-dlp

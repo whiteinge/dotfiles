@@ -7,8 +7,7 @@ xcode-select --install
 # Install Homebrew.
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o $HOME/bin/yt-dlp
-chmod +x $HOME/bin/yt-dlp
+$HOME/bin/bootstrap-yt-dlp
 
 # Install the baseline packages.
 xe -N0 /usr/local/bin/brew install < $HOME/opt/packages-brew

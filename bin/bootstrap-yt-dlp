@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Bootstrap a yt-dlp install
+
+curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o $HOME/bin/yt-dlp
+chmod +x $HOME/bin/yt-dlp

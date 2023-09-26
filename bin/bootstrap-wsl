@@ -14,3 +14,5 @@ for dir in Documents Downloads Music Videos; do
         ln -s "$dirpath" "$HOME"
     fi
 done
+
+$HOME/bin/bootstrap-yt-dlp
