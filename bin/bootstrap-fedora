@@ -34,5 +34,5 @@ systemctl set-default graphical.target
 systemctl --user enable pulseaudio.socket
 
 # Of course.
-curl -L https://yt-dl.org/downloads/latest/youtube-dl -o $HOME/bin/youtube-dl
-chmod +x $HOME/bin/youtube-dl
+curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o $HOME/bin/yt-dlp
+chmod +x $HOME/bin/yt-dlp
