@@ -438,12 +438,15 @@ function refresh_tmux() {
 
 _last_cmd_was_git=0
 function last_command_was_git() {
-    [[ "$1" == git* ]] && _last_cmd_was_git=1
+    if [[ "$1" == git* ]]; then
+        _last_cmd_was_git=1
+    else
+        _last_cmd_was_git=0
+    fi
 }
 
 function refresh_tmux_on_git() {
     if [[ "$_last_cmd_was_git" -eq 1 ]]; then
-        _last_cmd_was_git=0
         tmux refresh -S 2>/dev/null
     fi
 }
