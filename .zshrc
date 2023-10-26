@@ -328,12 +328,6 @@ fi
 # my dotfiles; I'd rather stick with the vanilla `git` command for the muscle
 # memory and tmux status display. This function turns "dotfiles mode" on and
 # off by setting and unsetting env vars instead.
-#
-# Steps to move into a new machine:
-# 1. git clone --bare <dotfiles-url> $HOME/src/dotfiles.git
-# 2. git --git-dir=$HOME/src/dotfiles.git --work-tree=$HOME checkout
-#    Once the default shell is Zsh, then "dotfiles mode" can be used instead.
-# 3. Run necessary bin/bootstrap-foo scripts from there.
 
 dotfiles () {
     if [[ "$GIT_WORK_TREE" = "$HOME" ]]; then
