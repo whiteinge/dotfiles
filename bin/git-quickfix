@@ -1,21 +1,38 @@
 #!/usr/bin/env sh
 # Open Vim with Git changes as quickfix entries
 #
-# Supports a range of commits, or defaults to the HEAD commit. Also supports
-# loading unstaged or staged changes as quickfix entries. Useful for stepping
-# through changes in one or more commits, or quickly picking back up where you
-# left off after a WIP commit.
+# Useful for stepping through changes in one or more commits, or quickly
+# picking back up where you left off after a WIP commit. The full diff for each
+# quickfix entry is visible in the quickfix window.
 #
 # Usage:
 #
+#     # Open current commit (HEAD)
 #     git quickfix
+#
+#     # Open single commit three back in history.
 #     git quickfix HEAD~3
+#
+#     # Open range of commits starting from three back to current.
 #     git quickfix HEAD~3..
+#
+#     # Open range of outgoing commits (upstream tracking).
 #     git quickfix @{u}..
+#
+#     # Open only unstaged changes.
 #     git quickfix -m modified
+#
+#     # Open only staged changes.
 #     git quickfix -m staged
+#
+#     # Open single commit, or range of commits, that modify specific file.
 #     git quickfix abcdef -- path/to/file.foo
+#
+#     # Open current commit but ignore whitespace changes.
 #     git quickfix -- -w
+#
+#     # Redirect quickfix list to text file instead of opening Vim.
+#     git quickfix @{u}.. > Quickfix.txt
 
 NAME=$(basename "$0")
 TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
