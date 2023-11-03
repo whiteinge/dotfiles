@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# # Draw a graphviz diagram of the Git DAG
+# Draw a graphviz diagram of the Git DAG
 #
 # Labels consist of the short SHA1 and any refs.
 # Unreachable commits (ignoring the reflog) will be drawn with dashed lines.
@@ -117,7 +117,10 @@ main() {
     shift $(( OPTIND - 1 ))
 
     if [ $# -eq 0 ] || [ -n "$show_help" ] ; then
-        awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
+        awk 'NR == 1 { next } /^$/ { exit } {
+            if (NR == 2) { printf "# " }
+            print substr($0, 3)
+        }' "$0"
         exit 1
     fi
 
