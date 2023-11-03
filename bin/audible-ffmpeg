@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+# Convert an aax file to an m4b file
+#
+# Discover the activation bytes once then store as a text file and reuse.
+# https://github.com/inAudible-NG/tables
+#
+# Usage:
+#
+#     audible-ffmpeg /path/to/file.aax
+#     audible-ffmpeg -f /path/to/activation-bytes.txt /path/to/file.aax
+
+while getopts f:hx opt; do
+    case $opt in
+    f) activation_bytes="$(< "$OPTARG")";;
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+aax_file="${1:?'Audiobook required.'}"
+
+if [ -z "$activation_bytes" ]; then
+    checksum="$(ffprobe -loglevel quiet "$aax_file" \
+        | awk 'BEGIN { FS = " == " } /file checksum/ { print $2 }')"
+    activation_bytes="$(rcrack . -h "$checksum" \
+        | awk 'BEGIN { FS = "hex:" } /hex:/ { print $2 }')"
+fi
+
+ffmpeg \
+    -activation_bytes "$activation_bytes" \
+    -i "$aax_file" -vn -c:a copy "${aax_file%.aax}.m4b"
