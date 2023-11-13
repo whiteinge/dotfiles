@@ -65,9 +65,9 @@ mkdir -p -m 700 "$TEMP"
     elif [ "$mode" = 'staged' ]; then
         git diff --cached -p -U0 --diff-filter=AM "$@"
     else
-        if [ $# -gt 1 ]; then
-            shift 1
+        if [ $# -gt 0 ]; then
             ref="$1"
+            shift 1
         else
             ref='HEAD'
         fi
