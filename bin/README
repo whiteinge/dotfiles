@@ -1,7 +1,6 @@
 align -- Align columns at CHAR
 alphaindex -- Get unique alphabet character(s) from a positive integer
 ansi-strip -- Remove ansi terminal formatting codes
-audible-ffmpeg -- Convert an aax file to an m4b file
 bookletize -- Convert a PDF to a fold-able booklet sized PDF
 bootstrap-fedora -- Bootstrap a minimal Fedora install
 bootstrap-osx -- Bootstrap a new OS X machine
@@ -32,12 +31,14 @@ echoc -- Print each input character on a new line
 echol -- Like echo but delimit with newlines instead of spaces
 echos -- Like echo but using printf for safety
 explode_path -- Take a path and output all child paths as absolute paths
-extract_clip -- Extract a clip from a larger video file
-extract_segments -- Extract a long video into same-length video segments
 fbin -- Fuzzy-find scripts in $HOME/bin by description
 fdlna -- Browse through dlna media directories using a fuzzy-finder
 femoji -- Add simple emoji fuzzy-finder
+ffmpeg-audible -- Convert an aax file to an m4b file
 ffmpeg-blur -- Blur a section of video based on an image mask
+ffmpeg-clip -- Extract a clip from a larger video file
+ffmpeg-screencast -- Record a screencast on X11 using ffmpeg
+ffmpeg-segments -- Extract a long video into same-length video segments
 field -- Output a name or numbered field from a delimited input
 flipbook -- A flipbook loop for ascii drawings
 flr -- (filtering lr) - A wrapper around lr to ignore noise directories
@@ -109,7 +110,6 @@ res -- Output an xrandr command for common configurations
 rgb2hex -- Convert 16-bit RGB values to hexadecimal
 rproxy -- A reverse proxy that pipes the HTTP response through a shell command
 rtimemachine -- Use rsync as a drop-in replacement for OSX Time Machine
-screencast -- Record a screencast on X11 using ffmpeg
 scrollback -- Output the tmux scrollback for the current pane in reverse order
 shsplit -- Reformat a one-line shell command as a multiline shell command
 slugify -- Output a string as a slug

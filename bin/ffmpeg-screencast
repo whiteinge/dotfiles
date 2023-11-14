@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # Record a screencast on X11 using ffmpeg
 #
-# screencast [<flags>]
+# ffmpeg-screencast [<flags>]
 #
 # Flag | Description
 # ---- | -----------

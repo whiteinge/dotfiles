@@ -6,8 +6,8 @@
 #
 # Usage:
 #
-#     audible-ffmpeg /path/to/file.aax
-#     audible-ffmpeg -f /path/to/activation-bytes.txt /path/to/file.aax
+#     ffmpeg-audible /path/to/file.aax
+#     ffmpeg-audible -f /path/to/activation-bytes.txt /path/to/file.aax
 
 while getopts f:hx opt; do
     case $opt in

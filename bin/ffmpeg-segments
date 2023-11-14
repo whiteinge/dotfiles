@@ -3,7 +3,7 @@
 #
 # Usage:
 #
-#     extract_segments foo.mp4 25:00
+#     ffmpeg-segments foo.mp4 25:00
 
 while getopts h opt; do
     case $opt in

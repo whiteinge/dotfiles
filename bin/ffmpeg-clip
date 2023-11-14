@@ -3,7 +3,7 @@
 #
 # Usage:
 #
-#     extract_clip somevid.mp4 [hh:mm:ss start time] [hh:mm:ss end time]
+#     ffmpeg-clip somevid.mp4 [hh:mm:ss start time] [hh:mm:ss end time]
 
 while getopts h opt; do
     case $opt in
