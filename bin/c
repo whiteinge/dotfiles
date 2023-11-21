@@ -1,24 +1,70 @@
 #!/usr/bin/env sh
-# Wrap curl to always output headers and network timing to stderr
+# Wrap curl to conditionally open headers, timing info, and response in a pager
 #
-# Preferentially requests JSON responses (can be overridden). Use the `--json`
-# flag to send JSON requests.
+# Passes any arguments through to curl.
 #
-# Note: This will add a false newline to the response body to hopefully flush
-# stderr before outputting (helpful when piping stdout to other tools).
+# The pager will open two documents. The first is headers and timing, the
+# second is the response body. If used in a pipe, no pager will be started and
+# headers and timing will be send to stdout instead.
+#
+# Preferentially requests JSON responses (can be overridden). Use the new
+# `--json` flag to send JSON requests. Formats JSON responses with jq.
 #
 # Tip: Create config files for commonly accessed hosts, such as authentication
 # creds, SSL options, and even a hostname alias:
 #
-# # Usage: curl -K /path/to/foo.cfg foohost/path/to/resource
-# oauth2-bearer = asdfjkl
-# proto-default = https
-# insecure
-# connect-to = foohost::foohost.example.com:
-# header = "Host: foohost.example.com"
+#     # E.g.: curl -K /path/to/foo.cfg foohost/path/to/resource
+#     oauth2-bearer = asdfjkl
+#     proto-default = https
+#     insecure
+#     connect-to = foohost::foohost.example.com:
+#     header = "Host: foohost.example.com"
+#
+# Usage:
+#
+#     c https://example.com
+#     c https://api.github.com/users
+#     c https://api.github.com/users > response.json
+#     c https://api.github.com/users | jq '.[] | .login'
 
-curl -sS -D /dev/stderr -w '
-%{stderr}----------
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+
+while getopts :h opt; do
+    case $opt in
+    h)
+        awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"
+        printf '\n\n'
+        curl -h
+        exit;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+trap '
+    excode=$?; trap - EXIT;
+    rm -rf -- '"$TEMP"'
+    exit $excode
+' INT TERM EXIT
+
+mkdir -m 700 "$TEMP"
+if [ $? -ne 0 ]; then
+    printf 'Error creating temp directory.\n' 1>&2
+    exit 1
+fi
+
+crlf=$(printf '\r\n')
+headers="${TEMP}/headers"
+timing="${TEMP}/timing"
+metainfo="${TEMP}/metainfo"
+body="${TEMP}/body"
+
+if [ -t 1 ]; then
+    is_term=1
+fi
+
+curl -sS -D "$headers" -o "$body" -w '----------
 namelookup:     %{time_namelookup}
 connect:        %{time_connect}
 appconnect:     %{time_appconnect}
@@ -27,7 +73,23 @@ redirect:       %{time_redirect}
 starttransfer:  %{time_starttransfer}
 total:          %{time_total}
 ----------
+' -H 'Accept: application/json;q=0.9, */*;q=0.1' "$@" > "$timing"
 
-%{stdout}
+! grep -qi '^content-type: .*application\/json' "$headers"
+is_json=$?
 
-' -H 'Accept: application/json;q=0.9, */*;q=0.1' "$@"
+{
+    if [ "$is_json" -eq 1 ]; then
+        jq ${is_term+-C} . "$body"
+    else
+        cat "$body"
+    fi;
+} | {
+    if [ -n "$is_term" ]; then
+        cat "$headers" "$timing" > "$metainfo"
+        $PAGER -RF "$metainfo" -
+    else
+        cat "$headers" "$timing" 1>&2
+        cat
+    fi;
+}
