@@ -794,6 +794,7 @@ com! Tmuxsendclear au! BufWritePost <buffer>
 
 """ Third-party debugger integration
 let g:vimspector_install_gadgets = ['vscode-php-debug']
+let g:vimspector_variables_display_mode = 'full'
 
 nnoremap <Leader>x :call vimspector#ToggleBreakpoint()<cr>
 nnoremap <Leader>X :call vimspector#ClearBreakpoints()<cr>
