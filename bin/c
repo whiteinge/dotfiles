@@ -40,7 +40,6 @@ while getopts :h opt; do
         exit;;
     esac
 done
-shift $(( OPTIND - 1 ))
 
 trap '
     excode=$?; trap - EXIT;
