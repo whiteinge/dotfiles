@@ -86,7 +86,7 @@ is_json=$?
 } | {
     if [ -n "$is_term" ]; then
         cat "$headers" "$timing" > "$metainfo"
-        $PAGER -RF "$metainfo" -
+        $PAGER -R "$metainfo" -
     else
         cat "$headers" "$timing" 1>&2
         cat
