@@ -52,6 +52,7 @@ _fzy_HandBrakeCLI -- Use a fuzzy-finder to select a HandBrake preset
 _fzy_iconv -- Use a fuzzy-finder to complete encodings for iconv
 _fzy_kill -- Use a fuzzy-finder to complete process names
 _fzy_man -- Use a fuzzy-finder to complete manpage names
+_fzy_mycli -- Use a fuzzy-finder for mycli
 _fzy_npm -- Use a fuzzy-finder for npm scripts
 _fzy_pandoc -- Use a fuzzy-finder to select Pandoc input/output formats
 _fzy_podman -- Use a fuzzy-finder to complete Podman/Docker container IDs

@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder for mycli
+
+# Complete aliases
+if [ ! "$2" = '-d' ]; then
+    exit 1
+fi
+
+cmd="$1 $2"; shift 2
+
+< ~/.myclirc awk -F= '
+    /^\[[a-zA-Z0-9_-]+\]$/ {
+        in_alias_dsn = $0 == "[alias_dsn]"
+        next
+    }
+    in_alias_dsn { if ($1) print $1 }
+' |
+    fzy -p 'mycli alias > ' -q "$*" |
+    xe printf '%s %s' "$cmd"
