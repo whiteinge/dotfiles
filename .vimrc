@@ -803,5 +803,10 @@ nmap <F6> <Plug>VimspectorStepInto
 nmap <F7> <Plug>VimspectorStepOut
 nmap <F8> :call vimspector#Continue()<cr>
 
+""" Copilot settings
+" Don't show copilot suggestions until asked.
+let g:copilot_filetypes = {'*': v:false}
+imap <C-L> <Plug>(copilot-suggest)
+
 " }}}
 " EOF
