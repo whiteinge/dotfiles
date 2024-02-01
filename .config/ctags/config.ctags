@@ -1,3 +1,5 @@
+--excmd=combine
+
 --python-kinds=-iv
 
 --exclude=*.bak
