@@ -418,12 +418,12 @@ com! BufSaveAsQf call getbufinfo()
 packadd cfilter
 
 " Use a fuzzy-finder to switch betweeen quickfix/location-list history entries.
-com! Qfchoose
+com! Llchoose
     \ redir => _redir | silent lhistory | redir END
     \ | call util#SysR(_redir, 'fzy')
     \ ->matchstr('[0-9]\+') ->W('lhistory') ->execute()
 
-com! Llchoose
+com! Qfchoose
     \ redir => _redir | silent chistory | redir END
     \ | call util#SysR(_redir, 'fzy')
     \ ->matchstr('[0-9]\+') ->W('chistory') ->execute()
