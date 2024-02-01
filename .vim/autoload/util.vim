@@ -49,6 +49,13 @@ fu! util#StartQfWatchers()
     call timer_start(1000, s:Llchanged, {'repeat': -1})
 endfu
 
+" Make a Vimscript function for :cfile
+fu! util#Cfile(ccontents)
+    let l:tmpfile = tempname()
+    call writefile([a:ccontents], l:tmpfile, 'b')
+    return execute('cfile '. l:tmpfile)
+endfu
+
 " Call system() and then call :redraw!
 " Pass args as data-first to allow use as a method.
 " Check v:shell_error if you need to know the exit code.

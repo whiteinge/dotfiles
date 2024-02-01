@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+# Format the output from readtags to Vim's quickfix format
+#
+# Best if tags generated with line numbers: --excmd=combine
+#
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -x   | Enable xtrace debug logging.
+
+NAME=$(basename "$0")
+
+while getopts hx opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+awk '{
+    sepidx = index($0, ";")
+    fileseg = substr($0, 0, sepidx - 1)
+    pattern = substr($0, sepidx + 1)
+    split(fileseg, fileinfos, "\t")
+
+    print fileinfos[2] ":" fileinfos[3] ":" pattern
+}'

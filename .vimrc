@@ -513,6 +513,13 @@ com! Helpsearch
     \ ->util#SysR('fzy') ->matchstr('[^\t]\+')
     \ ->M('help ') ->execute()
 
+" Fuzzy-find a tag and jump to it.
+nmap <silent> <leader>]
+    \ :call util#SysR('', 'readtags -p - '.
+        \ expand('<cword>') ->shellescape()
+    \ .' \| fzy \| ctags-to-quickfix')
+    \ ->util#Cfile()<cr>
+
 " }}}
 " X11 Integration {{{
 " (I.e.: don't do any automatic integration, please :)

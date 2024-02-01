@@ -20,6 +20,7 @@ control-master -- View and manage SSH ControlMaster socket connections in bulk
 count -- Count occurrences of the same line in a file
 countdown -- A simple countdown timer
 csv2table -- Output csv fields as a markdown table.
+ctags-to-quickfix -- Format the output from readtags to Vim's quickfix format
 cull-brew -- Remove any brew packages that are not on a whitelist
 cull-dnf -- Remove any user-installed packages not on a whitelist
 c -- Wrap curl to conditionally open headers, timing info, and response in a pager
