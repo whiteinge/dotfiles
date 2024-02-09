@@ -61,6 +61,7 @@
 /.sudo_as_admin_successful
 /.units_history
 /.vdirsyncer/passwords.gpg
+/.vdirsyncer/status
 /.viminfo
 /.vim/swapdir
 /.vim/undodir
@@ -119,5 +120,7 @@
 /Steam
 /Videos
 
+/lib64
+/libexec
 /share
 /src
