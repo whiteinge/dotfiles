@@ -38,6 +38,8 @@ femoji -- Add simple emoji fuzzy-finder
 ffmpeg-audible -- Convert an aax file to an m4b file
 ffmpeg-blur -- Blur a section of video based on an image mask
 ffmpeg-clip -- Extract a clip from a larger video file
+ffmpeg-genchapters -- Generate chapters meta data from a directory of audio files
+ffmpeg-m4b -- Concat or convert audio files into a single m4b with chapters and thumbnail
 ffmpeg-screencast -- Record a screencast on X11 using ffmpeg
 ffmpeg-segments -- Extract a long video into same-length video segments
 field -- Output a name or numbered field from a delimited input

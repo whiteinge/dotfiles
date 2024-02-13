@@ -1,0 +1,50 @@
+#!/usr/bin/env sh
+# Concat or convert audio files into a single m4b with chapters and thumbnail
+#
+# See ffmpeg-genchapters to generate the needed .txt files.
+#
+# Usage:
+#
+#    ffmpeg-m4b book__list.txt book__meta.txt book_cover.jpg output.m4b
+#
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -x   | Enable xtrace debug logging.
+
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+
+while getopts hx opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+tgtlist="${1:?'Target list file required.'}"
+tgtmeta="${2:?'Target meta file required.'}"
+tgtthumb="${3:?'Thumbnail image required.'}"
+outfile="${4:?'Output filename required.'}"
+
+if < "$tgtlist" head -1 | grep -Eq '\.(m4a|m4b)'; then
+    process='-c:a copy'
+else
+    processs='-vn -y -b:a 64k -acodec aac -ac 2'
+fi
+
+# Reminder: ffmpeg uses 0-based indexes for each input file. The map and copy
+# directives below map input indexes to output stream indexes.
+
+ffmpeg -f concat -safe 0 \
+    -i "$tgtlist" \
+    -i "$tgtthumb" \
+    -i "$tgtmeta" \
+    -map_metadata 2 \
+    -map 0:0 \
+    -map 1:0 \
+    -c:1 mjpeg -disposition:1 attached_pic \
+    $process \
+    "$outfile"

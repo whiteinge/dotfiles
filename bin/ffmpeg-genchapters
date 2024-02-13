@@ -1,0 +1,68 @@
+#!/usr/bin/env sh
+# Generate chapters meta data from a directory of audio files
+#
+# Usage:
+#
+#     ffmpeg-genchapters /some/path/to/dir mp3
+#     ffmpeg-genchapters /other/path/to/dir m4a
+#
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -x   | Enable xtrace debug logging.
+
+NAME=$(basename "$0")
+TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
+    'BEGIN {srand(); printf "%d\n", rand() * 10^10}')"
+
+while getopts hx opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+tgtdir="${1:?'Target directory required.'}"
+tgtext="${2:?'Input files extension required.'}"
+
+tgtlist="${tgtdir}__list.txt"
+tgtmeta="${tgtdir}__meta.txt"
+
+if [ -e "$tgtlist" -o -e "$tgtmeta" ]; then
+    printf 'Files already exist:\n%s\n%s\n' "$tgtlist" "$tgtmeta" 1>&2
+    exit 1
+fi
+
+lr -t 'name ~~~ "*.'"$tgtext"'"'  -on -Qf 'file %p\n' > "$tgtlist" "$tgtdir"
+
+printf ';FFMETADATA
+title=%s
+artist=Foobar
+genre=Audiobook
+;TIMEBASE is in seconds
+' "$tgtdir" > "$tgtmeta"
+
+start_time='0.000000'
+
+lr -t 'name ~~~ "*.'"$tgtext"'"'  -on "$tgtdir" | while read -r file; do
+    title="${file#"$tgtdir"/}"
+    title="${title%."$tgtext"}"
+
+    duration="$(ffprobe -v 0 -show_entries format=duration -of compact=print_section=0:nokey=1 "$file")"
+    end_time="$(printf '%s + %s\n' "$start_time" "$duration" | bc)"
+
+    printf '[CHAPTER]
+TIMEBASE=1/1
+START=%s
+END=%s
+title=%s
+' "$start_time" "$end_time" "$title" >> "$tgtmeta"
+
+    start_time="$(printf '%s + %s\n' "$start_time" "$duration" | bc)"
+done
+
+printf 'Inspect the generated files, edit as needed, then pass to ffmpeg-m4b:
+%s
+%s
+' "$tgtlist" "$tgtmeta" 1>&2
