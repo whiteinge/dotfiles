@@ -814,6 +814,7 @@ nmap <F8> :call vimspector#Continue()<cr>
 " Don't show copilot suggestions until asked.
 let g:copilot_filetypes = {'*': v:false}
 imap <C-L> <Plug>(copilot-suggest)
+let g:copilot_node_command = "~/.copilot-node-version/bin/node"
 
 " }}}
 " EOF
