@@ -33,6 +33,7 @@
 /.config/configstore
 /.config/google-chrome
 /.config/gtk-2.0
+/.config/gtk-4.0
 /.config/inkscape
 /.config/Keybase
 /.config/libreoffice
