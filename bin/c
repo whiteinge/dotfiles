@@ -74,7 +74,7 @@ total:          %{time_total}
 ----------
 ' -H 'Accept: application/json;q=0.9, */*;q=0.1' "$@" > "$timing"
 
-! grep -qi '^content-type: .*application\/json' "$headers"
+! grep -qi '^content-type: .*application/json' "$headers"
 is_json=$?
 
 {
