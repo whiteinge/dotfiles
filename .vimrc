@@ -478,6 +478,11 @@ com! Llfromdiff lgetexpr
 " Load Git changes for the specified commits.
 com! -nargs=* Gitqf cgetexpr system('git quickfix '. expand('<args>'))
 
+" Open GitHub/GitLab page for the current file (and line range).
+com! -range Gitweb
+    \ echo system('git web-uri -u '. expand('%') .' '. expand('<line1> <line2>')
+    \ .' | xe which-open')
+
 " Copy all quickfix entries for the current file into location list entires.
 " This is a simple way to skate around a single file without losing your
 " position in the qf list.

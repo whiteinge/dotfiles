@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+# Generate a GitHub/GitLab permalink to the given file/line
+#
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -x   | Enable xtrace debug logging.
+# -u   | Use upstream-tracking SHA instead of HEAD (for unpushed branches)
+#
+# Usage:
+#
+#     git web-uri
+#     git web-uri path/to/file.py
+#     git web-uri path/to/file.py 44
+#     git web-uri path/to/file.py 44 48
+
+# TODO: add GitLab support
+
+while getopts hxu opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    u) use_upstream='@{u}';;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+SHA="$(git rev-parse --short ${use_upstream:-'HEAD'})"
+path="$(git ls-files -- "$1" 2>/dev/null)"
+
+git remote -v | awk -v sha="$SHA" -v path="$path" -v start="$2" -v end="$3" '
+/fetch)$/ {
+    sub(/^.*:/, "", $2)
+    sub(/\.git$/, "", $2)
+
+    printf("%s/%s", "https://github.com", $2)
+    if (path) { printf("/blob/%s/%s", sha, path) }
+    if (start) { printf("#L%s", start) }
+    if (end) { printf("-L%s", end) }
+    printf("\n")
+}
+'
