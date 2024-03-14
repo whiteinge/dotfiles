@@ -14,8 +14,6 @@
 #     git web-uri path/to/file.py 44
 #     git web-uri path/to/file.py 44 48
 
-# TODO: add GitLab support
-
 while getopts hxu opt; do
     case $opt in
     h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
@@ -30,13 +28,27 @@ path="$(git ls-files -- "$1" 2>/dev/null)"
 
 git remote -v | awk -v sha="$SHA" -v path="$path" -v start="$2" -v end="$3" '
 /fetch)$/ {
+    if (match($2, "gitlab")) {
+        baseUrl = "https://gitlab.com"
+        pathSuffix = "-/blob"
+        rangeSep = "-"
+        startPrefix = "#L"
+        endPrefix = ""
+    } else {
+        baseUrl = "https://github.com"
+        pathSuffix = "blob"
+        rangeSep = "-"
+        startPrefix = "#L"
+        endPrefix = "L"
+    }
+
     sub(/^.*:/, "", $2)
     sub(/\.git$/, "", $2)
 
-    printf("%s/%s", "https://github.com", $2)
-    if (path) { printf("/blob/%s/%s", sha, path) }
-    if (start) { printf("#L%s", start) }
-    if (end) { printf("-L%s", end) }
+    printf("%s/%s", baseUrl, $2)
+    if (path) { printf("/%s/%s/%s", pathSuffix, sha, path) }
+    if (start) { printf("%s%s", startPrefix, start) }
+    if (end) { printf("%s%s%s", rangeSep, endPrefix, end) }
     printf("\n")
 }
 '
