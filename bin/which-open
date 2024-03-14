@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+# Run the correct 'open' command for the current platform
+#
+# Usage:
+#
+#     which-open https://example.com
+#     which-open /path/to/foo.pdf
+#     which-open /path/to/foo.jpg
+
+while getopts hx opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+if uname -s | grep -q Darwin ; then
+    open_cmd=$(command -v 'open')
+elif [ -n "$TERMUX_VERSION" ]; then
+    open_cmd=$(command -v 'termux-open-url')
+else
+    open_cmd=$(command -v 'wslview')
+    test "$?" -eq 0 || open_cmd=$(command -v 'xdg-open')
+    test "$?" -eq 0 || open_cmd='echo'
+fi
+
+"$open_cmd" "$@"

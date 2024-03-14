@@ -134,6 +134,7 @@ urlencode -- Urlencode stdin
 vipe -- Use $EDITOR to edit text inside a pipeline
 watch-changes -- A simple polling file/directory watcher
 watch-net -- Monitor current bandwidth usage by watching /proc/net/dev
+which-open -- Run the correct 'open' command for the current platform
 wikipedia -- Fetch the Wikipedia summary paragraph for a search query
 wsl-notify-send -- A notify-send-like wrapper for WSL
 wsl-xclip -- An xclip-like wrapper for wsl

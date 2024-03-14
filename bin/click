@@ -2,17 +2,7 @@
 # Use a fuzzy-finder to open URLs found in the scrollback buffer
 # Inspired by the excellent https://github.com/minond/click
 
-if uname -s | grep -q Darwin ; then
-    open_cmd=$(command -v 'open')
-elif [ -n "$TERMUX_VERSION" ]; then
-    open_cmd=$(command -v 'termux-open-url')
-else
-    open_cmd=$(command -v 'wslview')
-    test "$?" -eq 0 || open_cmd=$(command -v 'xdg-open')
-    test "$?" -eq 0 || open_cmd='echo'
-fi
-
 scrollback \
     | match-urls \
     | fzy -p 'Open URL > ' \
-    | xe "$open_cmd"
+    | xe which-open
