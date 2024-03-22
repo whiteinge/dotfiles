@@ -4,33 +4,61 @@
 # Usage:
 #
 #   invoice myjobdata.m4 timesheet1.txt [outfile]
+#   invoice -i '#00123' myjobdata.m4 timesheet1.txt [outfile]
+#   invoice -i $(git rev-parse --short @) myjobdata.m4 timesheet1.txt [outfile]
 #
 # Outfile will be derived from the timesheet name if not given.
 # Can also be - for stdout.
 #
+# The optional `-i` flag sets the xIID variable for an invoice number or id.
+#
 # The timesheet is a text file in the form of:
 #
-#   <date>
-#   <hours>
-#   <description>
+#     3/21
+#     4
+#     Deploy the finished quz project to production.
 #
-#   <date>
-#   <hours>
-#   <description>
+#     3/21
+#     0.5
+#     Strategy phone call with Foo and Bar and Baz. Decided Foo will head up
+#     the qux project and Bar will head up the quux project.
+#
+#     3/22
+#     2
+#     Start work on qux.
 #
 # The same date can be repeated for multiple entries.
 # The description can span multiple lines.
 #
 # The job metadata file is in the form of:
 #
-#   m4_divert(-1)
+#     m4_divert(-1)
 #
-#   m4_define(`xVALUE', `Value here')
-#   m4_define(`xRATE', 10)
+#     m4_define(`xAUTHOR', `John Doe')
 #
-#   m4_divert(0)m4_dnl
+#     m4_define(`xRATE', 15)
 #
-# for each of the values listed below.
+#     m4_define(`xTO', `
+#     Widgets and Co.
+#     123 Q. St.
+#     SLC, UT 84111
+#     ')
+#
+#     m4_define(`xFROM', `
+#     John Doe
+#     123 20th St.
+#     Ogden, UT 84111
+#     ')
+#
+#     m4_define(`xPAYMENT', `
+#     Due within 30 days.
+#     Send paper check to the above address.
+#     ')
+#
+#     m4_define(`xCLOSING', `Sincerely')
+#
+#     m4_divert(0)m4_dnl
+#
 # _Do not_ put blank lines above or below the divert lines.
 
 _gen_timesheet () {
@@ -94,7 +122,7 @@ EOF
 
 _help () {
     awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
-    printf '\nJob data m4 fields:\n'
+    printf '\nAvailable job data m4 fields:\n'
     _invoice_tmpl | grep -P -o 'x[A-Z]+'
     printf '\n'
 }
