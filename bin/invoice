@@ -63,15 +63,13 @@ _invoice_tmpl () {
 .DATE
 xDATE
 Invoice xIID
-.TS
-tab(|),expand;
-l r.
-T{
+.SPACE -3v
+.TO
 xTO
-T}|T{
+.SPACE -3v
+.FROM
+.RIGHT
 xFROM
-T}
-.TE
 .PP
 .TS H
 expand,box;
