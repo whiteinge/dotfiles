@@ -38,19 +38,19 @@
 #
 #     m4_define(`xRATE', 15)
 #
-#     m4_define(`xTO', `
+#     m4_define(`xTO', `\
 #     Widgets and Co.
 #     123 Q. St.
 #     SLC, UT 84111
 #     ')
 #
-#     m4_define(`xFROM', `
+#     m4_define(`xFROM', `\
 #     John Doe
 #     123 20th St.
 #     Ogden, UT 84111
 #     ')
 #
-#     m4_define(`xPAYMENT', `
+#     m4_define(`xPAYMENT', `\
 #     Due within 30 days.
 #     Send paper check to the above address.
 #     ')
