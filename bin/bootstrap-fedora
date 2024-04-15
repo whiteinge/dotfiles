@@ -33,4 +33,7 @@ systemctl enable xdm.service
 systemctl set-default graphical.target
 systemctl --user enable pulseaudio.socket
 
+# Disable auto-mounting.
+gsettings set org.gnome.desktop.media-handling automount false
+
 $HOME/bin/bootstrap-yt-dlp
