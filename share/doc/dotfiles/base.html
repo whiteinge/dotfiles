@@ -10,9 +10,9 @@
         <script>
             function ready(fn) {
                 if (document.readyState !== 'loading') {
-                    init();
+                    fn();
                 } else {
-                    document.addEventListener('DOMContentLoaded', init);
+                    document.addEventListener('DOMContentLoaded', fn);
                 }
             }
         </script>
