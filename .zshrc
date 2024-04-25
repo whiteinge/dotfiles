@@ -170,6 +170,9 @@ fi
 # }}}
 # {{{ aliases
 
+# lr but through a wrapper
+unalias ls la ll 2>/dev/null
+
 # Regular Vim
 alias vi=$EDITOR; compdef vi=vim
 # Fast Vim (no vimrc, syntax, ftplugins) for big files
