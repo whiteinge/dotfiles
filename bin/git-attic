@@ -7,7 +7,7 @@
 #
 # http://leahneukirchen.org/dotfiles/bin/git-attic
 
-while getopts h opt; do
+while getopts :h opt; do
     case $opt in
     h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
        exit ;;
