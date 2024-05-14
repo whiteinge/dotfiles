@@ -4,5 +4,5 @@ test -d .git || exit 0
 
 mkdir .git/tags_lock 2>/dev/null || exit 0
 trap 'rm -rf .git/tags_lock; rm -f "$$.tags"' INT TERM EXIT
-git ls-files | ctags --tag-relative -L - -f"$$.tags"
+git ls-files | flr - | ctags --tag-relative -L - -f"$$.tags"
 mv "$$.tags" "tags" 2>/dev/null
