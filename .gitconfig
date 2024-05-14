@@ -23,6 +23,7 @@
     p = push
     pushnoci = push -o ci.skip
     r = rebase --autosquash
+    ri = r -i --keep-base
     rh = reset --hard
     short = rev-parse --short
     ref = rev-parse --symbolic-full-name
