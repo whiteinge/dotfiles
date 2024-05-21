@@ -82,6 +82,7 @@ rpmfusion-free-release
 rpmfusion-free-release-tainted
 rpmfusion-nonfree-release
 rsync
+scalpel
 shim-x64
 shotwell
 socat
