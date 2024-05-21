@@ -36,4 +36,11 @@ systemctl --user enable pulseaudio.socket
 # Disable auto-mounting.
 gsettings set org.gnome.desktop.media-handling automount false
 
+# Disable Gnome Software
+mkdir -pv ~/.config/autostart && cp /etc/xdg/autostart/gnome-software-service.desktop ~/.config/autostart/
+echo 'X-GNOME-Autostart-enabled=false' >> ~/.config/autostart/gnome-software-service.desktop
+dconf write /org/gnome/desktop/search-providers/disabled "['org.gnome.Software.desktop']"
+dconf write /org/gnome/software/allow-updates false
+dconf write /org/gnome/software/download-updates false
+
 $HOME/bin/bootstrap-yt-dlp
