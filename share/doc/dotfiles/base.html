@@ -21,7 +21,9 @@
         {
             "imports": {
                 "lodash": "https://esm.sh/lodash",
+                "hyperscript": "https://esm.sh/hyperscript",
                 "preact": "https://esm.sh/preact",
+                "diffhtml": "https://esm.sh/diffhtml",
                 "rx": "https://esm.sh/rx"
             }
         }
@@ -30,17 +32,152 @@
         <script type="module">
             import _ from 'lodash';
             import Rx from 'rx';
-            import { h, Component, render } from 'preact';
+            import { innerHTML } from 'diffhtml';
 
-            const app = h('div', null, [
-                h('h1', null, _.toUpper('Hello World!')),
-            ]);
+            //  842 html-tagged.js
+            //  624 html-tagged.min.js
+            //  357 html-tagged.min.js.gz
+            // 1.1K hyperscript.js
+            //  696 hyperscript.min.js
+            //  392 hyperscript.min.js.gz
 
-            render(app, document.querySelector('#container'));
+            // Stolen from Lodash (MIT):
+            const htmlEscapes = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
+            const reUnescapedHtml = /[&<>"']/g;
+            const escape = (string) => string.replace(reUnescapedHtml, (chr) => htmlEscapes[chr]);
+
+            // Stolen from 1-liners (MIT):
+            const zip = (...arrays) => Array
+                .from({ length: Math.max(...arrays.map(a => a.length)) })
+                .map((_, i) => arrays.map(a => a[i]));
+
+            // const name = 'world'; const el = html`<p>Hello, ${name}!</p>`;
+            const html = (strings, ...vars) => {
+                const escapedVars = vars.map(escape);
+                const content = zip(strings, escapedVars).flatMap(x => x.join('')).join('');
+                return document.createRange().createContextualFragment(content);
+            }
+
+            // h('div')
+            // h('div', {className: 'foo'})
+            // h('div', 'Foo')
+            // h('div', ['Foo'])
+            // h('div', [h('span', 'Foo'), h('span', 'Bar')])
+            // h('div', h('span', 'Foo'))
+            function hyperscript(isSVG, tag, a, b) {
+                const el = isSVG
+                    ? document.createElementNS('http://www.w3.org/2000/svg', tag)
+                    : document.createElement(tag);
+
+                var attrs, children;
+                if (b !== undefined) {
+                    attrs = a, children = b;
+                } else if (Object.prototype.toString.call(a) === '[object Object]') {
+                    attrs = a, children = [];
+                } else {
+                    attrs = {}, children = a;
+                }
+
+                Object.entries(attrs ?? {}).forEach(([key, val]) => {
+                    if (key === 'style' && val.constructor === Object) {
+                        Object.entries(val).forEach(([k, v]) => el.style.setProperty(k, v));
+                    } else {
+                        el[key] = val;
+                    }
+                });
+
+                [].concat(children).forEach(child => {
+                    if (child == null) return;
+
+                    const childVal = (
+                            child instanceof Element
+                            || child instanceof HTMLDocument
+                            || child instanceof DocumentFragment)
+                        ? child
+                        : document.createTextNode(String(child));
+
+                    el.appendChild(childVal);
+                });
+
+                return el;
+            }
+            const h = hyperscript.bind(null, false);
+            const s = hyperscript.bind(null, true);
+            window.s = s;
+
+            // ---
+
+            const globalDispatcher = new Rx.Subject();
+            globalDispatcher.subscribe(x => console.debug('Dispatching', x));
+            const connect = (elName, streamFn) => (viewFn) => {
+                const namespace = Symbol(elName);
+                const send = (action) => (payload) => globalDispatcher.onNext({namespace, action, payload});
+                const localDispatcher = globalDispatcher.filter(x => x.namespace === namespace);
+
+                class Foo extends HTMLElement {
+                    connectedCallback() {
+                        const container = document.createElement('div');
+                        this.appendChild(container);
+
+                        this.sub = streamFn(send, localDispatcher, globalDispatcher).subscribe(x => {
+                            const newHtml = viewFn(x, send);
+                            const newContainer = h('div', newHtml);
+                            newContainer.appendChild(newHtml);
+
+                            innerHTML(container, newContainer);
+                        });
+                    }
+
+                    disconnectedCallback() {
+                        this.sub.dispose();
+                    }
+                }
+
+                customElements.define(elName, Foo);
+                return namespace;
+            };
+
+            // ---
+
+            connect('hello-world', (send, dispatcher) => {
+                const list = _.range(0, 10000);
+                const search = dispatcher.filter(x => x.action === 'SEARCH').map(x => x.payload).startWith('');
+                const items = Rx.Observable.interval(1000).startWith(_.sampleSize(list, 10)).map(() => _.sampleSize(list, 10));
+
+                return Rx.Observable.combineLatest(search, items, (search, items) => ({search, items}));
+            })(({search, items}, send) => {
+                return h('div', [
+                    h('p',
+                        h('input', {
+                            type: 'text',
+                            name: 'foo',
+                            value: search,
+                            oninput: (ev) => send('SEARCH')(ev.target.value)
+                        })
+                    ),
+                    h('ul', items.map(y =>
+                        h('li', y)
+                    )),
+                ]);
+            });
+
+            connect('test-foo', (send, dispatcher) => {
+                return dispatcher.filter(x => x.action === 'TOGGLE').map(x => x.payload).startWith(false);
+            })((showDiv, send) => {
+                return h('div', [
+                    h('p',
+                        h('button', {
+                            type: 'button',
+                            onclick: () => send('TOGGLE')(!showDiv)
+                        }, 'Toggle')
+                    ),
+                    showDiv ? h('hello-world') : null,
+                ]);
+            });
         </script>
     </head>
 
     <body>
-        <div id="container"></div>
+        <test-foo>
     </body>
 </html>
