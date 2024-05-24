@@ -203,6 +203,7 @@ alias pp='pepper --config ~/.config/pepper/init.pp'
 alias less='less -imJMW'
 tree() { command tree -FC --charset=ascii "$@" | less -RF }
 alias csi='rlwrap csi -quiet'
+alias noderepl='rlwrap -z node_complete.pl ~/bin/noderepl.js'
 alias ocaml='rlwrap ocaml'
 alias R='R --no-save'
 alias ifstat='ifstat -S -n -z 5'

@@ -89,7 +89,7 @@ jqflat -- Use jq to flatten a JSON structure for easy use with awk/grep/etc
 linux-resize-window -- Select a window in X11 and resize it to given dimensions
 lndir.sh -- Create a shadow directory of symbolic links to another directory tree
 lorem -- Output paragraphs of lorem ipsum placeholder text
-_lr -- Wrap lr to use standard colors and avoid ambiguous strip output
+_lr -- Wrap lr to use standard colors and improve usability as ls replacement
 luksimg -- Wrappers around cryptsetup to create/mount/unmount encrypted images
 mailto-handler -- A mailto: handler for opening an arbitrary webmail link in Firefox
 match-emails -- Output all matched email addresses
@@ -100,6 +100,8 @@ mdheader -- Output the first line as a Markdown header, then other lines verbati
 mdless -- View rendered Markdown files with $MANPAGER
 new-sh -- Quickly create and edit a new shell script, already marked as executable
 nightmode -- Calculate a color value for the current time to gradually red-shift via cron
+node_complete.pl -- Configure a NodeJS repl with both readline and completion
+noderepl.js -- Configure a NodeJS repl with both readline and completion
 npm-deps-report -- Output how many sub-dependencies each npm dependencies has
 osx-keyboard-linux -- Make an OS X keyboard work like a PC keyboard
 osx-notify-send -- A notify-send-like wrapper to OSX's notify applescript thingie
