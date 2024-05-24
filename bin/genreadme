@@ -4,7 +4,8 @@
 lr -1U0 -t 'type == f' ~/bin |
     xe -0 awk '
     NR == 1 && !/^#!/ { nextfile }
-    /^#?[a-zA-Z ]+/ {
+    /^#?[a-zA-Z ]+/ || /^\/\/?[a-zA-Z ]+/ {
+        sub(/^\/\/ /, "", $0)
         sub(/^# /, "", $0)
         sub(/^.*\//, "", FILENAME)
         print FILENAME " -- " $0
