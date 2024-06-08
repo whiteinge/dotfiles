@@ -1,16 +1,20 @@
-" Add simple jsx highlighting to the JavaScript syntax that ships with Vim.
-
 if exists("b:current_syntax")
     unlet b:current_syntax
 endif
 
-" TODO: what happens if I load XML first and JavaScript second?
+" Add (very) simple JSX highlighting.
 runtime! syntax/xml.vim
-hi def link xmlError NONE
 
-syn region jsxString
-    \ start=+{+ms=s+2 end=+}+me=s-2
-    \ contained
-    \ containedin=xmlTag
-    \ contains=TOP
-    \ contains=@Spell,@javaScriptEmbededExpr,javaScriptBraces,javaScriptComment,javaScriptLineComment,xmlTag
+" Add support for html tagged template literals.
+let main_syntax = 'java' " avoid circular HTML/JavaScript syntax include
+syn include @htmlSyntax syntax/html.vim
+
+syn region htmlTaggedTemplate
+    \ start="html`" end="`"
+    \ matchgroup=Type
+    \ skip=+\\\\\|\\`+
+    \ contains=@htmlSyntax,javaScriptEmbedWithHtmlTemplate
+
+syn region javaScriptEmbedWithHtmlTemplate
+    \ start=+${+ end=+}+
+    \ contains=@javaScriptEmbededExpr,htmlTaggedTemplate
