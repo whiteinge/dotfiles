@@ -1,12 +1,8 @@
 if exists('main_syntax')
-    if g:main_syntax == 'markdown'
-        " The Markdown syntax file sources the entire HTML syntax file, and
-        " then including this as a JavaScript fenced language tries to source
-        " the HTML file again below. (At least I think that's what's
-        " happening.) This leads to weird missing variable errors. I tried to
-        " troubleshoot but gave up.
-        finish
-    endif
+    " Other syntax files (Markdown, PHP, rST) source the entire HTML syntax
+    " file, which can then include this file which sources the HTML file again.
+    " This leads to weird missing variable errors.
+    finish
 endif
 
 let s:current_syntax_save = b:current_syntax
