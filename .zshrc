@@ -207,6 +207,7 @@ alias noderepl='rlwrap -z node_complete.pl ~/bin/noderepl.js'
 alias ocaml='rlwrap ocaml'
 alias R='R --no-save'
 alias ifstat='ifstat -S -n -z 5'
+alias cloc='cloc --exclude-list-file ~/.cloc-exclude-list-file'
 
 # Aliases around scripts in $HOME/bin:
 alias tea-timer="countdown 120 && notify-send 'Tea!' 'Tea is done.'"
