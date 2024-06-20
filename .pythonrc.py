@@ -104,7 +104,7 @@ You've got color, history, and pretty printing.
 (If your ~/.inputrc doesn't suck, you've also
 got completion and vi-mode keybindings.)
 %(Brown)s
-Type \e to get an external editor.
+Type \\e to get an external editor.
 %(Normal)s""" % _c
 
 atexit.register(lambda: sys.stdout.write("""%(DarkGray)s
@@ -207,7 +207,7 @@ if 'SALT_MINION_CONFIG' in os.environ:
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/438813/
 
 EDITOR = os.environ.get('EDITOR', 'vi')
-EDIT_CMD = '\e'
+EDIT_CMD = '\\e'
 
 class EditableBufferInteractiveConsole(InteractiveConsole):
     def __init__(self, *args, **kwargs):
