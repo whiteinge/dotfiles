@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# Replace "fancy" quotes with ASCII quotes
+
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+iconv -f utf-8 -t ascii//translit
