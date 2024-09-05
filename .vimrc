@@ -467,6 +467,15 @@ com! Qfjump
     \ ->M('crewind ') ->execute()
     \ ->{ -> 'norm zv'}() ->execute()
 
+" Collapse all Quickfix entries into a new Quickfix of unique files.
+com! Qf2files
+    \ call getqflist()
+    \ ->map({i, x -> x.bufnr})
+    \ ->filter({i, x -> x != ''})
+    \ ->sort() ->uniq()
+    \ ->map({i, x -> {'bufnr': x}})
+    \ ->setqflist()
+
 " Load all Git changes in the work tree as quickfix entries.
 com! Qffromdiff cgetexpr
     \ system('git quickfix -m modified')
