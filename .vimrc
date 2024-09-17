@@ -703,9 +703,6 @@ nmap <expr> <leader>ss opfuncwrapper#WrapOpfunc('surround#Surround', 1,
 vmap <silent> <leader>s( :<C-U>call 
     \opfuncwrapper#WrapOpfunc('surround#Surround', 0, '(')<cr>
 
-""" Change Case mappings
-let g:caser_prefix = mapleader .'w'
-
 """ MRU mappings
 " Fuzzy-find and open a file from the most-recently-used buffer list.
 nnoremap <leader>fe :call copy(v:oldfiles)
