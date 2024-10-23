@@ -111,10 +111,10 @@ fi
     if [ -n "$searchpath" ]; then
         flr -0 -t 'type == f' ${testcond:+-t "$testcond"} "$searchpath" |
             xe -0 -j0 -N0 -L \
-            grep --color"${usepager:+=always}" ${is_icase:+-i} ${extregex:+-E} -nH "$search" "$@"
+            grep --color"${usepager:+=always}" ${is_icase:+-i} ${extregex:+-E} -nH -e "$search" "$@"
         printf '%s\n' $? > "$EXIT"
     else
-        grep --color"${usepager:+=always}" ${is_icase:+-i} ${extregex:+-E} -nH "$search" "$@"
+        grep --color"${usepager:+=always}" ${is_icase:+-i} ${extregex:+-E} -nH -e "$search" "$@"
         printf '%s\n' $? > "$EXIT"
     fi;
 } | {
