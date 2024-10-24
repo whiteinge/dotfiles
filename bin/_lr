@@ -32,15 +32,18 @@ while getopts :01ABC:DFGHLQPST:UWXde:f:lho:st:x opt; do
     esac
 done
 
-# More than one path is given as an arg.
-if [ "$#" -gt "$OPTIND" ]; then
+# Paths given as args.
+if [ "$#" -ge "$OPTIND" ]; then
     # Strip can produce ambiguous output for multi-segment paths (and has no
     # effect on single-segment paths).
     unset use_strip
 
-    # When we're lisiting specific files, don't hide dot files because we may
-    # be given a hidden file to list.
-    unset hide_hidden
+    # Don't hide dot files if we're explicitly asked to show one.
+    for arg in "$@"; do
+        case "${arg##*/}" in
+            .*) unset hide_hidden; break;;
+        esac
+    done
 fi
 
 lr -1 -F \
