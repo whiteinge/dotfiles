@@ -152,6 +152,18 @@
         \"+refs/pull/*/head:refs/remotes/${1}/pr/*\"; \
     };_"
 
+    # WIP Open difftool but like git show.
+    showtool = "!_() { \
+        set -x; \
+        rev=$(git rev-parse \"${1:-HEAD}\"); \
+        parents=$(git rev-list --no-walk --count --merges $rev); \
+        if [ $parents -gt 0 ]; then \
+            git diff-tree --cc $rev; \
+        else \
+            git difftool $rev~1 $rev; \
+        fi; \
+    };_"
+
 [commit]
     verbose = 2
     cleanup = scissors
