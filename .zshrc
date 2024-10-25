@@ -85,6 +85,11 @@ export LYNX_CFG=$HOME/.lynx/lynx.cfg
 # }}}
 # {{{ completions
 
+# Use somecommand <ctrl-x>h  to invoke completion help output.
+# Use the following to output helpful messages during a completion:
+#     zstyle ':completion:*' group-name ''
+#     zstyle ':completion:*' format 'Completing "%d":'
+
 compinit -C
 
 zstyle ':completion:*' list-colors "$LS_COLORS"
@@ -95,6 +100,9 @@ zstyle -e ':completion:*:(ssh|scp|sshfs|ping|telnet|nc|rsync):*' hosts '
 # Open kill and fg options in a selection menu:
 zstyle ':completion:*:*:(kill|fg):*' menu yes select
 zstyle ':completion:*:*:(kill|fg):*' complete-options true
+
+# Disable Git completion for remote branch names without a 'remote/' prefix.
+zstyle ':completion::complete:git-checkout:argument-rest:remote-branch-refs-noprefix' command 'echo'
 
 # Custom script in $HOME/bin
 compdef c=curl
