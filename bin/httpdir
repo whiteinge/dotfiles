@@ -88,10 +88,12 @@ http() {
         fi
 
         local clen="$(wc -c < "$rpath")"
+        local cmod="$(date -r "$rpath" +'%a, %d %b %Y %T %Z')"
 
         rep 200 \
             "Content-Type: ${ctype}" \
             "Content-Length: ${clen}" \
+            "Last-Modified: ${cmod}" \
             ${content_encoding:+"$content_encoding"}
         cat "$rpath"
         exit
