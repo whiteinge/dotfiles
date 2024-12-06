@@ -26,15 +26,20 @@ shift $(( OPTIND - 1 ))
 tgtdir="${1:?'Target directory required.'}"
 tgtext="${2:?'Input files extension required.'}"
 
+tgtfiles="${tgtdir}_files.txt"
 tgtlist="${tgtdir}__list.txt"
 tgtmeta="${tgtdir}__meta.txt"
+
+if [ ! -e "$tgtfiles" ]; then
+    lr -t 'name ~~~ "*.'"$tgtext"'"' -on > "$tgtfiles" "$tgtdir"
+else
+    printf 'Reusing existing: %s\n' "$tgtfiles" 1>&2
+fi
 
 if [ -e "$tgtlist" -o -e "$tgtmeta" ]; then
     printf 'Files already exist:\n%s\n%s\n' "$tgtlist" "$tgtmeta" 1>&2
     exit 1
 fi
-
-lr -t 'name ~~~ "*.'"$tgtext"'"'  -on -Qf 'file %p\n' > "$tgtlist" "$tgtdir"
 
 printf ';FFMETADATA
 title=%s
@@ -45,7 +50,7 @@ genre=Audiobook
 
 start_time='0.000000'
 
-lr -t 'name ~~~ "*.'"$tgtext"'"'  -on "$tgtdir" | while read -r file; do
+lr -U - < "$tgtfiles" | while read -r file; do
     title="${file#"$tgtdir"/}"
     title="${title%."$tgtext"}"
 
@@ -61,6 +66,8 @@ title=%s
 
     start_time="$(printf '%s + %s\n' "$start_time" "$duration" | bc)"
 done
+
+lr -U -Qf 'file %p\n' - < "$tgtfiles" > "$tgtlist"
 
 printf 'Inspect the generated files, edit as needed, then pass to ffmpeg-m4b:
 %s
