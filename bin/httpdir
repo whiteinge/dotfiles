@@ -1,11 +1,16 @@
 #!/usr/bin/env sh
 # Serve a local directory via HTTP (via socat) with or without SSL
 #
+# The -H flag provides server-side support for the HTML5 history API. If an
+# incoming request is requsting an HTML document, all paths will resolve to the
+# given document. Other requests are unaffected.
+#
 # Usage:
 #
 #     httpdir
 #     httpdir -p 8000
 #     httpdir -s
+#     httpdir -H index.html
 
 HTTP_METHOD=''
 HTTP_PATH=''
@@ -36,6 +41,10 @@ http() {
 
         case "$hdr" in
             Accept-Encoding) accept_compressed=1;;
+            Accept)
+                if $(printf '%s\n' "$val" | grep -iq 'text/html'); then
+                    accept_html=1
+                fi;;
         esac
     done
 
@@ -44,7 +53,11 @@ http() {
         exit
     fi
 
-    local rpath="$PWD$HTTP_PATH"
+    if [ -n "$accept_html" -a -n "$HTML5OVERRIDE" ]; then
+        local rpath="$HTML5OVERRIDE"
+    else
+        local rpath="$PWD$HTTP_PATH"
+    fi
 
     if fnmatch '*..*' "$rpath"; then
         rep 400
@@ -122,7 +135,7 @@ main() {
     local port="8000"
     local ssl=""
 
-    while getopts hp:s opt; do
+    while getopts hp:sH: opt; do
         case $opt in
         h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
            exit;;
@@ -131,6 +144,7 @@ main() {
             ssl=",cert=/tmp/${NAME}.crt,key=/tmp/${NAME}.key,verify=0";
             listen="OPENSSL-LISTEN";
             ;;
+        H) export HTML5OVERRIDE="$OPTARG";;
         esac
     done
     shift $(( OPTIND - 1 ))
