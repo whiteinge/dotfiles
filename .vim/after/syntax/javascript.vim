@@ -25,3 +25,17 @@ syn region htmlTaggedTemplate
 syn region javaScriptEmbedWithHtmlTemplate
     \ start=+${+ end=+}+
     \ contains=@javaScriptEmbededExpr,htmlTaggedTemplate
+
+" Add support for css tagged template literals.
+syn include @htmlCss syntax/css.vim
+let b:current_syntax = s:current_syntax_save
+
+syn region cssTaggedTemplate
+    \ start="css`" end="`"
+    \ matchgroup=Type
+    \ skip=+\\\\\|\\`+
+    \ contains=@htmlCss,javaScriptEmbedWithCssTemplate
+
+syn region javaScriptEmbedWithCssTemplate
+    \ start=+${+ end=+}+
+    \ contains=@javaScriptEmbededExpr,cssTaggedTemplate
