@@ -90,6 +90,7 @@ http() {
         case "$rpath" in
             *.css) ctype='text/css';;
             *.js) ctype='application/javascript';;
+            *.mjs) ctype='application/javascript';;
             *.json) ctype='application/json';;
             *) ctype="$(file -L -b --mime-type "$rpath")";;
         esac
