@@ -49,7 +49,7 @@ http() {
     done
 
     if [ "$HTTP_PATH" = '/favicon.ico' ]; then
-        rep 200
+        rep '200 OK'
         exit
     fi
 
@@ -60,7 +60,7 @@ http() {
     fi
 
     if fnmatch '*..*' "$rpath"; then
-        rep 400
+        rep '400 Bad Request'
         exit
     fi
 
@@ -75,7 +75,7 @@ http() {
         local bpath="${rpath##$PWD}"
         local bpath="${bpath%/}"
         local base="//localhost:${SOCAT_SOCKPORT}${bpath}"
-        rep 200
+        rep '200 OK'
         tree "$rpath" \
             -H "$base" \
             -a \
@@ -104,7 +104,7 @@ http() {
         local clen="$(wc -c < "$rpath")"
         local cmod="$(date -r "$rpath" +'%a, %d %b %Y %T %Z')"
 
-        rep 200 \
+        rep '200 OK' \
             "Content-Type: ${ctype}" \
             "Content-Length: ${clen}" \
             "Last-Modified: ${cmod}" \
@@ -113,7 +113,7 @@ http() {
         exit
     fi
 
-    rep 404
+    rep '404 Not Found'
     exit
 }
 
