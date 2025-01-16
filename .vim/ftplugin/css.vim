@@ -5,6 +5,6 @@ endif
 fu! FormatCSS(buffer) abort
     return { 'command': 'deno fmt --ext=css -' }
 endfu
-exe ale#fix#registry#Add('deno', 'FormatCSS', ['css'], 'deno fmt for CSS')
+exe ale#fix#registry#Add('denocss', 'FormatCSS', ['css'], 'deno fmt for CSS')
 
-let b:ale_fixers = ['deno', 'prettier']
+let b:ale_fixers = ['denocss', 'prettier']
