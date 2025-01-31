@@ -262,8 +262,8 @@ function _man() {
 # Zsh's completion invokes man on tab so avoid a recursive definition.
 alias man='_man'
 
-# Override ~/bin/mdless when inside Zsh to use Vim as MANPAGER.
-function mdless() { pandoc -s -f gfm -t man "${1:--}" | _man -l -; }
+# Override ~/bin/mdless use our Zsh function _man override
+function mdless() { command mdless "$@" | _man -l -; }
 
 # Useful for working with Git remotes; e.g., `git log IN`, `git diff OUT`.
 alias -g IN='..@{u}'

@@ -18,8 +18,18 @@ while getopts e:h opt; do
 done
 shift $(( OPTIND - 1 ))
 
+if [ -t 1 ]; then
+    use_man=1
+fi
+
 case $ext in
     md) ext='gfm';;
 esac
 
-pandoc -s -f "$ext" -t man "${1:--}" | man -l -
+pandoc -s -f "$ext" -t man "${1:--}" | {
+    if [ -n "$use_man" ]; then
+        man -l -
+    else
+        cat
+    fi;
+}
