@@ -12,6 +12,8 @@
 #     httpdir -s
 #     httpdir -H index.html
 
+NAME=$(basename "$0")
+
 HTTP_METHOD=''
 HTTP_PATH=''
 HTTP_VERSION=''
@@ -123,8 +125,8 @@ mk_cert() {
         -days 365 \
         -nodes \
         -subj "/C=US/ST=Utah/L=Ogden/O=ACME, Inc./OU=Org/CN=localhost" \
-        -keyout "/tmp/${NAME}.key" \
-        -out "/tmp/${NAME}.crt" \
+        -keyout "${TMPDIR-/tmp}/${NAME}.key" \
+        -out "${TMPDIR-/tmp}/${NAME}.crt" \
         2>/dev/null
 }
 
