@@ -5,14 +5,21 @@
 #
 # Usage:
 #
-#     mdless foo.md
+#     mdless README.md
+#     mdless README.rst
 
-while getopts h opt; do
+ext="${1##*.}"
+while getopts e:h opt; do
     case $opt in
+    e) ext="$OPTARG";;
     h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
        exit ;;
     esac
 done
 shift $(( OPTIND - 1 ))
 
-pandoc -s -f gfm -t man "${1:--}" | man -l -
+case $ext in
+    md) ext='gfm';;
+esac
+
+pandoc -s -f "$ext" -t man "${1:--}" | man -l -
