@@ -8,6 +8,8 @@ endif
 let s:current_syntax_save = b:current_syntax
 
 " Add (very) simple JSX highlighting.
+let s:current_syntax_save = b:current_syntax
+unlet b:current_syntax
 runtime! syntax/xml.vim
 let b:current_syntax = s:current_syntax_save
 
