@@ -30,14 +30,8 @@ if bufname('%') =~? 'presentation\.md$'
     let b:ftskeleton="~/.vim/ftplugin/markdown/skeleton/remark.md"
 endif
 
-" Disabled for now for perf reasons.
-" let g:markdown_folding=1
 let b:ale_enabled=0
-
-setl foldnestmax=1
 
 let g:markdown_fenced_languages = [
     \ 'html', 'python', 'ruby', 'sh', 'c', 'cpp', 'dot', 'diff', 'sql',
     \'js=javascript', 'ts=typescript', 'hs=haskell', 'math=tex']
-
-setl textwidth=79

@@ -3,6 +3,13 @@ set commentstring=<!--%s-->
 
 set suffixesadd=.md
 
+setl foldnestmax=1
+
+setl textwidth=79
+
+setl softtabstop=2
+setl shiftwidth=2
+
 " Add Markdown fenced block text objects.
 " https://25.wf/posts/2020-09-04-vim-markdown-text-object.html
 function! s:inCodeFence()
