@@ -11,8 +11,6 @@ instagram 1 billion dollars
 
 # Pop culture units
 lotr_marathon 673 minutes
-hobbit_marathon 498 minutes
-tolkien_marathon lotr_marathon + hobbit_marathon
 
 # Sizes
 olympic_pool_length 50 meter
