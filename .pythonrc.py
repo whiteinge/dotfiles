@@ -124,9 +124,9 @@ class EditableBufferInteractiveConsole(InteractiveConsole):
         self.last_buffer = [] # This holds the last executed statement
         InteractiveConsole.__init__(self, *args, **kwargs)
 
-    def runsource(self, source, *args):
+    def runsource(self, source, *args, **kwargs):
         self.last_buffer = [ source.encode('utf-8') ]
-        return InteractiveConsole.runsource(self, source, *args)
+        return InteractiveConsole.runsource(self, source, *args, **kwargs)
 
     def raw_input(self, *args):
         line = InteractiveConsole.raw_input(self, *args)
