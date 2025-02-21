@@ -332,15 +332,20 @@ _http () {
     local cmd
     local HEADERS=''
     local HTTP_METHOD=''
+    local HTTP_RELREF=''
     local HTTP_PATH=''
+    local HTTP_QUERY=''
     local HTTP_VERSION=''
     local reqbody
     local pathseg
 
-    read -r HTTP_METHOD HTTP_PATH HTTP_VERSION
+    read -r HTTP_METHOD HTTP_RELREF HTTP_VERSION
     HTTP_METHOD=$(printf '%s\n' "$HTTP_METHOD" | tr '[:lower:]' '[:upper:]')
-    HTTP_PATH=$(printf '%s\n' "$HTTP_PATH" | tr '[:upper:]' '[:lower:]')
-    printf '%s %s\n' "$HTTP_METHOD" "$HTTP_PATH" 1>&2
+    HTTP_RELREF=$(printf '%s\n' "$HTTP_RELREF" | tr '[:upper:]' '[:lower:]')
+    HTTP_PATH="${HTTP_RELREF%\?*}"
+    HTTP_QUERY="${HTTP_RELREF#\?*}"
+
+    printf '%s %s\n' "$HTTP_METHOD" "$HTTP_RELREF" 1>&2
 
     # Store all headers in a string.
     while read -r hdr; do
@@ -363,7 +368,7 @@ ${hdr}"
         '/put') cmd=put;;
         '/delete') cmd=delete;;
 
-        /status/*) cmd=status; pathseg="${HTTP_PATH#/status/}";;
+        /status/*) cmd=status; pathseg="${HTTP_RELREF#/status/}";;
         '/headers') cmd=headers;;
         '/user-agent') cmd=user_agent;;
         '/echo') cmd=echoserver;;
@@ -376,11 +381,11 @@ ${hdr}"
         '/ctype') cmd=content_negotiation;;
 
         '/drip') cmd=drip;;
-        /delay/*) cmd=delay; pathseg="${HTTP_PATH#/delay/}";;
-        /sse/*) cmd=sse; pathseg="${HTTP_PATH#/sse/}";;
+        /delay/*) cmd=delay; pathseg="${HTTP_RELREF#/delay/}";;
+        /sse/*) cmd=sse; pathseg="${HTTP_RELREF#/sse/}";;
 
-        /redirect-to/*) cmd=redirect_to; pathseg="${HTTP_PATH#/redirect-to/}";;
-        /redirect/*) cmd=redirect_n; pathseg="${HTTP_PATH#/redirect/}";;
+        /redirect-to/*) cmd=redirect_to; pathseg="${HTTP_RELREF#/redirect-to/}";;
+        /redirect/*) cmd=redirect_n; pathseg="${HTTP_RELREF#/redirect/}";;
 
         '/') cmd=index;;
         *) cmd=notfound;;
