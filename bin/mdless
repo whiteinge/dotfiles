@@ -6,12 +6,12 @@
 # Usage:
 #
 #     mdless README.md
+#     mdless -f gfm README.md
 #     mdless README.rst
+#     cat /some/file.md | mdless
 
-ext="${1##*.}"
-while getopts e:h opt; do
+while getopts h: opt; do
     case $opt in
-    e) ext="$OPTARG";;
     h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
        exit ;;
     esac
@@ -22,11 +22,7 @@ if [ -t 1 ]; then
     use_man=1
 fi
 
-case $ext in
-    md) ext='gfm';;
-esac
-
-pandoc -s -f "$ext" -t man "${1:--}" | {
+pandoc -s -t man "$@" | {
     if [ -n "$use_man" ]; then
         man -l -
     else
