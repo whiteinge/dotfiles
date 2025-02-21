@@ -755,7 +755,7 @@ let g:ale_virtualtext_cursor = 0
 let g:ale_hover_cursor = 0
 
 nmap <silent> <leader>fg :ALEFix<cr>
-nmap <silent> <leader>fm :call ale#Lint()<cr>
+nmap <silent> <leader>fm :ALELint<cr>
 
 """ Tagbar plugin settings
 map <F4> :TagbarToggle<cr>
