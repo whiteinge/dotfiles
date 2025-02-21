@@ -750,7 +750,6 @@ nnoremap <F3> :UndotreeToggle<cr>
 
 """ ale settings
 let g:ale_set_highlights = 0
-let g:ale_set_signs = 0
 let g:ale_echo_cursor = 0
 let g:ale_virtualtext_cursor = 0
 let g:ale_hover_cursor = 0
