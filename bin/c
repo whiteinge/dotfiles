@@ -1,24 +1,8 @@
 #!/usr/bin/env sh
 # Wrap curl to conditionally open headers, timing info, and response in a pager
 #
-# Passes any arguments through to curl.
-#
-# The pager will open two documents. The first is headers and timing, the
-# second is the response body. If used in a pipe, no pager will be started and
-# headers and timing will be send to stdout instead.
-#
-# Preferentially requests JSON responses (can be overridden). Use the new
-# `--json` flag to send JSON requests. Formats JSON responses with jq.
-#
-# Tip: Create config files for commonly accessed hosts, such as authentication
-# creds, SSL options, and even a hostname alias:
-#
-#     # E.g.: curl -K /path/to/foo.cfg foohost/path/to/resource
-#     oauth2-bearer = asdfjkl
-#     proto-default = https
-#     insecure
-#     connect-to = foohost::foohost.example.com:
-#     header = "Host: foohost.example.com"
+# Passes arguments through to curl. Tip: see manpage for `--config` and
+# `--variable` flags.
 #
 # Usage:
 #
@@ -26,6 +10,78 @@
 #     c https://api.github.com/users
 #     c https://api.github.com/users > response.json
 #     c https://api.github.com/users | jq '.[] | .login'
+#     c http://localhost:8080 --json @foo.json
+#     jo foo=Foo bar=true baz=123 | c -K hostconfig.cfg --json @-
+#
+# The pager will open two documents. The first is headers and timing, the
+# second is the response body. If used in a pipe, no pager will be started and
+# headers and timing will be send to stdout instead.
+#
+# Tries to be JSON-friendly by preferentially requesting JSON responses (can be
+# overridden). Use the new `--json` flag to send JSON requests. Automatically
+# formats JSON responses with jq.
+#
+# Examples:
+#
+# - Make a script that creates a user:
+#
+#       c -K /path/to/POS_create_user.cfg
+#
+#   `POS_create_user.cfg`:
+#
+#       # Adds a new user to the system.
+#       url = http://myapi.example.com/users
+#       url-query = sendWelcomeEmail=true
+#       url-query = foo=Foo!
+#       json = "{\"username\":\"someuser@example.com\",\"password\":\"!@#/c^&\"}"
+#
+#       # Below values redundant with --json but including for demonstration:
+#       request = POST
+#       header = "Content-Type: application/json"
+#       header = "Accept: application/json"
+#
+#   NOTE: A quick way to create properly double-quoted JSON:
+#
+#       jo foo=Foo bar=true baz=123 | jq @json
+#
+# - Make a short alias for a longer hostname; provide default headers:
+#
+#       c -K /path/to/baz.cfg bazhost/path/to/resource
+#
+#   `baz.cfg`:
+#
+#       oauth2-bearer = asdfjkl
+#       proto-default = https
+#       insecure
+#       connect-to = bazhost::bazhost.example.com:
+#       header = "Host: bazhost.example.com"
+#
+# - Generate several values from env vars and provide fallback defaults if any
+#   are missing. Quote variables for valid JSON.
+#
+#       export port=8000 user='Foo"user'
+#       c -K /path/to/qux.cfg \
+#         --expand-url http://{{HOSTNAME}}:{{port}}/login \
+#         --expand-json '{"username": "{{user:json}}", "password": "{{pass:json}}"}'
+#
+#   `qux.cfg`:
+#
+#       variable = %user@/path/to/fallback/user.txt
+#       variable = %pass@/path/to/fallback/pass.txt
+#       variable = %HOSTNAME=localhost
+#       variable = %port=8080
+#
+# - Generate a base64-encoded auth header from env variables:
+#
+#       export user=someuser pass=somepass
+#       c -K /path/to/quux.cfg http://localhost:8080
+#
+#   `quux.cfg`:
+#
+#       variable %user
+#       variable %pass
+#       expand-variable creds='{{user}}:{{pass}}'
+#       expand-header 'Authorization: Basic {{creds:b64}}'
 
 NAME=$(basename "$0")
 TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
@@ -33,11 +89,7 @@ TEMP="${TMPDIR-/tmp}/${NAME}.${$}.$(awk \
 
 while getopts :h opt; do
     case $opt in
-    h)
-        awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"
-        printf '\n\n'
-        curl -h
-        exit;;
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
     esac
 done
 
@@ -56,6 +108,7 @@ fi
 crlf=$(printf '\r\n')
 headers="${TEMP}/headers"
 timing="${TEMP}/timing"
+trace="${TEMP}/trace"
 metainfo="${TEMP}/metainfo"
 body="${TEMP}/body"
 
@@ -63,32 +116,43 @@ if [ -t 1 ]; then
     is_term=1
 fi
 
-curl -sS -D "$headers" -o "$body" -w '----------
-namelookup:     %{time_namelookup}
-connect:        %{time_connect}
-appconnect:     %{time_appconnect}
-pretransfer:    %{time_pretransfer}
-redirect:       %{time_redirect}
-starttransfer:  %{time_starttransfer}
-total:          %{time_total}
-----------
+curl -sS -D "$headers" --trace-ascii "$trace" -o "$body" -w 'Request:
+
+  uri:            %{url_effective}
+  method:         %{method}
+  size_request:   %{size_request}
+  num_redirects:  %{num_redirects}
+
+Timing:
+
+  namelookup:     %{time_namelookup}
+  connect:        %{time_connect}
+  appconnect:     %{time_appconnect}
+  pretransfer:    %{time_pretransfer}
+  redirect:       %{time_redirect}
+  starttransfer:  %{time_starttransfer}
+  total:          %{time_total}
 ' -H 'Accept: application/json;q=0.9, */*;q=0.1' "$@" > "$timing"
+
+ret=$?
+if [ $ret -ne 0 ]; then
+    exit $ret
+fi
 
 ! grep -qi '^content-type: .*application/json' "$headers"
 is_json=$?
 
 {
     if [ "$is_json" -eq 1 ]; then
-        jq ${is_term+-C} . "$body"
-    else
-        cat "$body"
+        jq ${is_term+-C} . "$body" > "${body}.json" \
+            && mv "${body}.json" "$body"
     fi;
 } | {
     if [ -n "$is_term" ]; then
         cat "$headers" "$timing" > "$metainfo"
-        $PAGER -R "$metainfo" -
+        $PAGER -R "$metainfo" "$body" "$trace"
     else
-        cat "$headers" "$timing" 1>&2
-        cat
+        cat "$headers" 1>&2
+        cat "$body"
     fi;
 }
