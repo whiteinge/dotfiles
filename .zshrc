@@ -10,6 +10,7 @@ autoload edit-command-line
 autoload -U compinit
 
 setopt \
+    auto_cd \
     auto_pushd \
     chase_links \
     complete_aliases \
@@ -348,8 +349,6 @@ dotfiles () {
 
 # }}}
 # Use a fuzzy-finder for common CLI tasks {{{1
-
-alias ..='cd ..'
 
 # cd to a parent directory.
 function ...() {
