@@ -39,7 +39,11 @@ index () {
     # Return an HTML response (containing the listing of available functions)
 
     _rep '200 Ok' 'Content-Type: text/html'
-    cat <<EOF
+
+    if [ -n "$INDEXFILE" ]; then
+        cat "$INDEXFILE"
+    else
+        cat <<EOF
 <!DOCTYPE html>
 <html>
     <head>
@@ -54,6 +58,7 @@ $(_all_funcs | xe printf '<li>%s</li>\n')
     </body>
 </html>
 EOF
+    fi
 }
 
 favicon () {
@@ -435,7 +440,7 @@ _main () {
     local port="8000"
     local ssl=""
 
-    while getopts hxp:s opt; do
+    while getopts hxp:sH: opt; do
         case $opt in
         h) help _main
            printf '\nAvailable commands:\n\n'
@@ -447,6 +452,7 @@ _main () {
             ssl=",cert=/tmp/${NAME}.crt,key=/tmp/${NAME}.key,verify=0";
             listen="OPENSSL-LISTEN";
             ;;
+        H) export INDEXFILE="$OPTARG";;
         x) set -x;;
         esac
     done
