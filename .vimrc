@@ -388,6 +388,9 @@ nmap <leader>zz :exe 'tabnew +'. line('.') .' %'<cr>
 set showtabline=1               " Display the tabbar if there are multiple tabs. Use :tab ball or invoke Vim with -p
 set hidden                      " Allows opening a new buffer in place of an existing one without first saving the existing one
 
+" Run :x on all the windows in a tab.
+com! Tx tabdo x
+
 " Replace the current window from open buffers:
 nn <leader>bb
     \ :redir => _redir \| silent ls \| redir END
