@@ -13,9 +13,8 @@ sudo dnf install -y rpmfusion-free-release-tainted
 # Disable auto-mounting.
 gsettings set org.gnome.desktop.media-handling automount false
 
-# Disable Gnome Software
-mkdir -pv ~/.config/autostart && cp /etc/xdg/autostart/gnome-software-service.desktop ~/.config/autostart/
-echo 'X-GNOME-Autostart-enabled=false' >> ~/.config/autostart/gnome-software-service.desktop
-dconf write /org/gnome/desktop/search-providers/disabled "['org.gnome.Software.desktop']"
-dconf write /org/gnome/software/allow-updates false
-dconf write /org/gnome/software/download-updates false
+# Remove Gnome Software. I don't use it, I'm tired of seeing it spike the CPU,
+# and simply disabling it from running in the background seems to be crazy
+# complicated and varies wildly between Gnome versions and distros.
+sudo dnf remove PackageKit-gstreamer-plugin PackageKit PackageKit-command-not-found gnome-software
+sudo rm -rf /var/cache/PackageKit
