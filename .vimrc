@@ -429,12 +429,12 @@ com! Qfchoose
     \ ->matchstr('[0-9]\+') ->W('chistory') ->execute()
 
 " Shortcuts for working with quickfix/location lists
-nmap <silent>qq :cc<cr>:norm zv<cr>
+nmap <silent>qq :caf<cr>:norm zv<cr>
 nmap <silent>]q :cnext<cr>:norm zv<cr>
 nmap <silent>[q :cprev<cr>:norm zv<cr>
 nmap <silent>[Q :cNfile<cr>:norm zv<cr>
 nmap <silent>]Q :cnfile<cr>:norm zv<cr>
-nmap <silent>aa :ll<cr>:norm zv<cr>
+nmap <silent>aa :laf<cr>:norm zv<cr>
 nmap <silent>]a :lnext<cr>:norm zv<cr>
 nmap <silent>[a :lprev<cr>:norm zv<cr>
 
