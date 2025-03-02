@@ -8,7 +8,27 @@ sudo dnf install -y \
     https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
     https://prerelease.keybase.io/keybase_amd64.rpm
 
-sudo dnf install -y rpmfusion-free-release-tainted
+# Install proprietary multimedia codecs
+sudo dnf install -y
+    rpmfusion-free-release \
+    rpmfusion-free-release-tainted \
+    rpmfusion-nonfree-release \
+    rpmfusion-nonfree-release-tainted \
+    libavcodec-freeworld \
+    libdvdcss
+
+sudo dnf swap ffmpeg-free ffmpeg --allowerasing
+sudo dnf update @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+
+# Install proprietary Intel and AMD drivers
+sudo dnf install intel-media-driver
+sudo dnf swap mesa-va-drivers mesa-va-drivers-freeworld
+sudo dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld
+sudo dnf swap mesa-va-drivers.i686 mesa-va-drivers-freeworld.i686
+sudo dnf swap mesa-vdpau-drivers.i686 mesa-vdpau-drivers-freeworld.i686
+
+# Install proprietary firmwares
+sudo dnf --repo=rpmfusion-nonfree-tainted install '*-firmware'
 
 # Disable auto-mounting.
 gsettings set org.gnome.desktop.media-handling automount false
