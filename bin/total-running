@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+# Show a running total of seen lines
+#
+# Useful for watching something over time without cluttering the screen.
+#
+#     printf '%s\n' foo bar baz qux quux quz |
+#         xargs -n1 sh -c 'sleep 1; echo $1' - |
+#         total-running
+
+while getopts hx opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+awk 'BEGIN { printf("\n") }
+{
+    count += 1
+    printf("\033[1A\033[2K") # clear line
+    print count
+}'

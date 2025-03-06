@@ -2,7 +2,7 @@ align -- Align columns at CHAR
 alphaindex -- Get unique alphabet character(s) from a positive integer
 ansi-strip -- Remove ansi terminal formatting codes
 bookletize -- Convert a PDF to a fold-able booklet sized PDF
-bootstrap-fedora -- Bootstrap a minimal Fedora install
+bootstrap-fedora -- Bootstrap a default Fedora install
 bootstrap-osx -- Bootstrap a new OS X machine
 bootstrap-pocket2 -- Bootstrap a new Pocket 2 machine
 bootstrap-wsl -- Bootstrap a WSL Ubuntu install
@@ -86,6 +86,7 @@ invoice -- Generate a PDF invoice from a plain text time log using groff and m4
 joinpdf -- Merges, or joins multiple PDF files into "joined.pdf"
 join-strings -- Join strings together with a delimiter
 jqflat -- Use jq to flatten a JSON structure for easy use with awk/grep/etc
+jqjsonl -- Output JSONL from an array- or object-of-objects
 linux-resize-window -- Select a window in X11 and resize it to given dimensions
 lndir.sh -- Create a shadow directory of symbolic links to another directory tree
 lorem -- Output paragraphs of lorem ipsum placeholder text
@@ -113,6 +114,7 @@ play-somafm -- Select a SomaFM stream with a fuzy-finder and play via mpv
 pysmtp -- Start a echoing SMTP server
 queue -- A lightweight job queue using tail and xe
 replace-link -- Replace a symlink with a copy of the thing it points to
+requote -- Replace "fancy" quotes with ASCII quotes
 res -- Output an xrandr command for common configurations
 rgb2hex -- Convert 16-bit RGB values to hexadecimal
 rproxy -- A reverse proxy that pipes the HTTP response through a shell command
@@ -129,6 +131,7 @@ thes -- Search Grady Ward's Moby Project thesaurus with a fuzzy-finder
 timebuddy -- Compare columns of hours in a day across multiple timezones
 timer -- Output seconds elapsed
 tmux-tiled -- Make a bunch of tiled tmux panes via find -exec or xargs
+total-running -- Show a running total of seen lines
 total -- Sum (total) numbers in a column
 transpose -- Transpose rows of key/value pairs to aligned key/value columns
 unique-lines -- Remove duplicate lines (no sort requirement)
