@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+# Show git commits suitable for a daily standup
+#
+# Works over weekends.
+
+while getopts hx opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+author="$(git config user.email)"
+date_rel="$(date +%w | xe -s '
+if [ $1 -eq 1 ]
+then echo 3 days ago
+else echo 1 day ago
+fi')"
+
+git l --since=@"$date_rel" --author="$author"
