@@ -392,9 +392,9 @@ set hidden                      " Allows opening a new buffer in place of an exi
 com! Tx tabdo x
 
 " Replace the current window from open buffers:
-nn <leader>bb
-    \ :redir => _redir \| silent ls \| redir END
-    \ \|call util#SysR(_redir, 'fzy -p "Buffers > "')
+nmap <silent> -
+    \ :redir => _redir \| silent ls t \| redir END
+    \ \|call util#SysR(_redir, 'tail -n +3 \| fzy -p "Buffers > "')
     \ ->matchstr('[0-9]\+') ->M('b ') ->execute()<cr>
 
 " Use a fuzzy-finder to unload loaded buffers.
@@ -653,14 +653,15 @@ let mapleader = '\'
 let loaded_netrwPlugin = 1
 
 """ Fuzzy-finder file explorer (of sorts).
-nmap <silent> -
-    \ :call util#SysR('', 'ftree '. expand('%:p:h') .'\| tr -d \\n')
+com! Ex
+    \ call util#SysR('', 'ftree '. expand('%:p:h'))
+    \ ->trim()
     \ ->fnameescape()
     \ ->{x -> x == ''
     \     ? ''
     \     : isdirectory(x) ? 'lcd '. x : 'edit '. x
     \ }()
-    \ ->execute()<cr><bar>:pwd<cr>
+    \ ->execute()
 
 """ Make a buffer into a scratch buffer:
 com! Scratch call scratch#Scratch()
