@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # View rendered Markdown files with $MANPAGER
 #
-# http://leahneukirchen.org/dotfiles/.zshrc
+# Inspired by <http://leahneukirchen.org/dotfiles/.zshrc>
 #
 # Usage:
 #
@@ -9,14 +9,14 @@
 #     mdless -f gfm README.md
 #     mdless README.rst
 #     cat /some/file.md | mdless
+#     cat /some/file.rst | mdless -f rst
 
-while getopts h: opt; do
+while getopts :h: opt; do
     case $opt in
     h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
        exit ;;
     esac
 done
-shift $(( OPTIND - 1 ))
 
 if [ -t 1 ]; then
     use_man=1
