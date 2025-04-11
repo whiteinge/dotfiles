@@ -67,6 +67,7 @@ ghkeys -- Display GitHub public keys for a user
 git-attic -- List deleted files in a Git repository
 git-counter -- Atomically increment a counter value stored in a Git repository
 git-fetchall -- Run `git fetch` on all repos under the current dir in parallel
+git-find-repos -- Find Git repos under CWD, and optionally run a Git command in each
 git-graph-dag -- Draw a graphviz diagram of the Git DAG
 git-pagediffs -- Paginate individual Git commits as separate files in $PAGER
 git-prompt -- Output a fast, succinct, one-line Git status for use in a prompt

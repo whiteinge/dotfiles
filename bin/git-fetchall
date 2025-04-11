@@ -65,9 +65,7 @@ main() {
 
     printf 'Looking for Git repos: '
 
-    lr -0Ut 'name == "HEAD"' \
-        | xe -0 -s 'd=${1%/*}
-            test -O "$d"/refs -a -O "$d"/objects && printf "%s\0" "$d"' \
+    git find-repos -0 \
         | tee "$REPO_CACHE" \
         | awk '
             BEGIN { RS="\0" }

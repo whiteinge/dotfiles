@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+# Find Git repos under CWD, and optionally run a Git command in each
+#
+#     git find-repos
+#     git find-repos -0
+#     git find-repos rev-parse --symbolic-full-name @
+
+NAME=$(basename "$0")
+
+sep='\n'
+while getopts hx0 opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    0) sep='\0';;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+if [ "$#" -gt 0 ]; then
+    has_cmd=1
+    sep='\0'
+else
+    has_cmd=0
+fi
+
+lr -0Ut 'name == "HEAD"' | xe -0 -s 'd=${1%/*}
+    test -O "$d"/refs -a -O "$d"/objects && printf "%s'"$sep"'" "$d"' | {
+if [ "$has_cmd" -eq 1 ]; then
+    xe -0 -j5 -s 'git --git-dir="$1" '"$*"
+else
+    cat
+fi;
+}
