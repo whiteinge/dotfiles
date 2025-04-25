@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+# Show, and optionally replace, any "title" metadata in a media file
+#
+# Usage:
+#
+#     lr -0 /path/to/files | xe -0 ffmpeg-title > titles.txt
+#     # Remove correct entries...
+#     awk -F' -- ' '{ print $1 }' titles.txt | xe ffmpeg-title -f
+
+NAME=$(basename "$0")
+
+while getopts fhx opt; do
+    case $opt in
+    f) force=1;;
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+extract_title() {
+    printf '%s -- ' "$1"
+
+    ffprobe "$1" 2>&1 | \
+    awk '
+        BEGIN { FS=": " }
+        /  Duration/ { print "n/a"; exit }
+        /  Metadata/ { meta=1 }
+        meta && /title/ { print $2; exit }
+    '
+}
+
+remove_title() {
+    ffmpeg -i "$1" -map_metadata -1 -c:v copy -c:a copy "${1}-nometa.${1##*.}" \
+        && mv "${1}-nometa.${1##*.}" "$1"
+}
+
+if [ -n "$force" ]; then
+    cmd=remove_title
+else
+    cmd=extract_title
+fi
+
+"$cmd" "$@"
