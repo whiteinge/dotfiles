@@ -296,7 +296,8 @@ alias tms="exec ssh-agent \
     SSH_AUTH_SOCK=$TMUX_AUTH_SOCK \
     exec systemd-run --scope --user tmux new-session -A -E -s 0'"
 # ssh ForwardAgent version:
-alias tmf="ln -sfn \$SSH_AUTH_SOCK $TMUX_AUTH_SOCK; \
+alias tmf="test -n \"\$SSH_AUTH_SOCK\" || return 1; \
+    ln -sfn \$SSH_AUTH_SOCK $TMUX_AUTH_SOCK; \
     SSH_AUTH_SOCK=$TMUX_AUTH_SOCK exec tmux \
     new-session -A -E -s 0\; \
     set -s set-clipboard external"
