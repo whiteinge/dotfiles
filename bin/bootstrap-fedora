@@ -30,11 +30,11 @@ sudo dnf swap mesa-vdpau-drivers.i686 mesa-vdpau-drivers-freeworld.i686
 # Install proprietary firmwares
 sudo dnf --repo=rpmfusion-nonfree-tainted install '*-firmware'
 
-# Disable auto-mounting.
-gsettings set org.gnome.desktop.media-handling automount false
-
 # Remove Gnome Software. I don't use it, I'm tired of seeing it spike the CPU,
 # and simply disabling it from running in the background seems to be crazy
 # complicated and varies wildly between Gnome versions and distros.
 sudo dnf remove PackageKit-gstreamer-plugin PackageKit PackageKit-command-not-found gnome-software
 sudo rm -rf /var/cache/PackageKit
+
+# Load keybindings and other configs.
+dconf load / < $HOME/opt/dconf.cfg
