@@ -8,6 +8,9 @@ sudo dnf install -y \
     https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
     https://prerelease.keybase.io/keybase_amd64.rpm
 
+# Install baseline packages
+< $HOME/opt/packages-fedora xargs sudo dnf install -y
+
 # Install proprietary multimedia codecs
 sudo dnf install -y
     rpmfusion-free-release \
