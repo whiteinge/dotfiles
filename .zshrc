@@ -373,13 +373,6 @@ function timesheets() {
     fi
 }
 
-# When completion is invoked without arguments use the scrollback buffer. This
-# makes it easy(-er) to create a new command from the output of another
-# (without having to copy-and-paste).
-function _fzy_scrollback() {
-    scrollback | fzy -p 'Scrollback > ' | sed -e 's/\s\+$//'
-}
-
 # A completion fallback if something more specific isn't available.
 function _fzy_generic_find() {
     local cmd="$1"; shift 1
@@ -407,9 +400,7 @@ fzy-completion() {
     local cmd=${tokens[1]}
     local cmd_fzy_match
 
-    if [[ ${#tokens} -lt 1 ]]; then
-        cmd_fzy_match=( '_fzy_scrollback' )
-    else
+    if [[ ${#tokens} -gt 1 ]]; then
         # Filter (:#) the arrays of the names ((k)) Zsh function and scripts on
         # PATH and remove ((M)) entries that don't match "_fzy_<cmdname>":
         cmd_fzy_match=${(M)${(k)functions}:#_fzy_${cmd}}
