@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+# Normalize and downsample videos to a specific bitrate, dimension, and codec
+
+file="${1:?'Input file missing.'}"
+rate=720
+while getopts 3hx opt; do
+    case $opt in
+    3) rate=360;;
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+ffmpeg -i "$file" -vf scale="$rate":-2,setsar=1:1 \
+    -c:v libx264 \
+    -c:a aac \
+    -vcodec libx264 \
+    -crf 20 \
+    -b 800k \
+    "${file}-downscaled.mp4"
