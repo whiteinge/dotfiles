@@ -400,7 +400,7 @@ fzy-completion() {
     local cmd=${tokens[1]}
     local cmd_fzy_match
 
-    if [[ ${#tokens} -gt 1 ]]; then
+    if [[ ${#tokens} -gt 0 ]]; then
         # Filter (:#) the arrays of the names ((k)) Zsh function and scripts on
         # PATH and remove ((M)) entries that don't match "_fzy_<cmdname>":
         cmd_fzy_match=${(M)${(k)functions}:#_fzy_${cmd}}
