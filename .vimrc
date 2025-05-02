@@ -829,5 +829,28 @@ let g:copilot_filetypes = {'*': v:false}
 imap <C-L> <Plug>(copilot-suggest)
 let g:copilot_node_command = "~/.copilot-node-version/bin/node"
 
+""" Project-level Vim config overrides via Git
+"
+" ~/.gitconfig
+"     [includeIf "gitdir:~/path/to/project/**"]
+"         path = .gitconfig-project
+"
+" ~/.gitconfig-project
+"     [user]
+"         email = me@example.com
+"
+"     [vimrc]
+"         softtabstop=2
+"         shiftwidth=2
+call system('git config --get-regexp vimrc\.')
+    \ ->split('\n')
+    \ ->map({i, x ->
+        \ x->trim('vimrc.')
+        \ ->split(' ')
+        \ ->join('=')
+        \ ->substitute('^', 'set ', '')
+    \ })
+    \ ->execute()
+
 " }}}
 " EOF
