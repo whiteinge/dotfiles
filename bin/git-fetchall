@@ -53,9 +53,6 @@ main() {
     done
     shift $(( OPTIND - 1 ))
 
-    local SSH_URI="$1"
-    test $# -gt 0 && shift 1
-
     mkdir -p "$TEMP"
     trap '
         excode=$?; trap - EXIT;
@@ -73,16 +70,16 @@ main() {
             END { printf("\n") }
         '
 
-    if [ -n "$SSH_URI" ]; then
+    for SSH_URI in "$@"; do
         ssh -q -M -S "$ControlPath" -N ${SSH_URI} &
         _wait_for_ssh ${SSH_URI}
-    fi
+    done
 
     < "$REPO_CACHE" xe -v -0 -j5 -s 'git --git-dir="$1" fetch --all'
 
-    if [ -n "$SSH_URI" ]; then
+    for SSH_URI in "$@"; do
         ssh -q -S "$ControlPath" -O exit "$SSH_URI"
-    fi
+    done
 
     < "$REPO_CACHE" xe -0 \
         | wc -l \

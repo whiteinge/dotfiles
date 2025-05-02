@@ -222,6 +222,7 @@ alias cloc='cloc --exclude-list-file ~/.cloc-exclude-list-file'
 alias tea-timer="countdown 120 && notify-send 'Tea!' 'Tea is done.'"
 alias fetchall-gh='git fetchall "git@github.com"'
 alias fetchall-gl='git fetchall "git@gitlab.com"'
+alias fetchall-all='git fetchall "git@github.com" "git@gitlab.com"'
 
 # Aliases that make new things:
 alias ducks='du -cks * | sort -rn | head -15'
