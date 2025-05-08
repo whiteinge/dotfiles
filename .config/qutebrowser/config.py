@@ -7,26 +7,24 @@ config.load_autoconfig(False)
 
 c.qt.args = ['widevine-path=/does/not/exist']
 
-config.set('content.cookies.accept', 'all', 'devtools://*')
-config.set('content.images', True, 'chrome-devtools://*')
-config.set('content.images', True, 'devtools://*')
-config.set('content.javascript.enabled', True, 'chrome://*/*')
-config.set('content.javascript.enabled', True, 'chrome-devtools://*')
-config.set('content.javascript.enabled', True, 'devtools://*')
-config.set('content.javascript.enabled', True, 'qute://*/*')
-config.set('content.local_content_can_access_file_urls', False, 'file:///home/shouse/.local/share/qutebrowser/userscripts/*')
-config.set('content.local_content_can_access_remote_urls', False, 'file:///home/shouse/.local/share/qutebrowser/userscripts/*')
-
 config.set('content.autoplay', True)
 config.set('content.blocking.enabled', True)
 config.set('content.headers.do_not_track', False)
 config.set('content.javascript.enabled', True)
 config.set('content.persistent_storage', True)
 config.set('content.geolocation', 'ask')
+config.set('content.register_protocol_handler', False)
 
-config.set('content.geolocation', True, 'https://*.google.com/*')
-config.set('content.notifications.enabled', True, 'https://*.google.com/*')
-config.set('content.register_protocol_handler', True, 'https://mail.google.com?extsrc=mailto&url=%25s')
+config.set('content.desktop_capture', True, '*://*.google.com/*')
+config.set('content.geolocation', True, '*://*.google.com/*')
+config.set('content.geolocation', True, '*://*.homedepot.com/*')
+config.set('content.javascript.clipboard', 'access-paste', '*://github.com/*')
+config.set('content.javascript.clipboard', 'access-paste', '*://search.brave.com/*')
+config.set('content.media.audio_capture', True, '*://*.google.com/*')
+config.set('content.media.audio_video_capture', True, '*://*.google.com/*')
+config.set('content.media.video_capture', True, '*://*.google.com/*')
+config.set('content.notifications.enabled', True, '*://*.gitlab.com/*')
+config.set('content.notifications.enabled', True, '*://*.google.com/*')
 
 c.confirm_quit = ['always']
 c.window.hide_decoration = True
@@ -81,6 +79,8 @@ c.url.searchengines['python'] = 'https://docs.python.org/3.5/search.html?q={}&ch
 c.url.searchengines['steam'] = 'http://store.steampowered.com/search/?ref=os&term={}'
 c.url.searchengines['unpkg'] = 'https://unpkg.com/{}/'
 c.url.searchengines['youtube'] = 'https://www.youtube.com/results?search_query={}'
+
+c.aliases['xa'] = 'quit --save'
 
 c.aliases['github-first-commit'] = """jseval javascript:(b=>fetch('https://api.github.com/repos/'+b[1]+'/commits?sha='+(b[2]||'')).then(c=>Promise.all([c.headers.get('link'),c.json()])).then(c=>{if(c[0]){var d=c[0].split(',')[1].split(';')[0].slice(2,-1);return fetch(d).then(e=>e.json())}return c[1]}).then(c=>c.pop().html_url).then(c=>window.location=c))(window.location.pathname.match(/\/([^\/]+\/[^\/]+)(?:\/tree\/([^\/]+))?/));"""
 c.aliases['audio-speed'] = """jseval javascript:(() => {var speed = window.prompt('Speed x', 3); document.querySelectorAll('audio').forEach(x => x.playbackRate = speed);})();"""
