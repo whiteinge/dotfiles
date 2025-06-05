@@ -12,7 +12,6 @@ git
 graphviz
 groff
 groff-doc
-ifstat
 imake
 jq
 libnotify

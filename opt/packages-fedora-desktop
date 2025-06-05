@@ -7,7 +7,6 @@ dejavu-fonts-all
 dosfstools
 firefox
 gimp
-gimp-save-for-web
 gnome-tweaks
 google-chrome-stable
 gparted
@@ -33,4 +32,5 @@ xcalc
 xclip
 xournal
 xpdf
+xrdb
 xterm
