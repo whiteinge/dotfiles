@@ -27,21 +27,25 @@
 
 # Config dirs I won't ever version control:
 /.config/Code
+/.config/configstore
+/.config/dconf/user
+/.config/evolution
 /.config/GIMP
+/.config/gnome-initial-setup-done
 /.config/godot
 /.config/Google
-/.config/configstore
 /.config/google-chrome
 /.config/gtk-2.0
 /.config/gtk-4.0
+/.config/ibus
 /.config/inkscape
 /.config/Keybase
 /.config/libreoffice
 /.config/microsoft-edge
 /.config/Microsoft/Microsoft Teams
 /.config/mpv/watch_later
-/.config/Mullvad VPN
 /.config/pulse
+/.config/user-dirs.*
 /.config/wslu
 
 # Common files that won't ever be version-controlled or cleaned:
@@ -89,7 +93,16 @@
 /.docker
 /.dotnet
 /.local/share/applications
+/.local/share/containers
+/.local/share/evolution
+/.local/share/flatpak
+/.local/share/folks
+/.local/share/gnome-settings-daemon
 /.local/share/gnome-shell
+/.local/share/gvfs-metadata
+/.local/share/ibus-typing-booster
+/.local/share/icc
+/.local/share/keyrings
 /.local/share/recently-used.xbel
 /.local/share/Steam
 /.local/share/virtualenv
