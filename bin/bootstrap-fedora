@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Bootstrap a default Fedora install
+# Bootstrap a desktop Fedora install
 
 # Enable a few third-party repos.
 sudo dnf install -y \
@@ -9,7 +9,8 @@ sudo dnf install -y \
     https://prerelease.keybase.io/keybase_amd64.rpm
 
 # Install baseline packages
-< $HOME/opt/packages-fedora xargs sudo dnf install -y
+cat $HOME/opt/packages-fedora $HOME/opt/packages-fedora-desktop \
+    | xargs sudo dnf install -y
 
 # Install proprietary multimedia codecs
 sudo dnf install -y
@@ -36,8 +37,11 @@ sudo dnf --repo=rpmfusion-nonfree-tainted install '*-firmware'
 # Remove Gnome Software. I don't use it, I'm tired of seeing it spike the CPU,
 # and simply disabling it from running in the background seems to be crazy
 # complicated and varies wildly between Gnome versions and distros.
-sudo dnf remove PackageKit-gstreamer-plugin PackageKit PackageKit-command-not-found gnome-software
+sudo dnf remove -y PackageKit-gstreamer-plugin PackageKit PackageKit-command-not-found gnome-software
 sudo rm -rf /var/cache/PackageKit
+
+# Manually update xrdb settings since Wayland is default now.
+xrdb -merge $HOME/.Xresources
 
 # Load keybindings and other configs.
 dconf load / < $HOME/opt/dconf.cfg
