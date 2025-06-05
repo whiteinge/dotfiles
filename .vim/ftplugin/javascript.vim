@@ -36,16 +36,5 @@ let g:tagbar_type_javascript = {
         \ '?:unknown',
     \ ],
 \ }
-let g:tagbar_type_javascriptreact = {
-    \ 'ctagstype': 'javascript',
-    \ 'kinds' : [
-        \ 'f:functions',
-        \ 'm:methods',
-        \ 'C:constants:0:0',
-        \ 'c:classes',
-        \ 'v:global variables:0:0',
-        \ 'g:generators:0:0',
-        \ 'p:properties:0:0',
-        \ '?:unknown',
-    \ ],
-\ }
+
+let g:tagbar_type_javascriptreact = g:tagbar_type_javascript
