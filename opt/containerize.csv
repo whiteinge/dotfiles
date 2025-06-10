@@ -34,8 +34,17 @@ gpodder.net, Shopping
 !*.hillsdale.edu, Shopping
 !*.nexusmods.com, Shopping
 !*.overdrive.com, Shopping
+!*.patreon.com, Shopping
 !*.sportsmans.com, Shopping
 !*.steamcommunity.com, Shopping
 !*.steampowered.com, Shopping
 ting.com, Shopping
+!*.askubuntu.com, StackOverflow
+!*.mathoverflow.net, StackOverflow
+!*.serverfault.com, StackOverflow
+!*.stackapps.com, StackOverflow
+!*.stackexchange.com, StackOverflow
+!*.stackoverflow.com, StackOverflow
+!*.superuser.com, StackOverflow
 !*.twitter.com, Twitter
+!*.x.com, Twitter
