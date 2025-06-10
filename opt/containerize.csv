@@ -1,0 +1,41 @@
+!*.amazon.com, Amazon
+!*.audible.com, Amazon
+!*.comixology.com, Amazon
+!*.churchofjesuschrist.org, Church
+!*.familysearch.org, Church
+!*.ogdenbuddhistchurch.org, Church
+!*.github.com, Code
+!*.gitlab.com, Code
+devdocs.io, DevDocs
+!*.figma.com, DevDocs
+!*.google.com, Google
+!*.googleusercontent.com, Google
+!*.youtube.com, Google
+!*.live.com, Microsoft
+!*.microsoft.com, Microsoft
+!*.microsoftonline.com, Microsoft
+!*.office.com, Microsoft
+!*.xbox.com, Microsoft
+127.0.0.1, No Container
+ctxos.test, No Container
+localhost, No Container
+zimbra.xmission.com, Personal
+!*.reddit.com, Reddit
+!*.substack.com, Reddit
+rumble.com, Rumble
+!*.duckduckgo.com, Search
+search.brave.com, Search
+countycomm.com, Shopping
+!*.dickssportinggoods.com, Shopping
+!*.etsy.com, Shopping
+!*.gog.com, Shopping
+gpodder.net, Shopping
+!*.harborfreight.com, Shopping
+!*.hillsdale.edu, Shopping
+!*.nexusmods.com, Shopping
+!*.overdrive.com, Shopping
+!*.sportsmans.com, Shopping
+!*.steamcommunity.com, Shopping
+!*.steampowered.com, Shopping
+ting.com, Shopping
+!*.twitter.com, Twitter
