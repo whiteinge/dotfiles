@@ -51,6 +51,8 @@
     lll = log -p --stat --decorate --color-moved --pretty=fuller
     lt = l --topo-order
 
+    lc = log --reverse --pretty=format:'- %s'
+
     rl = reflog --date=relative --pretty=relauthor
     rll = reflog --date=relative --stat --decorate --abbrev-commit
     rlll = reflog --date=relative -p --stat --decorate --color-moved --pretty=fuller
