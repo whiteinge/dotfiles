@@ -1,3 +1,11 @@
+https://github.com/kintesh/containerise
+
+1.  Open prefs, enable 'Default Container' with `tmp_{domain}` as the name,
+    until the last tab is closed.
+2.  Keep this file organized via: `sort -t, -k2,2`
+
+---
+
 !*.amazon.com, Amazon
 !*.audible.com, Amazon
 !*.comixology.com, Amazon
