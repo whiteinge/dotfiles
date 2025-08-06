@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+# Extract the audio from a file
+
+while getopts h opt; do
+    case $opt in
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+input="${1:?'Input file missing'}"
+output="${input%.*}.m4a"
+
+ffmpeg -i "$input" -vn -acodec copy "$output"
