@@ -1,9 +1,8 @@
 --restrict-filenames
---output='%(playlist_title)s.s00.e%(playlist_index)02d-%(title)s.%(ext)s'
+--output-na-placeholder ""
+--output='%(playlist_title&{}_)s%(playlist_index&{}_)s%(title)s.%(ext)s'
 
---prefer-free-formats
-
-# Explicitly pass a playlist URL instead of a video in a plalist.
+# Explicitly pass a playlist URL instead of a video in a playlist.
 --no-playlist
 
 # Embed subtitles and metadata if available.
