@@ -23,6 +23,8 @@ discord.com, Discord
 !*.google.com, Google
 !*.googleusercontent.com, Google
 !*.youtube.com, Google
+chatgpt.com, LLM
+!*.openai.com, LLM
 !*.live.com, Microsoft
 !*.microsoft.com, Microsoft
 !*.microsoftonline.com, Microsoft
@@ -32,6 +34,7 @@ discord.com, Discord
 ctxos.test, No Container
 localhost, No Container
 zimbra.xmission.com, Personal
+opentodebate.org, Reddit
 !*.reddit.com, Reddit
 rumble.com, Rumble
 !*.duckduckgo.com, Search
@@ -62,5 +65,6 @@ ting.com, Shopping
 !*.politicspoliticspolitics.com, Substack
 !*.substack.com, Substack
 !*.thepoliticalorphanage.com, Substack
+www.racket.news, Substack
 !*.twitter.com, Twitter
 x.com, Twitter
