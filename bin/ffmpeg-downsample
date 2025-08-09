@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 # Normalize and downsample videos to a specific bitrate, dimension, and codec
 
-file="${1:?'Input file missing.'}"
 rate=720
 while getopts 3hx opt; do
     case $opt in
@@ -11,6 +10,8 @@ while getopts 3hx opt; do
     esac
 done
 shift $(( OPTIND - 1 ))
+
+file="${1:?'Input file missing.'}"
 
 ffmpeg -i "$file" -vf scale="$rate":-2,setsar=1:1 \
     -c:v libx264 \
