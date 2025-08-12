@@ -68,3 +68,4 @@ ting.com, Shopping
 www.racket.news, Substack
 !*.twitter.com, Twitter
 x.com, Twitter
+!*.wikipedia.org, StackOverflow
