@@ -38,6 +38,7 @@ umask 027
 
 extra_path=(
     $HOME/bin \
+    $HOME/go/bin/ \
     $HOME/.nodejs/nodejs/bin \
     $HOME/.cargo/bin \
     $HOME/.local/bin \
