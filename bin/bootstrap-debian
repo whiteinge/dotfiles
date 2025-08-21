@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+# Bootstrap a desktop Debian install
+
+sudo dpkg --add-architecture i386
+sudo cat > /etc/apt/sources.list.d/google-chrome.list <<'EOF'
+deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
+EOF
+sudo sed -i '/^deb/s/$/ contrib non-free/' /etc/apt/sources.list
+sudo apt update
+
+# Install baseline packages
+cat $HOME/opt/packages-debian $HOME/opt/packages-debian-desktop \
+    | xargs sudo apt install -y
+
+# Remove Gnome Software. I don't use it, I'm tired of seeing it spike the CPU,
+# and simply disabling it from running in the background seems to be crazy
+# complicated and varies wildly between Gnome versions and distros.
+sudo apt remove -y gstreamer1.0-packagekit packagekit-tools packagekit gnome-software
+sudo rm -rf /var/cache/PackageKit
+
+# Manually update xrdb settings since Wayland is default now.
+xrdb -merge $HOME/.Xresources
+
+# Load keybindings and other configs.
+dconf load / < $HOME/opt/dconf.cfg

@@ -2,7 +2,8 @@ align -- Align columns at CHAR
 alphaindex -- Get unique alphabet character(s) from a positive integer
 ansi-strip -- Remove ansi terminal formatting codes
 bookletize -- Convert a PDF to a fold-able booklet sized PDF
-bootstrap-fedora -- Bootstrap a default Fedora install
+bootstrap-debian -- Bootstrap a desktop Debian install
+bootstrap-fedora -- Bootstrap a desktop Fedora install
 bootstrap-osx -- Bootstrap a new OS X machine
 bootstrap-pocket2 -- Bootstrap a new Pocket 2 machine
 bootstrap-wsl -- Bootstrap a WSL Ubuntu install
