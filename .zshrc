@@ -471,3 +471,55 @@ fi
 # zprof
 
 # EOF
+
+exinit=( \
+    # Show relative line numbers.
+    ':&8\#' \
+    # Show status line.
+    ':&1' \
+    # Indent new lines.
+    ':se ai=1' \
+    # Ignore case in regex.
+    ':se ic=1' \
+    # Highlight text (rules in conf.c).
+    ':se hl=1' \
+    # Highlight current line (based on ft hl).
+    ':se hll=1' \
+    # Highlight pairs ([], (), {}).
+    ':se hlp=1' \
+    # Highlight current word.
+    ':se hlw=1' \
+    # Print live autocomplete suggestions.
+    ':se pac=1' \
+    # Number of spaces to use as a tab.
+    ':se tbs=4' \
+
+    '@l = {
+        :!cp \% \%_\:w\:\!git diff --no-index \%_ \%
+    }' \
+)
+export EXINIT=${(j:\n:)exinit}
+# NEXTVI_FT - current buffer filetype
+# NEXTVI_ROW - current line number
+# NEXTVI_OFF - current byte offset
+# NEXTVI_COFF - current character offset
+# NEXTVI_LINE - current line
+# NEXTVI_WORD - current word
+# :sc runs a command with the environment variables above
+# :sx runs a command with the environment variables above and executes its
+# stdout as ex commands
+
+# se noled:se ish:i o{
+# }^V^CkA
+   
+# ^DA {^V^Cjo^V^D}^V^Ckoa^V^C
+# \:e \!p $c
+# I/*^V^CA*/^V^C
+# i/*^V^CA*/^V^C
+# /\/\*
+# 2x/\*\/
+# 2x
+# >\%<<$\%<<
+# \:\!cp \% \%_\:w\:\!git diff --no-index \%_ \%
+# \:ac  \:& i^V^V^V^G^V^V^V^C\:ac^V^B3ls
+# \:cd \!p $c:&1G0"q2Y2j"Qy$ 0j"wy$ j0"ey$ j0"ay$ j0"sy$ j0"d2Y2j"Dy$ j0"xy$ j0"ly$ j0"cy$ j0"fy$:inc (^(?\:(?\!^\.git).)+[^/]+$):u$:1:se pac:se led
