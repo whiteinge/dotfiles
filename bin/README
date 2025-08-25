@@ -117,6 +117,7 @@ osx-resize-window -- Resize the most recent window in a specific app to specific
 osx-toggle-interfaces -- Toggle wifi/ethernet on/off when the physical connection changes
 osx-xclip -- An xclip-like wrapper to pbcopy/pbpaste
 play-somafm -- Select a SomaFM stream with a fuzy-finder and play via mpv
+power-draw -- Show the current power charge or draw in watts
 pysmtp -- Start a echoing SMTP server
 queue -- A lightweight job queue using tail and xe
 replace-link -- Replace a symlink with a copy of the thing it points to

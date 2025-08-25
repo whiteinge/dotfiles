@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+# Show the current power charge or draw in watts
+#
+# <https://unix.stackexchange.com/a/78437>
+
+for bat in /sys/class/power_supply/BAT* ; do
+    if [ -r "$bat"/power_now ]; then
+        awk '{ print $1*10^-6 " W" }' "$bat"/power_now
+    elif [ -r "$bat"/current_now -a -r "$bat"/voltage_now ]; then
+        cat "$bat"/current_now "$bat"/voltage_now |
+            paste -s |
+            awk '{ printf("%.1fW\n", ($1 * $2) / 1000000000000) }'
+    fi
+done
