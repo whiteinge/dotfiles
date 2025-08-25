@@ -31,7 +31,7 @@ chatgpt.com, LLM
 !*.office.com, Microsoft
 !*.xbox.com, Microsoft
 127.0.0.1, No Container
-ctxos.test, No Container
+192.168.122.10, No Container
 localhost, No Container
 zimbra.xmission.com, Personal
 opentodebate.org, Reddit
@@ -61,6 +61,7 @@ ting.com, Shopping
 !*.stackexchange.com, StackOverflow
 !*.stackoverflow.com, StackOverflow
 !*.superuser.com, StackOverflow
+!*.wikipedia.org, StackOverflow
 !*.locals.com, Substack
 !*.politicspoliticspolitics.com, Substack
 !*.substack.com, Substack
@@ -68,4 +69,3 @@ ting.com, Shopping
 www.racket.news, Substack
 !*.twitter.com, Twitter
 x.com, Twitter
-!*.wikipedia.org, StackOverflow
