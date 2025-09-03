@@ -11,8 +11,6 @@ if exists("+omnifunc")
 endif
 
 setl keywordprg=pydoc
-setl makeprg=pylint\ -E\ -r\ n\ -f\ parseable\ %:p
-setl efm=%A%f:%l:\ [%t%.%#]\ %m,%Z%p^^,%-C%.%#
 
 " tagbar settings
 let g:tagbar_type_python = {
@@ -25,7 +23,7 @@ let g:tagbar_type_python = {
     \ ]
 \ }
 
-let b:ale_fixers = ['autopep8']
+let b:ale_fixers = ['ruff']
 
 " Add PYTHONPATH to Vim path to enable 'gf' (also works when in a virtualenv)
 if has('python')
