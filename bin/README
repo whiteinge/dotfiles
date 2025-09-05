@@ -96,7 +96,7 @@ jqjsonl -- Output JSONL from an array- or object-of-objects
 linux-resize-window -- Select a window in X11 and resize it to given dimensions
 lndir.sh -- Create a shadow directory of symbolic links to another directory tree
 lorem -- Output paragraphs of lorem ipsum placeholder text
-_lr -- Wrap lr to use standard colors and improve usability as ls replacement
+lrls -- lrls - lr with GNU ls style output
 luksimg -- Wrappers around cryptsetup to create/mount/unmount encrypted images
 mailto-handler -- A mailto: handler for opening an arbitrary webmail link in Firefox
 match-emails -- Output all matched email addresses
