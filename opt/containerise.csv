@@ -1,8 +1,10 @@
 https://github.com/kintesh/containerise
 
-1.  Open prefs, enable 'Default Container' with `tmp_{domain}` as the name,
-    until the last tab is closed.
-2.  Keep this file organized via: `sort -t, -k2,2`
+1.  Enable 'Keep old tabs'.
+2.  Enable 'Default Container',
+3.  With `tmp_{domain}` as the name,
+4.  Until the last tab is closed.
+5.  Keep this file organized via: `sort -t, -k2,2`
 
 ---
 
