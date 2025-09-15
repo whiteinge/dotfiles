@@ -23,7 +23,7 @@ let g:tagbar_type_python = {
     \ ]
 \ }
 
-let b:ale_fixers = ['ruff']
+let b:ale_fixers = ['ruff_format']
 
 " Add PYTHONPATH to Vim path to enable 'gf' (also works when in a virtualenv)
 if has('python')
