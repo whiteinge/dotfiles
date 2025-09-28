@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+# Wrap deno lint to fix some truly awful defaults
+#
+# Disable color as an env var?
+# Misuse and misunderstand the purpose of stderr?
+# Accept a file extension, but not a file path?
+# Output a useless stdin placeholder for the filename?
+#
+# These make invoking deno lint from a script a goddamn nightmare. This is bad
+# and they should feel bad.
+
+fname="${1:?'File path required'}"
+ext="${fname##*.}"
+
+NO_COLOR=1 deno lint -q --ext="$ext" - 2>&1 |
+    awk -v ext="$ext" -v fname="$fname" '{
+        sub("\\$deno\\$stdin\\." ext, fname)
+        print $0
+    }'

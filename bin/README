@@ -25,6 +25,7 @@ ctags-to-quickfix -- Format the output from readtags to Vim's quickfix format
 cull-brew -- Remove any brew packages that are not on a whitelist
 cull-dnf -- Remove any user-installed packages not on a whitelist
 c -- Wrap curl to conditionally open headers, timing info, and response in a pager
+_deno-lint -- Wrap deno lint to fix some truly awful defaults
 devdocs-local -- Select docs from devdocs.io using a fuzzy-finder for display at the CLI
 diffconflicts -- A better vimdiff mergetool for Git
 diff-to-line-numbers -- Output the line numbers for lines added and removed in a unified diff
