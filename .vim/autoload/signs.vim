@@ -68,12 +68,14 @@ endfu
 
 " Add any location list entries
 fu! signs#Loclist(...)
+    let l:bufnr = bufnr()
     let l:group = 'signs#loclist'
 
     call sign_unplace(l:group)
 
     call getloclist(0)
         \ ->map({i, x -> {
+            \ 'buffer': l:bufnr,
             \ 'group': l:group,
             \ 'lnum': x.lnum,
             \ 'name': get({'E': 'LlErr', 'W': 'LlWarn'}, x.type, 'LlGen'),
