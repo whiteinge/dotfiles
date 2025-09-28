@@ -48,3 +48,9 @@ fu! check#Check()
         \ "err_cb": function('s:ErrHandler'),
     \ })
 endfu
+
+fu! check#FormatBufferPreserveCursor()
+    let l:save_cursor = getcurpos()
+    silent! execute "normal! ggVGgq"
+    call setpos('.', l:save_cursor)
+endfu
