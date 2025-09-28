@@ -12,6 +12,11 @@ endif
 
 setl keywordprg=pydoc
 
+compiler ruff
+let b:checkformat=&errorformat
+let b:checkprg='ruff check -q --output-format=concise --stdin-filename % -'
+setl formatprg=ruff\ format\ --stdin-filename\ %\ -
+
 " tagbar settings
 let g:tagbar_type_python = {
     \ 'kinds' : [
@@ -22,8 +27,6 @@ let g:tagbar_type_python = {
         \ 'i:imports:1'
     \ ]
 \ }
-
-let b:ale_fixers = ['ruff_format']
 
 " Add PYTHONPATH to Vim path to enable 'gf' (also works when in a virtualenv)
 if has('python')

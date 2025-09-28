@@ -750,14 +750,11 @@ let g:ft_man_folding_enable = 1
 """ undotree settings
 nnoremap <F3> :UndotreeToggle<cr>
 
-""" ale settings
-let g:ale_set_highlights = 0
-let g:ale_echo_cursor = 0
-let g:ale_virtualtext_cursor = 0
-let g:ale_hover_cursor = 0
-
-nmap <silent> <leader>fg :ALEFix<cr>
-nmap <silent> <leader>fm :ALELint<cr>
+""" :Check settings
+com! Check call check#Check()
+nmap <silent> <leader>fg :call check#FormatBufferPreserveCursor()<cr>
+nmap <silent> <leader>fm :Check<cr>
+au CursorHold * call check#Check()
 
 """ Tagbar plugin settings
 map <F4> :TagbarToggle<cr>

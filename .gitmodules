@@ -7,9 +7,6 @@
 [submodule ".zsh-syntax-highlighting"]
 	path = .zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule ".vim/pack/foo/start/ale"]
-	path = .vim/pack/foo/start/ale
-	url = https://github.com/w0rp/ale.git
 [submodule ".vim/pack/foo/start/detectindent"]
 	path = .vim/pack/foo/start/detectindent
 	url = https://github.com/ciaranm/detectindent.git

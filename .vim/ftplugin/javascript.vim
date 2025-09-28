@@ -7,11 +7,9 @@ endif
 
 setl keywordprg=sh\ -c\ 'xdg-open\ https://devdocs.io/\\#q=\$1\ '\ --
 
-let b:ale_linters = ['deno']
-let b:ale_fixers = ['deno', 'prettier']
-let b:ale_linters_ignore = ['prettier']
-let b:ale_javascript_prettier_use_local_config = 1
-let b:ale_javascript_eslint_options = "--rule 'prettier/prettier: 0'"
+let b:checkformat='%Eerror%m,%C --> %f:%l:%c,%C%.%#,%Z'
+let b:checkprg='_deno-lint %'
+setl formatprg=deno\ fmt\ -
 
 " (Req's my split/join plugin & mappings.)
 let _sort_es6_imports = 'f{\js,i{vi{!sort\jj,i{kJJ'

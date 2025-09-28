@@ -1,5 +1,7 @@
-let b:ale_fixers = ['jq']
-setl formatprg='jq'
+compiler jq
+let b:checkformat=&errorformat
+let b:checkprg='jq'
+setl formatprg=jq
 
 let g:tagbar_foldlevel = 0
 let g:tagbar_type_json = {

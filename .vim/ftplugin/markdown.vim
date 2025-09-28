@@ -30,8 +30,6 @@ if bufname('%') =~? 'presentation\.md$'
     let b:ftskeleton="~/.vim/ftplugin/markdown/skeleton/remark.md"
 endif
 
-let b:ale_enabled=0
-
 let g:markdown_fenced_languages = [
     \ 'html', 'python', 'ruby', 'sh', 'c', 'cpp', 'dot', 'diff', 'sql',
     \'js=javascript', 'ts=typescript', 'hs=haskell', 'math=tex']
