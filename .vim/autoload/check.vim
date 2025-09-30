@@ -14,6 +14,9 @@
 "
 " Look in $VIMRUNTIME/compilers and https://github.com/Konfekt/vim-compilers
 " for existing implementations.
+"
+" Use :let b:_check_debug = 1 to see the linter output with :messages to
+" compare which lines match b:checkformat.
 
 fu! s:CloseHandler(channel)
     let l:ret = []
@@ -21,14 +24,16 @@ fu! s:CloseHandler(channel)
         call add(l:ret, ch_read(a:channel))
     endwhile
 
+    if exists('b:_check_debug')
+        for l:line in l:ret
+            echom 'Check debug: '. l:line
+        endfor
+    endif
+
     call setloclist(0, [], 'u', {
         \ 'lines': l:ret,
         \ 'efm': getbufvar(bufnr(), 'checkformat')
     \ })
-endfu
-
-fu! s:ErrHandler(channel, msg)
-    echoe 'Check: '. a:msg
 endfu
 
 fu! check#Check()
@@ -44,8 +49,8 @@ fu! check#Check()
     let l:command = getbufvar(l:bufnr, 'checkprg') ->expandcmd()
     let b:_check_job = job_start(l:command, {
         \ 'in_io': 'buffer', 'in_buf': l:bufnr,
+        \ "err_io": "out",
         \ 'close_cb': function('s:CloseHandler'),
-        \ "err_cb": function('s:ErrHandler'),
     \ })
 endfu
 
