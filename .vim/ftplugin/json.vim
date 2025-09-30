@@ -1,6 +1,6 @@
 compiler jq
 let b:checkformat=&errorformat
-let b:checkprg='jq'
+let b:checkprg='jq -f /dev/stdin /dev/null'
 setl formatprg=jq
 
 let g:tagbar_foldlevel = 0
