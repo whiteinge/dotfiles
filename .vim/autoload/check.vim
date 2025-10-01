@@ -56,6 +56,6 @@ endfu
 
 fu! check#FormatBufferPreserveCursor()
     let l:save = winsaveview()
-    silent! execute "normal! ggVGgq"
+    silent! execute "undojoin | normal! ggVGgq"
     call winrestview(l:save)
 endfu
