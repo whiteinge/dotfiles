@@ -55,7 +55,7 @@ fu! check#Check()
 endfu
 
 fu! check#FormatBufferPreserveCursor()
-    let l:save_cursor = getcurpos()
+    let l:save = winsaveview()
     silent! execute "normal! ggVGgq"
-    call setpos('.', l:save_cursor)
+    call winrestview(l:save)
 endfu
