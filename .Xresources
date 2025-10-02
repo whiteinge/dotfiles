@@ -72,8 +72,6 @@ xterm*vt100.Translations: #override \n\
     Shift Ctrl <Key> =: larger-vt-font() \n\
     Shift Ctrl <Key> -: smaller-vt-font() \n\
     Shift Ctrl <Key> 0: set-vt-font(d) \n\
-    Ctrl <Btn4Down>: larger-vt-font() \n\
-    Ctrl <Btn5Down>: smaller-vt-font() \n\
     Meta ~Shift <Key> bracketleft: string("‘") \n\
     Meta ~Shift <Key> bracketright: string("’") \n\
     Meta Shift <Key> bracketleft: string("“") \n\
