@@ -4,10 +4,10 @@ call sign_define([
     \ {'name' : 'GitMod', 'text' : '=', 'texthl': 'Normal'},
     \ {'name' : 'QfErr', 'text' : 'E', 'texthl': 'WarningMsg'},
     \ {'name' : 'QfWarn', 'text' : 'W', 'texthl': 'WarningMsg'},
-    \ {'name' : 'QfGen', 'text' : 'N', 'texthl': 'WarningMsg'},
+    \ {'name' : 'QfGen', 'text' : '>', 'texthl': 'Normal'},
     \ {'name' : 'LlErr', 'text' : 'E', 'texthl': 'WarningMsg'},
     \ {'name' : 'LlWarn', 'text' : 'W', 'texthl': 'WarningMsg'},
-    \ {'name' : 'LlGen', 'text' : 'N', 'texthl': 'WarningMsg'},
+    \ {'name' : 'LlGen', 'text' : '>', 'texthl': 'Normal'},
 \ ])
 
 " Return modified/deleted lines from Git.
