@@ -754,7 +754,7 @@ nnoremap <F3> :UndotreeToggle<cr>
 com! Check call check#Check()
 nmap <silent> <leader>fg :call check#FormatBufferPreserveCursor()<cr>
 nmap <silent> <leader>fm :Check<cr>
-au CursorHold * call check#Check()
+au BufWritePost,CursorHold * call check#Check()
 
 """ Tagbar plugin settings
 map <F4> :TagbarToggle<cr>
