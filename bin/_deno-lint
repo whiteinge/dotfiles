@@ -5,6 +5,9 @@
 # Misuse and misunderstand the purpose of stderr?
 # Accept a file extension, but not a file path?
 # Output a useless stdin placeholder for the filename?
+# Same stderr & exit code for inability to lint as lint results?
+# Different file/line/col format for inability to lint?
+# Ignore compact flag if linting fails?
 #
 # These make invoking deno lint from a script a goddamn nightmare. This is bad
 # and they should feel bad.
@@ -13,7 +16,21 @@ fname="${1:?'File path required'}"
 ext="${fname##*.}"
 
 NO_COLOR=1 deno lint --compact -q --ext="$ext" - 2>&1 |
-    awk -v ext="$ext" -v fname="$fname" '{
-        sub("\\$deno\\$stdin\\." ext, fname)
-        print $0
-    }'
+    awk -v ext="$ext" -v fname="$fname" '
+    { sub("\\$deno\\$stdin\\." ext, fname) }
+
+    NR == 1 && $0 ~ /^Error linting:/ { lintFail = 1; next }
+
+    lintFail {
+      sub(/.* at file:\/\//, "")
+      split($0, segs, ":")
+      printf("file://%s: line %s, col %s - %s\n",
+        segs[1],
+        segs[2],
+        segs[3],
+        "Syntax error")
+      exit
+    }
+
+    !lintFail { print $0 }
+    '
