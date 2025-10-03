@@ -12,7 +12,7 @@
 fname="${1:?'File path required'}"
 ext="${fname##*.}"
 
-NO_COLOR=1 deno lint -q --ext="$ext" - 2>&1 |
+NO_COLOR=1 deno lint --compact -q --ext="$ext" - 2>&1 |
     awk -v ext="$ext" -v fname="$fname" '{
         sub("\\$deno\\$stdin\\." ext, fname)
         print $0

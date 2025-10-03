@@ -7,7 +7,7 @@ endif
 
 setl keywordprg=sh\ -c\ 'xdg-open\ https://devdocs.io/\\#q=\$1\ '\ --
 
-let b:checkformat='%Eerror%m,%C --> %f:%l:%c,%C%.%#,%Z'
+let b:checkformat='file://%f: line %l\, col %c - %m'
 let b:checkprg='_deno-lint %'
 setl formatprg=deno\ fmt\ -
 
