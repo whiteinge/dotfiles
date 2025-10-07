@@ -4,10 +4,16 @@
 # Useful when giving presentations or watching movies or just when you want to
 # keep the display running. Ctrl-c to quit.
 
-xset -dpms
-trap 'xset +dpms' SIGINT SIGTERM EXIT
-while true; do
-    xset s reset
-    xscreensaver-command -deactivate 1> /dev/null 2> /dev/null
-    sleep ${1:-60} || break
-done
+if [ "$DESKTOP_SESSION" = 'gnome' ]; then
+    gnome-session-inhibit --inhibit-only
+elif command -v xscreensaver-command >/dev/null ; then
+    xset -dpms
+    trap 'xset +dpms' SIGINT SIGTERM EXIT
+    while true; do
+        xset s reset
+        xscreensaver-command -deactivate 1> /dev/null 2> /dev/null
+        sleep ${1:-60} || break
+    done
+else
+    printf 'Unknown windowing environment.\n' 1>&2
+fi
