@@ -54,6 +54,7 @@ fnode -- Use a fuzzy-finder to select and install a NodeJS version
 ftimezone -- Fuzzy-find available timezones
 ftree -- Use a fuzzy-finder to traverse the file system and print a file name
 _fzy_cd -- Use a fuzzy-finder to complete child directories
+_fzy_deno -- Use a fuzzy-finder for deno scripts
 _fzy_git -- Use a fuzzy-finder to complete Git refs
 _fzy_gpg -- Use a fuzzy-finder to select a GPG key
 _fzy_HandBrakeCLI -- Use a fuzzy-finder to select a HandBrake preset

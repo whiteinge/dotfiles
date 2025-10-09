@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder for deno scripts
+
+# Only complete deno run scripts.
+if [ ! "$2" = 'run' ]; then
+    exit 1
+fi
+
+cmd="$1 $2"; shift 2
+NO_COLOR=1 deno run | awk '/^- / { print $2 }' \
+        | fzy -p 'deno run > ' -q "$*" \
+        | xe printf '%s %s' "$cmd"
