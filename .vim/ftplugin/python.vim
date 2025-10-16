@@ -13,9 +13,9 @@ endif
 setl keywordprg=pydoc
 
 compiler ruff
-let b:checkformat=&errorformat
 let b:checkprg='ruff check -q --output-format=concise --stdin-filename % -'
-setl formatprg=ruff\ format\ --stdin-filename\ %\ -
+let b:checkerrfmt=&errorformat
+let b:checkformat='ruff format --stdin-filename % -'
 
 " tagbar settings
 let g:tagbar_type_python = {

@@ -1,7 +1,7 @@
 compiler jq
-let b:checkformat=&errorformat
 let b:checkprg='jq -f /dev/stdin /dev/null'
-setl formatprg=jq
+let b:checkerrfmt=&errorformat
+let b:checkformat='jq'
 
 let g:tagbar_foldlevel = 0
 let g:tagbar_type_json = {

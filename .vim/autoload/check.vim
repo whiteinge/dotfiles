@@ -6,17 +6,18 @@
 "
 " This adds a sister mechanism that takes the current in-progress buffer,
 " invokes a syntax checker or linter (asyncronously), and displays the results
-" in the location list.
+" in the location list. Same for a formatter.
 "
-" It uses b:checkprg and b:checkformat to avoid conflicting with makeprg and
-" errorformat. In most cases you can copy those values into new variables.
-" Change the value from makeprg to expect stdin instead of a file path.
+" It uses b:checkprg / b:checkerrfmt and b:checkformat to avoid conflicting
+" with makeprg / errorformat and formatprg. In most cases you can copy those
+" values into new variables, but change the value from makeprg to expect stdin
+" instead of a file path.
 "
 " Look in $VIMRUNTIME/compilers and https://github.com/Konfekt/vim-compilers
 " for existing implementations.
 "
 " Use :let b:_check_debug = 1 to see the linter output with :messages to
-" compare which lines match b:checkformat.
+" compare which lines match b:checkerrfmt.
 
 fu! s:CloseHandler(channel)
     let l:ret = []
@@ -32,7 +33,7 @@ fu! s:CloseHandler(channel)
 
     call setloclist(0, [], 'u', {
         \ 'lines': l:ret,
-        \ 'efm': getbufvar(bufnr(), 'checkformat')
+        \ 'efm': getbufvar(bufnr(), 'checkerrfmt')
     \ })
 endfu
 
@@ -55,8 +56,12 @@ fu! check#Check()
 endfu
 
 fu! check#FormatBufferPreserveCursor()
+    if ! exists('b:checkformat')
+        return
+    endif
+
     let l:save = winsaveview()
-    silent! execute 'normal! ggVGgq'
+    silent! execute '%!'. b:checkformat
     if v:shell_error == 1
         undo
     endif

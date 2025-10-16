@@ -7,9 +7,9 @@ endif
 
 setl keywordprg=sh\ -c\ 'xdg-open\ https://devdocs.io/\\#q=\$1\ '\ --
 
-let b:checkformat='file://%f: line %l\, col %c - %m'
 let b:checkprg='_deno-lint %'
-setl formatprg=deno\ fmt\ -
+let b:checkerrfmt='file://%f: line %l\, col %c - %m'
+let b:checkformat='deno fmt -'
 
 " (Req's my split/join plugin & mappings.)
 let _sort_es6_imports = 'f{\js,i{vi{!sort\jj,i{kJJ'
