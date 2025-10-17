@@ -61,9 +61,13 @@ fu! check#FormatBufferPreserveCursor()
     endif
 
     let l:save = winsaveview()
-    silent! execute '%!'. b:checkformat
+    let l:out = systemlist(b:checkformat, bufnr())
+
     if v:shell_error == 1
-        undo
+        return
     endif
+
+    call setline(1, l:out)
+    unlet l:out
     call winrestview(l:save)
 endfu
