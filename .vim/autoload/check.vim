@@ -68,6 +68,7 @@ fu! check#FormatBufferPreserveCursor()
     endif
 
     call setline(1, l:out)
+    call deletebufline(bufnr(), len(l:out) + 1, '$')
     unlet l:out
     call winrestview(l:save)
 endfu
