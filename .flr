@@ -9,6 +9,8 @@ path ~~ "*_build"
 path ~~ "*build"
 path ~~ "*dist"
 path ~~ "*node_modules"
+path ~~ "*site-packages"
+path ~~ "*dist-packages"
 
 # Common JS build files
 name ~~ "*.bundle.js"
