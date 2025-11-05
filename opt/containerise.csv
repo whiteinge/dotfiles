@@ -25,6 +25,7 @@ discord.com, Discord
 !*.google.com, Google
 !*.googleusercontent.com, Google
 !*.youtube.com, Google
+www.linkedin.com, LinkedIn
 chatgpt.com, LLM
 !*.openai.com, LLM
 !*.live.com, Microsoft
@@ -70,5 +71,9 @@ ting.com, Shopping
 !*.substack.com, Substack
 !*.thepoliticalorphanage.com, Substack
 www.racket.news, Substack
+!*.grok.com, Twitter
+!*.grokipedia.com, Twitter
+!*.grokusercontent.com, Twitter
 !*.twitter.com, Twitter
-x.com, Twitter
+!*.x.ai, Twitter
+!*.x.com, Twitter
