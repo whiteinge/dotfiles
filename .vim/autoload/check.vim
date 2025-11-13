@@ -63,7 +63,7 @@ fu! check#FormatBufferPreserveCursor()
     let l:save = winsaveview()
     let l:out = systemlist(b:checkformat, bufnr())
 
-    if v:shell_error == 1
+    if v:shell_error != 0
         return
     endif
 
