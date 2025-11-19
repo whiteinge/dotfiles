@@ -25,14 +25,14 @@ sudo dnf swap ffmpeg-free ffmpeg --allowerasing
 sudo dnf update @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
 
 # Install proprietary Intel and AMD drivers
-sudo dnf install intel-media-driver
+sudo dnf install -y intel-media-driver
 sudo dnf swap mesa-va-drivers mesa-va-drivers-freeworld
 sudo dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld
 sudo dnf swap mesa-va-drivers.i686 mesa-va-drivers-freeworld.i686
 sudo dnf swap mesa-vdpau-drivers.i686 mesa-vdpau-drivers-freeworld.i686
 
 # Install proprietary firmwares
-sudo dnf --repo=rpmfusion-nonfree-tainted install '*-firmware'
+sudo dnf --repo=rpmfusion-nonfree-tainted install -y '*-firmware'
 
 # Remove Gnome Software. I don't use it, I'm tired of seeing it spike the CPU,
 # and simply disabling it from running in the background seems to be crazy
