@@ -32,10 +32,8 @@ patch
 pinentry
 rlwrap
 rsync
-scalpel
 socat
 sqlite
-srm
 sxiv
 tidy
 tmux
