@@ -1,31 +1,34 @@
 #!/usr/bin/env sh
 # Move files in the current directory into alphanumeric subdirs
 #
-# Creates alphanumeric subdirs. Currently hard-codes the eight common letter
-# groupings found in libraries.
+# Flag | Description
+# ---- | -----------
+# -h   | Show this screen.
+# -f   | Make changes to the file system (disable dry-run mode).
+# -i   | Interactive. Don't overwrite existing files.
+#
+# Defaults to the eight letter groupings common in libraries. Choose your own
+# groupings using (case insensitive) glob syntax:
+#
+#     alphamv A-M N-Z
 
-while getopts fhx opt; do
+dryrun=1
+while getopts fihx opt; do
     case $opt in
-    f) force=1;;
+    f) unset dryrun;;
+    i) interactive=1;;
     h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
     x) set -x;;
     esac
 done
 shift $(( OPTIND - 1 ))
 
-if [ -z "$force" ]; then
-    printf 'This will modify the current directory. Use -f to proceed.\n' 1>&2
-    exit 1
+if [ $# -eq 0 ]; then
+    set -- '0-9' 'A-C' 'D-F' 'G-I' 'J-L' 'M-O' 'P-R' 'S' 'T-Z'
 fi
 
-mkdir -p '0-9' 'A-C' 'D-F' 'G-I' 'J-L' 'M-O' 'P-R' 'S' 'T-Z'
-
-mv [0-9]* '0-9'
-mv [a-cA-C]* 'A-C'
-mv [d-fD-F]* 'D-F'
-mv [g-iG-I]* 'G-I'
-mv [j-lJ-L]* 'J-L'
-mv [m-oM-O]* 'M-O'
-mv [p-rP-R]* 'P-R'
-mv [sS]* 'S'
-mv [t-zT-Z]* 'T-Z'
+for grp in "$@"; do
+    test -z "$dryrun" && mkdir -p "$grp"
+    lr -1 -t 'name != "'"$grp"'" && name ~~~ "['"$grp"']*"' -0 |
+        xe -0 ${dryrun:+-n} -N0 mv ${interactive:+-i} {} "$grp"
+done
