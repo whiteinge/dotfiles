@@ -6,26 +6,23 @@
 #
 # Usage:
 #
-#     ffmpeg-audible /path/to/file.aax
-#     ffmpeg-audible -f /path/to/activation-bytes.txt /path/to/file.aax
+#     ffmpeg-audible -b /path/to/activation-bytes.txt /path/to/file.aax
 
-while getopts f:hx opt; do
+while getopts b:hx opt; do
     case $opt in
-    f) activation_bytes="$(< "$OPTARG")";;
+    b) read -r activation_bytes < "$OPTARG";;
     h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
     x) set -x;;
     esac
 done
 shift $(( OPTIND - 1 ))
 
-aax_file="${1:?'Audiobook required.'}"
-
 if [ -z "$activation_bytes" ]; then
-    checksum="$(ffprobe -loglevel quiet "$aax_file" \
-        | awk 'BEGIN { FS = " == " } /file checksum/ { print $2 }')"
-    activation_bytes="$(rcrack . -h "$checksum" \
-        | awk 'BEGIN { FS = "hex:" } /hex:/ { print $2 }')"
+    printf 'Missing activation_bytes.\n' 1>&2
+    exit 1
 fi
+
+aax_file="${1:?'Audiobook required.'}"
 
 ffmpeg \
     -activation_bytes "$activation_bytes" \
