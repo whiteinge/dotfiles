@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+# Move files in the current directory into alphanumeric subdirs
+#
+# Creates alphanumeric subdirs. Currently hard-codes the eight common letter
+# groupings found in libraries.
+
+while getopts fhx opt; do
+    case $opt in
+    f) force=1;;
+    h) awk 'NR == 1 {next} /^$/ {exit} {print substr($0, 3)}' "$0"; exit;;
+    x) set -x;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+if [ -z "$force" ]; then
+    printf 'This will modify the current directory. Use -f to proceed.\n' 1>&2
+    exit 1
+fi
+
+mkdir -p '0-9' 'A-C' 'D-F' 'G-I' 'J-L' 'M-O' 'P-R' 'S' 'T-Z'
+
+mv [0-9]* '0-9'
+mv [a-cA-C]* 'A-C'
+mv [d-fD-F]* 'D-F'
+mv [g-iG-I]* 'G-I'
+mv [j-lJ-L]* 'J-L'
+mv [m-oM-O]* 'M-O'
+mv [p-rP-R]* 'P-R'
+mv [sS]* 'S'
+mv [t-zT-Z]* 'T-Z'

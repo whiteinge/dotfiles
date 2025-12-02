@@ -1,5 +1,6 @@
 align -- Align columns at CHAR
 alphaindex -- Get unique alphabet character(s) from a positive integer
+alphamv -- Move files in the current directory into alphanumeric subdirs
 ansi-strip -- Remove ansi terminal formatting codes
 bookletize -- Convert a PDF to a fold-able booklet sized PDF
 bootstrap-debian -- Bootstrap a desktop Debian install
