@@ -15,6 +15,17 @@
                     document.addEventListener('DOMContentLoaded', fn);
                 }
             }
+
+            ready(() => {
+                const el = window.document.documentElement;
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    el.classList.add('wa-dark');
+                    el.classList.remove('wa-light');
+                } else {
+                    el.classList.add('wa-light');
+                    el.classList.remove('wa-dark');
+                }
+            });
         </script>
 
         <script type="importmap">
@@ -27,13 +38,28 @@
         }
         </script>
 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.0.0/dist-cdn/styles/webawesome.css" />
+        <script type="module" src="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.0.0/dist-cdn/webawesome.loader.js"></script>
+
+        <script type="module">
+            import { serialize } from 'https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.0.0/dist-cdn/webawesome.loader.js';
+        </script>
+
         <script type="module">
             import _ from 'lodash';
             import Rx from 'rx';
             import { h, Component, render } from 'preact';
 
             const app = h('div', null, [
-                h('h1', null, _.toUpper('Hello World!')),
+                h('wa-card', {className: 'card-header', style: {maxWidth: '300px'}}, [
+                    h('h1', {slot: 'header'}, _.toUpper('Hello World!')),
+                    h('p', null,
+                        'This card has a header. You can put all sorts of things in it!'
+                    ),
+                    h('wa-button', {appearance: 'plain', slot: 'header-actions'}, [
+                        h('wa-icon', {name: 'gear', variant: 'solid', label: 'Settings'}),
+                    ]),
+                ]),
             ]);
 
             render(app, document.querySelector('#container'));
