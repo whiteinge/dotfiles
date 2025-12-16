@@ -7,6 +7,11 @@ endif
 
 let s:current_syntax_save = b:current_syntax
 
+" Add @Spell to strings.
+syn region  javaScriptStringD	       start=+"+  skip=+\\\\\|\\"+  end=+"\|$+	contains=javaScriptSpecial,@htmlPreproc,@Spell
+syn region  javaScriptStringS	       start=+'+  skip=+\\\\\|\\'+  end=+'\|$+	contains=javaScriptSpecial,@htmlPreproc,@Spell
+syn region  javaScriptStringT	       start=+`+  skip=+\\\\\|\\`+  end=+`+	contains=javaScriptSpecial,javaScriptEmbed,@htmlPreproc,@Spell
+
 if &filetype == 'javascriptreact'
     " Add (very) simple JSX highlighting.
     let s:current_syntax_save = b:current_syntax
