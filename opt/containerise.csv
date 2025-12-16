@@ -12,6 +12,10 @@ https://github.com/kintesh/containerise
 !*.audible.com, Amazon
 !*.comixology.com, Amazon
 www.goodreads.com, Amazon
+!*.atlassian.com, Atlassian
+!*.atlassian.net, Atlassian
+!*.bitbucket.org, Atlassian
+!*.jira.com, Atlassian
 !*.churchofjesuschrist.org, Church
 !*.familysearch.org, Church
 !*.ogdenbuddhistchurch.org, Church
