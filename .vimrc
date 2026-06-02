@@ -174,8 +174,8 @@ inoremap <C-W> <C-G>u<C-W>
 nnoremap <leader>v `[v`]
 
 " Add a line without changing position or leaving mode
-map <leader>o :set paste<cr>m`o<esc>``:set nopaste<cr>
-map <leader>O :set paste<cr>m`O<esc>``:set nopaste<cr>
+nnoremap <leader>o m`o<esc>0"_D``
+nnoremap <leader>O m`O<esc>0"_D``
 
 " Toggle between line numbers and relative line numbers
 nnoremap <silent> <leader>u :exe "set " . (&rnu == 1 ? "nornu" : "rnu")<cr>
