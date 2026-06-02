@@ -2,7 +2,7 @@
 # Bootstrap a desktop Debian install
 
 sudo dpkg --add-architecture i386
-sudo cat > /etc/apt/sources.list.d/google-chrome.list <<'EOF'
+sudo tee /etc/apt/sources.list.d/google-chrome.list >/dev/null <<'EOF'
 deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
 EOF
 sudo sed -i '/^deb/s/$/ contrib non-free/' /etc/apt/sources.list
