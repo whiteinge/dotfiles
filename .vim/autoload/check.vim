@@ -19,31 +19,37 @@
 " Use :let b:_check_debug = 1 to see the linter output with :messages to
 " compare which lines match b:checkerrfmt.
 
-fu! s:CloseHandler(channel)
+fu! s:CloseHandler(winid, bufnr, channel)
     let l:ret = []
     while ch_status(a:channel, {'part': 'out'}) == 'buffered'
         call add(l:ret, ch_read(a:channel))
     endwhile
 
-    if exists('b:_check_debug')
+    " Window or buffer may have gone away while the linter ran.
+    if win_id2tabwin(a:winid) == [0, 0] || !bufexists(a:bufnr)
+        return
+    endif
+
+    if getbufvar(a:bufnr, '_check_debug', 0)
         for l:line in l:ret
             echom 'Check debug: '. l:line
         endfor
     endif
 
-    call setloclist(0, [], 'u', {
+    call setloclist(a:winid, [], 'u', {
         \ 'lines': l:ret,
-        \ 'efm': getbufvar(bufnr(), 'checkerrfmt')
+        \ 'efm': getbufvar(a:bufnr, 'checkerrfmt')
     \ })
 endfu
 
 fu! check#Check()
     let l:bufnr = bufnr()
+    let l:winid = win_getid()
 
     if exists('b:_check_job') && job_status(b:_check_job) == 'run'
         return
     endif
-    if ! exists('b:checkprg')
+    if ! exists('b:checkprg') || ! exists('b:checkerrfmt')
         return
     endif
 
@@ -51,7 +57,7 @@ fu! check#Check()
     let b:_check_job = job_start(l:command, {
         \ 'in_io': 'buffer', 'in_buf': l:bufnr,
         \ "err_io": "out",
-        \ 'close_cb': function('s:CloseHandler'),
+        \ 'close_cb': function('s:CloseHandler', [l:winid, l:bufnr]),
     \ })
 endfu
 
