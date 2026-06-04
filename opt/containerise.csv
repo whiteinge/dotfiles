@@ -84,6 +84,8 @@ ting.com, Shopping
 !*.substack.com, Substack
 !*.thepoliticalorphanage.com, Substack
 www.racket.news, Substack
+accounts.x.ai, Twitter
+auth.x.ai, Twitter
 !*.grok.com, Twitter
 !*.grokipedia.com, Twitter
 !*.grokusercontent.com, Twitter
