@@ -24,6 +24,8 @@ let _js_to_css = 'w\wkwf''xf''xr;'
 let g:tagbar_type_javascript = {
     \ 'ctagstype': 'javascript',
     \ 'kinds' : [
+        \ 'E:exports',
+        \ 'P:private',
         \ 'f:functions',
         \ 'm:methods',
         \ 'C:constants:0:0',

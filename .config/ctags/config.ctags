@@ -25,3 +25,6 @@
 --exclude=dist/*.js
 --exclude=public/*.js
 --exclude=vendor/*.js
+
+--regex-JavaScript=/^export (const|let|var) ([A-Za-z_$][A-Za-z0-9_$]*)/\2/E,exported/
+--regex-JavaScript=/^(const|let|var) ([A-Za-z_$][A-Za-z0-9_$]*)/\2/P,modprivate/
