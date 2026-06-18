@@ -532,10 +532,21 @@ com! Helpsearch
 
 " Fuzzy-find a tag and jump to it.
 nmap <silent> <leader>]
-    \ :call util#SysR('', 'readtags -p - '.
-        \ expand('<cword>') ->shellescape()
-    \ .' \| fzy \| ctags-to-quickfix')
-    \ ->util#Cfile()<cr>
+    \ :call util#SysR('', "readtags"
+    \   ." -F '(list $line \" \" $input \"\t\" $name \"\n\")'"
+    \   .' -l \| sort -n \| fzy'
+    \ )
+    \ ->substitute("\t.*$", "", "")
+    \ ->M('edit +') ->execute()<cr>
+
+nmap <silent> <leader>}
+    \ :call util#SysR('', "readtags"
+    \   ." -F '(list $line \" \" $input \"\t\" $name \"\n\")'"
+    \   ." -Q '(eq? $input \"". shellescape(expand("%")) ."\")'"
+    \   .' -l \| sort -n \| fzy'
+    \ )
+    \ ->substitute("\t.*$", "", "")
+    \ ->M('edit +') ->execute()<cr>
 
 " }}}
 " X11 Integration {{{
