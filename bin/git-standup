@@ -1,7 +1,11 @@
 #!/usr/bin/env sh
 # Show git commits suitable for a daily standup
 #
-# Works over weekends.
+# Defaults to the previous workday (works over weekends). Pass a second
+# argument if you want to specify the time range. Usage:
+#
+#     git standup
+#     git standup 'last monday'
 
 while getopts hx opt; do
     case $opt in
@@ -12,10 +16,15 @@ done
 shift $(( OPTIND - 1 ))
 
 author="$(git config user.email)"
-date_rel="$(date +%w | xe -s '
-if [ $1 -eq 1 ]
-then echo 3 days ago
-else echo 1 day ago
-fi')"
+
+if [ -z "$1" ]; then
+    date_rel="$(date +%w | xe -s '
+    if [ $1 -eq 1 ]
+    then echo 3 days ago
+    else echo 1 day ago
+    fi')"
+else
+    date_rel="$1"
+fi
 
 git lc --all --since=@"$date_rel" --author="$author"
