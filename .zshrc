@@ -71,13 +71,14 @@ time: %U user; %S system; %E real; %P cpu; total disk %K KB; max RSS %M KB'
 WATCH=notme
 WATCHFMT='%n %a %l from %m at %T.'
 
-export EDITOR='vim'
+export EDITOR='lvi'
 export VISUAL=$EDITOR
 export BROWSER='firefox'
 
 export PAGER='less -imMWR'
 export MANPAGER="$PAGER"
 
+export LVI_PICKER='fzy'
 export LESSOPEN='| pygmentize -f terminal16m -g -O style=gruvbox-dark %s'
 export LESS='-R'
 
@@ -191,17 +192,9 @@ alias ls='lrls -AF'
 alias la='lrls -F'
 alias ll='lrls -lhAF'
 
-# Regular Vim
-alias vi=$EDITOR; compdef vi=vim
+alias vi=$EDITOR
 # Fast Vim (no vimrc, syntax, ftplugins) for big files
-alias vv="${EDITOR} -N -u NONE"; compdef vv=vim
-# Vim without plugins for debugging weird behavior
-alias vvv="${EDITOR} -N --noplugin"; compdef vvv=vim
-# Vim for profiling slow startup or initialization
-alias vimprof="${EDITOR} \
-    --cmd 'profile start vim-profile.log' \
-    --cmd 'profile func *' \
-    --cmd 'profile file *'"; compdef vimprof=vim
+alias vv="vim -N -u NONE"; compdef vv=vim
 
 # Open a list of file names that contain line and column information as
 # quickfix entries (Quickfix is preferable because Vim's arglist doesn't suport

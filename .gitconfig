@@ -206,6 +206,11 @@
 [mergetool]
     keepBackup = false
 
+[mergetool "lvidiff"]
+    hideResolved = true
+    trustExitCode = true
+    cmd = lvi-diff \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+
 [mergetool "vimdiff1"]
     hideResolved = true
 

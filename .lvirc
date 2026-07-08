@@ -1,0 +1,40 @@
+set expandtab
+set shiftwidth=4
+
+map \p :set wrap!<cr>
+
+on ready LVI_PYGMENTS_STYLE=gruvbox-dark lvi-highlight --theme
+
+on bufenter lvi-highlight
+on change lvi-highlight
+map \h :silent !lvi-highlight<CR>
+
+" Allow multiple instances to edit the same file:
+on change lvi-mirror
+on write  lvi-mirror
+
+map \t :wbuf<CR>:silent !lvi-tags<CR>
+map \f :silent !lvi-open<CR>
+
+map / :silent !LVI_SEARCH_CASE=smart lvi-search<CR>                 " prompt for a pattern
+map * :bg !lvi-search "$LVI_CWORD"<CR>        " search the word under the cursor
+map n :bg lvi-list next<CR>
+map N :bg lvi-list prev<CR>
+map \n :bg lvi-list hide<CR>                  " :nohl-style -- hide it; next n/N re-shows
+on bufenter lvi-list paint
+on ready [ -n "$LVI_QUICKFIX" ] && lvi-list load "$LVI_QUICKFIX" quickfix --focus
+
+map \g :bg lvi-gitchanges<CR>                 " load this file's changes, focus, jump
+map ]c :bg lvi-list next gitchanges<CR>       " or step it without stealing focus
+map [c :bg lvi-list prev gitchanges<CR>
+hi gitchanges bg=22 pri=10
+
+on complete LVI_COMPL_POPUP=1 lvi-complete    " complete with tmux popup
+
+map \G :bg lvi-stagediff<CR>
+
+on change   lvi-pos save
+on write    lvi-pos save
+on bufleave lvi-pos save
+on ready    lvi-pos restore
+on bufenter lvi-pos restore
