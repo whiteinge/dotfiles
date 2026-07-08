@@ -73,9 +73,13 @@ WATCHFMT='%n %a %l from %m at %T.'
 
 export EDITOR='vim'
 export VISUAL=$EDITOR
+export BROWSER='firefox'
+
 export PAGER='less -imMWR'
 export MANPAGER="$PAGER"
-export BROWSER='firefox'
+
+export LESSOPEN='| pygmentize -f terminal16m -g -O style=gruvbox-dark %s'
+export LESS='-R'
 
 export WINEDEBUG=-all
 export WINEARCH=win32

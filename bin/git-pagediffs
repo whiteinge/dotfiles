@@ -42,4 +42,5 @@ git sh --reverse --color=always --color-moved "$@" |
     csplit -s -n 4 -f "${TEMP}/xx" - '/^\[33mcommit /' '{*}'
 
 rm -f -- "${TEMP}/xx0000"
+unset LESSOPEN
 $PAGER -R "${TEMP}/xx"*
