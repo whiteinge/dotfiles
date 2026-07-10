@@ -1,40 +1,96 @@
 set expandtab
 set shiftwidth=4
+set autoindent
 
+" Toggle line wrapping.
 map \p :set wrap!<cr>
+set wrap linebreak
 
+" Syntax highlighting
 on ready LVI_PYGMENTS_STYLE=gruvbox-dark lvi-highlight --theme
-
 on bufenter lvi-highlight
 on change lvi-highlight
 map \h :silent !lvi-highlight<CR>
+hi Error fg=red bold
 
 " Allow multiple instances to edit the same file:
 on change lvi-mirror
 on write  lvi-mirror
 
+" View/jump to tags in the current file.
 map \t :wbuf<CR>:silent !lvi-tags<CR>
+
+" Open another file via a fuzzy-finder.
 map \f :silent !lvi-open<CR>
 
-map / :silent !LVI_SEARCH_CASE=smart lvi-search<CR>                 " prompt for a pattern
-map * :bg !lvi-search "$LVI_CWORD"<CR>        " search the word under the cursor
+" Use grep to create a new list.
+map / :silent !LVI_SEARCH_CASE=smart lvi-search<CR>
+map * :bg lvi-search "$LVI_CWORD"<CR>
+
+" Change which list has focus.
+map \l :silent !lvi-list switch<CR>
+
+" Step through the currently focused list entries.
 map n :bg lvi-list next<CR>
 map N :bg lvi-list prev<CR>
-map \n :bg lvi-list hide<CR>                  " :nohl-style -- hide it; next n/N re-shows
+map \n :bg lvi-list hide<CR>
+map \m :silent !tmux display-popup -E "lvi-list -w $LVI_WID preview | less -R"<CR>
+
+" Load list entries if started with the -q flag.
 on bufenter lvi-list paint
 on ready [ -n "$LVI_QUICKFIX" ] && lvi-list load "$LVI_QUICKFIX" quickfix --focus
 
-map \g :bg lvi-gitchanges<CR>                 " load this file's changes, focus, jump
-map ]c :bg lvi-list next gitchanges<CR>       " or step it without stealing focus
+" Load modified changes from Git into a steppable list.
+map \g :bg LVI_DIFF_FOLD=1 lvi-gitchanges<CR>
+map ]c :bg lvi-list next gitchanges<CR>
 map [c :bg lvi-list prev gitchanges<CR>
 hi gitchanges bg=22 pri=10
 
-on complete LVI_COMPL_POPUP=1 lvi-complete    " complete with tmux popup
+" Two-way diff of modified changes; write to stage in Git.
+map \G :bg LVI_DIFF_FOLD=1 lvi-stagediff<CR>
 
-map \G :bg lvi-stagediff<CR>
+" Insert completion with tmux popup.
+on complete LVI_COMPL_POPUP=1 lvi-complete
 
+" Save and restore cursor position.
 on change   lvi-pos save
 on write    lvi-pos save
 on bufleave lvi-pos save
-on ready    lvi-pos restore
-on bufenter lvi-pos restore
+on ready    lvi-pos restore -n
+on bufenter lvi-pos restore -n
+
+" Spell checking.
+map \s :bg lvi-spell<CR>
+map ]s :bg lvi-list next spell<CR>
+map [s :bg lvi-list prev spell<CR>
+map z= :silent !lvi-spell fix<CR>
+map zg :bg lvi-spell add<CR>
+hi spellbad underline pri=20
+
+" Linting.
+on change lvi-lint
+map \l :bg lvi-lint --focus<CR>      " lint now and focus the current list
+map ]e :bg lvi-list next lint<CR>    " step the unfocused lint list
+map [e :bg lvi-list prev lint<CR>
+hi lint bg=52 pri=10
+hi lint-cur bg=124 pri=11
+
+" Formatting.
+map \= :bg lvi-fmt<CR>
+set fmtprg=fmt -w 79
+
+" Folding.
+hi Folded fg=cyan italic
+on bufenter lvi-fold
+map zi :bg lvi-fold<CR>
+map zI :bg lvi-fold indent<CR>
+
+" Text objects.
+textobj t lvi-textobj-tag
+
+" Increment/decrement.
+map <C-a> :.!lvi-incr<CR>
+map <C-x> :.!lvi-incr -s -1<CR>
+
+" Clipboard.
+register + read clip -o write clip
