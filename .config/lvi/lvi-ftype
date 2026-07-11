@@ -1,0 +1,58 @@
+#!/bin/sh
+
+LVI=${LVI:-lvi}
+fname=$LVI_FILE
+[ -n "$fname" ] || exit 0        # unnamed buffer: nothing to key off
+
+# --- CLASSIFY: name (then shebang) -> a filetype word. Add detectors here. -----
+ft=
+case "$fname" in
+  *.py)                          ft=python ;;
+  *.sh|*.bash|.bashrc|.profile)  ft=sh ;;
+  *.go)                          ft=go ;;
+  *.rs)                          ft=rust ;;
+  *.json)                        ft=json ;;
+  *.js|*.jsx|*.mjs|*.cjs)        ft=js ;;
+  *.ts|*.tsx|*.mts|*.cts)        ft=ts ;;
+  *.css|*.scss|*.less)           ft=css ;;
+  *.html|*.htm)                  ft=html ;;
+  *.yml|*.yaml)                  ft=yaml ;;
+  *.toml)                        ft=toml ;;
+  *.lua)                         ft=lua ;;
+  *.c|*.h|*.cc|*.cpp|*.hpp)      ft=c ;;
+  *.md|*.markdown|*.txt)         ft=prose ;;
+  Makefile|makefile|*.mk)        ft=make ;;
+  *) case $([ -r "$fname" ] && head -n1 -- "$fname") in
+       '#!'*python*)       ft=python ;;
+       '#!'*sh|'#!'*bash)  ft=sh ;;
+     esac ;;
+esac
+
+# --- CONFIGURE: filetype word -> options. This is the part to edit. ------------
+opt= fmt=
+case "$ft" in
+  python) opt='sw=4 et' ;;
+  sh)     opt='sw=2 et' ;;
+  go)     opt='sw=8 noet' ;;
+  rust)   opt='sw=4 et' ;;
+  json)   opt='sw=2 et' ;;
+  js)     opt='sw=2 et' ;;
+  ts)     opt='sw=2 et' ;;
+  css)    opt='sw=2 et' ;;
+  html)   opt='sw=2 et' ;;
+  yaml)   opt='sw=2 et' ;;   # YAML forbids tabs
+  toml)   opt='sw=2 et' ;;
+  lua)    opt='sw=2 et' ;;
+  c)      opt='sw=4 et' ;;
+  prose)  opt='sw=4 et lbr' ;;
+  make)   opt='sw=8 noet' ;;
+  *)      opt='sw=8 noet' ;;
+esac
+
+default_fmt='lvi-reflow -w 79'
+
+# case "$ft" in make) ;; *) opt="$opt $(lvi-detect-indent "$fname" 2>/dev/null)" ;; esac
+
+# --- plumbing (leave alone) ----------------------------------------------------
+set -- "set $opt" "set fmtprg=${fmt:-$default_fmt}"
+exec $LVI -w "${LVI_WID:-auto}" -- "$@"

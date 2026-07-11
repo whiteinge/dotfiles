@@ -1,16 +1,21 @@
+" Defaults.
 set expandtab
 set shiftwidth=4
 set autoindent
+set wrap linebreak
+set fmtprg=lvi-reflow -w 79
+" Overrides.
+on bufenter ~/.config/lvi/lvi-ftype
 
 " Toggle line wrapping.
 map \p :set wrap!<cr>
-set wrap linebreak
 
 " Syntax highlighting
 on ready LVI_PYGMENTS_STYLE=gruvbox-dark lvi-highlight --theme
 on bufenter lvi-highlight
 on change lvi-highlight
 map \h :silent !lvi-highlight<CR>
+map \H :bg lvi-highlight toggle<CR>
 hi Error fg=red bold
 
 " Allow multiple instances to edit the same file:
@@ -48,6 +53,7 @@ hi gitchanges bg=22 pri=10
 
 " Two-way diff of modified changes; write to stage in Git.
 map \G :bg LVI_DIFF_FOLD=1 lvi-stagediff<CR>
+map \S :set operatorfunc=lvi-stagediff --stage-range<CR>g@
 
 " Insert completion with tmux popup.
 on complete LVI_COMPL_POPUP=1 lvi-complete
@@ -77,7 +83,6 @@ hi lint-cur bg=124 pri=11
 
 " Formatting.
 map \= :bg lvi-fmt<CR>
-set fmtprg=fmt -w 79
 
 " Folding.
 hi Folded fg=cyan italic
@@ -94,3 +99,27 @@ map <C-x> :.!lvi-incr -s -1<CR>
 
 " Clipboard.
 register + read clip -o write clip
+
+" Surround and comment opfuncs
+map s( :set opfunc=lvi-surround paren<CR>g@
+map s[ :set opfunc=lvi-surround bracket<CR>g@
+map s{ :set opfunc=lvi-surround brace<CR>g@
+map s< :set opfunc=lvi-surround angle<CR>g@
+map s" :set opfunc=lvi-surround dquote<CR>g@
+map s' :set opfunc=lvi-surround squote<CR>g@
+map s` :set opfunc=lvi-surround tick<CR>g@
+map s* :set opfunc=lvi-surround star<CR>g@
+map s_ :set opfunc=lvi-surround under<CR>g@
+
+map gc :set opfunc=lvi-comment<CR>g@
+map gC :set opfunc=lvi-comment<CR>g@@
+
+" yank ring
+register ~ read lvi-yankring get
+register "" write lvi-yankring push
+map \y :silent !lvi-yankring pick<CR>
+
+" Marks.
+on markset  lvi-gmark set
+on markjump lvi-gmark go
+map \M :!lvi-gmark list<CR>
