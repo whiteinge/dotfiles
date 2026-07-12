@@ -52,5 +52,5 @@ while test "$paragraphs" -gt 0; do
 
     paragraphs=$(( paragraphs - 1 ))
     preamble_show=0
-    test "$paragraphs" -gt 0 && printf '\n'
+    if test "$paragraphs" -gt 0; then printf '\n'; fi
 done
