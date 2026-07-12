@@ -38,6 +38,8 @@ umask 027
 
 extra_path=(
     $HOME/bin \
+    $HOME/opt/repos/lvi \
+    $HOME/opt/repos/lvi/contrib \
     $HOME/go/bin/ \
     $HOME/.nodejs/nodejs/bin \
     $HOME/.cargo/bin \
@@ -51,7 +53,7 @@ extra_path=(
 export PATH="${(j|:|)extra_path}:$PATH"
 
 # Prepend : so man also references default config file.
-export MANPATH=":${HOME}/share/man:${MANPATH}"
+export MANPATH=":${HOME}/share/man:${HOME}/opt/repos/lvi:${MANPATH}"
 
 CDPATH=$CDPATH::$HOME:/usr/local
 
@@ -467,6 +469,9 @@ precmd_functions=( refresh_tmux_on_git )
 if [[ -r "$HOME/.zsh_customize" ]]; then
     source "$HOME/.zsh_customize"
 fi
+
+# Add lvi shell helpers.
+source $HOME/opt/repos/lvi/contrib/lvi-shell.sh
 
 # End profiling:
 # zprof
