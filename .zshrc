@@ -81,7 +81,9 @@ export PAGER='less -imMWR'
 export MANPAGER="$PAGER"
 
 export LVI_PICKER='fzy'
-export LESSOPEN='| pygmentize -f terminal16m -g -O style=gruvbox-dark %s'
+export LVI_HL_BACKEND='bat'
+export BAT_THEME='base16'
+export LESSOPEN='| batcat --color=always --style=plain --paging=never %s'
 export LESS='-R'
 
 export WINEDEBUG=-all

@@ -11,7 +11,6 @@ on bufenter ~/.config/lvi/lvi-ftype
 map \p :set wrap!<cr>
 
 " Syntax highlighting
-on ready LVI_PYGMENTS_STYLE=gruvbox-dark lvi-highlight --theme
 on bufenter lvi-highlight
 on change lvi-highlight
 map \h :silent !lvi-highlight<CR>
