@@ -140,11 +140,14 @@ bindkey '^Y' yank
 if [[ ! -n "$ZSHRUN" ]]; then
     autoload -U colors && colors
 
+    : ${_THEME_ERR:=$'\e[31m'}
+    : ${_THEME_ERR_OFF:=$'\e[39m'}
+
     promptseg=( \
         # In incognito mode?
-        '%{${fg[yellow]}%}' \
+        '%S' \
         '$(test ${+HISTFILE} -eq 0 && echo !!)' \
-        '%{${reset_color}%}' \
+        '%s' \
 
         # In dotfiles mode?
         '$(test -n "$GIT_WORK_TREE" && git prompt -c zsh)' \
@@ -153,9 +156,7 @@ if [[ ! -n "$ZSHRUN" ]]; then
         '%(1j.%j .)' \
 
         # Last command failed?
-        '%(0?.%{${fg[white]}%}.%{${fg[red]}%})' \
-        '%#' \
-        '%{${reset_color}%}' \
+        '%(0?.%#.%{${_THEME_ERR}%}%#%{${_THEME_ERR_OFF}%})' \
 
         # Breathe.
         ' ' \
@@ -472,6 +473,11 @@ fi
 
 # Add lvi shell helpers.
 source $HOME/opt/repos/lvi/contrib/lvi-shell.sh
+
+# Sourced last to capture colour defaults above before applying the theme.
+if [[ -o interactive && -z "$ZSHRUN" ]]; then
+    source ${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles/theme.zsh
+fi
 
 # End profiling:
 # zprof

@@ -1,6 +1,9 @@
 # Local ignores for my installed dotfiles.
 # (Paths relative to $HOME.)
 
+# Runtime state from my own scripts:
+/.config/dotfiles/theme.state
+
 # Progs I often compile and install myself:
 /bin/csvheader
 /bin/csvquote
