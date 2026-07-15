@@ -187,6 +187,7 @@
 [pager]
     # Don't paginate the oneline log output if less than one page.
     l = $PAGER -F
+    lc = $PAGER -F
     lt = $PAGER -F
     b = $PAGER -F
     branch = $PAGER -F
