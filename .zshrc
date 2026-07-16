@@ -78,7 +78,8 @@ export VISUAL=$EDITOR
 export BROWSER='firefox'
 
 export PAGER='less -imMWR'
-export MANPAGER="$PAGER"
+export MANPAGER='lvi-man'   # lvi as man pager: section folds + bat highlighting
+export MANROFFOPT='-c'      # groff emits plain overstrike col -bx can clean up
 
 export LVI_PICKER='fzy'
 export LVI_HL_BACKEND='bat'
@@ -258,21 +259,8 @@ cdtmp() { cd $(mktemp -d --suffix="-${1:-"cdtmp"}") }
 # Export all environment variables defined in an .env file.
 senv() { set -a; source .env; set +a; }
 
-# Override GNU info to open info pages in less instead.
-function info() { command info "$@" \
-    | vim +'exe search(".") ? "" : "quit!"' -M +MANPAGER - }
-
-# Wrap man to use Vim as MANPAGER.
-function _man() {
-    [[ $# -eq 0 ]] && return 1
-    MANPAGER='cat' command man "$@" | col -b \
-        | vim +'exe search(".") ? "" : "quit!"' -M +MANPAGER -
-}
-# Zsh's completion invokes man on tab so avoid a recursive definition.
-alias man='_man'
-
-# Override ~/bin/mdless use our Zsh function _man override
-function mdless() { command mdless "$@" | _man -l -; }
+# Render ~/bin/mdless's roff output as a manpage; $MANPAGER (lvi-man) displays it.
+function mdless() { command mdless "$@" | command man -l -; }
 
 # Useful for working with Git remotes; e.g., `git log IN`, `git diff OUT`.
 alias -g IN='..@{u}'
