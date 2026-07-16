@@ -90,10 +90,6 @@ theme() {
     _theme_paint $mode
     _theme_shell $mode
 
-    # Expose the mode to tmux so status formats can branch on it (e.g. colour
-    # in dark, plain in light). Server-global, so it updates every pane at once.
-    [[ -n $TMUX ]] && command tmux set -g @theme $mode 2>/dev/null
-
     if [[ $1 != apply ]]; then           # persist, but `apply` only reads
         mkdir -p -- ${THEME_STATE_FILE:h}
         print -r -- $mode >! $THEME_STATE_FILE
