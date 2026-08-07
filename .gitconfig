@@ -202,7 +202,7 @@
     summary = $PAGER -F
 
 [merge]
-    tool = diffconflicts
+    tool = lvidiff
 
 [mergetool]
     keepBackup = false

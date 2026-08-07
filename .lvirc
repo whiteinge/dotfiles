@@ -1,124 +1,190 @@
-" Defaults.
+" ~/.lvirc -- tuned from contrib/lvirc.sample.vim
+
+" ---- editor defaults --------------------------------------------------- {{{
+
 set expandtab
 set shiftwidth=4
 set autoindent
 set wrap linebreak
 set fmtprg=lvi-reflow -w 79
-" Overrides.
-on bufenter ~/.config/lvi/lvi-ftype
+map \w :set wrap!<CR>
 
-" Toggle line wrapping.
-map \p :set wrap!<cr>
+" }}}
+" ---- syntax highlighting ----------------------------------------------- {{{
 
-" Syntax highlighting
+on change   lvi-highlight
 on bufenter lvi-highlight
-on change lvi-highlight
-map \h :silent !lvi-highlight<CR>
-map \H :bg lvi-highlight toggle<CR>
-hi Error fg=red bold
+map \hh :silent !lvi-highlight<CR>     " force a refresh on demand
+map \ht :bg lvi-highlight toggle<CR>   " :syntax off / on
 
-" Allow multiple instances to edit the same file:
-on change lvi-mirror
-on write  lvi-mirror
+" }}}
+" ---- message line ------------------------------------------------------ {{{
 
-" View/jump to tags in the current file.
-map \t :wbuf<CR>:silent !lvi-tags<CR>
+hi Message reverse
+hi Error   fg=red bold
 
-" Open another file via a fuzzy-finder.
-map \f :silent !lvi-open<CR>
+" }}}
+" ---- search & lists (quickfix/location) -------------------------------- {{{
 
-" Use grep to create a new list.
-map / :silent !LVI_SEARCH_CASE=smart lvi-search<CR>
-map * :bg lvi-search "$LVI_CWORD"<CR>
-
-" Change which list has focus.
-map \l :silent !lvi-list switch<CR>
-
-" Step through the currently focused list entries.
-map n :bg lvi-list next<CR>
-map N :bg lvi-list prev<CR>
-map \n :bg lvi-list hide<CR>
-map \m :silent !tmux display-popup -E "lvi-list -w $LVI_WID preview | less -R"<CR>
-
-" Load list entries if started with the -q flag.
-on bufenter lvi-list paint
+" n/N step the focused list; ]x/[x step a pinned list x; \l... manages lists.
+map / :silent !LVI_SEARCH_CASE=smart lvi-search<CR>   " prompt (smart case)
+map * :bg lvi-search "$LVI_CWORD"<CR>                 " search the word under cursor
+map n :bg lvi-list next<CR>            " step the focused list...
+map N :bg lvi-list prev<CR>            " ...forward / back
+map \ll :silent !lvi-list switch<CR>   " re-aim n/N: pick the focused list
+map \lg :silent !lvi-list goto<CR>     " pick+jump to an entry in the focused list
+map \lf :bg lvi-list nfile<CR>         " skip to the next FILE in the list (vim :cnfile);
+map \lF :bg lvi-list pfile<CR>         "   ...previous -- hop a file you don't care about
+map \lc :bg lvi-list current<CR>       " re-center on the current entry (e.g. after a fold)
+map \lh :bg lvi-list hide<CR>          " hide it; next n/N re-shows
+map \lp :silent !tmux display-popup -E "lvi-list -w $LVI_WID preview | less -R"<CR>
+on bufenter lvi-list paint             " repaint this buffer's matches on switch
 on ready [ -n "$LVI_QUICKFIX" ] && lvi-list load "$LVI_QUICKFIX" quickfix --focus
 
-" Load modified changes from Git into a steppable list.
-map \g :bg LVI_DIFF_FOLD=1 lvi-gitchanges<CR>
-map ]c :bg lvi-list next gitchanges<CR>
+" }}}
+" ---- insert-mode completion -------------------------------------------- {{{
+
+on complete LVI_COMPL_POPUP=1 lvi-complete   " Ctrl-N/P, drawn in a tmux popup
+
+" }}}
+" ---- system clipboard -------------------------------------------------- {{{
+
+register + read clip -o write clip     " "+y / "+p through my `clip` wrapper
+map \r :registers<CR>                  " list every register + its contents
+
+" }}}
+" ---- yank ring --------------------------------------------------------- {{{
+
+register "" write lvi-yankring push    " capture every yank/delete into the ring
+register ~ read lvi-yankring get       " the entry \yp/\yn/\yy put through
+map \yp :bg lvi-yankring cycle prev<CR>   " RIGHT AFTER a paste: older entry
+map \yn :bg lvi-yankring cycle next<CR>   " ...or the newer one
+map \yy :silent !lvi-yankring pick<CR>    " or pick any entry through $LVI_PICKER
+
+" }}}
+" ---- open files -------------------------------------------------------- {{{
+
+map \f :silent !lvi-open<CR>           " fuzzy-pick a file and open it (\f = find)
+
+" }}}
+" ---- tags -------------------------------------------------------------- {{{
+
+map \t :wbuf<CR>:silent !lvi-tags<CR>  " jump-to-symbol / file outline
+
+" }}}
+" ---- git changes ------------------------------------------------------- {{{
+
+map \gg :bg lvi-gitchanges<CR>              " working-tree changes + focus
+map \gs :bg lvi-gitchanges --staged<CR>     " staged changes + focus
+map ]c :bg lvi-list next gitchanges<CR>     " step git hunks without stealing focus
 map [c :bg lvi-list prev gitchanges<CR>
-hi gitchanges bg=22 pri=10
+hi gitchanges bg=22 pri=10                  " pri lifts the mark above syntax
+map \gp :bg LVI_DIFF_FOLD=1 lvi-stagediff<CR>   " "git add -p" (side-by-side, folded)
 
-" Two-way diff of modified changes; write to stage in Git.
-map \G :bg LVI_DIFF_FOLD=1 lvi-stagediff<CR>
-map \S :set operatorfunc=lvi-stagediff --stage-range<CR>g@
+" }}}
+" ---- linting ----------------------------------------------------------- {{{
 
-" Insert completion with tmux popup.
-on complete LVI_COMPL_POPUP=1 lvi-complete
-
-" Save and restore cursor position.
-on change   lvi-pos save
-on write    lvi-pos save
-on bufleave lvi-pos save
-on ready    lvi-pos restore -n
-on bufenter lvi-pos restore -n
-
-" Spell checking.
-map \s :bg lvi-spell<CR>
-map ]s :bg lvi-list next spell<CR>
-map [s :bg lvi-list prev spell<CR>
-map z= :silent !lvi-spell fix<CR>
-map zg :bg lvi-spell add<CR>
-hi spellbad underline pri=20
-
-" Linting.
-on change lvi-lint
-map \l :bg lvi-lint --focus<CR>      " lint now and focus the current list
-map ]e :bg lvi-list next lint<CR>    " step the unfocused lint list
+on change lvi-lint                     " lint the live buffer as you type
+map \e :bg lvi-lint --focus<CR>        " lint now and aim n/N at the findings
+map ]e :bg lvi-list next lint<CR>      " ...or step them with pinned keys
 map [e :bg lvi-list prev lint<CR>
-hi lint bg=52 pri=10
+hi lint     bg=52 pri=10
 hi lint-cur bg=124 pri=11
 
-" Formatting.
-map \= :bg lvi-fmt<CR>
+" }}}
+" ---- spell check ------------------------------------------------------- {{{
 
-" Folding.
-hi Folded fg=cyan italic
-on bufenter lvi-fold
-map zi :bg lvi-fold<CR>
-map zI :bg lvi-fold indent<CR>
+map \s :bg lvi-spell<CR>               " toggle
+map ]s :bg lvi-list next spell<CR>     " step misspellings
+map [s :bg lvi-list prev spell<CR>
+map z= :silent !lvi-spell fix<CR>      " pick a suggestion (vim's z=)
+map zg :bg lvi-spell add<CR>           " add the word (vim's zg)
+hi spellbad underline pri=20
 
-" Text objects.
-textobj t lvi-textobj-tag
+" }}}
+" ---- invisible characters ---------------------------------------------- {{{
 
-" Increment/decrement.
-map <C-a> :.!lvi-incr<CR>
-map <C-x> :.!lvi-incr -s -1<CR>
+" lvi-invis is a toggle (vim's :set list): while on, tab runs, trailing
+" whitespace, and no-break spaces re-paint as you type through three :hl
+" groups. \ip instead drops the buffer into less as `cat -vet` output,
+" centered on the cursor line: exact byte notation, including what the
+" overlay can't style (a stray CR, zero-width characters). The toggle
+" installs its own change/bufenter hooks once per view, so do NOT add them
+" here. The `:wbuf` in the \ip map snapshots the buffer first: a `:silent !`
+" child can't read the socket (see the lvi-invis header).
+map \ii :bg lvi-invis<CR>              " toggle the overlay
+map \ip :wbuf<CR>:silent !lvi-invis page<CR>   " exact bytes in less
+hi invistab   bg=236 pri=15            " theme the groups (un-themed = invisible);
+hi invistrail bg=88  pri=15            " pri lifts the marks above syntax and
+hi invisnbsp  bg=130 pri=15            " list paint, or they lose the cell
 
-" Clipboard.
-register + read clip -o write clip
+" }}}
+" ---- formatting -------------------------------------------------------- {{{
 
-" Surround and comment opfuncs
+map \= :bg lvi-fmt<CR>                 " format the buffer (vim's =)
+
+" }}}
+" ---- filetype settings (vim's ftplugin) -------------------------------- {{{
+
+on bufenter ~/.config/lvi/lvi-ftype    " projects sw/et/fmtprg per file type
+
+" }}}
+" ---- folding ----------------------------------------------------------- {{{
+
+hi Folded fg=cyan italic               " the summary bar
+map zx :bg lvi-fold<CR>                " (re)fold by marker
+map zX :bg lvi-fold indent<CR>         " (re)fold by indent
+on bufenter lvi-fold                   " auto-fold every marked file on entry
+
+" }}}
+" ---- position memory (viminfo's `") ------------------------------------ {{{
+
+on change   lvi-pos save               " remember where I was...
+on write    lvi-pos save
+on bufleave lvi-pos save
+on bufenter lvi-pos restore             " set `" on every file I open (no cursor move)
+on ready    lvi-pos restore             " ...and the file(s) opened at startup
+" -j (jump) also lands AT the old spot -- keep it to `ready`; on `bufenter` it
+" steals the cursor from a cross-file list step:
+"     on ready    lvi-pos restore -j
+
+" }}}
+" ---- global marks (A-Z file marks) ------------------------------------- {{{
+
+on markset  lvi-gmark set
+on markjump lvi-gmark go
+map \m :!lvi-gmark list<CR>            " list global marks (the \m leaf)
+
+" }}}
+" ---- multiple instances editing one file (lvi-mirror) ------------------ {{{
+
+on change lvi-mirror                   " sync edits to other panes on this file
+on write  lvi-mirror
+
+" }}}
+" ---- custom text objects ----------------------------------------------- {{{
+
+textobj t lvi-textobj-tag              " dit/cit/dat/yat on the enclosing tag
+
+" }}}
+" ---- increment / decrement --------------------------------------------- {{{
+
+map <C-a> :.!lvi-incr<CR>              " increment the number on this line
+map <C-x> :.!lvi-incr -s -1<CR>        " decrement it
+
+" }}}
+" ---- surround & comment (g@ operators) --------------------------------- {{{
+
 map s( :set opfunc=lvi-surround paren<CR>g@
-map s[ :set opfunc=lvi-surround bracket<CR>g@
 map s{ :set opfunc=lvi-surround brace<CR>g@
+map s[ :set opfunc=lvi-surround bracket<CR>g@
 map s< :set opfunc=lvi-surround angle<CR>g@
 map s" :set opfunc=lvi-surround dquote<CR>g@
 map s' :set opfunc=lvi-surround squote<CR>g@
 map s` :set opfunc=lvi-surround tick<CR>g@
-map s* :set opfunc=lvi-surround star<CR>g@
-map s_ :set opfunc=lvi-surround under<CR>g@
+map s* :set opfunc=lvi-surround star<CR>g@     " *word* (Markdown)
+map s_ :set opfunc=lvi-surround under<CR>g@    " _word_
+map gc :set opfunc=lvi-comment<CR>g@           " gcip toggles a paragraph
+map gC :set opfunc=lvi-comment<CR>g@@          " gC toggles the current line
 
-map gc :set opfunc=lvi-comment<CR>g@
-map gC :set opfunc=lvi-comment<CR>g@@
-
-" yank ring
-register ~ read lvi-yankring get
-register "" write lvi-yankring push
-map \y :silent !lvi-yankring pick<CR>
-
-" Marks.
-on markset  lvi-gmark set
-on markjump lvi-gmark go
-map \M :!lvi-gmark list<CR>
+" }}}
