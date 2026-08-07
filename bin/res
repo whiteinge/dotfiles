@@ -1,24 +1,54 @@
 #!/usr/bin/env sh
-# Output an xrandr command for common configurations
-# Only outputs, not executes, the command so it can be edited beforehand.
+# Output a gdctl command for common display configurations.
+# Only outputs the command (to the tmux prompt), does not execute it, so it
+# can be reviewed or edited before you hit Enter.
+#
+# -r  Panic reset: immediately run `gdctl set -LpM eDP-1` to force the
+#     built-in panel back on. Executes directly (no tmux, no fzy) so it works
+#     blind when a bad layout has blacked out every screen.
+#
+# gdctl show                                    # monitors, modes, current layout
+# gdctl set -LpM eDP-1                           # one logical monitor, primary
+# gdctl set -LpM DP-3 -L -M eDP-1 -x 2560 -y 0   # two monitors, positioned
+# gdctl set -LM DP-2 --transform 90              # rotation
+# gdctl set -LM DP-2 --scale 1.5                 # per-monitor scaling
+# Any monitor omitted from a `set` invocation is disabled.
+# The --persistent (-P) flag also writes the config to the XML.
+#
+# Connectors (DP-N) are resolved at runtime by product/serial, because the
+# numbers can drift across ports, docks, MST chains, and kernel updates.
+# eDP-1 (the built-in panel) is the one name that is always stable.
 
-while getopts h opt; do
+while getopts hr opt; do
     case $opt in
     h) awk 'NR == 1 { next } /^$/ { exit } { print substr($0, 3) }' "$0"
        exit ;;
+    r) exec gdctl set -LpM eDP-1 ;;
     esac
 done
 shift $(( OPTIND - 1 ))
 
-fzy << EOF | awk 'BEGIN { FS="\t+" } { print $2 }' | xe tmux send xrandr Space {}
-Auto		--auto
-Desktop		--output eDP-1 --off --output DP-1 --primary --preferred --rotate normal
-Livingroom	--output eDP-1 --off --output DP-1 --primary --mode 1360x768
-Bedroom		--output eDP-1 --off --output DP-1 --primary --mode 1920x1080
-Notebook	--auto --output eDP-1 --transform none --rotate right
-Netbook		--auto --output eDP-1 --primary --preferred --scale 0.5x0.5 --rotate right
-Present		--output DP-1 --mode 1024x768 --output eDP-1 --scale-from 1024x768
-Reset		--auto --output eDP-1 --primary --preferred --transform none --rotate normal
-Underscan	--output DP-1 --transform 0.80,0,-35,0,1.04,-19,0,0,1
-Work		--output eDP-1 --off --output DP-1 --primary --preferred --rotate left
-EOF
+# conn_for IDENTIFIER -> connector name of the monitor whose `gdctl show`
+# block contains IDENTIFIER (a Product or Serial), or empty if not connected.
+conn_for() {
+    gdctl show 2>/dev/null | awk -v want="$1" '
+        /Monitor / { c = $0; sub(/^.*Monitor /, "", c); sub(/ .*$/, "", c); conn = c }
+        conn && index($0, want) { print conn; exit }
+    '
+}
+
+builtin=eDP-1                    # built-in BOE panel; connector is always eDP-1
+dell=$(conn_for PVJVW5A62T4L)    # Dell U2415, matched by serial
+eink=$(conn_for Paperlike103)    # Paperlike103 e-ink, matched by product
+
+# Build the menu, listing only layouts whose monitor is currently connected.
+menu="Laptop	set -LpM $builtin"
+[ -n "$dell" ] && menu="$menu
+Docked	set -LpM $dell"
+[ -n "$eink" ] && menu="$menu
+e-Ink	set -LpM $eink"
+
+printf '%s\n' "$menu" |
+    fzy |
+    awk 'BEGIN { FS = "\t+" } { print $2 }' |
+    xe tmux send gdctl Space {}
