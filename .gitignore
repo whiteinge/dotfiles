@@ -93,6 +93,7 @@
 /.aws-cli
 /.cache
 /.cargo
+/.claude
 /.docker
 /.dotnet
 /.local/share/applications
