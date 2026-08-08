@@ -41,9 +41,19 @@
     sh = show --summary --stat --pretty=fuller --patch
     shls = diff-tree -r --no-commit-id --name-only
 
-    editc = quickfix
-    editm = quickfix -m modified
-    edits = quickfix -m staged
+    # Open git changes as quickfix entries in $EDITOR.
+    qf = "!f() { \
+        t=$(mktemp); \
+        trap 'rm -f \"$t\"' EXIT INT TERM; \
+        lvi-gitchanges --print \"$@\" > \"$t\" && lvi -q \"$t\"; \
+    }; f"
+
+    # What was committed / what's left to stage / what's about to be committed.
+    editc = "!f() { [ $# -gt 0 ] || set -- HEAD; git qf \"$@\"; }; f"
+    editm = "!f() { git qf --unstaged \"$@\"; }; f"
+    edits = "!f() { git qf --staged \"$@\"; }; f"
+
+    # Open individual commits in $PAGER.
     pg = pagediffs
 
     l = log --pretty=relauthor
