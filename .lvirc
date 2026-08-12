@@ -153,8 +153,8 @@ on complete LVI_COMPL_POPUP=1 lvi-complete   " ...as a tmux popup instead
 " `register` backs a register with shell commands: a yank/delete into it pipes
 " the text out, a put reads fresh in. Wire `+` to your platform's clipboard and
 " "+y / "+p (and "+d, "+dd, "+yiw, ...) copy and paste through it. Pick ONE line:
-register + read wl-paste write wl-copy              " Wayland (wl-clipboard)
-"   register + read xclip -selection clipboard -o write xclip -selection clipboard   " X11
+"   register + read wl-paste write wl-copy              " Wayland (wl-clipboard)
+register + read clip -o write clip
 "   register + read pbpaste write pbcopy            " macOS
 "   register + read tmux save-buffer - write tmux load-buffer -   " tmux buffer
 " Any register name works; `+` just follows Vim's convention. `register +` alone
