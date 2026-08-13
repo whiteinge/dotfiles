@@ -39,6 +39,7 @@ socat
 tar
 termux-api
 termux-exec
+termux-services
 tidy
 tmux
 tree
