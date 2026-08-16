@@ -5,6 +5,7 @@ datamash
 git
 graphviz
 jq
+luajit
 libncurses-dev
 lynx
 m4

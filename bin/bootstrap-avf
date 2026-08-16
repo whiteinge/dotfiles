@@ -1,0 +1,171 @@
+#!/usr/bin/env sh
+# Bootstrap an Android AVF Debian install (Pixel Terminal app)
+
+# weston, Xwayland, sommelier, and the /usr/local/bin/enable_* display scripts
+# all ship with the vendor image; only these are missing. packages-debian-desktop
+# is deliberately not used here -- it is x86/desktop specific (steam, wine,
+# chrome), so packages-avf carries its own firefox/gimp/inkscape.
+cat $HOME/opt/packages-debian $HOME/opt/packages-avf \
+    | xargs sudo apt install -y
+
+# The Terminal app runs ttyd -> setpriv -> /bin/bash -l. setpriv is not a login
+# program: it drops privileges and execs the binary it was handed, so it never
+# reads /etc/passwd and `chsh` alone cannot change this shell. Override it with
+# a drop-in rather than editing the vendor unit, so an app update that rewrites
+# ttyd_uds.service cannot silently revert it.
+#
+# The Wants=/After= exists because the vendor unit hardcodes
+# XDG_RUNTIME_DIR=/run/user/1000 with no dependency guaranteeing that directory
+# exists. Without it, weston dies with "XDG_RUNTIME_DIR ... is not a directory".
+#
+# NOTE: this pins the vendor's ttyd flags as they were on build CP2A.260805.005.
+# Re-check `systemctl cat ttyd_uds.service` after an Android update in case the
+# invocation changed; this override would keep the stale one.
+sudo mkdir -p /etc/systemd/system/ttyd_uds.service.d
+sudo tee /etc/systemd/system/ttyd_uds.service.d/override.conf >/dev/null <<'EOF'
+[Service]
+Environment=SHELL=/usr/bin/zsh
+ExecStart=
+ExecStart=/usr/local/bin/ttyd -i /run/ttyd/ttyd.sock -t disableLeaveAlert=true -W /usr/bin/setpriv --reuid=droid --regid=users --init-groups /usr/bin/zsh -l
+
+[Unit]
+Wants=user-runtime-dir@1000.service
+After=user-runtime-dir@1000.service
+EOF
+sudo systemctl daemon-reload
+
+# setpriv creates no PAM session, so logind never builds /run/user/1000 on the
+# Terminal app's path. Linger makes systemd run the user manager at boot instead.
+sudo loginctl enable-linger droid
+
+# Keep /etc/passwd in agreement with the drop-in above: tmux resolves
+# default-shell from $SHELL then passwd, and sshd reads passwd directly.
+sudo chsh -s /usr/bin/zsh droid
+
+# Everything above is undone by this one omission, so it is written here rather
+# than left to the dotfiles checkout.
+#
+# The vendor puts its display setup in /etc/profile.d/activate_display.sh, which
+# creates the seated logind session weston's DRM backend requires and then starts
+# weston.service. /etc/profile.d is only sourced by /etc/profile -- which bash
+# login shells read and zsh login shells never do, because Debian's
+# /etc/zsh/zprofile contains no executable code. Switching the login shell to zsh
+# therefore disables the hook, and the GUI dies two reboots later with
+# "fatal: failed to create compositor backend" -- an error that mentions neither
+# shells nor profiles.
+#
+# Appended rather than overwritten, and guarded, so this composes with a
+# dotfiles-managed ~/.zprofile instead of clobbering it.
+if ! grep -qs 'emulate sh -c' $HOME/.zprofile; then
+    cat >> $HOME/.zprofile <<'EOF'
+
+# Source /etc/profile (and thus /etc/profile.d/*) the way bash login shells do.
+# On this Android AVF guest that is what runs activate_display.sh, without which
+# weston cannot acquire DRM master. emulate sh is scoped to the source call and
+# does not leak into the interactive shell.
+if [[ -r /etc/profile ]]; then
+    emulate sh -c 'source /etc/profile'
+fi
+EOF
+fi
+
+# Nothing merges X resources under a Wayland compositor: startx would have done
+# it via /etc/X11/xinit/xinitrc, a display manager via /etc/X11/Xsession.d, and
+# neither exists here. Xwayland clients still read them, so it has to be wired up
+# by hand -- but NOT as a one-shot here. Xwayland is spawned by weston and lives
+# exactly as long as weston does, so resources must be re-merged once per weston
+# session or they vanish at the next VM reboot. A user unit tied to weston's
+# lifecycle is the right shape; a line in this script is not.
+mkdir -p $HOME/.config/systemd/user
+if [ ! -f $HOME/.config/systemd/user/xrdb.service ]; then
+    cat > $HOME/.config/systemd/user/xrdb.service <<'EOF'
+[Unit]
+Description=Merge X resources into Xwayland
+Documentation=man:xrdb(1)
+After=weston.service
+PartOf=weston.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# systemd user units do not inherit DISPLAY, and weston does not export it.
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/xrdb -merge %h/.Xresources
+
+[Install]
+# graphical-session.target is never activated here -- the vendor hook runs
+# `systemctl --user start weston` directly -- so anchor on the service itself.
+WantedBy=weston.service
+EOF
+fi
+systemctl --user daemon-reload
+systemctl --user enable xrdb.service
+
+# Firefox's GPU compositing is unusable on this stack: heavy corruption, enough
+# that the browser cannot be used. The path is WebRender -> EGL/GL -> zink ->
+# Vulkan -> gfxstream -> PowerVR, and Firefox's own gfxInfo already blocklists
+# DMABUF_SURFACE_EXPORT here with FEATURE_FAILURE_BROKEN_DRIVER. Software
+# WebRender fixes it while keeping Wayland (unlike MOZ_ENABLE_WAYLAND=0, which
+# lands on Xwayland where XWAYLAND_NO_GLAMOR=1 means no acceleration anyway) and
+# notably keeps WebGL on the GPU -- only compositing and canvas2d move to CPU.
+#
+# MOZ_DISABLE_DMABUF=1 does nothing in Firefox 153: the variable is accepted but
+# the Decision Log shows DMABUF still "default: available" with no env override.
+#
+# Set via enterprise policy rather than a profile user.js so it applies before
+# any profile exists -- which is the case on a fresh rebuild. "gfx" is in the
+# Preferences policy's supported-prefix list. Status=default rather than locked,
+# so about:config can still override it per-profile.
+sudo mkdir -p /etc/firefox/policies
+sudo tee /etc/firefox/policies/policies.json >/dev/null <<'EOF'
+{
+  "policies": {
+    "Preferences": {
+      "gfx.webrender.software": {
+        "Value": true,
+        "Status": "default"
+      }
+    }
+  }
+}
+EOF
+# root's umask on this image is restrictive; without these Firefox cannot read
+# the policy and it silently does nothing.
+sudo chmod 755 /etc/firefox /etc/firefox/policies
+sudo chmod 644 /etc/firefox/policies/policies.json
+
+# Move sshd off 8022. Termux's own sshd binds 0.0.0.0:8022 on the Android side, so
+# anything bridging the two collides. A drop-in rather than an edit to the vendor
+# sshd_config -- note Port is ADDITIVE in sshd, so this adds 8023 rather than
+# replacing 8022.
+sudo mkdir -p /etc/ssh/sshd_config.d
+sudo tee /etc/ssh/sshd_config.d/10-port.conf >/dev/null <<'EOF'
+Port 8023
+EOF
+sudo chmod 644 /etc/ssh/sshd_config.d/10-port.conf
+sudo sshd -t && sudo systemctl restart ssh
+
+# Publish this guest's NAT address to the virtiofs share every boot. Android can
+# reach the guest directly at that address (the LAN cannot), so a socat relay in
+# Termux is the cleanest way in from another machine -- but crosvm re-randomises
+# the subnet on every boot, so the target has to be discoverable. See section 8.
+sudo tee /etc/systemd/system/publish-guest-ip.service >/dev/null <<'EOF'
+[Unit]
+Description=Publish guest IP to Android shared storage (for a Termux-side relay)
+After=network-online.target mnt-shared.automount ssh.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/home/droid/bin/publish-guest-ip
+
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo chmod 644 /etc/systemd/system/publish-guest-ip.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now publish-guest-ip.service
+
+printf 'Bootstrap complete. Restart the Terminal app to pick up the zsh shell\n'
+printf 'and trigger the display hook (or run: sudo systemctl restart ttyd_uds).\n'

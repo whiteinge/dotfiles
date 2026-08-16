@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+# Publish this guest's address to Android shared storage, for a Termux-side relay.
+#
+# Android can route directly into crosvm's NAT subnet, so an Android app (Termux)
+# can reach the guest on any port it listens on -- no Terminal-app port forward
+# needed. But the NAT subnet is re-randomised on every VM boot, so the target
+# address is not stable. This drops a shell-sourceable file on the virtiofs share
+# (which survives, and which Termux reads via ~/storage/shared) so the relay can
+# pick the address up automatically.
+
+OUT=/mnt/shared/Documents/avf-guest.env
+IFACE=enp0s14
+
+# /mnt/shared is an autofs mount: touch it first or it may look empty.
+ls /mnt/shared >/dev/null 2>&1
+
+# Wait briefly for DHCP.
+n=0
+while [ "$n" -lt 30 ]; do
+    ip=$(ip -o -4 addr show "$IFACE" 2>/dev/null | awk '{split($4,a,"/"); print a[1]}' | head -1)
+    [ -n "$ip" ] && break
+    n=$((n + 1)); sleep 1
+done
+
+if [ -z "$ip" ]; then
+    echo "publish-guest-ip: no IPv4 on $IFACE after 30s" >&2
+    exit 1
+fi
+
+ports=$(sudo -n sshd -T 2>/dev/null | awk '/^port /{print $2}' | sort -n | tr '\n' ' ')
+[ -z "$ports" ] && ports=8023
+
+# Write atomically so a reader never sees a half-written file.
+tmp="${OUT}.tmp"
+{
+    echo "# written by publish-guest-ip on $(hostname) -- regenerated every boot"
+    echo "GUEST_IP=$ip"
+    echo "GUEST_SSH_PORTS=\"$(echo $ports | sed 's/ *$//')\""
+    echo "GUEST_SSH_PORT=$(echo $ports | awk '{print $NF}')"
+} >| "$tmp" && mv -f "$tmp" "$OUT"
+
+echo "publish-guest-ip: $OUT -> $ip (ssh ports: $ports)"

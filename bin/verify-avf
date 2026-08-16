@@ -1,0 +1,231 @@
+#!/usr/bin/env sh
+# Verify an Android AVF Debian install (Pixel Terminal app)
+#
+# Every failure checked for here is silent. chsh reports success and changes
+# nothing. The vendor display hook stops running with no error at all. The disk
+# fences 76 GiB without saying so anywhere. Applying configuration is not the
+# same as having it take effect, and a bootstrap script that only applies will
+# cheerfully leave you a broken system that looks fine.
+#
+# Run after bootstrap-avf, and again after every Android update -- that is
+# exactly when the vendor units change underneath you.
+#
+# Exits 1 if any check FAILs.
+
+fails=0
+
+ok()   { printf '  ok    %s\n' "$1"; }
+warn() { printf '  WARN  %s\n' "$1"; }
+bad()  { printf '  FAIL  %s\n' "$1"; fails=$((fails + 1)); }
+
+# --- Shell wiring ------------------------------------------------------------
+# The app runs ttyd -> setpriv -> $shell. setpriv is not a login program, so it
+# never reads /etc/passwd and chsh cannot influence this.
+
+printf '\nShell wiring\n'
+
+ttyd_exec=$(systemctl show -p ExecStart --value ttyd_uds.service 2>/dev/null)
+case "$ttyd_exec" in
+    *'/usr/bin/zsh -l'*) ttyd_shell=/usr/bin/zsh; ok "ttyd launches /usr/bin/zsh" ;;
+    *'/bin/bash -l'*)    ttyd_shell=/bin/bash
+                         warn "ttyd launches /bin/bash -- drop-in not applied?" ;;
+    '')                  ttyd_shell=; bad "ttyd_uds.service has no ExecStart (unit missing?)" ;;
+    *)                   ttyd_shell=; bad "cannot determine ttyd's shell from ExecStart" ;;
+esac
+
+passwd_shell=$(getent passwd droid | cut -d: -f7)
+if [ -n "$ttyd_shell" ] && [ "$passwd_shell" = "$ttyd_shell" ]; then
+    ok "/etc/passwd agrees with ttyd ($passwd_shell)"
+else
+    warn "passwd shell is $passwd_shell but ttyd runs ${ttyd_shell:-?} --"
+    warn "  tmux default-shell and sshd follow passwd, so they will disagree"
+fi
+
+# The one that breaks the GUI two reboots later. /etc/profile.d/*.sh -- including
+# activate_display.sh -- is sourced only by /etc/profile. bash login shells read
+# it; zsh login shells do not, because Debian's /etc/zsh/zprofile is inert.
+case "$passwd_shell" in
+    */bash)
+        ok "bash reads /etc/profile natively, so /etc/profile.d hooks run"
+        ;;
+    */zsh)
+        if grep -qs '/etc/profile' "$HOME/.zprofile" /etc/zsh/zprofile; then
+            ok "zsh login shells source /etc/profile"
+        else
+            bad "zsh never sources /etc/profile -- /etc/profile.d hooks are DISABLED"
+            bad "  weston will fail with 'failed to create compositor backend'"
+            bad "  fix: add to ~/.zprofile   emulate sh -c 'source /etc/profile'"
+        fi
+        ;;
+    *)
+        warn "unrecognised login shell '$passwd_shell'; cannot check /etc/profile.d"
+        ;;
+esac
+
+# --- Session and seat --------------------------------------------------------
+# setpriv creates no PAM session, so logind builds neither /run/user/1000 nor a
+# seat. Linger supplies the first; the vendor display hook supplies the second.
+
+printf '\nSession and seat\n'
+
+if [ "$(loginctl show-user droid -p Linger --value 2>/dev/null)" = "yes" ]; then
+    ok "linger enabled for droid"
+else
+    warn "linger not enabled -- run: sudo loginctl enable-linger droid"
+fi
+
+if [ -d /run/user/1000 ]; then
+    ok "/run/user/1000 exists"
+else
+    bad "/run/user/1000 missing, but ttyd exports XDG_RUNTIME_DIR pointing at it"
+fi
+
+# A CLASS=manager session from linger is NOT a seated session. weston's DRM
+# backend needs an actual seat.
+if loginctl list-sessions --no-legend 2>/dev/null | grep -qw seat0; then
+    ok "seated session on seat0 present"
+else
+    bad "no session on seat0 -- weston's DRM backend cannot acquire DRM master"
+    bad "  the vendor hook creates it: source /usr/local/bin/enable_gfxstream"
+fi
+
+# --- Graphics ----------------------------------------------------------------
+
+printf '\nGraphics\n'
+
+if systemctl --user is-active weston.service >/dev/null 2>&1; then
+    ok "weston.service active"
+else
+    warn "weston.service not active (expected if you have not opened the GUI yet)"
+fi
+
+# Xwayland dies with weston, taking RESOURCE_MANAGER with it, so this has to be
+# re-merged every session -- a one-shot at install time is silently useless.
+if systemctl --user is-active weston.service >/dev/null 2>&1; then
+    if [ "$(DISPLAY=:0 xrdb -query 2>/dev/null | wc -l)" -gt 0 ]; then
+        ok "X resources merged into Xwayland"
+    else
+        warn "no X resources in Xwayland -- check: systemctl --user status xrdb.service"
+    fi
+fi
+
+# Firefox's GPU compositing corrupts on this stack. The policy must be readable
+# by the browser's uid or it silently does nothing -- root's umask here is
+# restrictive enough to produce exactly that.
+FFPOL=/etc/firefox/policies/policies.json
+if [ -r "$FFPOL" ] && grep -q 'gfx.webrender.software' "$FFPOL"; then
+    ok "Firefox software-WebRender policy present and readable"
+elif [ -e "$FFPOL" ]; then
+    bad "$FFPOL exists but is not readable by this user -- policy will be ignored"
+else
+    warn "no Firefox software-WebRender policy; expect heavy rendering corruption"
+fi
+
+if grep -qs gfxstream_vk_icd "$HOME/weston.env"; then
+    ok "GPU path selected (enable_gfxstream)"
+elif [ -f "$HOME/weston.env" ]; then
+    warn "weston.env exists but has no gfxstream ICD -- software rendering"
+    warn "  enable_display pins llvmpipe; use enable_gfxstream for the real GPU"
+else
+    warn "no ~/weston.env -- display hook has not run this boot"
+fi
+
+# --- Vendor drift ------------------------------------------------------------
+# Our drop-in replaces ExecStart wholesale, which pins the vendor's ttyd flags as
+# they were when it was written. If an update changes them, we silently keep the
+# stale invocation. Compare the two with the shell path normalised away.
+
+printf '\nVendor drift\n'
+
+vendor_line=$(grep -h '^ExecStart=/usr/local/bin/ttyd' \
+    /etc/systemd/system/ttyd_uds.service 2>/dev/null)
+if [ -z "$vendor_line" ]; then
+    warn "cannot read vendor ttyd_uds.service ExecStart; skipping drift check"
+else
+    norm='s|/usr/bin/zsh|@SH@|g; s|/bin/bash|@SH@|g; s|^ExecStart=||'
+    vendor_norm=$(printf '%s\n' "$vendor_line" | sed "$norm")
+    effective_norm=$(printf '%s\n' "$ttyd_exec" \
+        | sed -n 's|.*argv\[\]=\(/usr/local/bin/ttyd[^;]*\).*|\1|p' \
+        | sed 's/ *$//' | sed "$norm")
+    if [ -z "$effective_norm" ]; then
+        warn "could not parse effective ExecStart; skipping drift check"
+    elif [ "$vendor_norm" = "$effective_norm" ]; then
+        ok "drop-in matches the vendor invocation (only the shell differs)"
+    else
+        warn "vendor ttyd invocation has CHANGED -- your drop-in pins a stale one"
+        warn "  vendor:    $vendor_norm"
+        warn "  effective: $effective_norm"
+    fi
+fi
+
+# --- Storage -----------------------------------------------------------------
+
+printf '\nStorage\n'
+
+# /mnt/shared is an autofs mount: findmnt reports "autofs" until something
+# touches the path and triggers the real virtiofs mount. Testing the mount table
+# alone gives a false negative, so access it first and check readability.
+if ls /mnt/shared >/dev/null 2>&1 \
+   && findmnt -no FSTYPE /mnt/shared 2>/dev/null | grep -q virtiofs; then
+    ok "/mnt/shared readable (virtiofs) -- survives a VM rebuild"
+else
+    warn "/mnt/shared not accessible; bootstrap staging and Android files are gone"
+fi
+
+# df understates nothing and overstates everything here: the guest's usable disk
+# is a host-driven quota applied at VM boot, not a filesystem property.
+python3 - <<'PY'
+import os
+s = os.statvfs('/')
+gib = lambda b: b * s.f_frsize / 2**30
+avail, fenced = gib(s.f_bavail), gib(s.f_bfree - s.f_bavail)
+print(f"  {'ok  ' if avail >= 2 else 'WARN'}  disk: {avail:.1f} GiB available, "
+      f"{fenced:.1f} GiB fenced by the host quota")
+if avail < 2:
+    print("        free space on Android and RESTART the VM -- the quota is")
+    print("        recalculated only at boot, never live")
+PY
+
+if sudo -n dmesg 2>/dev/null | grep -q 'EXT4-fs (vdc).*error'; then
+    warn "/mnt/backup (vdc) reports filesystem errors; corruption there is silent"
+    warn "  sudo systemctl stop backup_mount.service && sudo umount /mnt/backup"
+    warn "  sudo e2fsck -f /dev/vdc"
+else
+    ok "no ext4 errors reported for /mnt/backup"
+fi
+
+# --- Remote access -----------------------------------------------------------
+# Android can reach the guest directly at its NAT address; the LAN cannot. A socat
+# relay in Termux bridges it, but the subnet is re-randomised each boot, so the
+# address has to be published somewhere Termux can read.
+
+printf '\nRemote access\n'
+
+if systemctl is-active publish-guest-ip.service >/dev/null 2>&1; then
+    ok "publish-guest-ip.service active"
+else
+    warn "publish-guest-ip.service not active -- Termux relay target will be stale"
+fi
+
+ENVF=/mnt/shared/Documents/avf-guest.env
+ls /mnt/shared >/dev/null 2>&1        # trigger autofs before testing
+if [ -r "$ENVF" ]; then
+    pub=$(awk -F= '/^GUEST_IP=/{print $2}' "$ENVF")
+    cur=$(ip -o -4 addr show enp0s14 2>/dev/null | awk '{split($4,a,"/"); print a[1]}')
+    if [ "$pub" = "$cur" ]; then
+        ok "published guest IP matches current ($cur)"
+    else
+        bad "published IP $pub != current $cur -- re-run publish-guest-ip"
+    fi
+else
+    warn "no $ENVF -- Termux cannot discover this guest's address"
+fi
+
+# --- Result ------------------------------------------------------------------
+
+if [ "$fails" -eq 0 ]; then
+    printf '\nAll critical checks passed.\n'
+else
+    printf '\n%s critical check(s) FAILED.\n' "$fails"
+fi
+exit $([ "$fails" -eq 0 ] && echo 0 || echo 1)
