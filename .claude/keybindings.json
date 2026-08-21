@@ -1,0 +1,26 @@
+{
+  "$schema": "https://www.schemastore.org/claude-code-keybindings.json",
+  "$docs": "https://code.claude.com/docs/en/keybindings",
+  "bindings": [
+    {
+      "context": "Transcript",
+      "bindings": {
+        "ctrl+e": "scroll:lineDown",
+        "ctrl+y": "scroll:lineUp",
+        "a": "transcript:toggleShowAll"
+      }
+    },
+    {
+      "context": "Select",
+      "bindings": {
+        "up": "select:previous",
+        "down": "select:next",
+        "j": "select:next",
+        "k": "select:previous",
+        "ctrl+n": "select:next",
+        "ctrl+p": "select:previous",
+        "enter": "select:accept"
+      }
+    }
+  ]
+}
