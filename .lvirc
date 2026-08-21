@@ -1,6 +1,7 @@
 " ~/.lvirc -- tuned from contrib/lvirc.sample.vim
 
 " ---- the keymap, and why it is shaped this way ------------------------ {{{
+
 " Each contrib tool is a standalone concept, so its maps could each grab a
 " convenient letter and collide with the next tool's. Instead the maps below are
 " ONE coherent keymap -- copy the whole file and nothing steps on anything else.
@@ -14,13 +15,14 @@
 " That single rule is the whole scheme:
 "
 "   * LEAF -- a tool with one action gets one letter, mnemonic where vim has an
-"     equivalent:  \= format (vim =), \f find/open, \t tags, \r registers,
-"     \m marks, \e errors/lint, \s spell, \w wrap-toggle.
+"     equivalent:  \= format (vim =), \f find/open, \b buffers, \t tags,
+"     \r registers, \m marks, \e errors/lint, \s spell, \w wrap-toggle.
 "   * MENU -- a tool with several actions gets a prefix, and its most-used action
 "     is that letter DOUBLED (a leaf-like two-key press for the common case):
 "       \g  git      \gg changes   \gs staged   \gp stage-hunks (git add -p)
 "       \l  lists     \ll switch    \lg goto   \lc current   \lh hide   \lp preview
 "       \h  highlight \hh refresh   \ht toggle   \hm mark word   \hc clear marks
+"                     \ho column-limit marks (lvi-hl-col)
 "       \y  yankring  \yy pick      \yp older  \yn newer
 "       \i  invis     \ii toggle    \ip page (exact bytes in less)
 "       \d  diff      \dp put       \do obtain          (installed by lvi-diff)
@@ -189,12 +191,19 @@ map \yy :silent !lvi-yankring pick<CR>     " or pick any entry through $LVI_PICK
 " LVI_YANKRING_DIR at a shared path to carry one ring across views.
 
 " }}}
-" ---- open files -------------------------------------------------------- {{{
+" ---- open files and buffers -------------------------------------------- {{{
 
 " lvi-open fuzzy-picks a file ($LVI_PICKER, default fzf) and opens it with :e
 " over the socket. It needs the picker's tty (:silent !), which freezes lvi; the
 " chosen file lands when lvi resumes. \f = find (the open leaf).
 map \f :silent !lvi-open<CR>
+
+" lvi-buf is the same picker over :ls -- the buffers already open, rather than
+" files on disk. bn/bp skip scratch buffers, so this is the way to a man page or
+" a :cmdwin, and the way to the fourth file without three bn's. It reads the
+" listing from $LVI_BUFS (exported to every child), since the frozen picker can't
+" ask for :ls over the socket. \b = buffers (the switch leaf).
+map \b :silent !lvi-buf<CR>
 
 " }}}
 " ---- tags -------------------------------------------------------------- {{{
@@ -241,8 +250,9 @@ map \gp :bg lvi-stagediff<CR>               " "git add -p" the current file
 " ---- linting ----------------------------------------------------------- {{{
 
 " lvi-lint runs a linter over the LIVE buffer (unsaved edits included) into a
-" `lint` list; the backend is picked by the file's extension (ruff / shellcheck
-" / deno lint ship -- see lvi-lint's header for the tiny adapter contract).
+" `lint` list; the backend is picked by the file's extension (ruff, shellcheck,
+" deno lint, jq, xmlstarlet and tidy ship -- see lvi-lint's header for the
+" adapter contract, which is a dozen lines).
 " Findings step like any list, and the status counter doubles as the pass/fail
 " glance: [0/0] after a run means clean.
 on write lvi-lint                      " re-lint on every save...
@@ -298,17 +308,36 @@ map \= :bg lvi-fmt<CR>
 "
 " That is CODE formatting. For PROSE, gq reflows a motion/text object through the
 " `fmtprg` option (default fmt(1)); gqip reflows a paragraph, gqq the line. fmtprg
-" seeds from $LVI_FMT but is live, so re-set it per file type -- 72 for an email,
-" 80 for Markdown -- from a key or a hook. It takes the rest of the line, so keep
-" it on its own :set. A \q menu (q for gq) makes the width switch a two-key press:
-"   set fmtprg=fmt -w 72                " a startup default width
-"   map \qe :set fmtprg=fmt -w 72<CR>   " switch to email width on demand
-"   map \qm :set fmtprg=fmt -w 80<CR>   " ...or Markdown width
+" seeds from $LVI_FMT but is live, so it can be re-set per file type -- 72 for an
+" email, 79 for a draft. It takes the rest of the line, so keep it on its own
+" :set.
 "
 " fmt(1) drops a list's hanging indent. lvi-reflow is a drop-in fmtprg that keeps
 " each item's marker and hangs the wrapped lines under its text (ordered, roman,
 " letter, and bullet markers; nested lists nest). Then gqip/gqq reflow lists too:
 set fmtprg=lvi-reflow -w 79
+"
+" WIDTHS live in lvi-ftype's table (below), not in a map per width: a commit
+" message, a rebase todo and an MUA's compose file are known by name, so each
+" opens at its own width with nothing pressed. For the buffer whose name can't
+" say it -- a draft going into an email -- name the type from the ex line:
+"   :bg lvi-ftype mail                  " 72 columns, this buffer
+"   :bg lvi-ftype prose                 " ...back to a 79-column draft
+"
+" lvi-hl-col is the other half: it marks what runs PAST the limit, so the number
+" you reflow at is the number you can see. It lives in the \h highlight menu with
+" the other :hl producers (\ho, o for the `overlong` group). The table pushes the
+" limit per file type and can show the marks by itself -- `mark=on`, which the
+" commit and mail arms set, since going over is a mistake there rather than a
+" preference. A commit SUBJECT carries two limits at once (50 by convention, 72
+" where git log starts eliding it) and each tier gets its own group; the body
+" carries none, since nothing truncates it and gq wraps it when you ask.
+" Un-themed = invisible, so theme the groups; pri= lifts them above a syntax
+" theme repainting the same cells.
+map \ho :bg lvi-hl-col<CR>              " toggle the column-limit marks
+hi overlong     bg=52 pri=15            " over a hard limit (a mail body at 72)
+hi subjectlong  bg=58 pri=15            " a commit subject past 50: convention
+hi subjecterror bg=red fg=black pri=15  " ...past 72, where git log elides it
 
 " }}}
 " ---- filetype settings (vim's ftplugin) -------------------------------- {{{
@@ -326,7 +355,10 @@ set fmtprg=lvi-reflow -w 79
 " Options are view-global, not per-buffer, so the table is re-applied on every
 " switch and a manual :set lasts only until you switch away. Use one such hook,
 " not several: two would race.
-on bufenter ~/.config/lvi/lvi-ftype
+" It also classifies the files another program hands you -- a commit message, a
+" rebase todo, a mail compose file -- and takes a filetype word as an argument
+" (`:bg lvi-ftype mail`) for the buffer whose name can't say what it is.
+on bufenter lvi-ftype
 
 " }}}
 " ---- folding ----------------------------------------------------------- {{{
