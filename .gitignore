@@ -4,6 +4,12 @@
 # Runtime state from my own scripts:
 /.config/dotfiles/theme.state
 
+# Un-ignore a few Claude files:
+/.claude/*
+!/.claude/CLAUDE.md
+!/.claude/keybindings.json
+!/.claude/settings.json
+
 # Progs I often compile and install myself:
 /bin/csvheader
 /bin/csvquote
@@ -93,7 +99,6 @@
 /.aws-cli
 /.cache
 /.cargo
-/.claude
 /.docker
 /.dotnet
 /.local/share/applications
