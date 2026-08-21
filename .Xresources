@@ -83,6 +83,7 @@ xterm*vt100.Translations: #override \n\
     Meta ~Shift <Key> question: string("¿") \n\
     Meta ~Shift <Key> 0: string("ʘ") \n\
     Meta ~Shift <Key> o: string("°") \n\
+    Meta ~Shift <Key> s: string("§") \n\
     Meta ~Shift <Key> t: string("™") \n\
     Meta ~Shift <Key> c: string("©") \n\
     Meta ~Shift <Key> x: string("×") \n\
