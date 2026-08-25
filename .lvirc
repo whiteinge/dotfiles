@@ -113,14 +113,25 @@ hi Error   fg=red bold
 " rest touch no tty, so they use :bg -- a detached spawn with NO terminal
 " handover, which avoids the alt-screen flash that :! causes when you hold down n/N.
 map / :silent !lvi-search<CR>                 " prompt for a pattern, then focus it
-map * :bg lvi-search "$LVI_CWORD"<CR>         " search the word under the cursor
+map ? :silent !lvi-search -b<CR>              " ...searching backward from the cursor
+map * :bg lvi-search --word<CR>               " search the word under the cursor
+map # :bg lvi-search --word -b<CR>            " ...backward
 map n :bg lvi-list next<CR>                   " step the focused list...
 map N :bg lvi-list prev<CR>                   " ...forward / back
-" list MENU (\l): switch focus / goto within / skip file / re-center / hide / preview.
+" A search starts at the cursor, as vi's does, but the list it builds is a walk
+" with two ends rather than a ring: `n` stops on the last match (the status says
+" `(end)`) instead of wrapping, \l[ / \l] are the wrap by hand, `n` is always
+" forward -- after `?` it is `N` that keeps going back -- and `n` walks the buffer
+" as it was when you searched. See `lvi-search -h`.
+" list MENU (\l): switch focus / goto within / skip file / jump to an end /
+" re-center / hide / preview.
 map \ll :silent !lvi-list switch<CR>          " re-aim n/N: pick the focused list
 map \lg :silent !lvi-list goto<CR>            " pick+jump to an entry in the focused list
 map \lf :bg lvi-list nfile<CR>                " skip to the next FILE in the list (vim :cnfile);
 map \lF :bg lvi-list pfile<CR>                "   ...previous -- hop a file you don't care about
+map \l[ :bg lvi-list first<CR>                " jump to the FIRST entry (vim :cfirst)...
+map \l] :bg lvi-list last<CR>                 "   ...or the last (:clast); no list wraps, so
+"                                               these are the wrap, done by hand
 map \lc :bg lvi-list current<CR>              " re-jump to the current entry (vim :cc);
 "                                               recall it after opening a fold n/N landed in
 map \lh :bg lvi-list hide<CR>                 " :nohl-style -- hide it; next n/N re-shows
@@ -139,6 +150,27 @@ on bufenter lvi-list paint
 " `lvi`, and only bites when -q was passed. Loads + paints (cursor stays put);
 " press n to step to the first entry. Drop `--focus` to keep your current focus.
 on ready [ -n "$LVI_QUICKFIX" ] && lvi-list load "$LVI_QUICKFIX" quickfix --focus
+
+" SEARCH AS A MOTION, the other half -- and it goes on the SAME keys as the maps
+" above, not instead of them. A list can move you but can never be an operator's
+" TARGET, because it arrives over the socket after the command that wanted it has
+" finished; `:motion` is a synchronous filter that hands one target back in time.
+" The keys do not fight: lvi expands maps only for the FIRST key of a command, so
+" a bare `/` takes the map (build the list) and `d/` takes the motion (one
+" target). Same script, same stored pattern, so the two can never disagree.
+motion / prompt lvi-search --motion     " d/pat, c/pat, y/pat -- bare / is still the list
+motion ? prompt lvi-search --motion -b  " d?pat
+motion * lvi-search --motion --word     " d* -- the word under the cursor
+motion # lvi-search --motion --word -b
+" On this side the search wraps and re-matches the live buffer, so the three list
+" deviations noted above do not apply to `d/`.
+" `n`/`N` are left to the list on purpose: bare `n` steps whichever list is
+" FOCUSED (lint, spell, git hunks), so a `dn` meaning "the next search match"
+" would not mirror it. To delete back to somewhere you reached by stepping a
+" list, use the previous-context mark -- `d` then two backticks -- since every
+" list step is jump-class. Add this if you want `dn` anyway:
+motion n lvi-search --motion --last
+motion N lvi-search --motion --last -b
 
 " }}}
 " ---- insert-mode completion -------------------------------------------- {{{
@@ -267,16 +299,17 @@ hi lint-cur bg=124 pri=11
 " ---- spell check ------------------------------------------------------- {{{
 
 " lvi-spell is a toggle (vim's :set spell): while on, the buffer re-checks as
-" you type -- misspelled words get exact-extent `spellbad` marks plus a `spell`
-" list to step. The toggle installs its own change/bufenter hooks once per
-" view, so do NOT add them here; everything below is keys and theme. Fix/add
+" you type, and one `spellbad` list both marks each misspelling at its exact
+" extent and steps them. The toggle installs its own change/bufenter hooks once
+" per view, so do NOT add them here; everything below is keys and theme. Fix/add
 " keep vim's native z-keys (z=, zg); the toggle is the one leader leaf (\s).
-map \s :bg lvi-spell<CR>               " toggle
-map ]s :bg lvi-list next spell<CR>     " step misspellings
-map [s :bg lvi-list prev spell<CR>
-map z= :silent !lvi-spell fix<CR>      " pick a suggestion for the word under
-map zg :bg lvi-spell add<CR>           " the cursor / add it to the dictionary
-hi spellbad underline pri=20           " the word marks themselves
+map \s :bg lvi-spell<CR>                  " toggle
+map ]s :bg lvi-list next spellbad<CR>     " step misspellings
+map [s :bg lvi-list prev spellbad<CR>
+map z= :silent !lvi-spell fix<CR>         " pick a suggestion for the word under
+map zg :bg lvi-spell add<CR>              " the cursor / add it to the dictionary
+hi spellbad underline pri=20              " the word marks themselves
+hi spellbad-cur underline bold pri=21     " ...and the one you are standing on
 
 " }}}
 " ---- invisible characters ---------------------------------------------- {{{
