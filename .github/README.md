@@ -21,7 +21,7 @@ The layout of this repo is intended to be used directly in a home folder. The
 commands below will overwrite any existing files in your home directory.
 
 ```sh
-git clone --bare https://github.com/whiteinge/dotfiles.git $HOME/src/dotfiles.git
+git clone --recurse-submodules --bare https://github.com/whiteinge/dotfiles.git $HOME/src/dotfiles.git
 git --git-dir=$HOME/src/dotfiles.git --work-tree=$HOME checkout -f master
 git --git-dir=$HOME/src/dotfiles.git --work-tree=$HOME submodule update --init
 ```
