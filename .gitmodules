@@ -49,4 +49,4 @@
 	url = https://github.com/tpope/vim-eunuch.git
 [submodule "opt/repos/lvi"]
 	path = opt/repos/lvi
-	url = git@github.com:whiteinge/lvi.git
+	url = https://github.com/whiteinge/lvi.git
