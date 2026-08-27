@@ -27,7 +27,7 @@
 #
 # Format inspired by https://www.worldtimebuddy.com
 #
-# Requirements: GNU date, /usr/share/zoneinfo
+# Requirements: GNU date, a zoneinfo database (/usr/share/zoneinfo, or $TZDIR)
 
 datestr='today'
 while getopts xhd: opt; do
@@ -40,16 +40,50 @@ while getopts xhd: opt; do
 done
 shift $(( OPTIND - 1 ))
 
-localtime="$(readlink /etc/localtime)"
-curzone="${localtime#*zoneinfo/}"
+tzdir="${TZDIR:-/usr/share/zoneinfo}"
+
+# Resolve the local zone name from the most authoritative source available.
+localzone() {
+    [ -n "$TZ" ] && { printf '%s\n' "${TZ#:}"; return; }  # colon prefix is legal
+    if command -v timedatectl >/dev/null 2>&1; then
+        z="$(timedatectl show -p Timezone --value 2>/dev/null)"
+        [ -n "$z" ] && { printf '%s\n' "$z"; return; }
+    fi
+    if [ -r /etc/timezone ]; then
+        read -r z < /etc/timezone
+        [ -n "$z" ] && { printf '%s\n' "$z"; return; }
+    fi
+    z="$(readlink -f /etc/localtime 2>/dev/null)"  # -f also handles relative links
+    case $z in "$tzdir"/*) printf '%s\n' "${z#"$tzdir"/}"; return ;; esac
+    printf 'UTC\n'
+}
+
+# A zone is usable if libc can resolve it, which means either a file under
+# $TZDIR or a bare POSIX TZ string such as EST5EDT, which needs no file.
+# Checking matters because TZ=US/Mountain does not fail, it silently gives UTC.
+tzvalid() {
+    [ -e "$tzdir/$1" ] && return 0
+    case $1 in
+        */*) return 1 ;;  # zone-name form: a file is required
+        UTC|GMT|UTC0|GMT0) return 0 ;;
+    esac
+    [ "$(TZ="$1" date +%z 2>/dev/null)" != "$(TZ=UTC0 date +%z)" ]
+}
+
+curzone="$(localzone)"
 curoffset="$(TZ="$curzone" date +%z)"
 
 for tgtzone in "$curzone" "$@"; do
-    if [ ! -e "/usr/share/zoneinfo/${tgtzone}" ]; then
-        printf 'Unknown timezone: %s\n' "$tgtzone" 1>&2
-        exit 1
-    fi
+    tzvalid "$tgtzone" && continue
+    printf 'Unknown timezone: %s\n' "$tgtzone" 1>&2
+    case $tgtzone in */*)
+        printf '  (backward-compatible names like this one live in the tzdata-legacy package)\n' 1>&2 ;;
+    esac
+    badtz=1
+done
+[ -n "$badtz" ] && exit 1
 
+for tgtzone in "$curzone" "$@"; do
     # Generate a line for every hour of the day in the current time zone and
     # pass to date to convert that hour into the target time zone.
     printf '%s\n' 00 01 02 03 04 05 06 07 08 09 10 11 12 \

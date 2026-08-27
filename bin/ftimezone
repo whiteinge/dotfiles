@@ -1,12 +1,13 @@
 #!/usr/bin/env sh
 # Fuzzy-find available timezones
 
-{
-if [ -r /usr/share/zoneinfo/tzdata.zi ]; then
-    # https://unix.stackexchange.com/a/698068
-    awk '/^Z/ { print $2 }; /^L/ { print $3 }' /usr/share/zoneinfo/tzdata.zi
-elif [ -d /usr/share/zoneinfo ]; then
-    cd /usr/share/zoneinfo
-    find -type f -o -type l | sed 's|^\./||'
-fi;
-} | sort -u | fzy -p 'Timezone > '
+tzdir="${TZDIR:-/usr/share/zoneinfo}"
+
+# Need the tzdata-legacy package on Debian.
+# Pruned: the right/ (leap-second) and posix/ (duplicate) subtrees, plus the
+# metadata files that are not zones at all.
+find "$tzdir" \( -name posix -o -name right \) -prune -o \
+    \( -type f -o -type l \) -print 2>/dev/null \
+| sed "s|^${tzdir}/||" \
+| grep -Ev '\.(tab|zi|list)$|(^|/)(localtime|posixrules|leapseconds|leap-seconds)$' \
+| sort -u | fzy -p 'Timezone > '
