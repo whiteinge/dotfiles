@@ -45,6 +45,7 @@ chatgpt.com, LLM
 !*.office.com, Microsoft
 !*.xbox.com, Microsoft
 127.0.0.1, No Container
+192.168.1.1, No Container
 192.168.121.10, No Container
 [fd00:cafe::1], No Container
 localhost, No Container
@@ -54,7 +55,7 @@ opentodebate.org, Reddit
 rumble.com, Rumble
 !*.duckduckgo.com, Search
 search.brave.com, Search
-athleticbrewing.com, Shopping
+!*.athleticbrewing.com, Shopping
 !*.circle.so, Shopping
 countycomm.com, Shopping
 !*.dickssportinggoods.com, Shopping
@@ -66,6 +67,7 @@ gpodder.net, Shopping
 !*.nexusmods.com, Shopping
 !*.overdrive.com, Shopping
 !*.patreon.com, Shopping
+rental.turbotenant.com, Shopping
 !*.sportsmans.com, Shopping
 !*.steamcommunity.com, Shopping
 !*.steampowered.com, Shopping
