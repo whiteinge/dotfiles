@@ -1,4 +1,6 @@
 {
+  "tui": "fullscreen",
   "editorMode": "vim",
-  "tui": "fullscreen"
+  "agentPushNotifEnabled": true,
+  "viewMode": "focus"
 }
