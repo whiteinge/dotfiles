@@ -259,9 +259,6 @@ cdtmp() { cd $(mktemp -d --suffix="-${1:-"cdtmp"}") }
 # Export all environment variables defined in an .env file.
 senv() { set -a; source .env; set +a; }
 
-# Render ~/bin/mdless's roff output as a manpage; $MANPAGER (lvi-man) displays it.
-function mdless() { command mdless "$@" | command man -l -; }
-
 # Useful for working with Git remotes; e.g., `git log IN`, `git diff OUT`.
 alias -g IN='..@{u}'
 alias -g IIN='...@{u}'
