@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to resume a Claude Code session found in the scrollback buffer
+# Inspired by click
+
+cmd=$(scrollback \
+    | match-claude-sessions \
+    | awk '!seen[$0]++' \
+    | fzy -p 'Resume session > ')
+
+[ -n "$cmd" ] || exit 1
+exec claude --resume "${cmd##* }"

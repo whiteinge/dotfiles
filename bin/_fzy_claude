@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+# Use a fuzzy-finder to complete Claude Code session IDs for the current dir
+
+# Get last arg.
+for last; do true; done
+
+# Only complete session IDs to resume.
+if [ ! "$last" = '--resume' ] && [ ! "$last" = '-r' ]; then
+    exit 1
+fi
+
+projdir="$HOME/.claude/projects/$(pwd | sed -e 's/[^a-zA-Z0-9]/-/g')"
+[ -d "$projdir" ] || exit 1
+
+# Newest sessions first.
+/bin/ls -t "$projdir"/*.jsonl 2>/dev/null \
+    | xe grep -hE '"type":"(ai-title|last-prompt)"' \
+    | jq -rn '
+        reduce (inputs | select(.type == "ai-title" or .type == "last-prompt"))
+            as $l ({}; .[$l.sessionId] += {($l.type): ($l.aiTitle // $l.lastPrompt)})
+        | to_entries[]
+        | "\(.key) \(.value."ai-title" // .value."last-prompt" // "" | gsub("\\s+"; " "))"
+    ' \
+    | fzy -p 'Claude sessions > ' \
+    | cut -d' ' -f1 \
+    | xe printf '%s %s' "$*"

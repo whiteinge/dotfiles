@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Output all matched Claude Code resume commands (e.g., claude --resume <uuid>)
+
+grep -oE 'claude --resume [0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}' "$@"
