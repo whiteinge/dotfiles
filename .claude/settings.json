@@ -2,5 +2,18 @@
   "tui": "fullscreen",
   "editorMode": "vim",
   "agentPushNotifEnabled": true,
-  "viewMode": "focus"
+  "viewMode": "focus",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "WebFetch|WebSearch|Bash|mcp__claude-in-chrome__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/guard-email.sh"
+          }
+        ]
+      }
+    ]
+  }
 }
