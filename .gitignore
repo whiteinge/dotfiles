@@ -9,6 +9,7 @@
 !/.claude/CLAUDE.md
 !/.claude/keybindings.json
 !/.claude/settings.json
+!/.claude/commands
 
 # Progs I often compile and install myself:
 /bin/csvheader
